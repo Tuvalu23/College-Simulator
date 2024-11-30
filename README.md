@@ -6,7 +6,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] UChicago
 - [X] Harvard
 - [X] MIT
-- [ ] Stanford
+- [X] Stanford
 - [ ] Yale 
 
 ## Features

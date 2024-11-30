@@ -13,7 +13,7 @@
 	<link href="./acceptance_files/fontawesome.min.css" rel="stylesheet">
 	<link href="./acceptance_files/fontawesome.min.js.download" rel="stylesheet">
 	<link href="file:///C:/Users/Eastlight/Desktop/Simulator%20jawn/Rejection/Stanford/Applicant%20Status%20Portal_files/render.css" rel="stylesheet">
-	
+	<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.min.js"></script>
 	<style>
 		/*<![CDATA[*/
 		html>body {
@@ -48,7 +48,82 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" class="cr">
 	<title>Stanford University</title>
 	<link rel="stylesheet" id="coToolbarStyle" href="chrome-extension://cjabmdjcfcfdmffimndhafhblfmpjdpe/toolbar/styles/placeholder.css" type="text/css">
-
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		  const canvas = document.createElement("canvas");
+		  document.body.appendChild(canvas);
+		  canvas.style.position = "absolute";
+		  canvas.style.top = "0";
+		  canvas.style.left = "0";
+		  canvas.style.width = "100%";
+		  canvas.style.height = "100%";
+		  canvas.style.pointerEvents = "none";
+		  const ctx = canvas.getContext("2d");
+	
+		  const confetti = [];
+		  const colors = ["#FF0000", "#FF6347", "#DC143C"]; // Red shades
+		  const confettiCount = 150; // Number of confetti
+		  let animationFrame;
+	
+		  // Create confetti particles
+		  for (let i = 0; i < confettiCount; i++) {
+			confetti.push({
+			  x: Math.random() * canvas.width,
+			  y: Math.random() * canvas.height,
+			  width: Math.random() * 10 + 5,
+			  height: Math.random() * 5 + 2.5,
+			  color: colors[Math.floor(Math.random() * colors.length)],
+			  speedX: Math.random() * 2 - 1,
+			  speedY: Math.random() * 3 + 2,
+			  rotation: Math.random() * 360,
+			  rotationSpeed: Math.random() * 2 - 1,
+			});
+		  }
+	
+		  // Resize canvas on window resize
+		  function resizeCanvas() {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+		  }
+		  window.addEventListener("resize", resizeCanvas);
+		  resizeCanvas();
+	
+		  // Render loop for confetti animation
+		  function render() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			confetti.forEach((c) => {
+			  ctx.save();
+			  ctx.translate(c.x, c.y);
+			  ctx.rotate((c.rotation * Math.PI) / 180);
+			  ctx.fillStyle = c.color;
+			  ctx.fillRect(-c.width / 2, -c.height / 2, c.width, c.height);
+			  ctx.restore();
+	
+			  // Update confetti position
+			  c.x += c.speedX;
+			  c.y += c.speedY;
+			  c.rotation += c.rotationSpeed;
+	
+			  // Reset confetti if out of bounds
+			  if (c.y > canvas.height) {
+				c.y = -10;
+				c.x = Math.random() * canvas.width;
+			  }
+			});
+			animationFrame = requestAnimationFrame(render);
+		  }
+	
+		  // Start animation
+		  render();
+	
+		  // Stop animation after 5 seconds
+		  setTimeout(() => {
+			cancelAnimationFrame(animationFrame);
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			document.body.removeChild(canvas); // Remove canvas after animation stops
+		  }, 5000); // Stop after 5000ms (5 seconds)
+		});
+	  </script>
 </head>
 
 <body style="margin-top: 0px !important;">
