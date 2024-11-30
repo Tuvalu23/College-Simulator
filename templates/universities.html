@@ -8,12 +8,11 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {% for uni in university_list %}
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl transition">
-            <img src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" alt="{{ uni.name }} Logo"
+            <img src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" alt="{{ uni.display_name }} Logo"
                 class="w-full h-32 object-contain mb-4">
-            <form method="POST" action="{{ url_for('ustatus', college=uni.name) }}">
-                <button type="submit" class="text-xl font-bold text-center text-white">{{ uni.name }}</button>
-            </form>
-            
+            <a href="{{ url_for('login', college=uni.name) }}" target="_blank" class="block text-xl font-bold text-center text-white">
+                {{ uni.display_name }}
+            </a>
         </div>
         {% endfor %}
     </div>
