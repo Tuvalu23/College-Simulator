@@ -1,0 +1,108 @@
+@media only screen and (max-width:736px) and (min-width:320px)
+{
+#side {
+	margin-bottom: 1em; min-height: 0px !important;
+}
+div#menu > ul {
+	display: none;
+}
+table.sidebar {
+	display: block;
+}
+table.sidebar > tbody > tr > td {
+	display: block;
+}
+table.sidebar > tbody > tr > th {
+	display: block;
+}
+table.plain {
+	width: 100%; display: block;
+}
+table.plain > tbody {
+	width: 100%; display: block;
+}
+table.plain > tbody > tr {
+	width: 100%; display: block;
+}
+table.plain > tbody > tr > th {
+	background: rgb(204, 204, 204); padding: 2px; font-weight: bold; display: block;
+}
+table.plain > tbody > tr > td {
+	display: block;
+}
+table.fixed {
+	margin: 0px; display: block;
+}
+table.fixed > tbody {
+	margin: 0px; display: block;
+}
+table.fixed > tbody > tr {
+	margin: 0px; display: block;
+}
+table.fixed > tbody > tr > td {
+	margin: 0px -10px 15px; padding: 10px !important; text-align: left; display: block;
+}
+table.table {
+	background: none; clear: both; display: block;
+}
+table.table thead {
+	background: none; clear: both; display: block;
+}
+table.table tbody {
+	background: none; clear: both; display: block;
+}
+table.table tr {
+	background: none; clear: both; display: block;
+}
+table.table th {
+	background: none; clear: both; display: block;
+}
+table.table td {
+	background: none; clear: both; display: block;
+}
+table.table > thead > tr.column {
+	display: none;
+}
+table.table td::before {
+	padding: 0px 5px; width: 110px; text-align: left; clear: left; margin-left: -115px; float: left; display: block; box-sizing: border-box;
+}
+table.table td {
+	border-width: 0px !important; padding: 2px 5px 2px 115px !important; text-align: left !important; display: block; -ms-word-wrap: break-word; max-width: 100% !important; box-sizing: border-box;
+}
+#side {
+	width: 100% !important;
+}
+#side > #menu {
+	width: 100% !important;
+}
+#main {
+	width: 100% !important;
+}
+body.progress_dialog_0 #page {
+	display: none;
+}
+body.progress #page {
+	height: 100%; overflow: hidden;
+}
+.progress_div {
+	left: 0px; top: 0px; width: 100%; height: 100%; position: fixed !important;
+}
+.progress_box {
+	left: 50%; top: 0px; margin-top: 25px; position: fixed !important;
+}
+.progress_dialog_div {
+	display: none;
+}
+.dialog_host {
+	top: 0px !important; width: 100%; height: auto; position: relative;
+}
+.dialog_host .dialog {
+	width: 100% !important; height: 100%; box-shadow: none !important; -webkit-box-shadow: none;
+}
+.dialog_host > .dialog > * {
+	max-width: 100%;
+}
+.dialog_host > .dialog .content {
+	height: auto !important;
+}
+}

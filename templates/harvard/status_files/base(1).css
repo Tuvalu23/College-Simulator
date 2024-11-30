@@ -1,0 +1,249 @@
+body {
+	margin: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);
+}
+body {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+input.password {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+input.text {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+select {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+textarea {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+input[type=password] {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+input[type=text] {
+	font-family: Arial,Helvetica,sans-serif; font-size: 12px;
+}
+a:visited {
+	color: rgb(0, 0, 255);
+}
+a {
+	color: rgb(0, 0, 255);
+}
+a:link {
+	color: rgb(0, 0, 255);
+}
+a:active {
+	color: rgb(255, 0, 0);
+}
+a:hover {
+	color: rgb(255, 0, 0);
+}
+#calendar {
+	z-index: 99;
+}
+#content {
+	padding: 10px;
+}
+#content #content {
+	padding: 0px;
+}
+#side {
+	padding: 0px 15px 0px 0px; width: 150px; float: left; min-height: 100px;
+}
+#side img {
+	margin: 20px auto 0px; display: block;
+}
+#main {
+	padding: 0px; width: 715px; float: left;
+}
+#footer {
+	clear: both;
+}
+div#menu {
+	width: 150px;
+}
+div#menu ul {
+	list-style: none; margin: 0px; padding: 0px;
+}
+div#menu ul li {
+	margin: 0px; padding: 0px;
+}
+div#menu ul li a {
+	padding: 3px 0px 4px 20px; width: 130px; color: rgb(0, 0, 255); text-decoration: underline; display: block;
+}
+div#menu ul li a:hover {
+	background-color: rgb(240, 240, 240);
+}
+div#menu ul li a.selected {
+	background-color: rgb(240, 240, 240);
+}
+div#menu ul li a.selected {
+	color: rgb(0, 0, 0); text-decoration: none; background-color: rgb(204, 204, 204);
+}
+#scanner_alert {
+	padding: 10px 0px; border: 5px solid rgb(0, 0, 0); border-image: none; left: 50%; top: 50px; width: 400px; text-align: center; color: rgb(255, 255, 255); font-size: 20px; margin-left: -200px; position: absolute; z-index: 9999; background-color: rgb(204, 0, 0);
+}
+a.postLink {
+	color: rgb(102, 102, 102) !important; text-decoration: none;
+}
+table.admit {
+	table-layout: fixed;
+}
+table.enroll {
+	table-layout: fixed;
+}
+table.recent {
+	table-layout: fixed;
+}
+table.flagged {
+	table-layout: fixed;
+}
+table.topics {
+	table-layout: fixed;
+}
+table.admit {
+	border: 1px solid rgb(204, 204, 204); border-image: none; background-color: rgb(236, 236, 236);
+}
+table.admit tr th {
+	background-color: rgb(204, 204, 204);
+}
+table.enroll {
+	border: 1px solid rgb(0, 83, 149); border-image: none; background-color: rgb(204, 221, 234);
+}
+table.enroll tr th {
+	color: rgb(255, 255, 255); background-color: rgb(0, 83, 149);
+}
+table.enroll tr th a {
+	color: rgb(255, 255, 255) !important;
+}
+table.recent {
+	border: 1px solid rgb(204, 204, 204); border-image: none; background-color: rgb(255, 255, 221);
+}
+table.recent tr th {
+	background-color: rgb(255, 255, 153);
+}
+table.flagged {
+	border: 1px solid rgb(204, 204, 204); border-image: none; background-color: rgb(255, 255, 221);
+}
+table.flagged tr th {
+	background-color: rgb(255, 255, 153);
+}
+table.topics tr td {
+	border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+table.topics tr th {
+	border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.facebook td {
+	padding: 5px !important;
+}
+.facebook_user a {
+	padding: 5px; color: rgb(0, 0, 0) !important; text-decoration: none !important; display: block; cursor: pointer !important;
+}
+.facebook_admit a {
+	padding: 5px; color: rgb(0, 0, 0) !important; text-decoration: none !important; display: block; cursor: pointer !important;
+}
+.facebook_user {
+	border: 2px solid rgb(0, 83, 149); border-image: none;
+}
+.facebook_user a:hover {
+	background-color: rgb(238, 238, 238);
+}
+.facebook_admit a {
+	border: 2px solid rgb(204, 204, 204); border-image: none;
+}
+.facebook_admit a:hover {
+	background-color: rgb(238, 238, 238);
+}
+.facebook_first {
+	font-size: 1.4em;
+}
+.facebook_details {
+	padding: 5px 0px 0px; color: rgb(128, 128, 128); font-size: 0.9em;
+}
+.block-line {
+	list-style: none; margin: 25px 0px; padding: 0px; width: 100%; clear: both; display: block;
+}
+.block-line li {
+	margin: 10px 0px 0px 50px; padding: 0px; display: block;
+}
+.block-line a {
+	background: no-repeat 5px 5px rgb(240, 240, 240); padding: 5px 10px 5px 48px; width: 500px; color: rgb(0, 0, 0) !important; text-decoration: none; display: block;
+}
+.block-line a:hover {
+	color: rgb(255, 255, 255) !important; background-color: rgb(51, 102, 153);
+}
+.block-line a:hover b {
+	color: rgb(255, 255, 255) !important;
+}
+.block-line a b {
+	color: rgb(51, 102, 153) !important; font-size: 15px; font-weight: bold;
+}
+.block-line.flat {
+	margin: 0px;
+}
+.block-line.flat li {
+	margin: 0px 0px 10px;
+}
+.box {
+	margin: 0px 0px 15px; padding: 4px;
+}
+.box h2 {
+	font-size: 1.4em; margin-bottom: 5px;
+}
+.box ul {
+	list-style: none; margin: 0px; padding: 0px;
+}
+.box li {
+	margin: 0px; padding: 0px;
+}
+@media print
+{
+#header-span {
+	display: none;
+}
+#header {
+	display: none;
+}
+#banner {
+	display: none;
+}
+#global {
+	display: none;
+}
+#tabs {
+	display: none;
+}
+#menu {
+	display: none;
+}
+#footer {
+	display: none;
+}
+.action {
+	display: none;
+}
+.no-mobile {
+	display: none;
+}
+html {
+	margin: 0px !important; padding: 0px !important; border: currentColor !important; border-image: none !important !important; left: 0px !important; top: 0px !important; width: 100% !important; position: relative !important;
+}
+body {
+	margin: 0px !important; padding: 0px !important; border: currentColor !important; border-image: none !important !important; left: 0px !important; top: 0px !important; width: 100% !important; position: relative !important;
+}
+#page {
+	margin: 0px !important; padding: 0px !important; border: currentColor !important; border-image: none !important !important; left: 0px !important; top: 0px !important; width: 100% !important; position: relative !important;
+}
+#content {
+	margin: 0px !important; padding: 0px !important; border: currentColor !important; border-image: none !important !important; left: 0px !important; top: 0px !important; width: 100% !important; position: relative !important;
+}
+#main {
+	margin: 0px !important; padding: 0px !important; border: currentColor !important; border-image: none !important !important; left: 0px !important; top: 0px !important; width: 100% !important; position: relative !important;
+}
+.table td {
+	border: 1px solid rgb(169, 169, 169) !important; border-image: none !important !important;
+}
+.table th {
+	border: 1px solid rgb(169, 169, 169) !important; border-image: none !important !important;
+}
+}
