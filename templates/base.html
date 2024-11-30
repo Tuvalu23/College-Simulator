@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}College Admission Simulator{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1A202C; /* Darker background */
+            color: #E2E8F0; /* Light text */
+        }
+        .locked-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #2D3748; /* Header background */
+            color: #E2E8F0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .locked-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #2D3748; /* Footer background */
+            color: #E2E8F0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="locked-header p-4">
+        <h1 class="text-xl font-bold text-center">College Admission Simulator</h1>
+    </div>
+
+    <div class="pt-20 pb-20">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="locked-footer p-4">
+        <p class="text-center text-sm">© 2024 College Admission Simulator - Ben Rudinski. All rights reserved.</p>
+    </div>
+</body>
+</html>

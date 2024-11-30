@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Choose a University</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <div class="container mx-auto py-10">
-        <h1 class="text-3xl font-bold text-center mb-10">Welcome, {{ name }}! Choose a University</h1>
-        <div class="grid grid-cols-2 gap-8">
-            {% for uni in universities %}
-            <a href="{{ url_for('ustatus', college=uni.name) }}" class="group">
-                <div class="bg-white rounded shadow-md p-6 hover:bg-gray-50">
-                    <img src="{{ url_for('static', filename='logos/' + uni.logo) }}" class="w-20 h-20 mx-auto mb-4">
-                    <p class="text-center font-bold group-hover:text-blue-500">{{ uni.name }}</p>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
+{% extends "base.html" %}
+
+{% block title %}Choose a University{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10">
+    <h1 class="text-3xl font-bold text-center mb-10">Welcome, {{ name }}! Choose a University</h1>
+    <div class="grid grid-cols-2 gap-8">
+        {% for uni in university_list %}
+        <a href="{{ url_for('ustatus', college=uni.name) }}" class="group">
+            <div class="bg-gray-700 rounded shadow-md p-6 hover:bg-gray-600 transition">
+                <img src="{{ url_for('static', filename='logos/' + uni.logo) }}" class="w-20 h-20 mx-auto mb-4">
+                <p class="text-center font-bold group-hover:text-blue-300">{{ uni.name }}</p>
+            </div>
+        </a>
+        {% endfor %}
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -8,9 +8,9 @@ app = Flask(__name__, template_folder="templates")
 user_data = {"name": "", "date": ""}
 
 # List of universities
-universities = [
-    {"name": "University of Chicago", "logo": "static/uchicago-logo.png"},
-    {"name": "Harvard University", "logo": "static/harvard-logo.png"},
+university_list = [
+    {"name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
+    {"name": "Harvard University", "logo": "static/logos/harvard-logo.jpg"},
 ]
 
 # Intro Page
@@ -19,22 +19,16 @@ def index():
     if request.method == "POST":
         user_data["name"] = request.form["name"]
         user_data["date"] = datetime.strptime(request.form["date"], "%Y-%m-%d").strftime("%B %d, %Y")
-        return redirect(url_for("universities"))
+        return redirect(url_for("select_university"))
     return render_template("index.html")
 
 # University Selection Page
 @app.route("/universities", methods=["GET", "POST"])
-def universities():
-    return render_template("universities.html", name=user_data["name"], universities=universities)
+def select_university():
+    return render_template("universities.html", name=user_data["name"], university_list=university_list)
 
-# Login Page
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        return redirect(url_for("ustatus"))
-    return render_template("login.html", name=user_data["name"])
-
-# Status Page
+# Status Simulation Page
+@app.route("/ustatus/<college>", methods=["GET", "POST"])
 def ustatus(college):
     if request.method == "POST":
         decision = random.choice(["acceptance", "rejection"])
@@ -52,7 +46,8 @@ def acceptance(college):
 @app.route("/rejection/<college>")
 def rejection(college):
     return render_template("rejection.html", name=user_data["name"], date=user_data["date"], college=college)
-    
+
+# files routes    
 @app.route('/login_files/<path:filename>')
 def login_files_static(filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'login_files'), filename)
