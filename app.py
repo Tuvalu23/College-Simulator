@@ -34,12 +34,13 @@ def login(college):
         email = request.form.get("email")
         password = request.form.get("password")
         # Check for missing inputs
-        if email and password:
-            return render_template(f"{college}/ustatus.html", error="Please fill out all fields.", college=college, name=user_data["name"], date=user_data["date"])
-        else:
+        if not email or not password:
             return render_template(f"{college}/login.html", error="Please fill out all fields.", college=college)
+        
+        # Redirect to ustatus if inputs are valid
+        return redirect(url_for("ustatus", college=college))
+    
     return render_template(f"{college}/login.html", name=user_data["name"], college=college)
-
 
 @app.route("/<college>/ustatus", methods=["GET", "POST"])
 def ustatus(college):
