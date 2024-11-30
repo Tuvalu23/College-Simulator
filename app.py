@@ -7,14 +7,25 @@ app = Flask(__name__, template_folder="templates")
 
 user_data = {"name": "", "date": ""}
 
+# List of universities
+universities = [
+    {"name": "University of Chicago", "logo": "static/uchicago-logo.png"},
+    {"name": "Harvard University", "logo": "static/harvard-logo.png"},
+]
+
 # Intro Page
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         user_data["name"] = request.form["name"]
         user_data["date"] = datetime.strptime(request.form["date"], "%Y-%m-%d").strftime("%B %d, %Y")
-        return redirect(url_for("login"))
+        return redirect(url_for("universities"))
     return render_template("index.html")
+
+# University Selection Page
+@app.route("/universities", methods=["GET", "POST"])
+def universities():
+    return render_template("universities.html", name=user_data["name"], universities=universities)
 
 # Login Page
 @app.route("/login", methods=["GET", "POST"])
@@ -24,24 +35,23 @@ def login():
     return render_template("login.html", name=user_data["name"])
 
 # Status Page
-@app.route("/ustatus", methods=["GET", "POST"])
-def ustatus():
+def ustatus(college):
     if request.method == "POST":
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
-            return redirect(url_for("acceptance"))
-        return redirect(url_for("rejection"))
-    return render_template("ustatus.html", name=user_data["name"], date=user_data["date"])
+            return redirect(url_for("acceptance", college=college))
+        return redirect(url_for("rejection", college=college))
+    return render_template("ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
 
 # Acceptance Page
-@app.route("/acceptance")
-def acceptance():
-    return render_template("acceptance.html", name=user_data["name"], date=user_data["date"])
+@app.route("/acceptance/<college>")
+def acceptance(college):
+    return render_template("acceptance.html", name=user_data["name"], date=user_data["date"], college=college)
 
 # Rejection Page
-@app.route("/rejection")
-def rejection():
-    return render_template("rejection.html", name=user_data["name"], date=user_data["date"])
+@app.route("/rejection/<college>")
+def rejection(college):
+    return render_template("rejection.html", name=user_data["name"], date=user_data["date"], college=college)
     
 @app.route('/login_files/<path:filename>')
 def login_files_static(filename):
