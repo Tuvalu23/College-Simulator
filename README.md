@@ -2,6 +2,13 @@
 
 A Flask-based web application that simulates the admissions process for multiple universities. Users can select a university, log in through a simple interface, check their application status, and receive a randomly determined decision of either acceptance or rejection.
 
+## To-Do
+- [X] UChicago
+- [X] Harvard
+- [X] MIT
+- [ ] Stanford
+- [ ] Yale 
+
 ## Features
 
 ### University Selection
