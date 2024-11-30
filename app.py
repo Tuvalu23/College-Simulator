@@ -9,8 +9,9 @@ user_data = {"name": "", "date": ""}
 
 # List of universities
 university_list = [
-    {"name": "uchicago", "display_name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
     {"name": "harvard", "display_name": "Harvard University", "logo": "static/logos/harvard-logo.jpg"},
+    {"name": "mit", "display_name": "Massachusetts Institute of Technology", "logo": "static/logos/mit-logo.jpg"},
+    {"name": "uchicago", "display_name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
 ]
 
 
@@ -44,6 +45,12 @@ def login(college):
 
 @app.route("/<college>/ustatus", methods=["GET", "POST"])
 def ustatus(college):
+    if college == "mit":
+        decision = random.choice(["acceptance", "rejection"])
+        if decision == "acceptance":
+            return redirect(url_for("acceptance", college=college, name=user_data["name"]))
+        return redirect(url_for("rejection", college=college, name=user_data["name"]))
+    
     if request.method == "POST":
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
