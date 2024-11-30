@@ -20,18 +20,18 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        return redirect(url_for("status"))
+        return redirect(url_for("ustatus"))
     return render_template("login.html", name=user_data["name"])
 
 # Status Page
-@app.route("/status", methods=["GET", "POST"])
-def status():
+@app.route("/ustatus", methods=["GET", "POST"])
+def ustatus():
     if request.method == "POST":
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
             return redirect(url_for("acceptance"))
         return redirect(url_for("rejection"))
-    return render_template("status.html", name=user_data["name"], date=user_data["date"])
+    return render_template("ustatus.html", name=user_data["name"], date=user_data["date"])
 
 # Acceptance Page
 @app.route("/acceptance")
@@ -47,9 +47,9 @@ def rejection():
 def login_files_static(filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'login_files'), filename)
 
-@app.route('/status_files/<path:filename>')
-def status_files_static(filename):
-    return send_from_directory(os.path.join(app.root_path, 'templates', 'status_files'), filename)
+@app.route('/ustatus_files/<path:filename>')
+def ustatus_files_static(filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'ustatus_files'), filename)
 
 @app.route('/acceptance_files/<path:filename>')
 def acceptance_files_static(filename):
