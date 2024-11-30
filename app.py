@@ -24,12 +24,14 @@ def login():
     return render_template("login.html", name=user_data["name"])
 
 # Status Page
-@app.route("/status")
+@app.route("/status", methods=["GET", "POST"])
 def status():
-    decision = random.choice(["acceptance", "rejection"])
-    if decision == "acceptance":
-        return redirect(url_for("acceptance"))
-    return redirect(url_for("rejection"))
+    if request.method == "POST":
+        decision = random.choice(["acceptance", "rejection"])
+        if decision == "acceptance":
+            return redirect(url_for("acceptance"))
+        return redirect(url_for("rejection"))
+    return render_template("status.html", name=user_data["name"], date=user_data["date"])
 
 # Acceptance Page
 @app.route("/acceptance")
