@@ -5,15 +5,41 @@ import os
 
 app = Flask(__name__, template_folder="templates")
 
-# routess
-@app.route("/")
-def login():
-    return render_template("login.html")
+user_data = {"name": "", "date": ""}
 
+# Intro Page
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        user_data["name"] = request.form["name"]
+        user_data["date"] = request.form["date"]
+        return redirect(url_for("login"))
+    return render_template("index.html")
+
+# Login Page
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        return redirect(url_for("status"))
+    return render_template("login.html", name=user_data["name"])
+
+# Status Page
 @app.route("/status")
 def status():
-    date = datetime.now().strftime("%B, %d, %Y")
-    return render_template("status.html", date=date)
+    decision = random.choice(["acceptance", "rejection"])
+    if decision == "acceptance":
+        return redirect(url_for("acceptance"))
+    return redirect(url_for("rejection"))
+
+# Acceptance Page
+@app.route("/acceptance")
+def acceptance():
+    return render_template("acceptance.html", name=user_data["name"], date=user_data["date"])
+
+# Rejection Page
+@app.route("/rejection")
+def rejection():
+    return render_template("rejection.html", name=user_data["name"], date=user_data["date"])
     
 @app.route('/login_files/<path:filename>')
 def custom_static(filename):
