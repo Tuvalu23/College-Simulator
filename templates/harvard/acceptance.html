@@ -4,6 +4,7 @@
   
 
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link rel="shortcut icon" href="https://apply-college-harvard-edu.cdn.technolutions.net/favicon.ico">
   <link href="./acceptance_files/base.css" rel="stylesheet">
   <link href="./acceptance_files/base(1).css" rel="stylesheet">
@@ -129,8 +130,11 @@
                   <div class="c_o-container-fluid cr">
                     <div id="global">
                       <ul>
-                        <li>Benjamin Rudinski<a href="https://ivyhub-simulators.andressevilla.com/harvard/login" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
-                        </li>
+                        <li>{{ name }}
+                          <a href="{{ url_for('login', college='harvard') }}" 
+                             style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+                      </li>
+                      
                       </ul>
                     </div>
                     <div id="content">
@@ -146,7 +150,7 @@
 
                         /*]]>*/
                       </style>
-                      <p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">December 15, 2024</p>
+                      <p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">{{ date }}</p>
                       <meta content="initial-scale=1.0" name="viewport">
                       <meta content="telephone=no" name="format-detection">
                       <title>Harvard College Admissions &amp; Financial Aid</title>
@@ -353,16 +357,16 @@
                                                       <p style="color: #1E1E1E; font-family: &#39;Crimson Text&#39;, Georgia, &#39;Times New Roman&#39;, Times, serif; font-size: 17px; font-weight: 200; line-height: 24px; margin: 0 0 15px;">
                                                         &nbsp;</p>
                                                       <p style="color: #1E1E1E; font-family: &#39;Crimson Text&#39;, Georgia, &#39;Times New Roman&#39;, Times, serif; font-size: 17px; font-weight: 200; line-height: 24px; margin: 0 0 15px;">
-                                                      Dear Benjamin, <br><br>
+                                                      Dear {{ name }}, <br><br>
 
-                                                      On behalf of the Committee on Admissions, I am thrilled to offer you admission to Harvard University's Class of 2028. This decision reflects our belief in your remarkable talents, achievements, and potential to contribute to the vibrant academic and social community here at Harvard.<br><br>
+                                                      <strong>Congratulations!</strong> On behalf of the Committee on Admissions, I am thrilled to offer you admission to Harvard University's Class of 2029. This decision reflects our belief in your remarkable talents, achievements, and potential to contribute to the vibrant academic and social community here at Harvard.<br><br>
 
                                                       Your application stood out among a highly competitive pool of over forty-two thousand exceptional candidates, each bringing unique strengths and perspectives. The Committee was deeply impressed by your academic accomplishments, personal character, and extracurricular contributions. We are confident you will thrive at Harvard and enrich our campus in countless ways.<br><br>
 
                                                       At Harvard, you will have unparalleled opportunities to explore your intellectual passions, challenge yourself, and grow in ways that will prepare you to make a meaningful impact in the world. We look forward to seeing how you will shape and be shaped by this extraordinary community.<br><br>
 
                                                       To confirm your enrollment, please log in to your Applicant Status Portal to accept your offer and submit your enrollment deposit by May 1, 2025. There, you will also find additional information about your next steps as you prepare to join the Harvard community.<br><br>
-                                                      Benjamin, welcome to Harvard. We are so excited to see what your future holds. <br><br>
+                                                      {{ name }}, welcome to Harvard. We are so excited to see what your future holds. <br><br>
 
 
                                                         Sincerely,<br><br><img alt="" src="./acceptance_files/wrf-sig-2017.png" style="width: 133px; height: 100px;"><br><strong>William
@@ -510,8 +514,8 @@
                           </tr>
                         </tbody>
                       </table>
-                      <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate"><a href="https://ivyhub-simulators.andressevilla.com/harvard/portal">Return to
-                          Application Status</a></p>
+                      <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate">
+                        <a href="{{ url_for('ustatus', college='harvard') }}">Return to Application Status</a></p>
                       <div style="clear: both;"></div>
                     </div>
                   </div>
@@ -636,6 +640,18 @@
   <div class="progress_box" style="visibility: hidden;"></div>
 
   <div class="progress_box" style="visibility: hidden;"></div>
+
+  <script>
+    // Trigger confetti automatically when the page loads
+    window.addEventListener("load", function() {
+      confetti({
+        particleCount: 150,
+        spread: 120,
+        origin: { y: 0.6 },
+        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
+      });
+    });
+  </script>
 
 
 

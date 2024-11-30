@@ -129,8 +129,10 @@
                   <div class="c_o-container-fluid cr">
                     <div id="global">
                       <ul>
-                        <li>Benjamin Rudinski<a href="https://ivyhub-simulators.andressevilla.com/harvard/login" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
-                        </li>
+                        <li>{{ name }}
+                          <a href="{{ url_for('login', college='harvard') }}" 
+                             style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+                      </li>
                       </ul>
                     </div>
                     <div id="content">
@@ -146,7 +148,7 @@
 
                         /*]]>*/
                       </style>
-                      <p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">December 15, 2024</p>
+                      <p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">{{ date }}</p>
                       <meta content="initial-scale=1.0" name="viewport">
                       <meta content="telephone=no" name="format-detection">
                       <title>Harvard College Admissions &amp; Financial Aid</title>
@@ -353,9 +355,9 @@
                                                       <p style="color: #1E1E1E; font-family: &#39;Crimson Text&#39;, Georgia, &#39;Times New Roman&#39;, Times, serif; font-size: 17px; font-weight: 200; line-height: 24px; margin: 0 0 15px;">
                                                         &nbsp;</p>
                                                       <p style="color: #1E1E1E; font-family: &#39;Crimson Text&#39;, Georgia, &#39;Times New Roman&#39;, Times, serif; font-size: 17px; font-weight: 200; line-height: 24px; margin: 0 0 15px;">
-                                                      Dear Benjamin, <br><br>
+                                                      Dear {{ name }}, <br><br>
 
-The Committee on Admissions has completed its Regular Decision meetings, and I am sorry to inform you that we cannot offer admission to the Class of 2024. I wish that a different decision had been possible, but I hope that receiving our final decision now will be helpful to you as you make your college plans. <br><br>
+The Committee on Admissions has completed its Regular Decision meetings, and I am sorry to inform you that we cannot offer admission to the Class of 2028. I wish that a different decision had been possible, but I hope that receiving our final decision now will be helpful to you as you make your college plans. <br><br>
 
 In recent years, the Committee has been faced with increasingly difficult decisions; more than forty-two thousand students now apply for the two thousand places in the freshman class, and the great majority of our applicants could certainly be successful here academically. In addition, most candidates present strong personal and extracurricular credentials. The Committee has, therefore, been faced with the necessity of choosing a freshman class from a great many more talented and highly qualified students than it has room to admit. <br><br>
 
@@ -509,8 +511,8 @@ We very much appreciate the interest you have shown in Harvard, and we hope you 
                           </tr>
                         </tbody>
                       </table>
-                      <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate"><a href="https://ivyhub-simulators.andressevilla.com/harvard/portal">Return to
-                          Application Status</a></p>
+                      <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate">
+                        <a href="{{ url_for('ustatus', college='harvard') }}">Return to Application Status</a></p>
                       <div style="clear: both;"></div>
                     </div>
                   </div>
