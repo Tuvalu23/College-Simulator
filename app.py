@@ -55,6 +55,10 @@ def ustatus_files_static(filename):
 def acceptance_files_static(filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'acceptance_files'), filename)
 
+@app.route('/ball_images/<path:filename>')
+def ball_files_static(filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'ball_images'), filename)
+
 @app.route('/rejection_files/<path:filename>')
 def rejection_files_static(filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'rejection_files'), filename)
