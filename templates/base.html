@@ -1,45 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>{% block title %}College Admission Simulator{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title | default("University Simulator") }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #1A202C; /* Darker background */
-            color: #E2E8F0; /* Light text */
+            background-color: #0c0c0c;
+            font-family: 'aktiv-grotesk', sans-serif;
         }
-        .locked-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: #2D3748; /* Header background */
-            color: #E2E8F0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .locked-footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 1000;
-            background-color: #2D3748; /* Footer background */
-            color: #E2E8F0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+
+        a:hover {
+            color: #0076f4;
         }
     </style>
 </head>
-<body>
-    <div class="locked-header p-4">
-        <h1 class="text-xl font-bold text-center">College Admission Simulator</h1>
-    </div>
 
-    <div class="pt-20 pb-20">
-        {% block content %}{% endblock %}
-    </div>
+<body class="text-gray-200">
+    <!-- Header -->
+    <header class="bg-gray-900 shadow-md fixed top-0 left-0 w-full z-50">
+        <div class="container mx-auto flex justify-between items-center p-4">
+            <!-- Logo and Home Link -->
+            <div class="flex items-center gap-4">
+                <a class="text-blue-400 hover:text-blue-500">
+                    <img src="{{ url_for('static', filename='icons/home-icon.png') }}" alt="Home" class="w-11 h-11">
+                </a>
+                <h1 class="text-lg font-semibold tracking-wider uppercase">College Admission Simulator</h1>
+            </div>
 
-    <div class="locked-footer p-4">
-        <p class="text-center text-sm">© 2024 College Admission Simulator - Ben Rudinski. All rights reserved.</p>
-    </div>
+            <!-- Navigation Icons -->
+            <div class="flex items-center gap-4">
+                <a href="https://studyforallhub.com" target="_blank" class="hover:text-blue-500">
+                    <img src="{{ url_for('static', filename='icons/study-icon.png') }}" alt="StudyForAll" class="w-11 h-11">
+                </a>
+                <a href="https://mail.google.com" target="_blank" class="hover:text-blue-500">
+                    <img src="{{ url_for('static', filename='icons/gmail-icon.png') }}" alt="Gmail" class="w-11 h-11">
+                </a>
+                <a href="https://www.commonapp.org" target="_blank" class="hover:text-blue-500">
+                    <img src="{{ url_for('static', filename='icons/common-app-icon.png') }}" alt="Common App" class="w-11 h-11">
+                </a>
+                <!-- Auth Buttons -->
+                {% if user_data.get('name') %}
+                <a href="{{ url_for('index') }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{{ url_for('index') }}" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                    Sign In
+                </a>
+                <a href="{{ url_for('index') }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                    Sign Up
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto mt-20 p-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 mt-8 py-4">
+        <div class="container mx-auto text-center text-sm text-gray-400">
+            &copy; 2024 University Simulator. Built with ❤️.
+        </div>
+    </footer>
 </body>
+
 </html>
