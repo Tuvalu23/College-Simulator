@@ -47,10 +47,8 @@ def ustatus(college):
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
             return redirect(url_for("acceptance", college=college))
-        return redirect(url_for("rejection", college=college))  # Pass `college` here
+        return redirect(url_for("rejection", college=college))
     return render_template(f"{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
-
-
 
 # Acceptance Page
 @app.route("/<college>/acceptance")

@@ -7,13 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11.0000">
 
   <link href="https://apply-college-harvard-edu.cdn.technolutions.net/favicon.ico" rel="shortcut icon">
-  <link href="./status_files/base.css" rel="stylesheet">
-  <link href="./status_files/base(1).css" rel="stylesheet">
-  <link href="./status_files/build-fonts.css" rel="stylesheet">
-  <link href="./status_files/build-mobile-global.css" rel="stylesheet">
-  <link href="./status_files/build.css" rel="stylesheet">
-  <link href="./status_files/build(1).css" rel="stylesheet">
-  <link href="./status_files/status-v2.css" rel="stylesheet">
+  <link href="./ustatus_files/base.css" rel="stylesheet">
+  <link href="./ustatus_files/base(1).css" rel="stylesheet">
+  <link href="./ustatus_files/build-fonts.css" rel="stylesheet">
+  <link href="./ustatus_files/build-mobile-global.css" rel="stylesheet">
+  <link href="./ustatus_files/build.css" rel="stylesheet">
+  <link href="./ustatus_files/build(1).css" rel="stylesheet">
+  <link href="./ustatus_files/status-v2.css" rel="stylesheet">
 
 
   <style>
@@ -46,7 +46,7 @@
   <meta name="viewport" class="cr" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
-  <title>Application status for John Doe</title>
+  <title>Application status for {{ name or 'Unknown Applicant' }}</title>
 
 
   <meta name="GENERATOR" content="MSHTML 11.00.10570.1001">
@@ -170,8 +170,14 @@
                   <div class="c_o-container-fluid cr">
                     <div id="global">
                       <ul>
-                        <li>John Doe<a href="https://ivyhub-simulators.andressevilla.com/harvard/login" style="font-size: 10px;outline-style:none; text-decoration: none; margin-left: 5px;">Logout</a>
-                        </li>
+                        <li>
+                          {{ name }}
+                          <a href="{{ url_for('login', college='harvard') }}" 
+                             style="font-size: 10px; outline-style: none; text-decoration: none; margin-left: 5px;">
+                              Logout
+                          </a>
+                      </li>
+                      
                       </ul>
                     </div>
                     <div id="content">
@@ -179,24 +185,29 @@
                         <div class="o-container-fluid">
                           <div class="o-row">
                             <div class="status-header__title-wrapper o-col o-col-sm-md-5">
-                              <h1 class="status-header__title title-serif--xl">Applicant
-                                Portal</h1>
+                                <h1 class="status-header__title title-serif--xl">Applicant Portal</h1>
                             </div>
                             <div class="status-header__info-wrapper o-col o-col-sm-md-7">
-                              <div class="status-header__info">
-                                <p class="status-header__label">Applicant Name:</p>
-                                <p class="status-header__value">John Doe</p>
-                              </div>
-                              <div class="status-header__info">
-                                <p class="status-header__label">Round:</p>
-                                <p class="status-header__value">2020 Regular Decision</p>
-                              </div>
-                              <div class="status-header__info">
-                                <p class="status-header__label">Reference Number:</p>
-                                <p class="status-header__value">4206942069</p>
-                              </div><a class="status-header__logout" href="https://ivyhub-simulators.andressevilla.com/harvard/login" style="outline-style:none;">Logout</a>
+                                <div class="status-header__info">
+                                    <p class="status-header__label">Applicant Name:</p>
+                                    <p class="status-header__value">{{ name }}</p> <!-- Ensure 'name' is passed -->
+                                </div>
+                                <div class="status-header__info">
+                                    <p class="status-header__label">Round:</p>
+                                    <p class="status-header__value">2024 Regular Decision</p>
+                                </div>
+                                <div class="status-header__info">
+                                    <p class="status-header__label">Reference Number:</p>
+                                    <p class="status-header__value">4206942069</p>
+                                </div>
+                                
+                                <a class="status-header__logout" href="{{ url_for('login', college='harvard') }}" style="outline-style:none;">
+                                  Logout
+                              </a>
+                              
                             </div>
-                          </div>
+                        </div>
+                        
                         </div>
                       </div>
                       <div class="status-tabs js-tab-group">
@@ -460,10 +471,12 @@ Menu-->
                                                   <svg style="outline-style:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 11" width="16" height="11">
                                                     <polygon style="outline-style:none;outline: 0;" points="13.293,4.735 9.265,0.707 9.972,0 15.21,5.238 9.966,10.395 9.265,9.682 13.278,5.735 0,5.735 0,4.735"></polygon></svg>
                                                 </span>
-                                                <a href="https://ivyhub-simulators.andressevilla.com/harvard/portal.html" style="outline-style:none;">
-                                                  View Status Update
-
-                                                </a>
+                                                <form action="{{ url_for('ustatus', college=college) }}" method="POST">
+                                                  <button type="submit" class="status-header__logout" style="outline-style:none;">
+                                                      View Decision
+                                                  </button>
+                                              </form>
+                                              
 
                                               </li>
 
@@ -486,13 +499,16 @@ Menu-->
                                             <div>
                                               <h3>Status Update</h3>
                                               <p>An update to your application was last
-                                                posted March 26, 2020. </p>
+                                                posted {{ date }}. </p>
                                               <p>
 
 
-                                                <a href="https://ivyhub-simulators.andressevilla.com/harvard/rejection" style="font-weight: bold;outline-style:none;">View
-                                                  Status
-                                                  Update</a></p>
+                                                <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display: inline;">
+                                                  <button type="submit" style="font-weight: bold; outline-style: none; background: none; border: none; color: blue; text-decoration: underline; cursor: pointer;">
+                                                      View Status Update
+                                                  </button>
+                                              </form>
+                                              </p>
                                             </div>
                                           </div>
                                         </div>
@@ -564,7 +580,7 @@ Menu-->
                                               </li>
                                             </ul>
                                           </nav>
-                                          <div class="c_m-site-info__copyright cr">Copyright © 2020 The President &amp;
+                                          <div class="c_m-site-info__copyright cr">Copyright © 2024 The President &amp;
                                             Fellows of Harvard College
                                           </div>
                                         </div>
