@@ -44,8 +44,21 @@ def rejection():
     return render_template("rejection.html", name=user_data["name"], date=user_data["date"])
     
 @app.route('/login_files/<path:filename>')
-def custom_static(filename):
+def login_files_static(filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'login_files'), filename)
+
+@app.route('/status_files/<path:filename>')
+def status_files_static(filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'status_files'), filename)
+
+@app.route('/acceptance_files/<path:filename>')
+def acceptance_files_static(filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'acceptance_files'), filename)
+
+@app.route('/rejection_files/<path:filename>')
+def rejection_files_static(filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'rejection_files'), filename)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
