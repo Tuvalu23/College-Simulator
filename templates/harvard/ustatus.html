@@ -172,7 +172,7 @@
                     <div id="global">
                       <ul>
                         <li>
-                          <p>"Hello Applicant!"</p>
+                          <p>{{ name }}</p>
                           <a href="{{ url_for('login', college='harvard') }}" 
                              style="font-size: 10px; outline-style: none; text-decoration: none; margin-left: 5px;">
                               Logout
@@ -190,8 +190,8 @@
                             </div>
                             <div class="status-header__info-wrapper o-col o-col-sm-md-7">
                                 <div class="status-header__info">
-                                    <p class="status-header__label">Applicant ID:</p>
-                                    <p class="status-header__value">8332</p> <!-- Ensure 'name' is passed -->
+                                    <p class="status-header__label">Applicant Name:</p>
+                                    <p class="status-header__value">{{ name }}</p> <!-- Ensure 'name' is passed -->
                                 </div>
                                 <div class="status-header__info">
                                     <p class="status-header__label">Round:</p>
@@ -499,7 +499,7 @@ Menu-->
                                           <div class="status-panel__section js-nav-watch--section" data-scrollama-index="0">
                                             <div>
                                               <h3>Status Update</h3>
-                                              <p>An update to your application has been posted. </p>
+                                              <p>An update to your application was last posted {{ date }}. </p>
                                               <p>
 
 

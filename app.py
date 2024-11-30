@@ -35,7 +35,7 @@ def login(college):
         password = request.form.get("password")
         # Check for missing inputs
         if email and password:
-            return render_template(f"{college}/ustatus.html", error="Please fill out all fields.", college=college)
+            return render_template(f"{college}/ustatus.html", error="Please fill out all fields.", college=college, name=user_data["name"], date=user_data["date"])
         else:
             return render_template(f"{college}/login.html", error="Please fill out all fields.", college=college)
     return render_template(f"{college}/login.html", name=user_data["name"], college=college)
