@@ -12,7 +12,7 @@ user_data = {"name": "", "date": ""}
 def index():
     if request.method == "POST":
         user_data["name"] = request.form["name"]
-        user_data["date"] = request.form["date"]
+        user_data["date"] = datetime.strptime(request.form["date"], "%Y-%m-%d").strftime("%B %d, %Y")
         return redirect(url_for("login"))
     return render_template("index.html")
 
