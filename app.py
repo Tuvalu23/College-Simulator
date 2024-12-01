@@ -11,6 +11,7 @@ user_data = {"name": "", "date": ""}
 university_list = [
     {"name": "harvard", "display_name": "Harvard University", "logo": "static/logos/harvard-logo.jpg"},
     {"name": "mit", "display_name": "Massachusetts Institute of Technology", "logo": "static/logos/mit-logo.jpg"},
+    {"name": "princeton", "display_name": "Princeton University", "logo": "static/logos/princeton-logo.jpg"},
     {"name": "stanford", "display_name": "Stanford University", "logo": "static/logos/stanford-logo.jpg"},
     {"name": "uchicago", "display_name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
     {"name": "yale", "display_name": "Yale University", "logo": "static/logos/yale-logo.jpg"},
