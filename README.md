@@ -9,9 +9,10 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Stanford
 - [X] Yale
 - [X] Princeton
-- [ ] Cornell
-- [ ] Columbia 
-- [ ] Brown
+- [X] Cornell
+- [X] Columbia 
+- [X] Brown
+- [ ] UPenn
 
 ## Features
 

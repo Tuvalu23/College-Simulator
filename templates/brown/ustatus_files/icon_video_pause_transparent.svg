@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 52 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M25.9343633,50.9223382 C40.2575166,50.9223382 51.8687266,39.5229845 51.8687266,25.4611691 C51.8687266,11.3993537 40.2575166,0 25.9343633,0 C11.6112099,0 0,11.3993537 0,25.4611691 C0,39.5229845 11.6112099,50.9223382 25.9343633,50.9223382 Z" id="path-1"></path>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="51.8687266" height="50.9223382" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Horizontal-feed-view-Video-UI" transform="translate(-344.000000, -758.000000)">
+            <g id="Group-11" transform="translate(344.000000, 758.000000)">
+                <g id="Group-5-Copy-3">
+                    <g id="Group-2">
+                        <ellipse id="Oval-51" fill="#292A3A" opacity="0.158348881" cx="25.9343633" cy="25.4611691" rx="25.9343633" ry="25.4611691"></ellipse>
+                        <use id="Oval-51" stroke="#FFFFFF" mask="url(#mask-2)" stroke-width="5.733" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+                <g id="Page-1" transform="translate(19.314286, 18.270270)" fill="#FFFFFF">
+                    <path d="M4.18181818,16.1635875 L0.418181818,16.1635875 C0.209090909,16.1635875 0,15.9640371 0,15.7644866 L0,0.399100926 C0,0.199550463 0.209090909,0 0.418181818,0 L4.28636364,0 C4.49545455,0 4.70454545,0.199550463 4.70454545,0.399100926 L4.70454545,15.7644866 C4.70454545,15.9640371 4.49545455,16.1635875 4.18181818,16.1635875" id="Fill-1"></path>
+                    <path d="M12.3363636,16.1635875 L8.46818182,16.1635875 C8.25909091,16.1635875 8.05,15.9640371 8.05,15.7644866 L8.05,0.399100926 C8.05,0.199550463 8.25909091,0 8.46818182,0 L12.3363636,0 C12.5454545,0 12.7545455,0.199550463 12.7545455,0.399100926 L12.7545455,15.7644866 C12.7545455,15.9640371 12.65,16.1635875 12.3363636,16.1635875" id="Fill-3"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

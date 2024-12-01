@@ -9,6 +9,7 @@ user_data = {"name": "", "date": ""}
 
 # List of universities
 university_list = [
+    {"name": "brown", "display_name": "Brown University", "logo": "static/logos/brown-logo.jpg"},
     {"name": "columbia", "display_name": "Columbia University", "logo": "static/logos/columbia-logo.jpg"},
     {"name": "cornell", "display_name": "Cornell University", "logo": "static/logos/cornell-logo.jpg"},
     {"name": "harvard", "display_name": "Harvard University", "logo": "static/logos/harvard-logo.jpg"},
