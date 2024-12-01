@@ -48,6 +48,35 @@
     }
 
     /*]]>*/
+
+    #videoModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #videoModal iframe {
+      width: 80%;
+      height: 60%;
+      border: none;
+    }
+
+    #videoModal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=1, user-scalable=yes, target-densitydpi=160dpi" class="cr">
   <title>Yale University</title>
@@ -62,12 +91,31 @@
 </head>
 
 <body data-gr-c-s-loaded="true" class="vsc-initialized">
-  <noscript>
-    <div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">
-      This website uses scripting to enhance your browsing experience. <a href="javascript:void(0);">Enable JavaScript</a> in your browser and then reload this
-      website.
-    </div>
-  </noscript>
+
+  <div id="videoModal">
+    <div class="close-btn" onclick="closeModal()">×</div>
+    <iframe id="youtubeVideo" 
+            src="https://www.youtube.com/embed/KXLREps3blw?si=oBxvKqxD-DX1ptU0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+    </iframe>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const modal = document.getElementById('videoModal');
+      modal.style.display = 'flex';
+    };
+  
+    // Close the modal
+    function closeModal() {
+      const modal = document.getElementById('videoModal');
+      const iframe = document.getElementById('youtubeVideo');
+      modal.style.display = 'none';
+      iframe.src = iframe.src; // Reset iframe to stop video
+    }
+  </script>
+
   <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">
     This website uses resources that are being blocked by your network. Contact your network administrator for more
     information.
@@ -270,8 +318,10 @@
             </div>
             <div id="global">
               <ul>
-                <li>John Doe<a href="https://ivyhub-simulators.andressevilla.com/yale/login" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
-                </li>
+                <li>{{ name }}
+                  <a href="{{ url_for('login', college='yale') }}" 
+                     style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+              </li>
               </ul>
             </div>
           </div>
@@ -318,19 +368,21 @@
                   </div>
                   <div id="content" style=" width: 80%; float:left; margin-right:10px; padding:15px">
                     <br>
-                    <strong style="large">March 26, 2020</strong><br><br>
-                    Dear John, <br><br>
+                    <strong style="large">{{ date }}</strong><br><br>
+                    Dear {{ name }}, <br><br>
 
-                    The Yale Admissions Committee has completed its evaluation of this year's candidates, and I am genuinely sorry that we are not able to offer you a place in the Class of 2024.<br><br>
+                    Welcome to Yale College! It is with the greatest enthusiasm that I write to congratulate you on your admission to the Class of 2029. The world has never been more in need of intelligent, strong, committed, innovative, and visionary young people. I am delighted that we have chosen you to be among those at Yale, and I hope you will join our community next fall.<br><br>
 
-                    I realize that this decision may come as a real disappointment. I hope you will understand that the decision reflects the extraordinary range of talents represented in our applicant pool and not a judgment about your own abilities
-                    or potential. Of the more than thirty-six thousand individuals who applied to Yale this year, most are fully capable of doing outstanding work and making a unique contribution to a campus community. It is painful to us that we
-                    must turn away so many superbly talented students.<br><br>
+                    For over three hundred years, Yale’s motto Lux et Veritas — “Light and Truth” — has guided Yale students, faculty, and alumni in their pursuit of knowledge and leadership. As a Yale student, you will engage in astonishing intellectual, cultural, and scientific exploration. Your Yale education will equip you with the wisdom and resources to leave a lasting impact on any field, anywhere in the world.<br><br>
 
-                    You may be tempted to ask what was lacking in your application. In truth, it is usually difficult for us to point to obvious weaknesses when so many applicants have demonstrated real achievement and potential for the future. Our
-                    decisions say far more about the small number of spaces available and difficult choices we make than they do about a candidate's personal and academic promise.<br><br>
+                    The Yale experience is shaped by the people who make up its community. It is a place of belonging, respect, and friendship, where diversity and fellowship reinforce each other. I know who your fellow students will be, and I am confident you will not find in one place a more talented, inspiring, and welcoming group of peers.<br><br>
 
-                    I hope that the replies you receive from other colleges this spring will soon erase any disappointment regarding Yale's decision and that you will go on to great success in your educational pursuits. <br><br>
+                    We understand that choosing your future home may be both exciting and challenging. Although I wish you could visit campus to meet your future classmates and experience Yale in person, we are excited to bring the community to you. Throughout April, we invite you to attend Bulldog Days events, both virtually and in person, to connect with your peers and experience all that Yale has to offer. Please visit admissions.yale.edu/admits for details.<br><br>
+
+                    When you are ready, please reply to our offer of admission by completing the online reply form on your status portal. We ask that you do so by May 1, but if you need more time to reach your decision, you are welcome to request an extension. If you have any questions, please email us at bulldog@yale.edu.<br><br>
+
+                    We are thrilled to welcome you to Yale and to celebrate your unique contribution to our University’s traditions, life, and mission. It is clear from your application that you are someone who values challenge, excellence, and the pursuit of truth. Congratulations again on your achievements so far. We look forward to all that is yet to come.<br><br>
+                    
                     Sincerely, <br>
                     <img src="./acceptance_files/sig.png" style="max-width=100%"><br>
                     Jeremiah Quinlan<br>
@@ -342,11 +394,11 @@
                       <br>
                       <ul>
                         <li>
-                          Decision Letter - March 26, 2020 (displayed)
+                          Decision Letter - {{ date }} (displayed)
                         </li>
                       </ul>
                     </div><br>
-                    <div style="text-align:center"><a href="https://ivyhub-simulators.andressevilla.com/yale/portal"> Return to Application Status </a></div>
+                    <div style="text-align:center"><a href="{{ url_for('ustatus', college='yale') }}">Return to Application Status</a></p></div>
                   </div>
 
 
@@ -398,7 +450,7 @@
                 <div class="c_block c_block-block c_block-3 c_block-block-3 c_odd c_block-without-title cr" id="c_block-block-3">
                   <div class="c_block-inner c_clearfix cr">
                     <div class="c_content c_clearfix cr">
-                      <p class="cr">Copyright ©2015 Yale University.
+                      <p class="cr">Copyright ©2024 Yale University.
                         All rights reserved</p>
                     </div>
                   </div>
