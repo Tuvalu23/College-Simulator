@@ -14,10 +14,20 @@
 	<link href="./rejection_files/css2" rel="stylesheet">
 
 
-	<main role="main" class="cr" style="font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; border: 1px solid #d1b77a; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); background-color: #fff;">
+	<main role="main" class="cr" style="font-family: Arial, sans-serif; max-width: 1000px; margin: auto; padding: 20px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); background-color: #fff;">
 		<!-- Date -->
-		<div style="font-weight: bold; margin-bottom: 20px;">{{ date }}</div>
+		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+			<div style="font-weight: bold;">{{ date }}</div>
+			<div>
+				<a href="#" style="text-decoration: underline; color: blue;">Download PDF</a>
+			</div>
+		</div>
+		
 	
+		<!-- Centered Logo -->
+		<div style="text-align: center; margin-bottom: 20px;">
+			<img src="./rejection_files/georgia-tech-logo.png" alt="Georgia Tech Logo" style="width: 240px; height: auto;">
+		</div>
 		<!-- Applicant Information -->
 		<p style="margin: 0;">
 			{{ name }}<br>
