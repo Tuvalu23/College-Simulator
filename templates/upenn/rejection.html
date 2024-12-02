@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)https://ivyhub-simulators.andressevilla.com/upenn/decision -->
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fw="http://technolutions.com/framework" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xhtml="http://www.w3.org/1999/xhtml" class="supports-boxshadow no-touch js cssgradients csstransitions sizedradialgradients"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<link rel="shortcut icon" href="https://key-admissions-upenn-edu.cdn.technolutions.net/favicon.ico">
+	<link href="./rejection_files/base.css" rel="stylesheet">
+	<link href="./rejection_files/base(1).css" rel="stylesheet">
+	<link href="./rejection_files/penn.css" rel="stylesheet" type="text/css">
+	<link href="./rejection_files/local.css" rel="stylesheet" type="text/css">
+	<link href="./rejection_files/css" rel="stylesheet">
+	<link href="./rejection_files/render.css" rel="stylesheet">
+
+	<style>
+		/*<![CDATA[*/
+		#content {
+			margin: 0 auto;
+			width: 1000px;
+			padding-left: 25px;
+		}
+
+		#global ul,
+		#global li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		#global {
+			position: absolute;
+			top: 50px;
+			right: 10px;
+		}
+
+		#global,
+		#global a {
+			color: white;
+		}
+
+		p,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			font-family: 'Roboto Condensed', sans-serif !important;
+			font-weight: 900;
+		}
+
+		#header {
+			background: #002d72 !important;
+		}
+
+		#footer {
+			background: #002d72 !important;
+		}
+
+		#header {
+			-webkit-box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			box-shadow: none !important;
+		}
+
+		p {
+			font-weight: 400;
+		}
+
+		.nav-new {
+			bottom: 30px;
+			right: 1px;
+		}
+
+		.nav-new {
+			bottom: 30px;
+			list-style: none;
+			margin: 0;
+			overflow: hidden;
+			padding: 10px 10px 0;
+			position: absolute;
+			right: 190px;
+			text-shadow: 0 1px rgba(0, 0, 0, .75);
+			z-index: 1;
+		}
+
+		.nav-new li {
+			display: inline;
+			float: left;
+			font: 21px/1 Georgia, Times, serif;
+			margin: 0;
+		}
+
+		.nav-new a {
+			-webkit-border-radius: 0px 0px 0px 0px;
+			-moz-border-radius: 0px 0px 0px 0px;
+			-ms-border-radius: 0px 0px 0px 0px;
+			-o-border-radius: 0px 0px 0px 0px;
+			border-radius: 0px 0px 0px 0px;
+			border: 0;
+			color: #fff;
+			display: block;
+			outline: none;
+			background: #ff3a1e;
+			font-weight: 9700;
+			font-family: 'Roboto Condensed', sans-serif !important;
+			padding: 12px 12px 12px 14px;
+			-webkit-tap-highlight-color: transparent;
+			-webkit-user-select: none;
+		}
+
+		.nav-new a:hover {
+			background: #ff2000;
+		}
+
+		/*]]>*/
+	</style>
+	<title>Your Penn Portal</title>
+
+</head>
+
+<body data-gr-c-s-loaded="true">
+	<noscript>
+
+		<div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+			This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a>
+			in your browser and then reload this website.</div>
+
+	</noscript>
+	<div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses resources that are being blocked by your network. Contact your network
+		administrator for more information.</div>
+
+
+	<div id="header">
+
+		<div class="wrapper">
+			<div id="global">
+				<ul>
+					<li>{{ name }}<a href="{{ url_for('login', college=college)}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+
+					</li>
+				</ul>
+			</div><a href="http://www.admissions.upenn.edu/" style="border-bottom:none;">
+
+				<img src="./rejection_files/Pennlogo_2020update_216x71.png" width="216" height="71" alt="Penn Logo" style="padding-top:17.5px;"></a>
+
+			<ul class="nav-new">
+				<li><a href="http://www.admissions.upenn.edu/">Back to Penn Admissions</a></li>
+			</ul>
+		</div>
+	</div>
+
+
+	<!--Side Bar-->
+
+	<div id="content">
+		<p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">{{ date }}</p>
+		<title></title>
+
+		<div id="left-sidebar" style="margin: 0px 0.35em; width: 10em; float: left; min-height: 90em;">
+			<h5><span style="color: rgb(192, 57, 43);"><span style="font-size: 15px;"><strong><a href="{{ url_for('ustatus', college=college)}}">FAQ</a>&nbsp;&gt;</strong></span></span></h5>
+			<br><br><br>&nbsp;
+		</div>
+
+
+
+
+
+
+
+
+		<div id="column1" style="max-width: 640px;"><br><br>Dear {{ name }},<br><br>
+
+			The selection committee has completed its deliberations, and it is with genuine regret that I inform you that we are unable to offer you admission to the University of Pennsylvania.<br><br>
+
+			This decision was not an easy one. The admissions process this year was particularly competitive, with over 54,000 outstanding individuals applying for a limited number of spaces in our incoming class of 2,400 students. Your application reflected remarkable accomplishments and talents, and we want to acknowledge the dedication and hard work that brought you to this point. <br><br>
+
+			As you move forward, we hope you take your next steps with confidence. The achievements and personal qualities you shared in your application leave no doubt that you have a bright future ahead of you. We are confident you will continue to make a meaningful impact wherever your path takes you.<br><br>
+			Thank you for considering Penn in your college search and for allowing us to learn about your story. We wish you all the best as you continue to pursue your goals and aspirations.<br><br>
+			<div align="left">Sincerely,<br><br><img style="border-width: 0px; border-style: solid; width: 125px; height: 43px;" alt="Eric J. Furda signature" src="./rejection_files/sign.png"><br>
+				Eric J. Furda C'87<br>Dean of Admissions<br><a name="CDD_LETTER" id="CDD_LETTER"></a></div>
+		</div>
+		<p style="text-align: center; margin-top: 50px;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('ustatus', college=college)}}">Return to Application
+				Status</a></p>
+
+
+
+		<!--		<div id="content">
+							<h1></h1>
+							<div class="error" style="margin-top: 15px;">Thank you for applying to the University of Pennsylvania.
+								 Decisions will be available here beginning on Thursday, March 26th at 7:00pm ET.</div>
+-->
+
+
+		<!-- Footer-->
+		<div style="clear: both; height: 0;"></div>
+	</div>
+	<div id="footer">
+
+		<div class="wrapper gutter-horiz-in">
+			<ul class="nav-misc">
+				<li>
+
+					<a href="http://www.upenn.edu/" data-track-delay="Utility Footer|Penn Homepage">Penn Homepage</a></li>
+				<li><a href="http://www.admissions.upenn.edu/" data-track-delay="Utility Footer|Counselors">Penn Admissions Homepage</a>
+				</li>
+			</ul>
+			<dl class="address-info"><dt>University of Pennsylvania</dt>
+				<dd>1 College Hall, Room 1, Philadelphia, PA 19104–6376</dd>
+
+				<dd>(215) 898–7507</dd>
+			</dl>
+		</div>
+	</div>
+
+	<div class="progress_box" style="visibility: hidden;"></div>
+
+
+
+</body></html>

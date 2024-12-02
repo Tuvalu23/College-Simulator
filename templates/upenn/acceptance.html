@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)https://ivyhub-simulators.andressevilla.com/upenn/decision -->
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fw="http://technolutions.com/framework" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xhtml="http://www.w3.org/1999/xhtml" class="supports-boxshadow no-touch js cssgradients csstransitions sizedradialgradients"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<link rel="shortcut icon" href="https://key-admissions-upenn-edu.cdn.technolutions.net/favicon.ico">
+	<link href="./acceptance_files/base.css" rel="stylesheet">
+	<link href="./acceptance_files/base(1).css" rel="stylesheet">
+	<link href="./acceptance_files/penn.css" rel="stylesheet" type="text/css">
+	<link href="./acceptance_files/local.css" rel="stylesheet" type="text/css">
+	<link href="./acceptance_files/css" rel="stylesheet">
+	<link href="./acceptance_files/render.css" rel="stylesheet">
+
+	<style>
+		/*<![CDATA[*/
+		#content {
+			margin: 0 auto;
+			width: 1000px;
+			padding-left: 25px;
+		}
+
+		/* Confetti Styles */
+		.confetti {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+		#global ul,
+		#global li {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		#global {
+			position: absolute;
+			top: 50px;
+			right: 10px;
+		}
+
+		#global,
+		#global a {
+			color: white;
+		}
+
+		p,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			font-family: 'Roboto Condensed', sans-serif !important;
+			font-weight: 900;
+		}
+	
+		.penn-banner {
+			width: 75%; /* Adjusts the size of the banner */
+			max-width: 500px; /* Ensures the banner doesn't exceed a specific width *
+			height: 100%; /* Maintains the aspect ratio */
+		}
+
+		#header {
+			background: #002d72 !important;
+		}
+
+		#footer {
+			background: #002d72 !important;
+		}
+
+		#header {
+			-webkit-box-shadow: none !important;
+			-moz-box-shadow: none !important;
+			box-shadow: none !important;
+		}
+
+		p {
+			font-weight: 400;
+		}
+
+		.nav-new {
+			bottom: 30px;
+			right: 1px;
+		}
+
+		.nav-new {
+			bottom: 30px;
+			list-style: none;
+			margin: 0;
+			overflow: hidden;
+			padding: 10px 10px 0;
+			position: absolute;
+			right: 190px;
+			text-shadow: 0 1px rgba(0, 0, 0, .75);
+			z-index: 1;
+		}
+
+		.nav-new li {
+			display: inline;
+			float: left;
+			font: 21px/1 Georgia, Times, serif;
+			margin: 0;
+		}
+
+		.nav-new a {
+			-webkit-border-radius: 0px 0px 0px 0px;
+			-moz-border-radius: 0px 0px 0px 0px;
+			-ms-border-radius: 0px 0px 0px 0px;
+			-o-border-radius: 0px 0px 0px 0px;
+			border-radius: 0px 0px 0px 0px;
+			border: 0;
+			color: #fff;
+			display: block;
+			outline: none;
+			background: #ff3a1e;
+			font-weight: 9700;
+			font-family: 'Roboto Condensed', sans-serif !important;
+			padding: 12px 12px 12px 14px;
+			-webkit-tap-highlight-color: transparent;
+			-webkit-user-select: none;
+		}
+
+		.nav-new a:hover {
+			background: #ff2000;
+		}
+
+		/*]]>*/
+	</style>
+	<title>Your Penn Portal</title>
+
+</head>
+
+<body data-gr-c-s-loaded="true">
+
+	<noscript>
+
+		<div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+			This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a>
+			in your browser and then reload this website.</div>
+
+	</noscript>
+	<div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses resources that are being blocked by your network. Contact your network
+		administrator for more information.</div>
+
+
+	<div id="header">
+
+		<div class="wrapper">
+			<div id="global">
+				<ul>
+					<li>{{ name }}<a href="{{ url_for('login', college=college)}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+
+					</li>
+				</ul>
+			</div><a href="http://www.admissions.upenn.edu/" style="border-bottom:none;">
+
+				<img src="./acceptance_files/Pennlogo_2020update_216x71.png" width="216" height="71" alt="Penn Logo" style="padding-top:17.5px;"></a>
+
+			<ul class="nav-new">
+				<li><a href="http://www.admissions.upenn.edu/">Back to Penn Admissions</a></li>
+			</ul>
+		</div>
+	</div>
+
+
+	<!--Side Bar-->
+
+	<div id="content">
+		<p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">{{ date }}</p>
+		<title></title>
+
+		<div id="left-sidebar" style="margin: 0px 0.35em; width: 15em; float: left; min-height: 90em; background: #f9f9f9; padding: 10px;">
+			<h5 style="color: #002d72; font-size: 14px; font-weight: bold; margin-bottom: 10px;">
+				<a href="{{ url_for('ustatus', college=college)}}" style="color: #002d72; text-decoration: none;">RETURN TO PORTAL &gt;</a>
+			</h5>
+			<div style="margin-top: 20px; font-size: 14px;">
+				<p style="color: gray; font-weight: bold; margin-bottom: 10px;">MY PROGRAMS</p>
+				<a href="" style="text-decoration: none; color: #blue;">Welcome to Penn</a>
+				<br><br>
+				<p style="color: gray; font-weight: bold; margin-bottom: 10px;">MY NEXT STEPS</p>
+				<a href="" style="text-decoration: none; color: #blue;">My Checklist</a>
+			</div>
+		</div>
+		
+		<div id="right-sidebar" style="margin: 0px 0.35em; width: 15em; float: right; min-height: 90em; text-align: center;">
+			<img src="./acceptance_files/yes.png" alt="Say Yes to Penn" style="max-width: 100%; height: auto;">
+		</div>
+		
+
+
+		<div class="banner-wrapper">
+        <img src="./acceptance_files/penn28.png" alt="Penn Banner" class="penn-banner">
+    </div>
+
+	<div id="confetti-container"></div>
+
+		<div id="column1" style="max-width: 640px;"><br><br>Dear {{ name }},<br><br>
+
+			Congratulations! You are invited to join the Class of 2029 at the University of Pennsylvania for study in the School of Engineering and Applied Science.<br><br>
+
+			It is time to celebrate! Extending this invitation to you means many things. It means high-fiving the Quaker mascot and throwing toast onto Franklin Field. It means a late-night trip for a Philly cheesesteak (or vegan seitan steak). It means learning with our extraordinary faculty members as you discover your next great pursuit, favorite book, or fresh idea. It means there are people here—who you haven’t even met yet—who are waiting to cheer you on, lift you up, and help you grow.<br><br>
+			Your application reflected exceptional talent, curiosity, and commitment, and you are now poised to magnify those qualities at Penn. Our admissions team reviewed thousands of applications and selected you because of the promise you bring to this community. We believe you will use your talents to bring challenge, growth, and kindness to our campus.<br><br>
+
+			As Benjamin Franklin, Penn’s founder, once said: “The great aim and end of all learning is service to society.” This guiding principle shapes Penn’s mission and powers our vibrant community. We recognize the tremendous impact your talents and character will have at Penn and beyond, and we are confident that Penn will not be the same without you.<br><br>
+			This moment is a testament not only to your efforts but also to the unwavering support of your family, teachers, and mentors. Take a moment to celebrate this achievement with them. Through their guidance and your hard work, you now have the opportunity to make a lasting mark on Benjamin Franklin’s university.<br><br>
+			I look forward to seeing you on Locust Walk in the coming years and witnessing the impact you will make on this community. In the meantime, please accept my warmest congratulations and deepest gratitude for your application. Welcome to Penn!<br><br>
+			<div align="left">Sincerely,<br><br><img style="border-width: 0px; border-style: solid; width: 125px; height: 43px;" alt="Eric J. Furda signature" src="./acceptance_files/sign.png"><br>
+				Eric J. Furda C'87<br>Dean of Admissions<br><a name="CDD_LETTER" id="CDD_LETTER"></a></div>
+		</div>
+		<p style="text-align: center; margin-top: 50px;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('ustatus', college=college)}}">Return to Application
+				Status</a></p>
+
+
+
+		<!--		<div id="content">
+							<h1></h1>
+							<div class="error" style="margin-top: 15px;">Thank you for applying to the University of Pennsylvania.
+								 Decisions will be available here beginning on Thursday, March 26th at 7:00pm ET.</div>
+-->
+
+
+		<!-- Footer-->
+		<div style="clear: both; height: 0;"></div>
+	</div>
+	<div id="footer">
+
+		<div class="wrapper gutter-horiz-in">
+			<ul class="nav-misc">
+				<li>
+
+					<a href="http://www.upenn.edu/" data-track-delay="Utility Footer|Penn Homepage">Penn Homepage</a></li>
+				<li><a href="http://www.admissions.upenn.edu/" data-track-delay="Utility Footer|Counselors">Penn Admissions Homepage</a>
+				</li>
+			</ul>
+			<dl class="address-info"><dt>University of Pennsylvania</dt>
+				<dd>1 College Hall, Room 1, Philadelphia, PA 19104–6376</dd>
+
+				<dd>(215) 898–7507</dd>
+			</dl>
+		</div>
+	</div>
+
+	<div class="progress_box" style="visibility: hidden;"></div>
+	  
+	<script>
+        const confettiColors = ['blue', 'red'];
+    const confettiCount = 150; // Number of confetti particles
+    const duration = 10000; // Duration in milliseconds (10 seconds)
+    const confettiContainer = document.getElementById('confetti-container');
+
+    function createConfetti() {
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random fall duration
+            confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+            confetti.style.top = `-${Math.random() * 10}px`; // Start slightly above the viewport
+            confettiContainer.appendChild(confetti);
+
+            // Remove confetti after animation ends
+            setTimeout(() => {
+                confetti.remove();
+            }, 10000);
+        }
+    }
+
+    // Start confetti
+    createConfetti();
+
+    // Stop adding confetti after 10 seconds
+    setTimeout(() => {
+        confettiContainer.innerHTML = ''; // Clear only the confetti
+    }, duration);
+    </script>
+</body></html>
