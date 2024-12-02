@@ -12,7 +12,12 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Cornell
 - [X] Columbia 
 - [X] Brown
-- [ ] UPenn
+- [X] UPenn
+- [X] Johns Hopkins
+- [ ] Georgia Tech
+- [ ] Dartmouth
+- [ ] Northwestern
+- [ ] Duke
 
 ## Features
 
