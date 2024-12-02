@@ -13,6 +13,7 @@ university_list = [
     {"name": "columbia", "display_name": "Columbia University", "logo": "static/logos/columbia-logo.jpg"},
     {"name": "cornell", "display_name": "Cornell University", "logo": "static/logos/cornell-logo.jpg"},
     {"name": "harvard", "display_name": "Harvard University", "logo": "static/logos/harvard-logo.jpg"},
+    {"name": "jhu", "display_name": "Johns Hopkins University", "logo": "static/logos/jhu-logo.jpg"},
     {"name": "mit", "display_name": "Massachusetts Institute of Technology", "logo": "static/logos/mit-logo.jpg"},
     {"name": "princeton", "display_name": "Princeton University", "logo": "static/logos/princeton-logo.jpg"},
     {"name": "stanford", "display_name": "Stanford University", "logo": "static/logos/stanford-logo.jpg"},
