@@ -2,10 +2,51 @@
 <!-- saved from url=(0037)http://127.0.0.1:5000/gtech/rejection -->
 <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" class="no-touch"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="shortcut icon" href="https://application-gatech-edu.cdn.technolutions.net/favicon.ico"><link href="./acceptance_files/base.css" rel="stylesheet"><link href="./acceptance_files/base(1).css" rel="stylesheet"><link href="./acceptance_files/build-fonts.css" rel="stylesheet"><link href="./acceptance_files/build-mobile-global.css" rel="stylesheet"><link href="./acceptance_files/build.css" rel="stylesheet"><link href="./acceptance_files/css" rel="stylesheet" class="cr"><link href="./acceptance_files/css(1)" rel="stylesheet" class="cr"><link type="text/css" rel="stylesheet" href="./acceptance_files/css(2)" media="all" class="cr"><script src="./acceptance_files/base.js.download"></script><script>/*<![CDATA[*/FW.Config['firstDay'] = 0; FW.Config['Citizenship.Default.Country'] = 'US'; FW.Config['Citizenship.PR'] = 'Permanent Resident'; FW.Config['CDN'] = '//slate-technolutions-net.cdn.technolutions.net'; /*]]>*/</script><script src="./acceptance_files/build-mobile-global.js.download"></script><script src="./acceptance_files/password.js.download"></script><script async="async" src="./acceptance_files/ping"></script><script async="async" id="session_expires" src="./acceptance_files/session.js.download" data-now="1733110676" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="0"></script><style>
 	
-	p {
-		line-height: 1.5; /* Adjusts spacing within paragraphs */
-		margin-bottom: 15px; /* Adds spacing between paragraphs */
-	}/*<![CDATA[*/html > body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }/*]]>*/</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" class="cr"><title>Login</title><script async="" src="./acceptance_files/ping(1)"></script><script async="" src="./acceptance_files/ping(2)"></script><script async="" src="./acceptance_files/ping(3)"></script><script async="" src="./acceptance_files/ping(4)"></script></head>
+	body {
+		margin: 0;
+		position: relative;
+	}
+
+	.bee {
+		position: absolute;
+		top: -100px; /* Start above the viewport */
+		animation: fall linear infinite; /* Falling animation */
+	}
+
+	@keyframes fall {
+		to {
+			transform: translateY(100vh); /* Move down to the bottom of the screen */
+		}
+	}
+
+	/* Smaller size variations */
+	.bee.size-1 { width: 15px; height: 15px; }
+	.bee.size-2 { width: 20px; height: 20px; }
+	.bee.size-3 { width: 25px; height: 25px; }
+	.bee.size-4 { width: 30px; height: 30px; }
+	.bee.size-5 { width: 35px; height: 35px; }
+	.bee.size-6 { width: 40px; height: 40px; }
+	.bee.size-7 { width: 45px; height: 45px; }
+	.bee.size-8 { width: 50px; height: 50px; }
+	.bee.size-9 { width: 55px; height: 55px; }
+	.bee.size-10 { width: 60px; height: 60px; }
+
+	#cornerBee {
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+		width: 60px;
+		height: 60px;
+		cursor: pointer;
+		z-index: 1000;
+	}
+
+	#cornerBee.disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+	
+	/*<![CDATA[*/html > body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }/*]]>*/</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" class="cr"><title>Login</title><script async="" src="./acceptance_files/ping(1)"></script><script async="" src="./acceptance_files/ping(2)"></script><script async="" src="./acceptance_files/ping(3)"></script><script async="" src="./acceptance_files/ping(4)"></script></head>
 
 
 <body><noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div>
@@ -17,7 +58,7 @@
 	<div class="c_col cr"><h2 class="cr">Undergraduate Admission</h2></div></div></div>
 	
 	<link href="./acceptance_files/css2" rel="stylesheet">
-
+	<img id="cornerBee" src="acceptance_files/bee.png" alt="Bee" title="Click me to make bees fall!">
 
 	<main role="main" class="cr" style="font-family: Arial, sans-serif; max-width: 1000px; margin: auto; padding: 20px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); background-color: #fff;">
 		<!-- Date -->
@@ -94,4 +135,86 @@
 	
 	<footer class="c_container-fluid cr"><div class="c_row cr"><div class="c_container cr"><div class="c_row cr"><div class="c_col c_text-right c_social cr"><a href="https://www.facebook.com/GTadmission" target="_blank" class="cr"><i class="c_fab c_fa-facebook-f cr"></i></a><a href="https://twitter.com/gtadmission" target="_blank" class="cr"><i class="c_fab c_fa-twitter cr"></i></a><a href="https://www.instagram.com/gtadmission/" target="_blank" class="cr"><i class="c_fab c_fa-instagram cr"></i></a><a href="https://admission.gatech.edu/podcast" target="_blank" class="cr"><i class="c_fas c_fa-podcast cr"></i></a><a href="https://www.youtube.com/user/GTAdmission" target="_blank" class="cr"><i class="c_fab c_fa-youtube cr"></i></a><a href="https://www.reddit.com/user/GTAdmission/" target="_blank" class="cr"><i class="c_fab c_fa-reddit cr"></i></a><a href="https://sites.gatech.edu/admission-blog/" target="_blank" class="cr"><i class="c_fas c_fa-blog cr"></i></a></div></div></div></div><div class="c_row c_footer-gold cr" id="c_gold-footer"><div class="c_container cr"><div class="c_row cr"><div class="c_col-md-3 cr"><p class="c_solid-white-border cr"><span class="c_font-weight-bold cr">Georgia Institute of Technology</span><br class="cr">
 											North Avenue, Atlanta, GA 30332<br class="cr"><i class="fas fa-phone"></i>
-404.894.2000<br class="cr"><a href="http://map.gatech.edu/" class="cr"><i class="fas fa-map-marker-alt"></i>Campus Map</a><br class="cr"><a href="https://admission.gatech.edu/#" class="cr"><i class="fas fa-wheelchair"></i>Enable Accessibility</a></p></div><div class="c_col-md-3 cr"><ul class="c_solid-white-border cr"><li class="cr"><span style="padding-left:10px;"><strong>General</strong></span></li><li class="cr"><a href="https://directory.gatech.edu/" class="cr">Directory</a></li><li class="cr"><a href="https://careers.gatech.edu/" class="cr">Employment</a></li><li class="cr"><a href="https://www.gatech.edu/emergency" class="cr">Emergency Information</a></li><li class="cr"><a href="https://get.adobe.com/reader/" class="cr">Download Adobe Acrobat Reader</a></li></ul></div><div class="c_col-md-3 cr"><ul class="c_solid-white-border cr"><li class="cr"><span style="padding-left:10px;"><strong>Legal</strong></span></li><li class="cr"><a href="https://www.policylibrary.gatech.edu/employment/equal-opportunity-nondiscrimination-and-anti-harassment-policy" class="cr">Equal Opportunity Nondiscrimination, and Anti-Harassment Policy</a></li><li class="cr"><a href="https://www.gatech.edu/privacy" class="cr">Legal &amp; Privacy Information</a></li><li class="cr"><a href="https://gbi.georgia.gov/human-trafficking-notice" class="cr">Human Trafficking Notice</a></li><li class="cr"><a href="https://diversity.gatech.edu/equity-compliance/our-office" class="cr">Title IX/Sexual Misconduct</a></li><li class="cr"><a href="https://osi.gatech.edu/hazing-conduct-history" class="cr">Hazing Public Disclosures</a></li><li class="cr"><a href="https://www.gatech.edu/accessibility/" class="cr">Accessibility</a></li><li class="cr"><a href="https://www.gatech.edu/accountability/" class="cr">Accountability</a></li><li class="cr"><a href="https://www.gatech.edu/accreditation/" class="cr">Accreditation</a></li><li class="cr"><a href="https://secure.ethicspoint.com/domain/media/en/gui/76612/index.html" class="cr">Report Free Speech and Censorship Concerns</a></li></ul></div><div class="c_col-md-3 c_text-right cr"><a href="https://admission.gatech.edu/" class="cr"><img src="./acceptance_files/gt-logo-fullname-wht.svg" width="200px" class="c_d-inline-block c_align-top cr" alt="GA Tech Logo"></a><br class="cr"><p class="c_copyright cr">©2023 Georgia Institute of Technology</p></div></div></div></div></footer></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div></body></html>
+404.894.2000<br class="cr"><a href="http://map.gatech.edu/" class="cr"><i class="fas fa-map-marker-alt"></i>Campus Map</a><br class="cr"><a href="https://admission.gatech.edu/#" class="cr"><i class="fas fa-wheelchair"></i>Enable Accessibility</a></p></div><div class="c_col-md-3 cr"><ul class="c_solid-white-border cr"><li class="cr"><span style="padding-left:10px;"><strong>General</strong></span></li><li class="cr"><a href="https://directory.gatech.edu/" class="cr">Directory</a></li><li class="cr"><a href="https://careers.gatech.edu/" class="cr">Employment</a></li><li class="cr"><a href="https://www.gatech.edu/emergency" class="cr">Emergency Information</a></li><li class="cr"><a href="https://get.adobe.com/reader/" class="cr">Download Adobe Acrobat Reader</a></li></ul></div><div class="c_col-md-3 cr"><ul class="c_solid-white-border cr"><li class="cr"><span style="padding-left:10px;"><strong>Legal</strong></span></li><li class="cr"><a href="https://www.policylibrary.gatech.edu/employment/equal-opportunity-nondiscrimination-and-anti-harassment-policy" class="cr">Equal Opportunity Nondiscrimination, and Anti-Harassment Policy</a></li><li class="cr"><a href="https://www.gatech.edu/privacy" class="cr">Legal &amp; Privacy Information</a></li><li class="cr"><a href="https://gbi.georgia.gov/human-trafficking-notice" class="cr">Human Trafficking Notice</a></li><li class="cr"><a href="https://diversity.gatech.edu/equity-compliance/our-office" class="cr">Title IX/Sexual Misconduct</a></li><li class="cr"><a href="https://osi.gatech.edu/hazing-conduct-history" class="cr">Hazing Public Disclosures</a></li><li class="cr"><a href="https://www.gatech.edu/accessibility/" class="cr">Accessibility</a></li><li class="cr"><a href="https://www.gatech.edu/accountability/" class="cr">Accountability</a></li><li class="cr"><a href="https://www.gatech.edu/accreditation/" class="cr">Accreditation</a></li><li class="cr"><a href="https://secure.ethicspoint.com/domain/media/en/gui/76612/index.html" class="cr">Report Free Speech and Censorship Concerns</a></li></ul></div><div class="c_col-md-3 c_text-right cr"><a href="https://admission.gatech.edu/" class="cr"><img src="./acceptance_files/gt-logo-fullname-wht.svg" width="200px" class="c_d-inline-block c_align-top cr" alt="GA Tech Logo"></a><br class="cr"><p class="c_copyright cr">©2023 Georgia Institute of Technology</p></div></div></div></div></footer></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div>
+
+<script>
+	
+	const beeImages = [
+	'acceptance_files/bee.png' // Your bee image file path
+];
+
+let beeInterval; // To track the interval for generating bees
+let activeBees = []; // Store active bee elements
+
+// Function to create a falling bee
+function createBee() {
+	const bee = document.createElement('img');
+	bee.src = beeImages[0]; // Use your bee image
+	bee.className = 'bee ' + randomSize(); // Assign random size class
+	bee.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+	bee.style.animationDuration = 2 + Math.random() * 2 + 's'; // Random fall duration (faster)
+
+	document.body.appendChild(bee);
+	activeBees.push(bee); // Add the bee to the active list
+
+	// Remove the bee from the DOM after it falls off-screen
+	bee.addEventListener('animationend', () => {
+		bee.remove();
+		activeBees = activeBees.filter((b) => b !== bee); // Remove from active list
+	});
+}
+
+// Generate random size class
+function randomSize() {
+	const sizes = [
+		'size-1', 'size-2', 'size-3', 'size-4', 'size-5',
+		'size-6', 'size-7', 'size-8', 'size-9', 'size-10'
+	];
+	return sizes[Math.floor(Math.random() * sizes.length)];
+}
+
+// Start bee animation
+function startBees() {
+	let timeElapsed = 0;
+
+	// Disable the corner bee button to prevent spamming
+	const cornerBee = document.getElementById('cornerBee');
+	cornerBee.classList.add('disabled');
+	cornerBee.style.pointerEvents = 'none';
+
+	// Create multiple bees at intervals
+	beeInterval = setInterval(() => {
+		if (timeElapsed >= 8) {
+			clearInterval(beeInterval); // Stop creating bees after 5 seconds
+			clearAllBees(); // Clear all bees from the screen
+			cornerBee.classList.remove('disabled'); // Re-enable the corner bee
+			cornerBee.style.pointerEvents = 'auto';
+		} else {
+			// Create 2-3 bees per interval
+			for (let i = 0; i < 2 + Math.floor(Math.random() * 2); i++) {
+				createBee();
+			}
+			timeElapsed += 0.5; // Increment by 0.5 seconds
+		}
+	}, 500); // Create bees every 500ms
+}
+
+// Clear all bees from the screen
+function clearAllBees() {
+	activeBees.forEach((bee) => bee.remove()); // Remove each bee element
+	activeBees = []; // Clear the active bees list
+}
+
+// Add click functionality to the corner bee
+const cornerBee = document.getElementById('cornerBee');
+cornerBee.addEventListener('click', () => {
+	if (!cornerBee.classList.contains('disabled')) {
+		startBees();
+	}
+});
+
+// Start the animation initially
+startBees();
+</script>
+
+</body></html>
