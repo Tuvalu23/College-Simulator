@@ -2,9 +2,9 @@
 <!-- saved from url=(0037)http://127.0.0.1:5000/gtech/rejection -->
 <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" class="no-touch"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="shortcut icon" href="https://application-gatech-edu.cdn.technolutions.net/favicon.ico"><link href="./acceptance_files/base.css" rel="stylesheet"><link href="./acceptance_files/base(1).css" rel="stylesheet"><link href="./acceptance_files/build-fonts.css" rel="stylesheet"><link href="./acceptance_files/build-mobile-global.css" rel="stylesheet"><link href="./acceptance_files/build.css" rel="stylesheet"><link href="./acceptance_files/css" rel="stylesheet" class="cr"><link href="./acceptance_files/css(1)" rel="stylesheet" class="cr"><link type="text/css" rel="stylesheet" href="./acceptance_files/css(2)" media="all" class="cr"><script src="./acceptance_files/base.js.download"></script><script>/*<![CDATA[*/FW.Config['firstDay'] = 0; FW.Config['Citizenship.Default.Country'] = 'US'; FW.Config['Citizenship.PR'] = 'Permanent Resident'; FW.Config['CDN'] = '//slate-technolutions-net.cdn.technolutions.net'; /*]]>*/</script><script src="./acceptance_files/build-mobile-global.js.download"></script><script src="./acceptance_files/password.js.download"></script><script async="async" src="./acceptance_files/ping"></script><script async="async" id="session_expires" src="./acceptance_files/session.js.download" data-now="1733110676" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="0"></script><style>
 	
-	body {
-		margin: 0;
-		position: relative;
+	p {
+		line-height: 1.5; /* Adjusts spacing within paragraphs */
+		margin-bottom: 15px; /* Adds spacing between paragraphs */
 	}
 
 	.bee {
@@ -46,10 +46,14 @@
 		opacity: 0.5;
 	}
 	
-	/*<![CDATA[*/html > body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }/*]]>*/</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" class="cr"><title>Login</title><script async="" src="./acceptance_files/ping(1)"></script><script async="" src="./acceptance_files/ping(2)"></script><script async="" src="./acceptance_files/ping(3)"></script><script async="" src="./acceptance_files/ping(4)"></script></head>
+	/*<![CDATA[*/html > 
+
+	
+	body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }/*]]>*/</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" class="cr"><title>Login</title><script async="" src="./acceptance_files/ping(1)"></script><script async="" src="./acceptance_files/ping(2)"></script><script async="" src="./acceptance_files/ping(3)"></script><script async="" src="./acceptance_files/ping(4)"></script></head>
 
 
-<body><noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div>
+	<body style="margin: 0; min-height: 100vh; overflow-y: scroll;">
+		<noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div>
 </noscript><div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses resources that are being blocked by your network. Contact your network administrator for more information.</div><script>/*<![CDATA[*/if (window['FW'] == null) document.getElementById('netblock').style['display'] = 'block';/*]]>*/</script>
 
 <div id="page"><div class="c_container-fluid c_bg-gold-grad c_py-4 cr"><div class="c_row cr"><div class="c_col cr"><div class="c_container cr"><div class="c_row cr"><div class="c_col-lg-3 c_col cr"><a href="https://admission.gatech.edu/" class="cr"><img class="c_img-fluid cr" src="./acceptance_files/gt-logo-oneline-white.svg" alt="GA Tech Logo"></a></div>
@@ -60,7 +64,16 @@
 	<link href="./acceptance_files/css2" rel="stylesheet">
 	<img id="cornerBee" src="acceptance_files/bee.png" alt="Bee" title="Click me to make bees fall!">
 
-	<main role="main" class="cr" style="font-family: Arial, sans-serif; max-width: 1000px; margin: auto; padding: 20px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); background-color: #fff;">
+	<main role="main" class="cr" style="
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow-y: auto; /* Allows vertical scrolling */
+    position: relative; /* Ensure positioning doesn't clip the content */
+">
 		<!-- Date -->
 		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 			<div style="font-weight: bold;">{{ date }}</div>
@@ -119,7 +132,7 @@
 	
 		<!-- Return to Application Status -->
 		<div style="text-align: center; margin-top: 30px;">
-			<a href="http://127.0.0.1:5000/gtech/ustatus" style="color: #0056b3; text-decoration: underline; font-weight: bold;">
+			<a href="{{ url_for('ustatus', college=college) }}" style="color: #0056b3; text-decoration: underline; font-weight: bold;">
 				Return to Application Status
 			</a>
 		</div>
