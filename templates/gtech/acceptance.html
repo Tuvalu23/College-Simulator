@@ -9,9 +9,12 @@
 
 	.bee {
 		position: absolute;
-		top: -100px; /* Start above the viewport */
-		animation: fall linear infinite; /* Falling animation */
+		top: -100px;
+		animation: fall linear infinite;
+		z-index: 1; /* Ensure bees are behind the main content */
+		pointer-events: none; /* Bees won't block interactions */
 	}
+	
 
 	@keyframes fall {
 		to {
@@ -52,7 +55,8 @@
 	body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }/*]]>*/</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" class="cr"><title>Georgia Tech</title><script async="" src="./acceptance_files/ping(1)"></script><script async="" src="./acceptance_files/ping(2)"></script><script async="" src="./acceptance_files/ping(3)"></script><script async="" src="./acceptance_files/ping(4)"></script></head>
 
 
-	<body style="margin: 0; min-height: 100vh; overflow-y: scroll;">
+	<body style="margin: 0;">
+
 		<noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div>
 </noscript><div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses resources that are being blocked by your network. Contact your network administrator for more information.</div><script>/*<![CDATA[*/if (window['FW'] == null) document.getElementById('netblock').style['display'] = 'block';/*]]>*/</script>
 
@@ -64,16 +68,7 @@
 	<link href="./acceptance_files/css2" rel="stylesheet">
 	<img id="cornerBee" src="acceptance_files/bee.png" alt="Bee" title="Click me to make bees fall!">
 
-	<main role="main" class="cr" style="
-    font-family: Arial, sans-serif;
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    overflow-y: auto; /* Allows vertical scrolling */
-    position: relative; /* Ensure positioning doesn't clip the content */
-">
+	<main role="main" class="cr" style="font-family: Arial, sans-serif; max-width: 1000px; margin: auto; padding: 20px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); background-color: #fff;">
 		<!-- Date -->
 		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 			<div style="font-weight: bold;">{{ date }}</div>
@@ -120,15 +115,15 @@
     </p>
     <p>Go Jackets!</p>
 	
-		<!-- Signature -->
-		<p style="margin-top: 40px;">Sincerely,</p>
-		<p style="margin-bottom: 20px;">
-			<img alt="" src="./acceptance_files/Rick.png" style="width: 158px; height: 63px;">
-		</p>
-		<p style="margin-top: -10px;">
-			<strong>Rick Clark</strong><br>
-			Director of Undergraduate Admission
-		</p>
+	<!-- Signature -->
+	<p style="margin-top: 40px;">Sincerely,</p>
+	<p style="margin-bottom: 20px;">
+		<img alt="" src="./rejection_files/Rick.png" style="width: 158px; height: 63px;">
+	</p>
+	<p style="margin-top: -10px;">
+		<strong>Rick Clark</strong><br>
+		Director of Undergraduate Admission
+	</p>
 	
 		<!-- Return to Application Status -->
 		<div style="text-align: center; margin-top: 30px;">
