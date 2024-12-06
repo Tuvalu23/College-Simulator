@@ -3,6 +3,7 @@
 <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fw="http://technolutions.com/framework" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xhtml="http://www.w3.org/1999/xhtml" class="supports-boxshadow no-touch js cssgradients csstransitions sizedradialgradients"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 	<link rel="shortcut icon" href="https://key-admissions-upenn-edu.cdn.technolutions.net/favicon.ico">
 	<link href="./acceptance_files/base.css" rel="stylesheet">
 	<link href="./acceptance_files/base(1).css" rel="stylesheet">
@@ -19,23 +20,6 @@
 			padding-left: 25px;
 		}
 
-		/* Confetti Styles */
-		.confetti {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(100vh);
-            }
-        }
 		#global ul,
 		#global li {
 			list-style: none;
@@ -254,34 +238,83 @@
 	<div class="progress_box" style="visibility: hidden;"></div>
 	  
 	<script>
-        const confettiColors = ['blue', 'red'];
-    const confettiCount = 150; // Number of confetti particles
-    const duration = 10000; // Duration in milliseconds (10 seconds)
-    const confettiContainer = document.getElementById('confetti-container');
-
-    function createConfetti() {
-        for (let i = 0; i < confettiCount; i++) {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.left = `${Math.random() * 100}vw`; // Random horizontal position
-            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random fall duration
-            confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            confetti.style.top = `-${Math.random() * 10}px`; // Start slightly above the viewport
-            confettiContainer.appendChild(confetti);
-
-            // Remove confetti after animation ends
-            setTimeout(() => {
-                confetti.remove();
-            }, 10000);
-        }
-    }
-
-    // Start confetti
-    createConfetti();
-
-    // Stop adding confetti after 10 seconds
-    setTimeout(() => {
-        confettiContainer.innerHTML = ''; // Clear only the confetti
-    }, duration);
-    </script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const canvas = document.createElement("canvas");
+			document.body.appendChild(canvas);
+			canvas.style.position = "absolute";
+			canvas.style.top = "0";
+			canvas.style.left = "0";
+			canvas.style.width = "100%";
+			canvas.style.height = "100%";
+			canvas.style.pointerEvents = "none";
+			const ctx = canvas.getContext("2d");
+	
+			const confetti = [];
+			const colors = ["#0000FF", "#FF0000"]; // Blue and Red
+			const confettiCount = 100; // Fewer confetti particles
+			let animationFrame;
+	
+			// Create confetti particles
+			for (let i = 0; i < confettiCount; i++) {
+				confetti.push({
+					x: Math.random() * canvas.width,
+					y: Math.random() * canvas.height,
+					width: Math.random() * 8 + 4, // Slightly larger confetti
+					height: Math.random() * 4 + 2, // Adjusted height
+					color: colors[Math.floor(Math.random() * colors.length)],
+					speedX: Math.random() * 1.5 - 0.75, // Slower horizontal movement
+					speedY: Math.random() * 2.5 + 1.5, // Slower vertical fall
+					rotation: Math.random() * 360,
+					rotationSpeed: Math.random() * 1 - 0.5, // Reduced rotation speed
+				});
+			}
+	
+			// Resize canvas on window resize
+			function resizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			window.addEventListener("resize", resizeCanvas);
+			resizeCanvas();
+	
+			// Render loop for confetti animation
+			function render() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				confetti.forEach((c) => {
+					ctx.save();
+					ctx.translate(c.x, c.y);
+					ctx.rotate((c.rotation * Math.PI) / 180);
+					ctx.fillStyle = c.color;
+					ctx.fillRect(-c.width / 2, -c.height / 2, c.width, c.height);
+					ctx.restore();
+	
+					// Update confetti position
+					c.x += c.speedX;
+					c.y += c.speedY;
+					c.rotation += c.rotationSpeed;
+	
+					// Reset confetti if out of bounds
+					if (c.y > canvas.height) {
+						c.y = -10;
+						c.x = Math.random() * canvas.width;
+					}
+				});
+				animationFrame = requestAnimationFrame(render);
+			}
+	
+			// Start animation
+			render();
+	
+			// Stop animation after 8 seconds
+			setTimeout(() => {
+				cancelAnimationFrame(animationFrame);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				document.body.removeChild(canvas); // Remove canvas after animation stops
+			}, 8000); // Stop after 8000ms (8 seconds)
+		});
+	</script>
+	
+	
+	
+	
 </body></html>
