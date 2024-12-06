@@ -1,0 +1,239 @@
+@media screen and (min-width: 640px){
+	.innercontent {
+		display: flex;
+		flex-direction: row;
+	}
+	.wr-login {
+		width:550px !important;
+		padding-top: 50px !important;
+		padding-bottom: 50px !important;
+	}
+	.pwmLinks {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.instruction {
+	   padding: 20px 0 0 30px;
+	}
+}
+	
+body {
+	border: none;
+	background-color: #330662;
+	display: flex;
+	font-family: 'Gotham SSm A', 'Gotham SSm B', Helvetica, sans-serif !important;
+	font-size: 15px;
+	font-weight: 400;
+}
+.container-fluid {
+	vertical-align: middle;
+	display: inline-grid;
+}
+.logo-container {
+	padding: 15px 30px;
+}
+header .brand img.logo {
+	height: 40px;
+}
+.uppercase {
+	text-transform: none;
+}
+.nyuLogo {
+	height: 40px;
+	background: #ffffff !important;
+}
+.titleDiv {
+	background: #ffffff;
+	padding: 32px 0 0 32px;
+}
+.wr-title {
+	background: #ffffff !important;
+	font-size: 2rem;
+	font-weight: bold;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+	color: #3d4d5d;
+	padding-left: 0px;
+}
+.header {
+	display:none;
+	border-top: 3px solid #1e8cf8;
+	background: #1e1e2f;
+	min-height: 70px;
+	border-bottom: 1px solid #31314b;
+}
+.boarder-all {
+	background: #ffffff;
+	/*box-shadow: 1px 1px 4px 1px rgba(34, 3, 55, 0.5);*/
+	border: 0;
+	width: 100%;
+}
+.wr-login {
+	width:330px;
+	padding: 15px 0px;
+}
+.instruction {
+   padding: 35px 0 0 15px;
+   font-size: 15px;
+   line-height: 1.47;
+   color: #3d4d5d;
+   width: 100%;
+}
+.pwmLinks {
+	padding: 10px 0 20px 0;
+}
+.needHelp p {
+	color: #ffffff !important;
+}
+.needHelp a, .needHelp a:active{
+	color: #ffffff !important;
+	text-decoration: underline;
+}
+
+.needHelp a:hover, .needHelp a:focus{
+	color: #ffffff !important;
+	text-decoration: none;
+}
+
+.form-actions {
+	display: none;
+}        
+.clearfix {
+	display: none;
+}
+
+.wr-login input[type=text],
+.wr-login input[type=password] {
+	height: 40px;
+	width: 100%;
+	border: 1px solid #e2e1dd;
+}
+.wr-btn {
+	width: auto;
+	height: auto;
+	border: solid 1px #57068c;
+	color: #57068c;
+	background-color: #ffffff !important;
+	font-size: 1.5rem !important;
+	font-weight: 600;
+	display: block;
+	padding: .75rem 2rem;
+}		
+.wr-btn:hover {
+	color: #fff;
+	background-color: #57068c !important;
+}
+.form-group label {
+	font-weight: normal;
+	color: #213243;
+}
+*:focus,
+input:focus,
+select:focus,
+button:focus {
+	outline: 3px solid #3dbbdb !important;
+	overflow: -moz-hidden-unscrollable;
+}
+::-moz-focus-inner {
+	border: 0;
+}
+.alert-warning {
+	background: #1e1e2f;
+	color: white;
+	border: 1px solid #f8b01e;
+	margin-bottom: 10px;
+	display: none;
+}
+.footer {
+	display: none;
+	border-top: 1px solid #31314b;
+	background: #1e1e2f;
+	min-height: 70px;
+	position: relative;
+}
+.footer p {
+	text-align: center;
+	margin-top: 20px;
+}
+.checkbox {
+	margin-bottom: 0;
+	display: none;
+}
+
+.instruction a, .instruction a:active {
+	font-weight: normal;
+	color: #57068c;
+	text-decoration: underline;
+}
+.instruction a:focus, .instruction a:hover {
+	color: #57068c !important;
+	text-decoration: none;
+} 
+
+/* - - - *ALERTS - - - */
+.wrap {
+	width: 100%;
+	max-width:600px;
+	margin:0 auto;
+}
+.nyu-message {
+	display:none;
+	padding:10px 0;
+	font-size:22px;
+	line-height:31px;
+}
+.nyu-message p {
+	display:inline-block;
+	width:100%;
+	max-width:500px;
+	color:#FFF;
+}
+.nyu-message a, .nyu-message a:focus, .message a:hover, .nyu-message a:active {
+	color:#FFF;
+	text-decoration:none;
+}
+
+a.nyu-message, a.message:hover, a.message:focus, a.message:active {
+	color:#FFF;
+	text-decoration:none;
+}
+
+.nyu-message-green { background-color:#2ea154 }
+.nyu-message-red { background-color:#DD1B4D }
+.nyu-message-more {
+	padding:5px 7px;
+	font-size:12px;
+	margin-top:4px;
+	line-height:normal;
+	color:#FFF;
+}
+.nyu-message-red .nyu-message-more {background-color:#b9002b;}
+.nyu-message-green .nyu-message-more {background-color:#0B9B46;}
+.uppercase { text-transform:uppercase }
+.right { float:right }
+.left { float:left }
+.text-center {text-align:center }
+.rounded {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+@media screen and (max-width: 420px) {
+	.container-fluid {
+	    width: 340px;
+	}
+    .wrap {
+        width:90%;
+    }
+    .nyu-message p {
+        width: 80%;
+        height: 30px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
