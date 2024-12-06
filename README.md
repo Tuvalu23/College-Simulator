@@ -16,8 +16,11 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Johns Hopkins
 - [X] Georgia Tech
 - [X] Dartmouth
-- [ ] Northwestern
-- [ ] Duke
+- [X] Northwestern
+- [X] Duke
+- [ ] NYU
+- [ ] USC
+- [ ] Berkeley
 
 ## Features
 

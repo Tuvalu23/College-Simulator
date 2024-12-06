@@ -238,81 +238,43 @@
 	<div class="progress_box" style="visibility: hidden;"></div>
 	  
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			const canvas = document.createElement("canvas");
-			document.body.appendChild(canvas);
-			canvas.style.position = "absolute";
-			canvas.style.top = "0";
-			canvas.style.left = "0";
-			canvas.style.width = "100%";
-			canvas.style.height = "100%";
-			canvas.style.pointerEvents = "none";
-			const ctx = canvas.getContext("2d");
-	
-			const confetti = [];
-			const colors = ["#0000FF", "#FF0000"]; // Blue and Red
-			const confettiCount = 100; // Fewer confetti particles
-			let animationFrame;
-	
-			// Create confetti particles
-			for (let i = 0; i < confettiCount; i++) {
-				confetti.push({
-					x: Math.random() * canvas.width,
-					y: Math.random() * canvas.height,
-					width: Math.random() * 8 + 4, // Slightly larger confetti
-					height: Math.random() * 4 + 2, // Adjusted height
-					color: colors[Math.floor(Math.random() * colors.length)],
-					speedX: Math.random() * 1.5 - 0.75, // Slower horizontal movement
-					speedY: Math.random() * 2.5 + 1.5, // Slower vertical fall
-					rotation: Math.random() * 360,
-					rotationSpeed: Math.random() * 1 - 0.5, // Reduced rotation speed
-				});
+		// Function to launch minimal confetti
+		function launchMinimalConfetti() {
+		  const duration = 10000; // Total duration of the animation (10 seconds)
+		  const end = Date.now() + duration;
+	  
+		  // Start a single animation frame loop
+		  (function frame() {
+			if (Math.random() < 0.15) { // Only launch confetti 15% of the time
+			  confetti({
+				particleCount: 2, // Only 1 confetti per frame
+				spread: 90,       // Narrow spread for focused effect
+				startVelocity: 10, // Slow initial velocity
+				gravity: 1,       // Natural fall speed
+				ticks: 5000,      // Long lifespan for confetti
+				origin: { x: Math.random(), y: 0 }, // Confetti starts at a random position at the top of the screen
+				colors: [
+				  '#0000FF', // Royal Blue
+				  '#FF0000', // Red
+				],
+				shapes: ['square'], // Only squares
+				scalar: 1           // Regular confetti size
+			  });
 			}
-	
-			// Resize canvas on window resize
-			function resizeCanvas() {
-				canvas.width = window.innerWidth;
-				canvas.height = window.innerHeight;
+	  
+			// Continue the animation until the duration ends
+			if (Date.now() < end) {
+			  requestAnimationFrame(frame); // Launch again in the next animation frame
 			}
-			window.addEventListener("resize", resizeCanvas);
-			resizeCanvas();
-	
-			// Render loop for confetti animation
-			function render() {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				confetti.forEach((c) => {
-					ctx.save();
-					ctx.translate(c.x, c.y);
-					ctx.rotate((c.rotation * Math.PI) / 180);
-					ctx.fillStyle = c.color;
-					ctx.fillRect(-c.width / 2, -c.height / 2, c.width, c.height);
-					ctx.restore();
-	
-					// Update confetti position
-					c.x += c.speedX;
-					c.y += c.speedY;
-					c.rotation += c.rotationSpeed;
-	
-					// Reset confetti if out of bounds
-					if (c.y > canvas.height) {
-						c.y = -10;
-						c.x = Math.random() * canvas.width;
-					}
-				});
-				animationFrame = requestAnimationFrame(render);
-			}
-	
-			// Start animation
-			render();
-	
-			// Stop animation after 8 seconds
-			setTimeout(() => {
-				cancelAnimationFrame(animationFrame);
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				document.body.removeChild(canvas); // Remove canvas after animation stops
-			}, 8000); // Stop after 8000ms (8 seconds)
-		});
-	</script>
+		  })();
+		}
+	  
+		// Trigger confetti on page load
+		window.onload = () => {
+		  launchMinimalConfetti();
+		};
+	  </script>
+	  
 	
 	
 	

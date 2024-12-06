@@ -1,0 +1,107 @@
+'use strict';
+new function()
+{
+  var getHashCode = function(val)
+  {
+    var hash = 0;
+    for (var i = 0; i < val.length; i++)
+    {
+      var ch = val.charCodeAt(i);
+      hash = ((hash << 5) - hash) + ch;
+      hash = hash & hash;
+    }
+    return (hash);
+  };
+  var ps = 'https://mx.technolutions.net/ping', pps = 'https://admiss-ugrad-duke-edu.cdn.technolutions.net/ping?cmd=pp', pt = new Date().getTime(), pal = new Date().getTime(), pai = 90 * 1000, pa = [{ start: new Date().getTime() }];
+  var pd = { 'id': '3730ee6e-4553-1fb3-9a22-784384c3fc53', 'sid': 'KUu0CRZ+DAXemdOVPA7thw0UliRul25u9i32HzlMcmuXws/qQyfsS8cQhNPGQuknFtLcFjM60MVKKPZ2CJTbJDAO8obArOEhoQDpW4+XX+9qQzF073LZ9zvvd3yIES3K', 'hid': 'ea5c7b80e4ec46075a14014190d622e0', 'u': location.href };
+  if (document.referrer != null && document.referrer != '') pd['r'] = document.referrer;
+  var activityEventsDocument = ['mousemove', 'touchmove', 'keyup'], activityEventsWindow = ['focus', 'scroll'];
+  if (window.localStorage)
+  {
+    var sessionStart = window.localStorage.getItem(pd.id + '_st');
+    if (sessionStart == null || sessionStart == '' || new Date().getTime() - sessionStart > 3 * 60 * 60 * 1000)
+    {
+      window.localStorage.setItem(pd.id + '_st', pt);
+      sessionStart = pt;
+    }
+    var pp = window.localStorage.getItem(pd.id + '_pp');
+    if (pp != null && pp != '')
+    {
+      var ppo = JSON.parse(pp), ppu = location.protocol + '//' + location.hostname + location.pathname, pph = getHashCode(ppu).toString();
+      if (ppo[pph] != null && ppo[pph].length > 0)
+      {
+        var ids = [];
+        for (var i = 0; i < ppo[pph].length; i++)
+        {
+          if (ppo[pph][i].lc != null)
+          {
+            var pp_count = window.localStorage.getItem(pd.id + '_pp_' + ppo[pph][i].id);
+            if (pp_count == null || pp_count == '') pp_count = 0; else pp_count = parseFloat(pp_count);
+            if (pp_count >= ppo[pph][i].lc) continue;
+            window.localStorage.setItem(pd.id + '_pp_' + ppo[pph][i].id, (pp_count + 1).toString());
+          }
+          if (ppo[pph][i].sc != null)
+          {
+            var pp_count = window.localStorage.getItem(pd.id + '_pp_' + ppo[pph][i].id);
+            if (pp_count == null || pp_count == '') pp_count = 0; else pp_count = parseFloat(pp_count);
+            if (pp_count >= ppo[pph][i].sc) continue;
+            window.localStorage.setItem(pd.id + '_pp_' + ppo[pph][i].id, (pp_count + 1).toString());
+          }
+          if (ppo[pph][i].sn != null || ppo[pph][i].sx != null)
+          {
+            var pd = new Date().getTime() - sessionStart;
+            if (ppo[pph][i].sn != null && pd < ppo[pph][i].sn) continue;
+            else if (ppo[pph][i].sx != null && pd > ppo[pph][i].sx) continue;
+          }
+          ids.push(ppo[pph][i].id);
+        }
+        if (ids.length > 0)
+        {
+          var script = document.createElement('SCRIPT');
+          script.async = true;
+          script.src = pps + '&ppu=' + encodeURIComponent(ppu) + '&pp=' + encodeURIComponent(ids.join(',')) + (ppo['v'] == null ? '' : '&v=' + ppo['v']);
+          document.head.appendChild(script);
+        }
+      }
+    }
+  }
+  var activityStart = function()
+  {
+    if (pal - new Date().getTime() > pai) activityStop();
+    pal = new Date().getTime();
+    if (pa[pa.length - 1].stop != null) pa.push({ start: new Date().getTime() });
+  };
+  var activityStop = function()
+  {
+    if (pa[pa.length - 1].stop == null)
+    {
+      if (new Date().getTime() - pal > pai) pa[pa.length - 1].stop = pal + pai;
+      else pa[pa.length - 1].stop = new Date().getTime();
+    }
+  };
+  for (var i = 0; i < activityEventsDocument.length; i++) document.addEventListener(activityEventsDocument[i], activityStart);
+  for (var i = 0; i < activityEventsWindow.length; i++) window.addEventListener(activityEventsWindow[i], activityStart);
+  window.addEventListener('blur', activityStop);
+  window.addEventListener('unload', function(event)
+  {
+    pd['d'] = new Date().getTime() - pt;
+    if (pd['d'] < 0 || pd['d'] > 60 * 60 * 1000) pd['d'] = 0;
+    activityStop();
+    var a = 0;
+    for (var i = 0; i < pa.length; i++) a += pa[i].stop - pa[i].start;
+    pd['a'] = a;
+    try
+    {
+      if (navigator.sendBeacon) navigator.sendBeacon(ps, JSON.stringify(pd));
+      else
+      {
+        var client = new XMLHttpRequest();
+        client.open('POST', ps, true);
+        client.send(JSON.stringify(pd));
+      }
+    }
+    catch (ex)
+    {
+    }
+  });
+}();
