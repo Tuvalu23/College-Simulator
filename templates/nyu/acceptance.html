@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New York University</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<style>
+  body {
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    background-color: #f9f9f9;
+  }
+  .header {
+    background-color: #4a0579;
+    height: 100px;
+  }
+  .letter-container {
+    max-width: 700px;
+    background: white;
+    margin: 20px 0 0 60px; 
+    padding: 50px;
+    box-sizing: border-box;
+  }
+  .letter-header {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .letter-date {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+  }
+  .pdf-link {
+    color: #4B2E83;
+    font-size: 16px;
+    float: right;
+    text-decoration: none;
+  }
+  .letter-body {
+    font-size: 16px;
+    text-align: left;
+  }
+  .letter-body p {
+    margin-bottom: 1.2em;
+  }
+  .signature {
+    margin-top: 10px;
+    text-align: left;
+  }
+  .signature img {
+    height: 80px;
+    vertical-align: middle;
+  }
+  .footer-links {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 16px;
+  }
+  .footer-links a {
+    color: #4B2E83; 
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  .footer {
+    background-color: #4a0579;
+    height: 100px;
+    width: 100%;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="header"></div>
+
+<div class="letter-container">
+  <div>
+    <span class="letter-date">{{ date }}</span>
+    <a href="javascript:void(0);" class="pdf-link">Download PDF</a>
+  </div>
+  <div class="letter-body">
+    <p>Dear {{ name }},</p>
+    
+    <p>
+        Congratulations! On behalf of the admissions committee, it is my honor and privilege to share with you that you have been admitted to the Tandon School of Engineering at New York University and the NYU Class of 2029.
+      </p>
+      <p>
+        In 1831, NYU was founded by Albert Gallatin, Treasury Secretary to U.S. Presidents Thomas Jefferson and James Madison, to do something that had never been done before in higher education—establish a university that was open to students of all backgrounds based on their talent and merit alone. In short, Gallatin envisioned a University without walls. NYU has built on this boundaryless foundation to become the largest independent research university in the United States, and one of the most influential institutions of higher learning in the world.
+      </p>
+      <p>
+        When you return to your <a href="{{ url_for('ustatus',college=college) }}" style="color: #4a0579; text-decoration: none;">status page</a>, you will see a checklist of next steps for admitted students, including how to accept your offer of admission and how to view your financial aid award, if you applied for aid. <strong>You must accept your offer of admission by January 10.</strong>
+      </p>
+      <p>
+        Once you confirm your enrollment, it is your ethical obligation as an Early Decision applicant to withdraw any applications you may have submitted to other colleges or universities.
+      </p>
+      <p>
+        Please know that your offer of admission is contingent upon successful completion of your existing academic program at a performance level comparable to the one presented in your application. Visit the <a href="#" style="color: #4a0579; text-decoration: none;">admitted student</a> section of our website to review our <a href="#">expectations for admitted students</a>.
+      </p>
+      <p>
+        You should be extremely proud of your accomplishments, and I encourage you to celebrate with your family and friends who have supported you thus far on your intellectual journey. We look forward to welcoming you to the NYU community, and invite you to connect with new classmates on the <a href="https://facebook.com/groups/NYUClassof2029" style="color: #4a0579; text-decoration: none;">NYU Class of 2029 Facebook page</a>.
+      </p>
+    
+    <p>Sincerely,</p>
+    <div class="signature">
+      <img src="./rejection_files/sig.png" alt="Signature">
+      <p>Jonathan B. Williams<br>
+      Associate Vice President for Undergraduate Admissions and Pre-College Access and Pathways</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer-links">
+  <a href="{{ url_for('ustatus', college=college) }}">Return to Application Status</a>
+</div>
+
+<div class="footer"></div>
+<script>
+
+    // Function to launch minimal confetti
+    function launchMinimalConfetti() {
+        const duration = 10000; // Total duration of the animation (2 seconds)
+        const end = Date.now() + duration;
+  
+        // Start a single animation frame loop
+        (function frame() {
+            if (Math.random() < 0.04) { 
+          confetti({
+            particleCount: 6, // Only 1 confetti per frame
+            spread: 300000,       // Narrow spread
+            startVelocity: 10, // Slower start
+            gravity: 1,       // Faster fall to reduce clutter
+            ticks: 5000,       // Short lifespan
+            origin: { x: Math.random(), y: 0 }, // Confetti starts mid-screen
+            colors: [ '#9B30FF'], // Royal blue color
+            shapes: ['circle'], // Only squares
+            scalar: 1   // Small confetti size
+          });
+        }
+  
+          // Continue the animation until the duration ends
+          if (Date.now() < end) {
+            requestAnimationFrame(frame); // Launch again in the next animation frame
+          }
+        })();
+      }
+  
+      // Trigger confetti on page load
+      window.onload = () => {
+        launchMinimalConfetti();
+      };
+          </script>
+</body>
+</html>
