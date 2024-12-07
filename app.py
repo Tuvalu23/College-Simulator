@@ -24,6 +24,7 @@ university_list = [
     {"name": "stanford", "display_name": "Stanford University", "logo": "static/logos/stanford-logo.jpg"},
     {"name": "uchicago", "display_name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
     {"name": "upenn", "display_name": "University of Pennsylvania", "logo": "static/logos/upenn-logo.jpg"},
+    {"name": "usc", "display_name": "University of Southern California", "logo": "static/logos/usc-logo.png"},
     {"name": "yale", "display_name": "Yale University", "logo": "static/logos/yale-logo.jpg"},
     
 ]
