@@ -48,128 +48,47 @@
 
   <noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div></noscript><div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses resources that are being blocked by your network. Contact your network administrator for more information.</div><script>/*<![CDATA[*/if (window['FW'] == null) document.getElementById('netblock').style['display'] = 'block';/*]]>*/</script><header class="header"><div class="section__boundary header__boundary"><div class="header__logo"><a href="http://www.admissions.upenn.edu/"><img src="./ustatus_files/penn-adm-logo.png" alt="Penn Admissions Logo"></a></div><div id="global" class="header__account"><ul></ul></div></div></header>
   
-  
-  
-  
   <div id="content">
 
-
-		<div style="margin-bottom:20px; margin-top:8px; margin-left: 50px; border-style: dotted; padding-bottom: 20px; border-color:#ffffc8; width:90%; background:#ffffc8">
-			<div style="font-size:large;">Welcome {{ name }}!</div>
-			<br>
-			<div style="font-size:normal; color:#901f30"><strong>Status Update</strong></div>
-
-			New updates to your application were posted on {{ date }}. <br>
-      <br>
-      <a>
-      <form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
-        <input type="hidden" name="university" value="columbia">
-        <button type="submit" style="background: none; color: blue; text-decoration: underline; border: none; cursor: pointer; padding: 0; font: inherit;">
-            View Update&gt;&gt;
-        </button>
-    </form>
-  </a>
-
-
-		</div><br>
-
-
-		<div style="clear: both; height: 0;"></div>
-
-	</div>
-
-  <div style="text-align: left; padding: 20px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 8px; width: 90%; margin: 20px auto;">
-    <h3 style="color: #003366; margin-bottom: 15px; font-size: 18px;">Application Details</h3>
-    <p style="font-size: 16px; color: #333; line-height: 1.8;">
-        Thank you for submitting your application to the University of Pennsylvania. Below is your personalized application checklist and additional resources for managing your application.
-    </p>
-    
-    <h4 style="color: #003366; margin-top: 20px;">Application Checklist</h4>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
-        <thead>
-            <tr style="background-color: #e6e6e6; text-align: left;">
-                <th style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #003366;">Requirement</th>
-                <th style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #003366;">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">Common Application</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: green; font-weight: bold;">✔ Submitted</span>
-                </td>
-            </tr>
-            <tr style="background-color: #f9f9f9;">
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">High School Transcript</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: green; font-weight: bold;">✔ Received</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">Standardized Test Scores</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: green; font-weight: bold;">✔ Received</span>
-                </td>
-            </tr>
-            <tr style="background-color: #f9f9f9;">
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">Letters of Recommendation</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: green; font-weight: bold;">✔ Submitted (2)</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">Personal Essay</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: green; font-weight: bold;">✔ Submitted</span>
-                </td>
-            </tr>
-            <tr style="background-color: #f9f9f9;">
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">Application Fee</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: green; font-weight: bold;">✔ Paid</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">Optional Updates</td>
-                <td style="padding: 10px; border: 1px solid #ccc; font-size: 16px; color: #333;">
-                    <span style="color: orange; font-weight: bold;">Pending</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h4 style="color: #003366; margin-top: 20px;">Upload Additional Materials</h4>
-    <p style="font-size: 16px; color: #333; line-height: 1.8;">
-        If you have any updates, additional recommendation letters, or other documents to include with your application, please use the upload button below. Accepted formats: PDF, DOCX, PNG, JPEG.
-    </p>
-    <form enctype="multipart/form-data">
-      <input type="file" name="file" accept=".pdf,.docx,.png,.jpeg" style="margin-top: 10px; margin-bottom: 15px; font-size: 14px;">
-      <button type="button" style="padding: 10px 20px; background-color: #003366; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Upload File</button>
-  </form>
+    <!-- Add the image at the top with same side margins as the status update box -->
+    <div style="margin: 20px auto; width: 90%;">
+      <img src="./ustatus_files/penn.png" alt="Penn Logo" style="width: 100%; height: auto; border-radius: 5px;">
+    </div>
   
-
-    <h4 style="color: #003366; margin-top: 20px;">Important Notes</h4>
-    <ul style="font-size: 16px; color: #333; margin-left: 25px; line-height: 1.8;">
-        <li>Ensure all additional materials are submitted by January 1, 2025.</li>
-        <li>Check this portal regularly for updates and important announcements.</li>
-        <li>Your application is currently under review. Final decisions will be released in late March.</li>
-    </ul>
-
-    <h4 style="color: #003366; margin-top: 20px;">Need Help?</h4>
-    <p style="font-size: 16px; color: #333; line-height: 1.8;">
-        For technical issues, questions about your application, or additional support, please contact us:
-    </p>
-    <ul style="font-size: 16px; color: #333; margin-left: 25px; line-height: 1.8;">
-        <li>Email: <a href="mailto:admissions@upenn.edu" style="color: #0066cc; text-decoration: underline;">admissions@upenn.edu</a></li>
-        <li>Phone: (215) 898-7507</li>
-    </ul>
-</div>
-
-
-
-
-
-</div><script>/*<![CDATA[*/$('#email').focus().select();/*]]>*/</script></form></div></div></div>
+    <!-- Status Update Box -->
+    <div style="margin: 20px auto; border-style: dotted; border-color: #ffffc8; width: 90%; background: #ffffc8;">
+      <div style="font-size: x-large; font-weight: bold; color: #901f30; text-align: left;">Status Update</div>
+      <div style="height: 10px;"></div> <!-- Add a bit of space between Status Update and the next line -->
+      New updates to your application were posted on {{ date }}.
+      <br><br>
+      <a>
+        <form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
+            <input type="hidden" name="university" value="columbia">
+            <button type="submit" 
+                    style="background: none; 
+                           color: #619694; /* Teal color */
+                           font-size: large; 
+                           font-weight: bold; 
+                           text-decoration: none; 
+                           border: none; 
+                           cursor: pointer; 
+                           padding: 0; 
+                           font: inherit;"
+                    onmouseover="this.style.textDecoration='underline';" 
+                    onmouseout="this.style.textDecoration='none';">
+              <strong>View Update >> </strong>
+            </button>
+          </form>
+          
+      </a>
+    </div>
+  
+  </div>
+  
+  
+  
+  
+  <script>/*<![CDATA[*/$('#email').focus().select();/*]]>*/</script></form></div></div></div>
 
 <footer class="footer"><div class="section__boundary footer__boundary"><section class="footer__one"><div class="footer__logo"><a href="http://www.admissions.upenn.edu/"><img src="./ustatus_files/upenn-logo.png" alt="UPenn Logo"></a></div><nav class="footer__menu footer__menu--links"><ul class="menu"><li><a href="https://key.admissions.upenn.edu/register/inquiry">Join the mailing list</a></li><li><a href="https://admissions.upenn.edu/contact-us">Contact Us</a></li><li><a href="https://accessibility.web-resources.upenn.edu/get-help">Accessibility</a></li><li><a href="https://www.upenn.edu/about/privacy_policy">Privacy Policy</a></li><li><a href="https://www.nacacnet.org/who-we-are/what-we-do/guiding-ethics/nacacs-guide-to-ethical-practice-in-college-admission/">NACAC
                                             Partnership Agreement</a></li></ul></nav></section><section class="footer__two"><nav class="footer__menu footer__menu--social"><ul class="menu"><li><a title="University of Penn Social Media Link to instagram" href="https://www.instagram.com/previewingpenn/" target="_blank" aria-label="University of Penn Social Media Link to instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a></li><li><a title="University of Penn Social Media Link to tiktok" href="https://www.tiktok.com/@previewingpenn" target="_blank" aria-label="University of Penn Social Media Link to tiktok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a></li><li><a title="University of Penn Social Media Link to youtube" href="https://www.youtube.com/@PennAdmissions" target="_blank" aria-label="University of Penn Social Media Link to youtube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a></li><li><a title="University of Penn Social Media Link to facebook" href="https://www.facebook.com/PreviewingPenn" target="_blank" aria-label="University of Penn Social Media Link to facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li></ul></nav></section></div></footer><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div></body></html>
