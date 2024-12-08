@@ -22,6 +22,7 @@ university_list = [
     {"name": "nyu", "display_name": "New York University", "logo": "static/logos/nyu-logo.jpg"},
     {"name": "princeton", "display_name": "Princeton University", "logo": "static/logos/princeton-logo.jpg"},
     {"name": "stanford", "display_name": "Stanford University", "logo": "static/logos/stanford-logo.jpg"},
+    {"name": "berkeley", "display_name": "University of California, Berkeley", "logo": "static/logos/berkeley-logo.png"},
     {"name": "uchicago", "display_name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
     {"name": "upenn", "display_name": "University of Pennsylvania", "logo": "static/logos/upenn-logo.jpg"},
     {"name": "usc", "display_name": "University of Southern California", "logo": "static/logos/usc-logo.png"},
