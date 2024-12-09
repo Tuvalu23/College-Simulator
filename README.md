@@ -20,7 +20,10 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Duke
 - [X] NYU
 - [X] USC
-- [ ] Berkeley
+- [X] Berkeley
+- [ ] Caltech
+- [ ] CMU
+- [ ] Rice
 
 ## Features
 
