@@ -64,7 +64,7 @@
     This website uses resources that are being blocked by your network. Contact
     your network administrator for more information. </div>
 
-
+  
   <div id="page">
     <div class="c_harvard-site c_harvard-site--landing_page cr">
       <div class="c_c-skip-links cr">
@@ -182,9 +182,20 @@
                       </ul>
                     </div>
                     <div id="content">
+                    
+
+
+
+
+
+
+
+
+
                       <div class="status-header">
                         <div class="o-container-fluid">
                           <div class="o-row">
+                          
                             <div class="status-header__title-wrapper o-col o-col-sm-md-5">
                                 <h1 class="status-header__title title-serif--xl">Applicant Portal</h1>
                             </div>
@@ -497,6 +508,7 @@ Menu-->
                                       <div class="status-panel__content o-col o-col-sm-md-8 o-col-sm-md--offset-1">
                                         <div class="status-panel__section-wrapper section--view-status-update" id="view-status-update">
                                           <div class="status-panel__section js-nav-watch--section" data-scrollama-index="0">
+                                            
                                             <div>
                                               <h3>Status Update</h3>
                                               <p>An update to your application was last posted on {{ date }}. </p>
@@ -513,7 +525,55 @@ Menu-->
                                           </div>
                                         </div>
 
+                                        <!-- Add this Google Fonts link in the <head> of your HTML -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
+<div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 999;">
+  <div id="popupBox" style="background-color: #b22b2f; color: white; padding: 50px 20px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); width: 80%; max-width: 600px; text-align: left; font-family: 'Inter', Arial, sans-serif; height: auto; border: 4px solid transparent; transition: border-color 0.3s;">
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+      <img src="./ustatus_files/shield.png" alt="Shield Icon" style="width: 40px; height: 40px; margin-right: 15px;">
+      <h3 style="margin: 0; font-size: 34px;  color: #dddddd; ">Status Update</h3>
+    </div>
+    <p style="margin: 0 0 30px 55px; font-size: 16px; line-height: 1.5; font-weight: 400;  color: #dddddd; ">
+      You have a new status update for your application.
+    </p>
+    <form id="statusForm" method="post" action="{{ url_for('ustatus', college=college) }}">
+      <button id="viewUpdate" style="background-color: #bc3e44; color: #dddddd; border: 2px solid transparent; width: 80%; padding: 15px; font-size: 16px; cursor: pointer; display: block; margin: 0 auto; text-align: center; font-family: 'Inter', Arial, sans-serif; transition: border-color 0.3s;">
+        View Status Update
+      </button>
+      
+    </form>
+  </div>
+</div>
+
+<script>
+  // Add hover effect to highlight the border of the button
+  const viewUpdateButton = document.getElementById("viewUpdate");
+
+  viewUpdateButton.addEventListener("mouseover", () => {
+    viewUpdateButton.style.border = "2px solid #e57373"; // Add light red border on hover
+  });
+
+  viewUpdateButton.addEventListener("mouseout", () => {
+    viewUpdateButton.style.border = "none"; // Remove the border on mouseout
+  });
+
+  // To show the popup
+  function showPopup() {
+    document.getElementById("overlay").style.display = "flex";
+  }
+
+  // To hide the popup when the button is clicked
+  viewUpdateButton.addEventListener("click", () => {
+    document.getElementById("overlay").style.display = "none";
+  });
+
+  // Example: Automatically show the popup after a delay
+  setTimeout(showPopup, 500); // Show the popup after 500ms
+</script>
+
+
+                                    
 
 
 

@@ -654,14 +654,14 @@
         const timeLeft = end - Date.now();
 
         if (timeLeft > 0) {
-          const particleCount = 20 * (timeLeft / duration); // Reduced particle count
+          const particleCount = 3 * (timeLeft / duration); // Reduced particle count
           confetti({
             particleCount,
             startVelocity: 25,
             spread: 300,
             origin: {
               x: Math.random(),
-              y: Math.random() - 0.2,
+              y: 0,
             },
             colors,
           });
