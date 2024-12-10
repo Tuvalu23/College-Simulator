@@ -61,11 +61,6 @@ def login(college):
 
 @app.route("/<college>/ustatus", methods=["GET", "POST"])
 def ustatus(college):
-    if college == "mit":
-        decision = random.choice(["acceptance", "rejection"])
-        if decision == "acceptance":
-            return redirect(url_for("acceptance", college=college, name=user_data["name"]))
-        return redirect(url_for("rejection", college=college, name=user_data["name"]))
     
     if request.method == "POST":
         decision = random.choice(["acceptance", "rejection"])
