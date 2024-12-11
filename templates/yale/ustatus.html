@@ -309,13 +309,14 @@
                                       <div style="margin-bottom:20px; margin-top:8px; border-style: dotted; border-color:#ffffc9; background:#ffffc9">
                               				  <div>
 
-                              				    <strong>Status Update</strong>
+                              				    <div style="margin-bottom: -10px;"> <strong>Status Update</strong> </div>
 
-                              				     <div> <br>New updates to your application were posted {{ date }}<br></div>
+                              				     <div style="margin-bottom: 10px;"> <br>New updates to your application were posted {{ date }}<br></div>
 
                               				 <div>  <strong> <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display: inline;">
-                                                <button type="submit" style="font-size: large; font-weight: bold; background: none; border: none; color: inherit; cursor: pointer; text-decoration: underline; padding: 0;">
-                                                    View Updates &gt;&gt;
+                                                <button type="submit" style="font-size: large; font-weight: bold; background: none; border: none; color: #577A7A;
+ cursor: pointer; text-decoration: underline; padding: 0;">
+                                                    View Update &gt;&gt;
                                                 </button>
                                             </form>
                                         </strong>

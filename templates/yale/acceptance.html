@@ -92,29 +92,39 @@
 
 <body data-gr-c-s-loaded="true" class="vsc-initialized">
 
-  <div id="videoModal">
-    <div class="close-btn" onclick="closeModal()">×</div>
-    <iframe id="youtubeVideo" 
-            src="https://www.youtube.com/embed/KXLREps3blw?si=oBxvKqxD-DX1ptU0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
+  <div id="video-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.8); z-index: 1000;">
+    <button id="close-btn" style="position: absolute; top: 20px; right: 20px; background: none; color: white; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    <iframe id="yt-video" 
+        src="https://www.youtube.com/embed/KXLREps3blw?si=oBxvKqxD-DX1ptU0" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen 
+        style="width: 100%; height: 100%;">
     </iframe>
-  </div>
+</div>
 
-  <script>
-    window.onload = function() {
-      const modal = document.getElementById('videoModal');
-      modal.style.display = 'flex';
-    };
-  
-    // Close the modal
-    function closeModal() {
-      const modal = document.getElementById('videoModal');
-      const iframe = document.getElementById('youtubeVideo');
-      modal.style.display = 'none';
-      iframe.src = iframe.src; // Reset iframe to stop video
+<script>
+    // Ensure body overlay is active when the page loads
+    document.body.classList.add('overlay-active');
+
+    function closeVideoOverlay() {
+        // Remove iframe and hide the overlay
+        const overlay = document.getElementById('video-overlay');
+        overlay.innerHTML = '';
+        overlay.style.display = 'none';
+        document.body.classList.remove('overlay-active');
     }
-  </script>
+
+    // Close button functionality
+    document.getElementById('close-btn').addEventListener('click', closeVideoOverlay);
+
+    // Listen for the Escape key to close the video
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeVideoOverlay();
+        }
+    });
+</script>
 
   <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">
     This website uses resources that are being blocked by your network. Contact your network administrator for more
