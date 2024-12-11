@@ -68,12 +68,15 @@
 
 </head>
 
-<body data-gr-c-s-loaded="true"><noscript>
-    <div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable
-        JavaScript</a> in your browser and then reload this website.</div>
+<body data-gr-c-s-loaded="true">
+  <noscript>
+    <div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+      This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.
+    </div>
   </noscript>
-  <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses resources that are being blocked by your network. Contact your network
-    administrator for more information.</div>
+  <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+    This website uses resources that are being blocked by your network. Contact your network administrator for more information.
+  </div>
 
   <div id="page">
     <div class="c_front c_no-sidebars c_node-type-page c_path-undergraduate-admission c_university-nav-brown cr" style="">
@@ -90,105 +93,67 @@
       </section>
       <div id="c_shell" class="cr">
         <main class="cr">
-          <div class="c_marginator cr">
+          <div class="c_marginator cr" style="margin: 0 20px; width: 100%;">
             <div role="main" id="c_content" class="cr">
               <section id="c_main-content" class="cr">
-                <div id="global">
-                  <ul>
-                    <li>{{ name }}<a style="font-size: 10px; margin-left: 5px; text-decoration: none;" href="{{ url_for('login', college=college)}}">Logout</a></li>
+                <div id="global" style="margin-left: -50px;">
+                  <ul style="padding-left: 0; list-style: none;">
+                    <li style="margin-bottom: 0;">{{ name }}
+                      <a style="font-size: 10px; margin-left: 5px; text-decoration: none;" href="{{ url_for('login', college=college)}}">Logout</a>
+                    </li>
                   </ul>
                 </div>
-                <div id="content">
-                  <table class="fixed" style="width: 100%;">
+                
+                <div id="content" style="margin: 0 auto; width: 70%; margin-top: -10px;">
+          
+                  <!-- Add the thanks.png image at the top with smaller size -->
+                  <div style="text-align:center; margin-bottom: 5px;">
+                    <img src="./ustatus_files/thanks.png" alt="Thanks" style="width: 100%; height: auto; max-width: 100%;">
+                  </div>          
+
+                  <!-- Status Update Box spanning the entire page with forced background color -->
+                  <div style="background-color: #ffffc8 !important; margin-top: 30px; border-radius: 5px;">
+                    <h3>Status Update</h3>
+                    <p>An update to your application was last posted {{ date }}. </p>
+                    <strong>
+                      <form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline">
+                        <input type="hidden" name="university" value="brown">
+                        <button type="submit" style="background: none; font-weight: bold; color: red; text-decoration: underline; border: none; cursor: pointer; padding: 0;">
+                          Your Admission Decision.
+                        </button>
+                      </form>
+                    </strong>
+                  </div>
+                  <hr style="border: 1px solid #ccc; margin-top: 10px;">
+
+                  <!-- Other sections below -->
+                  <table class="fixed" style="width: 100%; margin-top: 10px;">
                     <colgroup>
                       <col style="width: 50%;">
                       <col style="width: 50%;">
                     </colgroup>
                     <tbody>
-                      <tr style="vertical-align: top;">
-                        <td colspan="2">
-                          <div class="part_rows_container">
-                            <div class="part"><br><span style="font-size:20px;"><span style="font-family:Arial,Helvetica,sans-serif;"><strong>{{ name }}, thank you for applying to Brown
-                                    University!</strong></span></span></div>
-                            <div class="part">
-                              In preparation for releasing admission decisions on {{ date }}, the checklist on your Brown portal is no longer available for viewing.<br><br>
-                              You may continue to upload any supplementary materials and updates below.
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
                       <tr style="vertical-align: top; height: 300px">
                         <td style="padding-right: 15px;">
                           <div class="part_rows_container">
-                            <div class="part"><br><span style="font-size:20px;"><span style="font-family:Arial,Helvetica,sans-serif;"><strong>Your Information</strong></span></span><br><br><span style="font-family:Arial,Helvetica,sans-serif;"><span style="font-size:14px;"><strong>ReferenceID:</strong>4206942069</span></span><br>
-                              <font face="Arial, Helvetica, sans-serif"><span style="font-size: 14px;"><b>Preferred:</b>{{ name }}</span><br><span style="font-size:14px;"><span style="font-family:Arial,Helvetica,sans-serif;"><strong>First:&nbsp;</strong>{{ name }}<br><strong>Middle:</strong>&nbsp;<br><strong>Last:</strong>&nbsp;</span></span></font>
-                            </div>
-                            <div class="part"><br><span style="font-size:20px;"><span style="font-family:Arial,Helvetica,sans-serif;"><strong>Portal Tools</strong></span></span><br><br>
-                              Update the&nbsp;<a href="javascript:void(0);">email you use to login</a>, or <a href="javascript:void(0);">change your portal password</a>.&nbsp; If you need to update the address you listed on your Common Application,
-                              please <a href="javascript:void(0);">email us</a>.
-                            </div>
-                            <div class="part"><br></div>
-                            <div class="part"><strong>To view your Financial Aid application status, please visit <a href="javascript:void(0);">Banner Self-Service</a>. If you have trouble logging in,
-                                please contact the IT Service Center at (401) 863-4357. Office hours&nbsp;​can be found&nbsp;<a data-saferedirecturl="javascript:void(0);" href="javascript:void(0);" target="_blank">here</a>.</strong></div>
-                            <div class="part"><br></div>
-                          </div>
-                        </td>
-                        <td style="padding-right: 15px;">
-                          <div class="part_rows_container">
-                            <div class="part">
-                              <div>
-                                <h3>Status Update</h3>
-                                <p>An update to your application was last posted {{ date }}. </p>
-                                <strong>
-                                <a><form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline">
-                                  <input type="hidden" name="university" value="brown">
-                                  <button type="submit" style="background: none; font-weight: bold; color: red; text-decoration: underline; border: none; cursor: pointer; padding: 0;">
-                                    Your Admission Decision.
-                                </button>
-                              </a>
-                            </strong>
-                              </div>
-                            </div>
-                            <div class="part"><br></div>
-                            <div class="part"><a name="material"></a>
+                            <div class="part"><br>
                               <h3>Upload Materials</h3>
-                              <div>
-                                <title></title><strong>Supplementary Materials:</strong>&nbsp;While not expected, applicants to Brown who wish to provide additional materials may do so below. The majority of students admitted to Brown
-                                do&nbsp;<strong>not</strong>&nbsp;submit additional materials; however, the opportunity to do so is available to any candidate.&nbsp;<a href="javascript:void(0);" target="_blank">Visit our website</a> for additional
-                                information about supplementary materials.<br><br><b>Academic Paper/Research Abstract:</b>&nbsp;If you have completed an advanced academic paper or significant research project, you may upload that document to your
-                                application below. Please include a brief note to provide context for your submission. For example: approximate date(s) you were involved, whether you worked on this independently or as part of a team, what external
-                                recognition you may have received, and anything else you want us to know.<br>
-                                &nbsp;
-
-                              </div>
+                              <strong>Supplementary Materials:</strong>&nbsp;While not expected, applicants to Brown who wish to provide additional materials may do so below. The majority of students admitted to Brown do&nbsp;<strong>not</strong>&nbsp;submit additional materials; however, the opportunity to do so is available to any candidate.&nbsp;<a href="javascript:void(0);" target="_blank">Visit our website</a> for additional information about supplementary materials.<br><br>
+                              <b>Academic Paper/Research Abstract:</b>&nbsp;If you have completed an advanced academic paper or significant research project, you may upload that document to your application below. Please include a brief note to provide context for your submission. For example: approximate date(s) you were involved, whether you worked on this independently or as part of a team, what external recognition you may have received, and anything else you want us to know.<br>&nbsp;
                             </div>
                             <div class="part"><br></div>
                             <div class="part">
-
-
-
-
-                              </div>
-
-                            </div>
-                          
-                        </td>
-                      </tr>
-                      <tr style="vertical-align: top; height: 300px">
-                        <td style="padding-right: 15px;">
-                          <div class="part_rows_container"></div>
-                        </td>
-                        <td style="padding-right: 15px;">
-                          <div class="part_rows_container">
-                            <div class="part">
-                              <h2><span style="font-size:20px;"><span style="font-family:Arial,Helvetica,sans-serif;"><strong>Test Scores</strong></span></span></h2>
+                              <h3>Test Scores</h3>
                               You may&nbsp;<a href="javascript:void(0);" target="_blank"><b>self-report</b></a> test scores that were not included on your Common Application. You can view our testing requirements on <a href="javascript:void(0);" target="_blank">our website</a>.
                             </div>
+                          </div>
+                        </td>
+                        <td style="padding-right: 15px;">
+                          <div class="part_rows_container">
                             <div class="part">
-                              <h2><br>
-                                Take a Virtual Tour of Brown</h2>
-                              <p><iframe scrolling="no" title="Virtual Reality, Virtual Tour" alt="Virtual Reality, Virtual Tour" id="virtualtour_iframe_0" frameborder="0" class="youvisit-embed" style="border: none; overflow: hidden; position: relative; width: 520px; max-width: 520px; min-width: 520px; height: 155px; max-height: 155px; min-height: 155px;" src="./ustatus_files/immersiveIcon.html"></iframe>
-
+                              <h3>Take a Virtual Tour of Brown</h3>
+                              <p>
+                                <iframe scrolling="no" title="Virtual Reality, Virtual Tour" alt="Virtual Reality, Virtual Tour" id="virtualtour_iframe_0" frameborder="0" class="youvisit-embed" style="border: none; overflow: hidden; position: relative; width: 520px; max-width: 100%; min-width: 520px; height: 155px; max-height: 155px; min-height: 155px;" src="./ustatus_files/immersiveIcon.html"></iframe>
                               </p>
                             </div>
                           </div>
@@ -202,6 +167,8 @@
             </div>
           </div>
         </main>
+
+        
         <footer id="c_site-footer" class="cr">
           <div class="c_marginator cr">
             <div class="c_block c_block-contact-info c_block-contact-info-contact-info cr">
