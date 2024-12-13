@@ -11,6 +11,7 @@ user_data = {"name": "", "date": ""}
 university_list = [
     {"name": "brown", "display_name": "Brown University", "logo": "static/logos/brown-logo.jpg"},
     {"name": "caltech", "display_name": "California Institute of Technology", "logo": "static/logos/caltech-logo.jpg"},
+    {"name": "cmu", "display_name": "Carnegie Mellon University", "logo": "static/logos/cmu-logo.jpg"},
     {"name": "columbia", "display_name": "Columbia University", "logo": "static/logos/columbia-logo.jpg"},
     {"name": "cornell", "display_name": "Cornell University", "logo": "static/logos/cornell-logo.jpg"},
     {"name": "dartmouth", "display_name": "Dartmouth College", "logo": "static/logos/dartmouth-logo.png"},
