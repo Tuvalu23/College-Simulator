@@ -83,7 +83,6 @@
           	padding-left: 0px;
           }
           p {
-          	font-family:"Cosmica",helvetica,arial,sans-serif !important;
           	font-size: 16px;
           	padding: 0;
           }
@@ -739,9 +738,7 @@
 								<td>
 									<div class="part_rows_container">
 										<div class="part" id="part_be9de47f-9211-b142-75a4-e6ada3814bbc">
-											<ul class="subtabs">
-												<li><a class="active" data-tab="home" href="{{ url_for('ustatus', college=college)}}">Home</a></li>
-											</ul>
+											
 											<div id="content_body" class="" aria-busy="false">
 												<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 												<link rel="shortcut icon" href="https://apply-college-columbia-edu.cdn.technolutions.net/favicon.ico">
@@ -2919,239 +2916,72 @@
 													}
 
 													/*]]>*/
-												</style><noscript>
-
-													<div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses scripting to enhance your browsing experience. <a
-															href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div>
-												</noscript>
-												<div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses resources that are being blocked by your network.
-													Contact your network administrator for more information.</div>
-
-
-
-												<table class="fixed" style="width: 100%;">
-													<colgroup>
-														<col>
-														<col style="width: 300px;">
-													</colgroup>
-													<tbody>
-														<tr style="vertical-align: top;">
-															<td colspan="2">
-																<div class="part_rows_container">
-																	<div class="part" id="part_09759ee0-e056-c9f1-3353-42181546c64c">
-																		<table class="plain">
-
-																			<tbody>
-																				<tr>
-																					<td style="color:#333333;font-size:12px;font-family:Georgia,serif;vertical-align:top;"><img align="absmiddle" alt="Low" src="./ustatus_files/Picture1.png" style="border-width: 0px; border-style: solid; width: 100%; height: auto;"></td>
-																				</tr>
-																			</tbody>
-																		</table><br><strong>
-
-																			<span style="font-family:Arial,Helvetica,sans-serif;"><span style="font-size:34px;">Welcome to your applicant status page, {{ name }}!</span></span></strong>
-																		<p style="text-align:left;"><br>
-
-																			<span style="font-size:16px;"><strong><span style="font-family:Arial,Helvetica,sans-serif;"><strong>Columbia ID: C6942069420</strong></span>
-
-																					<span style="float:right;"><span style="font-family:Arial,Helvetica,sans-serif;">2024 First-Year Regular Decision - Columbia Main Campus</span></span></strong></span>
-
-
-																			<br>
-
-																			&nbsp;</p>
-																	</div>
-
-																	<div class="part" id="part_76dfa300-bb13-770e-a8c5-9e1d70a36d05"><br>
-
-																		<span style="font-size:14px;"><span style="font-family:Arial,Helvetica,sans-serif;"> Thank you for submitting your application to Columbia University in the City of New York. Please use this status page to provide
-																				us with application updates and to explore more about Columbia's application process. </span></span>
-
-																		<br><br>
-																	</div>
-
-
-																	<div style="border-style: dotted; padding-bottom: 20px; border-color:#ffffc8; background:#ffffc8">
-
-
-																		<span style="font-size:16px;"><strong><span style="font-family:Arial,Helvetica,sans-serif;"><strong>Status Update:</strong></span></strong><span style="float:right;"></span></span>
-
-																		<br><br>
-
-																		<span style="font-size:14px;"><span style="font-family:Arial,Helvetica,sans-serif;">
-																				
-																					<p>New updates to your application were posted {{ date }}</p>
-<form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
-    <input type="hidden" name="university" value="columbia">
-    <button type="submit" style="background: none; color: blue; text-decoration: underline; border: none; cursor: pointer; padding: 0; font: inherit;">
-        View Updates&gt;&gt;
-    </button>
-</form>
-
-
-																			</span></span>
-
-
-																	</div>
-
-
-
-
-
-																	<div class="part" id="part_53b35e66-40f0-7191-d390-a3ce8f29e397"></div>
-																</div>
-
-															</td>
-														</tr>
-														<tr style="vertical-align: top;">
-															<td style="padding-right: 15px;">
-
-
-
-																<div class="part_rows_container">
-																	<div class="part" id="part_9fffb079-3664-22e9-f0a5-7e99f4b128e8"></div>
-
-																	<div class="part" id="part_3d9ab187-dc8c-e130-05cb-a13982808635"><br><span style="font-family:Arial,Helvetica,sans-serif;"><b>
-
-
-
-																			</b></span></div>
-																	<div class="part" id="part_f64d0fef-71a4-9896-8f37-06995ce2fc15">
-																		<div id="form_f64d0fef-71a4-9896-8f37-06995ce2fc15">
-
-
-
-
-																			<!--
-
-
-
--->
-
-
-
-
-
-
-
-
-
-																			<h3>Verify Address</h3>
-																			<p>We have your addresses listed as follows:</p>
-																			<div style="clear: both; margin: 1em 0;">
-																				<div style="float: left; margin-right: 25px; width: 200px;"><em>Permanent Address</em><br>123 College Way<br>Pasadena, CA 91001<br>United States</div>
-
-
-																				<div style="float: left; margin-right: 25px; width: 200px;"><em>Mailing Address</em><br>123 College Way<br>Pasadena, CA 91001<br>United States</div>
-																				<div style="clear: both;"></div>
-																			</div>
-																			<p style="clear: both; margin-top: 1em;"><a href="javascript:void(0);" data-href="/apply/statusHandler?cmd=address&amp;address_permanent=&amp;address_delete=" onclick="return (FW.Lazy.Popup(this));">Edit
-																					Addresses</a></p>
-																			<div style="clear: both;"></div>
-																		</div>
-
-
-																		<div class="part" id="part_d3c84cfa-ce0d-8ab3-fe1a-fe1bf772bcbd">
-																			<p style="margin-top: 50px;">
-																				<span style="font-size:14px;"><span style="font-family:Arial,Helvetica,sans-serif;">
-																						<span style="font-weight: bold; margin-right: 1em;">Account Tools:</span>
-																						<a href="javascript:void(0);" style="margin-right: 1em;">Change Email Address</a>
-																						<a href="javascript:void(0);" style="margin-right: 1em;">Change Password</a><a href="javascript:void(0);" style="margin-right: 1em;">Logout</a></span></span></p>
-																		</div>
-																	</div>
-															</div></td>
-															<td>
-																<div class="part_rows_container">
-																	<div class="part" id="part_ea4909cf-cc86-736f-1f12-35d9897992d6">
-																		<style type="text/css">
-																			/*<![CDATA[*/
-
-
-																			#quicklinks {
-																				width: 250px;
-																				float: right;
-																				font-family: Arial, "Helvetica Neue", Helvetica, Arial, "sans-serif";
-																				background-color: #b9d9eb;
-																				padding-bottom: 10px;
-																				margin-top: 0px;
-																				margin-bottom: 20px;
-																				/*                       border-style: solid; border-width: 1px;  border-color: rgba(0, 0, 0, 0.5);    */
-																				border-style: solid;
-																				border-width: 1px;
-																				border-color: rgba(0, 0, 0, 0.05);
-																				webkit-font-smoothing: antialiased;
-																			}
-
-																			/* #quicklinks { color: rgba (0,0,0,0.2);
-                                     box-shadow: 0 0 20px -10px currentcolor;}     */
-
-																			#quicklinks {
-																				color: rgba (0, 0, 0, 0.1);
-																				box-shadow: 0 0 10px -5px currentcolor;
-																			}
-
-
-																			p {
-																				padding: 0px;
-
-																				font-size: 14px;
-																				font-family: Arial, "Helvetica Neue", Helvetica, Arial, "sans-serif";
-																			}
-
-
-																			/*I'm considering using this block of code below -- Jamie D. */
-																			/*    h2   {text-align: center;
-                        font-family: Arial, "Helvetica Neue", Helvetica, Arial, "sans-serif";
-                        padding-top: 15px; }  */
-
-
-
-
-																			header {
-																				font-family: Arial, "Helvetica Neue", Helvetica, Arial, "sans-serif";
-
-																				font-size: 20px;
-																				padding-top: 20px;
-																				padding-bottom: 10px;
-																			}
-
-																			a {
-																				color: #41516C;
-																				link: #41516C;
-																				visited: #41516C;
-																				text-decoration: none;
-																			}
-
-																			/*]]>*/
-																		</style>
-
-
-
-
-
-
-																		<p></p>
-																	</div>
-																</div>
-																<div class="part">
-																	<div style="text-align: center;"><a href="https://www.instagram.com/columbiaadmissions/?hl=en" target="_blank">
-
-
-
-
-
-																		</a></div>
-																</div>
-											
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		</td>
-		</tr>
-		</tbody>
+												</style>
+												
+
+
+
+												
+												<div style="margin: 0; padding: 0; background-color: #f9f9f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: Georgia, serif;">
+													<div style="width: 90%; background-color: white; padding: 30px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+														<!-- Banner -->
+														<img src="./ustatus_files/banner.jpg" alt="Columbia Banner" style="width: 100%; height: auto; max-height: 250px; margin-bottom: 20px;">
+														
+														<!-- Welcome Message -->
+														<h1 style="font-size: 2em; font-family: Georgia, serif;">Welcome to your portal, {{ name }}!</h1>
+														<p style="font-size: 1.2em; font-family: Georgia, serif;">
+															Thank you for submitting your application to Columbia University in the City of New York. Please use this portal to provide us with application updates and to explore more about Columbia's application process.
+														</p>
+														
+														<!-- Application Information -->
+														<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px;">
+															Application: 2024 First-Year Regular Decision - Columbia College<br>
+															Columbia ID: C39434800
+														</p>
+														
+														<!-- Horizontal Line -->
+														<div style="border-top: 1px solid lightgray; margin: 20px 0;"></div>
+														
+														<!-- Admissions Decisions -->
+														<p style="font-size: 1.2em; font-family: Georgia, serif;"><strong>Admissions decisions for Regular Decision applicants will be available online on Thursday, March 30, 2023, at 7:00 p.m. (Eastern). </strong>In preparation for decision release, functionality on this page has been limited.</p>
+														
+														<!-- Horizontal Line -->
+														<div style="border-top: 1px solid lightgray; margin: 20px 0;"></div>
+														
+														<!-- Status Update -->
+														<div style="background-color: #ffffc8; padding: 0px; font-family: Roboto, sans-serif; border: 1px dotted #e0e0e0;">
+															<p style="font-size: 1.1em; font-weight: bold;">Status Update</p>
+															<p style="font-size: 1em;">New updates to your application were posted {{ date }}.</p>
+															<form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
+																<input type="hidden" name="university" value="columbia">
+																<button type="submit" style="background: none; color: blue; text-decoration: underline; border: none; cursor: pointer; padding: 0; font: inherit;">
+																	<strong>View Updates &gt;&gt;</strong>
+																</button>
+															</form>
+														</div>
+														
+														<!-- Address Verification -->
+														<div style="margin-top: 30px;">
+															<h3 style="font-size: 1.5em;">Verify Address</h3>
+															<p style="font-size: 1em;">We have your addresses listed as follows:</p>
+															<div style="margin-bottom: 15px;">
+																<em>Permanent Address</em><br>
+																123 College Way<br>
+																Pasadena, CA 91001<br>
+																United States
+															</div>
+															<div style="margin-bottom: 15px;">
+																<em>Mailing Address</em><br>
+																123 College Way<br>
+																Pasadena, CA 91001<br>
+																United States
+															</div>
+															<p style="font-size: 1em;">
+																<a href="javascript:void(0);" style="color: blue; text-decoration: underline;" onclick="return (FW.Lazy.Popup(this));">Edit Addresses</a>
+															</p>
+														</div>
+													</div>
+												</div>												
           </main>
           
           <footer role="contentinfo"><h1 class="h2"><strong>Columbia </strong><span>Undergraduate </span><span>Admissions</span></h1><div class="region region-footer"><nav role="navigation" aria-labelledby="block-mainnavigation-menu" id="block-mainnavigation" class="block block-menu navigation menu--main"><h2 class="visually-hidden" id="block-mainnavigation-menu">Main navigation</h2><ul class="menu"><li class="menu-item menu-item--collapsed"><a href="https://undergrad.admissions.columbia.edu/life">Life at Columbia</a></li><li class="menu-item menu-item--collapsed"><a href="https://undergrad.admissions.columbia.edu/apply">How to Apply</a></li><li class="menu-item menu-item--collapsed"><a href="https://undergrad.admissions.columbia.edu/affordability">Affordability &amp; Aid</a></li><li class="menu-item menu-item--collapsed"><a href="https://undergrad.admissions.columbia.edu/academics">Academics</a></li><li class="menu-item menu-item--collapsed"><a href="https://undergrad.admissions.columbia.edu/visit">Visit</a></li></ul></nav><nav role="navigation" aria-labelledby="block-secondarynavigation-2-menu" id="block-secondarynavigation-2" class="block block-menu navigation menu--secondary-navigation"><h2 class="visually-hidden" id="block-secondarynavigation-2-menu">Secondary navigation</h2><ul class="menu"><li class="menu-item"><a href="https://news.columbia.edu/">News &amp; Updates</a></li><li class="menu-item"><a href="https://undergrad.admissions.columbia.edu/faq">FAQ</a></li><li class="menu-item"><a href="https://undergrad.admissions.columbia.edu/family">For Parents &amp; Guardians</a></li><li class="menu-item"><a href="https://undergrad.admissions.columbia.edu/counselors">For Counselors</a></li></ul></nav><nav role="navigation" aria-labelledby="block-cua-footer-menu" id="block-cua-footer" class="block block-menu navigation menu--footer"><h2 class="visually-hidden" id="block-cua-footer-menu">Footer menu</h2><ul class="menu"><li class="menu-item"><a href="http://www.college.columbia.edu/privacy/">Privacy Policy</a></li><li class="menu-item"><a href="http://www.college.columbia.edu/terms/">Terms of Use</a></li><li class="menu-item"><a href="https://visit.columbia.edu/content/accessibility">Accessibility</a></li><li class="menu-item"><a href="https://undergrad.admissions.columbia.edu/policies">University Policies</a></li></ul></nav><div id="block-contactinformation" class="block block-block-content block-block-content79f3efda-d162-47e5-9ce6-74e534f616a6"><div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"><p>212 Hamilton Hall<br>

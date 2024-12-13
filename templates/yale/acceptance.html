@@ -6,6 +6,7 @@
 
 
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <link rel="shortcut icon" href="https://apps-admissions-yale-edu.cdn.technolutions.net/favicon.ico">
   <link href="./acceptance_files/base.css" rel="stylesheet">
   <link href="./acceptance_files/base(1).css" rel="stylesheet">
@@ -89,6 +90,41 @@
     /*]]>*/
   </style>
 </head>
+<script>
+
+  // Function to launch minimal confetti
+  function launchMinimalConfetti() {
+      const duration = 10000; // Total duration of the animation (2 seconds)
+      const end = Date.now() + duration;
+
+      // Start a single animation frame loop
+      (function frame() {
+          if (Math.random() < 0.05) { 
+        confetti({
+          particleCount: 1, // Only 1 confetti per frame
+          spread: 300000,       // Narrow spread
+          startVelocity: 10, // Slower start
+          gravity: 1,       // Faster fall to reduce clutter
+          ticks: 5000,       // Short lifespan
+          origin: { x: Math.random(), y: 0 }, // Confetti starts mid-screen
+          colors: ['#4169E1'], // Royal blue color
+          shapes: ['square'], // Only squares
+          scalar: 1     // Small confetti size
+        });
+      }
+
+        // Continue the animation until the duration ends
+        if (Date.now() < end) {
+          requestAnimationFrame(frame); // Launch again in the next animation frame
+        }
+      })();
+    }
+
+    // Trigger confetti on page load
+    window.onload = () => {
+      launchMinimalConfetti();
+    };
+        </script>
 
 <body data-gr-c-s-loaded="true" class="vsc-initialized">
 
