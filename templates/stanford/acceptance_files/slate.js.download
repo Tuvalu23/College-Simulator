@@ -1,0 +1,99 @@
+function minimizeHeader() {
+  var opts = {
+            scrollStart: 230, //the scroll point to being showing the return button
+            scrollTop: 0, //the scroll point to return to
+            returnSpeed: 250, // the speed of the animation for scrolling back top
+            fadeSpeed: 300, //how quickly the button fades in/out
+        };
+  // watch window scroll
+    $(document).scroll(function() {
+        if ($(window).scrollTop() > opts.scrollStart) {
+            $('#c_site-header').addClass('minimized');
+        } else {
+            $('#c_site-header').removeClass('minimized');
+        }
+    });
+
+};
+
+function styleButtons() {
+    $('button.default').addClass('button').removeClass('default');
+};
+
+function stylemyButtons() {
+    $('button.default').addClass('button').removeClass('default');
+};
+
+function confirmSubmit(form,msg) {
+  var r = confirm(msg);
+  if (r == true) {
+    FW.Lazy.Commit($('#'+form));
+  }
+  return false;
+}
+
+function isImpersonating() {
+    if (document.querySelector('[title="Exit Impersonation"]')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+(function($) {
+
+    $.fn.returnToTop = function(options) {
+        //set up default options
+        var defaults = {
+            scrollStart: 500, //the scroll point to being showing the return button
+            scrollTop: 0, //the scroll point to return to
+            returnSpeed: 250, // the speed of the animation for scrolling back top
+            fadeSpeed: 300, //how quickly the button fades in/out
+        };
+
+        var opts = $.extend({}, defaults, options);
+
+        return this.each(function() {
+            var $this = $(this);
+
+            $this.hide();
+            $this.bind('click touchend',function (e) {
+                e.preventDefault();
+                $('html, body').animate({scrollTop: opts.scrollTop}, opts.returnSpeed);
+            });
+            
+            // watch window scroll
+            $(document).scroll(function() {
+                if ($(window).scrollTop() > opts.scrollStart) {
+                    $this.show();
+                } else {
+                    $this.hide();
+                }
+            });
+        });
+    };
+})(jQuery);
+
+$(function() { 
+    minimizeHeader();
+    styleButtons();
+    $('#c_goto-top').returnToTop();
+});
+
+$(document).ajaxComplete(function() {
+    $('button.default').addClass('button').removeClass('default');
+    $(function() { 
+       // styleButtons();
+    });
+});
+
+function getUrlParams() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
