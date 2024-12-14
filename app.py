@@ -67,6 +67,7 @@ def start():
     return render_template('start.html')
 
 # register
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()

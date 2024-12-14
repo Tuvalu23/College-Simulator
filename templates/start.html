@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Sign In{% endblock %}
 
+{% block background %}
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/start_image.jpg') }}');"></div>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-md mx-auto bg-gradient-to-r from-indigo-600 to-purple-600 border border-gray-700 shadow-lg rounded-lg p-8 mt-10 transform hover:scale-105 transition duration-300">
+<div class="relative max-w-md mx-auto bg-gradient-to-r from-indigo-600 to-purple-600 border border-gray-700 shadow-lg rounded-lg p-8 mt-10">
     <h1 class="text-3xl font-bold text-center text-white mb-6 animate-pulse">Sign In</h1>
 
     <!-- Login Form -->
