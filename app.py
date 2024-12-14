@@ -126,17 +126,46 @@ def profile():
             return redirect(url_for('profile'))
     else:
         # GET request, show profile
+        user_id = session['user_id']
         user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
-        user = User.get_by_id(session['user_id'])
+        user = User.get_by_id(user_id)
+
         if user:
             username = user['username']
         else:
             username = "Unknown"
+
+        # Fetch simulations to find the favorite and least favorite colleges
+        simulations = User.get_simulations(user_id)
+        college_counts = {}
+
+        # Aggregate counts for each college
+        for sim in simulations:
+            college_counts[sim['university_name']] = college_counts.get(sim['university_name'], 0) + 1
+
+        if college_counts:
+            # Determine the most simulated (favorite) and least simulated (least favorite)
+            favorite_college = max(college_counts, key=college_counts.get)
+            least_favorite_college = min(college_counts, key=college_counts.get)
+
+            # Fetch display names
+            favorite_college_display = next(
+                (uni['display_name'] for uni in university_list if uni['name'] == favorite_college), "Unknown"
+            )
+            least_favorite_college_display = next(
+                (uni['display_name'] for uni in university_list if uni['name'] == least_favorite_college), "Unknown"
+            )
+        else:
+            favorite_college_display = "No simulations yet"
+            least_favorite_college_display = "No simulations yet"
+
         return render_template(
             "profile.html",
             name=user_data["name"],
             date=user_data["date"],
-            username=username
+            username=username,
+            favorite_college=favorite_college_display,
+            least_favorite_college=least_favorite_college_display
         )
         
 # statistics route
