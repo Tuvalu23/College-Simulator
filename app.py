@@ -143,6 +143,8 @@ def profile():
         for sim in simulations:
             college_counts[sim['university_name']] = college_counts.get(sim['university_name'], 0) + 1
 
+        total_simulations = sum(college_counts.values())
+
         if college_counts:
             # Determine the most simulated (favorite) and least simulated (least favorite)
             favorite_college = max(college_counts, key=college_counts.get)
@@ -165,7 +167,8 @@ def profile():
             date=user_data["date"],
             username=username,
             favorite_college=favorite_college_display,
-            least_favorite_college=least_favorite_college_display
+            least_favorite_college=least_favorite_college_display,
+            total_simulations=total_simulations
         )
         
 # statistics route
