@@ -32,7 +32,6 @@
             }
         }
 
-        /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -46,7 +45,6 @@
             border-radius: 4px;
         }
 
-        /* Overlay for background images */
         .background-overlay {
             position: fixed;
             top: 0;
@@ -60,7 +58,6 @@
             opacity: 0.6;
         }
 
-        /* Header and Footer Styling */
         .header,
         .footer {
             background: linear-gradient(270deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
@@ -97,7 +94,6 @@
             color: #e0e0e0;
         }
 
-        /* Footer Styling */
         .footer {
             padding: 1rem 0;
             font-size: 0.875rem;
@@ -109,12 +105,10 @@
             text-decoration: underline;
         }
 
-        /* Home Icon Styling */
         .home-icon {
             filter: invert(1) brightness(200%);
         }
 
-        /* Navigation and Button Animations */
         .nav-btn,
         .btn-primary,
         .btn-secondary,
@@ -135,14 +129,10 @@
 </head>
 
 <body class="text-gray-800 min-h-screen flex flex-col">
-    <!-- Background Image Overlay (Optional, set in child templates) -->
-    {% block background %}
-    {% endblock %}
+    {% block background %}{% endblock %}
 
-    <!-- Header -->
     <header class="header fixed top-0 left-0 w-full z-50 py-4 bg-white">
         <div class="flex items-center px-6 w-full">
-            <!-- Left side: Home Icon and Title -->
             <div class="flex items-center gap-4">
                 <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-2 transition transform hover:scale-105 hover:text-gray-300">
                     <img src="{{ url_for('static', filename='icons/home-icon.png') }}" alt="Home" class="home-icon w-10 h-10">
@@ -150,7 +140,6 @@
                 </a>
             </div>
 
-            <!-- Right side: Navigation Buttons (Moved slightly to the left) -->
             <div class="header-buttons flex items-center space-x-4 ml-auto mr-20">
                 <a href="{{ url_for('quicksim') }}" class="nav-btn hover:text-gray-300"><strong>Quick Sim</strong></a>
                 <a href="{{ url_for('universities') }}" class="nav-btn hover:text-gray-300"><strong>Advanced Sim</strong></a>
@@ -166,7 +155,6 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-grow container mx-auto mt-20 p-6 fade-in">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -190,11 +178,9 @@
             {% endif %}
         {% endwith %}
 
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer class="footer text-center">
         <div>&copy; 2024 Ben Rudinski. All rights reserved.</div>
     </footer>

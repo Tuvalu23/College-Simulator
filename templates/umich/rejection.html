@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 2; background-color: #f9f9f9; color: #333; margin: 0; padding: 0;">
+
+    <!-- Wrapper for consistent width -->
+    <div style="max-width: 70%; margin: 0 auto; padding: 20px;">
+        <div style="margin-bottom: 40px;"></div>
+        <!-- Top section -->
+        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 40px; margin-top: 40px;">
+            <span style="font-size: 1.11rem; font-weight: 400; color: #444; margin-right: 8px;">{{ name }}</span>
+            <a href="{{ url_for('login', college=college) }}" style="font-size: 0.7rem; color: #0056b3; text-decoration: none; cursor: pointer;">Logout</a>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <span style="font-weight: bold;">{{ date }}</span>
+            <span style="color: #0056b3;">Download PDF</span>
+        </div>
+
+        <!-- Letter content -->
+        <div style="background-color: #fff; padding: 0px; border-radius: 5px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <p>Dear {{ name }},</p>
+            <p>
+                Thank you for applying to the University of Michigan College of Literature, Science, and the Arts for Fall 2025. We appreciate the time and effort you put into your application and your interest in joining the Michigan family.
+            </p>
+            <p>
+                After careful consideration of your application and supporting materials, we regret to inform you that we are unable to offer you admission at this time. This year, we received an extraordinarily large number of applications from highly qualified candidates, making our admissions process more competitive than ever.
+            </p>
+            <p>
+                We understand how disappointing this news may be. Please know that our decision reflects the competitive nature of our admissions process and not a judgment on your abilities or potential. We are confident that you will find success and achieve your academic and personal goals in your chosen path.
+            </p>
+            <p>
+                We wish you the very best in all your future endeavors and hope you continue to pursue your dreams with the same dedication and passion that brought you to apply to the University of Michigan.
+            </p>
+            <p>Sincerely,</p>
+            <p style="margin-top: 0px;">
+                <img src="./acceptance_files/sig.png" alt="Signature" style="height: 60px;">
+                <br>
+                <span style="font-weight: bold;">Erica L. Sanders</span><br>
+                Director
+            </p>
+        </div>
+
+        <!-- Call-to-action -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('ustatus', college=college)}}" style="color: #0056b3; font-weight: bold; text-decoration: none;">Return to Application Status</a>
+        </div>
+    </div>
+
+</body>
+</html>

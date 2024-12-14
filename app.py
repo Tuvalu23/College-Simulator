@@ -16,29 +16,134 @@ init_db()
 
 # List of universities
 university_list = [
-    {"name": "brown", "display_name": "Brown University", "logo": "static/logos/brown-logo.jpg"},
-    {"name": "caltech", "display_name": "California Institute of Technology", "logo": "static/logos/caltech-logo.jpg"},
-    {"name": "cmu", "display_name": "Carnegie Mellon University", "logo": "static/logos/cmu-logo.jpg"},
-    {"name": "columbia", "display_name": "Columbia University", "logo": "static/logos/columbia-logo.jpg"},
-    {"name": "cornell", "display_name": "Cornell University", "logo": "static/logos/cornell-logo.jpg"},
-    {"name": "dartmouth", "display_name": "Dartmouth College", "logo": "static/logos/dartmouth-logo.png"},
-    {"name": "duke", "display_name": "Duke University", "logo": "static/logos/duke-logo.jpg"},
-    {"name": "gtech", "display_name": "Georgia Tech", "logo": "static/logos/gtech-logo.jpg"},
-    {"name": "harvard", "display_name": "Harvard University", "logo": "static/logos/harvard-logo.jpg"},
-    {"name": "jhu", "display_name": "Johns Hopkins University", "logo": "static/logos/jhu-logo.jpg"},
-    {"name": "mit", "display_name": "Massachusetts Institute of Technology", "logo": "static/logos/mit-logo.jpg"},
-    {"name": "northwestern", "display_name": "Northwestern University", "logo": "static/logos/northwestern-logo.jpg"},
-    {"name": "nyu", "display_name": "New York University", "logo": "static/logos/nyu-logo.jpg"},
-    {"name": "princeton", "display_name": "Princeton University", "logo": "static/logos/princeton-logo.jpg"},
-    {"name": "stanford", "display_name": "Stanford University", "logo": "static/logos/stanford-logo.jpg"},
-    {"name": "berkeley", "display_name": "University of California, Berkeley", "logo": "static/logos/berkeley-logo.png"},
-    {"name": "umich", "display_name": "University of Michigan", "logo": "static/logos/umich-logo.png"},
-    {"name": "uchicago", "display_name": "University of Chicago", "logo": "static/logos/uchicago-logo.jpg"},
-    {"name": "upenn", "display_name": "University of Pennsylvania", "logo": "static/logos/upenn-logo.jpg"},
-    {"name": "usc", "display_name": "University of Southern California", "logo": "static/logos/usc-logo.png"},
-    {"name": "yale", "display_name": "Yale University", "logo": "static/logos/yale-logo.jpg"},
-    
+    {
+        "name": "brown",
+        "display_name": "Brown University",
+        "logo": "static/logos/brown-logo.jpg",
+        "description": "Brown University, founded in 1764 and located in Providence, Rhode Island, is an Ivy League institution known for its innovative Open Curriculum. Ranked consistently among the top 20 universities in the United States, Brown emphasizes interdisciplinary scholarship, undergraduate teaching, and a vibrant campus culture."
+    },
+    {
+        "name": "caltech",
+        "display_name": "California Institute of Technology",
+        "logo": "static/logos/caltech-logo.jpg",
+        "description": "The California Institute of Technology (Caltech), established in 1891 in Pasadena, California, is a small but prestigious science and engineering powerhouse. Frequently ranked among the world’s top 10 universities, Caltech is renowned for cutting-edge research in physics, astronomy, engineering, and the natural sciences."
+    },
+    {
+        "name": "cmu",
+        "display_name": "Carnegie Mellon University",
+        "logo": "static/logos/cmu-logo.jpg",
+        "description": "Carnegie Mellon University (CMU), founded in 1900 in Pittsburgh, Pennsylvania, is a global research university notable for top-ranked programs in computer science, fine arts, and engineering. CMU consistently ranks among the top 30 U.S. universities and is known for fostering a culture of innovation, entrepreneurship, and interdisciplinary exploration."
+    },
+    {
+        "name": "columbia",
+        "display_name": "Columbia University",
+        "logo": "static/logos/columbia-logo.jpg",
+        "description": "Columbia University, established in 1754 in the heart of New York City, is an Ivy League institution with a diverse range of undergraduate and graduate programs. Regularly ranked in the top 10 nationally, Columbia emphasizes a robust Core Curriculum, cutting-edge research, and close engagement with the cultural and professional opportunities of NYC."
+    },
+    {
+        "name": "cornell",
+        "display_name": "Cornell University",
+        "logo": "static/logos/cornell-logo.jpg",
+        "description": "Cornell University, founded in 1865 in Ithaca, New York, is both an Ivy League and land-grant institution. It offers a wide array of programs across its undergraduate colleges and professional schools. Routinely ranked among the top 20 universities, Cornell is celebrated for its commitment to public engagement, interdisciplinary research, and inclusive community."
+    },
+    {
+        "name": "dartmouth",
+        "display_name": "Dartmouth College",
+        "logo": "static/logos/dartmouth-logo.png",
+        "description": "Dartmouth College, established in 1769 in Hanover, New Hampshire, is an Ivy League institution emphasizing a liberal arts undergraduate education. Regularly placed in the top 15 U.S. colleges, Dartmouth provides a close-knit community, small class sizes, and a distinctive focus on experiential learning and undergraduate research."
+    },
+    {
+        "name": "duke",
+        "display_name": "Duke University",
+        "logo": "static/logos/duke-logo.jpg",
+        "description": "Duke University, founded in 1838 in Durham, North Carolina, is a private research university known for strong programs in medicine, engineering, public policy, and the liberal arts. Often ranked in the top 10-15 nationally, Duke combines rigorous academics with a spirited athletic culture and a global outlook."
+    },
+    {
+        "name": "gtech",
+        "display_name": "Georgia Tech",
+        "logo": "static/logos/gtech-logo.jpg",
+        "description": "The Georgia Institute of Technology, founded in 1885 in Atlanta, Georgia, is a leading public research university. Known for top-tier engineering, computing, and business programs, Georgia Tech ranks among the top 10 public universities in the U.S. and fosters a culture of innovation and applied research."
+    },
+    {
+        "name": "harvard",
+        "display_name": "Harvard University",
+        "logo": "static/logos/harvard-logo.jpg",
+        "description": "Harvard University, established in 1636 in Cambridge, Massachusetts, is the oldest institution of higher learning in the U.S. Consistently ranked #1 or #2 globally, Harvard offers unparalleled resources, a vast network of alumni, and a broad range of top-ranked programs in the arts, sciences, medicine, law, and business."
+    },
+    {
+        "name": "jhu",
+        "display_name": "Johns Hopkins University",
+        "logo": "static/logos/jhu-logo.jpg",
+        "description": "Johns Hopkins University, founded in 1876 in Baltimore, Maryland, pioneered the modern research university model in the U.S. Renowned for its medical school, public health, international studies, and biomedical engineering programs, JHU consistently ranks in the top 15 nationally and is a global leader in groundbreaking research."
+    },
+    {
+        "name": "mit",
+        "display_name": "Massachusetts Institute of Technology",
+        "logo": "static/logos/mit-logo.jpg",
+        "description": "The Massachusetts Institute of Technology (MIT), established in 1861 in Cambridge, Massachusetts, is a world leader in science, technology, and engineering education. Perennially ranked among the top 5 universities worldwide, MIT is known for a culture of invention, interdisciplinary collaboration, and hands-on problem-solving."
+    },
+    {
+        "name": "northwestern",
+        "display_name": "Northwestern University",
+        "logo": "static/logos/northwestern-logo.jpg",
+        "description": "Northwestern University, founded in 1851 in Evanston, Illinois (just north of Chicago), is a top-10 U.S. research university. Renowned for its journalism, business (Kellogg), law, and performing arts programs, Northwestern champions interdisciplinary collaborations and provides students with rich academic and cultural opportunities."
+    },
+    {
+        "name": "nyu",
+        "display_name": "New York University",
+        "logo": "static/logos/nyu-logo.jpg",
+        "description": "New York University (NYU), established in 1831, is located in the heart of Manhattan. With global campuses and a wide array of programs, NYU is recognized for its business, film, performing arts, and social science disciplines. Routinely ranked in the top 30 U.S. universities, NYU offers unparalleled internship and cultural experiences."
+    },
+    {
+        "name": "princeton",
+        "display_name": "Princeton University",
+        "logo": "static/logos/princeton-logo.jpg",
+        "description": "Princeton University, founded in 1746 in Princeton, New Jersey, is one of the world’s foremost Ivy League institutions. Consistently ranked #1 or #2 among U.S. universities, Princeton is celebrated for its rigorous undergraduate focus, generous financial aid, and research excellence across the humanities, sciences, and engineering."
+    },
+    {
+        "name": "stanford",
+        "display_name": "Stanford University",
+        "logo": "static/logos/stanford-logo.jpg",
+        "description": "Stanford University, established in 1885 near Palo Alto, California, is a top-tier private research institution known for its entrepreneurial spirit and proximity to Silicon Valley. Frequently ranked among the world’s top 5 universities, Stanford excels in engineering, business, computer science, the humanities, and the sciences."
+    },
+    {
+        "name": "berkeley",
+        "display_name": "University of California, Berkeley",
+        "logo": "static/logos/berkeley-logo.png",
+        "description": "The University of California, Berkeley, founded in 1868 in the San Francisco Bay Area, is the flagship campus of the UC system. Consistently ranked the #1 public university in the U.S., Berkeley leads in sciences, engineering, social sciences, and the humanities, with a renowned tradition of public service and political activism."
+    },
+    {
+        "name": "umich",
+        "display_name": "University of Michigan",
+        "logo": "static/logos/umich-logo.png",
+        "description": "The University of Michigan, established in 1817 in Ann Arbor, is a top public research university noted for its outstanding faculty, diverse academic programs, and passionate athletic community. Consistently ranked in the top 25, UMich excels across disciplines, from engineering and medicine to business, arts, and the social sciences."
+    },
+    {
+        "name": "uchicago",
+        "display_name": "University of Chicago",
+        "logo": "static/logos/uchicago-logo.jpg",
+        "description": "The University of Chicago, founded in 1890 on the South Side of Chicago, is world-renowned for its rigorous intellectual environment, the Core Curriculum, and strengths in economics, law, and the social sciences. Regularly in the top 10, UChicago’s culture of inquiry fosters transformative research and critical debate."
+    },
+    {
+        "name": "upenn",
+        "display_name": "University of Pennsylvania",
+        "logo": "static/logos/upenn-logo.jpg",
+        "description": "The University of Pennsylvania (Penn), established in 1740 in Philadelphia, is an Ivy League university that blends liberal arts and professional education. Consistently ranked in the top 10, Penn is celebrated for the Wharton School of Business, as well as top programs in law, medicine, and the social sciences."
+    },
+    {
+        "name": "usc",
+        "display_name": "University of Southern California",
+        "logo": "static/logos/usc-logo.png",
+        "description": "The University of Southern California (USC), founded in 1880 in Los Angeles, is a leading private research institution. Known for its world-class film school, strong engineering, business, and communication programs, USC offers a vibrant campus life, global outreach, and deep connections to the industries of Southern California."
+    },
+    {
+        "name": "yale",
+        "display_name": "Yale University",
+        "logo": "static/logos/yale-logo.jpg",
+        "description": "Yale University, established in 1701 in New Haven, Connecticut, is an Ivy League institution renowned for its stellar liberal arts education, top-ranked law school, and vibrant arts programs. Consistently placed among the top 3-5 U.S. universities, Yale’s residential college system, world-class faculty, and global network ensure a transformative academic experience."
+    }
 ]
+
 
 def login_required(f):
     @wraps(f)
@@ -172,15 +277,13 @@ def profile():
             total_simulations=total_simulations
         )
         
-# statistics route
 @app.route('/statistics')
 @login_required
 def statistics():
-    # Retrieve user_data from session
     user_id = session['user_id']
-    simulations = User.get_simulations(user_id)  # Fetch all simulations for the user
-    
-    # Aggregate statistics per university
+    simulations = User.get_simulations(user_id)  # Fetch user-specific simulations
+
+    # Aggregate stats
     stats = {}
     for uni in university_list:
         uni_name = uni['name']
@@ -192,15 +295,16 @@ def statistics():
         stats[uni_name] = {
             'display_name': uni['display_name'],
             'logo': uni['logo'],
+            'description': uni['description'],  # Pass description directly
             'total_simulations': total,
             'acceptances': acceptances,
             'rejections': rejections,
             'success_rate': round(success_rate, 2)
         }
-    
-    # Sort stats by total simulations in descending order
+
+    # Sort by total simulations
     sorted_stats = sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
-    
+
     return render_template('statistics.html', sorted_stats=sorted_stats)
 
 # quick sim
