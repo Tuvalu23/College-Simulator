@@ -3,7 +3,8 @@ from datetime import datetime
 import os
 
 from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash
-from models import init_db, add_user, user_exists, verify_user
+from functools import wraps
+from models import init_db, User
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = 'Tuvalu23'
@@ -38,63 +39,78 @@ university_list = [
     
 ]
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash("You must be logged in to access this page.", "danger")
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # login or register Page
 @app.route("/", methods=["GET", "POST"])
-def login():
+def start():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
         user = User.get_by_username(username)
-        if user and user.verify_password(user.password_hash, password):
-            session['user_id'] = user.id
+
+        if user and User.verify_password(user['password_hash'], password):
+            session['user_id'] = user['id']
             flash("Login successful!", "success")
-            return redirect(url_for('home'))
+            return redirect(url_for('dashboard'))
         else:
             flash("Invalid username or password.", "danger")
-    return render_template('login.html')
+            return redirect(url_for('start'))
+
+    return render_template('start.html')
 
 # register
-@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
 
-        # password validation (server-side)
         errors = []
+        # Basic server-side validation
         if password != confirm_password:
             errors.append("Passwords do not match.")
-        if len(password) < 4:
-            errors.append("Password must be at least 12 characters long.")
+        if len(password) < 5:
+            errors.append("Password must be at least 5 characters long.")
+            
+        if User.get_by_username(username):
+            errors.append("Username already exists.")
 
         if errors:
             for error in errors:
                 flash(error, 'danger')
             return redirect(url_for('register'))
 
-        if User.get_by_username(username):
-            flash("Username already exists.", 'danger')
-            return redirect(url_for('register'))
-
         User.create(username, password)
-        flash("Account created! Log in now.", 'success')
-        return redirect(url_for('login'))
+        flash("Account created successfully! Please login.", 'success')
+        return redirect(url_for('start'))
+
     return render_template('register.html')
+
+#dashboard
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
 
 # logout route
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
     flash("You have been logged out.", 'info')
-    return redirect(url_for('home'))
+    return redirect(url_for('start'))
 
 # profile route (access user info etc)
 
 # statistics route
 
-# dashboard route
 
 
 def index():

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-gradient-to-r from-green-500 to-teal-500 border border-gray-700 shadow-lg rounded-lg p-8 mt-10 transform hover:scale-105 transition duration-300">
+    <h1 class="text-3xl font-bold text-center text-white mb-6 animate-pulse">Register</h1>
+    <form id="registrationForm" action="{{ url_for('register') }}" method="POST" class="space-y-6">
+        <!-- Username Field -->
+        <div class="relative">
+            <label for="username" class="block text-gray-200 font-semibold mb-1">Username:</label>
+            <input type="text" id="username" name="username" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+            <!-- Username Requirements -->
+            <ul class="mt-2 text-sm">
+                <li id="no-space" data-text="Cannot start with a space" class="invalid text-red-300">&#10008; Cannot start with a space</li>
+            </ul>
+        </div>
+
+        <!-- Password Field -->
+        <div class="relative">
+            <label for="password" class="block text-gray-200 font-semibold mb-1">Password:</label>
+            <input type="password" id="password" name="password" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="relative">
+            <label for="confirm_password" class="block text-gray-200 font-semibold mb-1">Retype Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+        </div>
+
+        <!-- Password Requirements -->
+        <ul class="mt-2 text-sm">
+            <li id="length" data-text="At least 12 characters" class="invalid text-red-300">&#10008; At least 12 characters</li>
+            <li id="lowercase" data-text="At least one lowercase letter" class="invalid text-red-300">&#10008; At least one lowercase letter</li>
+            <li id="uppercase" data-text="At least one uppercase letter" class="invalid text-red-300">&#10008; At least one uppercase letter</li>
+            <li id="number" data-text="At least one number" class="invalid text-red-300">&#10008; At least one number</li>
+            <li id="match" data-text="Passwords must match" class="invalid text-red-300">&#10008; Passwords must match</li>
+        </ul>
+
+        <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 duration-200">
+            Register
+        </button>
+    </form>
+
+    <p class="mt-4 text-center text-gray-300">
+        Already have an account?
+        <a href="{{ url_for('start') }}" class="text-blue-400 hover:underline">Sign In</a>
+    </p>
+</div>
+
+<!-- Client-side Validation Scripts -->
+<script>
+    // Username Validation
+    function validateUsername() {
+        const username = document.getElementById('username').value;
+        const noSpaceRequirement = document.getElementById('no-space');
+
+        if (username && username.startsWith(' ')) {
+            noSpaceRequirement.classList.remove('valid');
+            noSpaceRequirement.classList.add('invalid');
+            noSpaceRequirement.innerHTML = '&#10008; ' + noSpaceRequirement.dataset.text;
+            return false;
+        } else {
+            noSpaceRequirement.classList.remove('invalid');
+            noSpaceRequirement.classList.add('valid');
+            noSpaceRequirement.innerHTML = '&#10004; ' + noSpaceRequirement.dataset.text;
+            return true;
+        }
+    }
+
+    // Password Validation
+    function validatePassword() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        const checks = {
+            length: password.length >= 12,
+            lowercase: /[a-z]/.test(password),
+            uppercase: /[A-Z]/.test(password),
+            number: /[0-9]/.test(password),
+            match: password === confirmPassword && password !== ''
+        };
+
+        for (const [key, value] of Object.entries(checks)) {
+            const element = document.getElementById(key);
+            if (element) {
+                if (value) {
+                    element.classList.remove('invalid');
+                    element.classList.add('valid');
+                    element.innerHTML = '&#10004; ' + element.dataset.text;
+                } else {
+                    element.classList.remove('valid');
+                    element.classList.add('invalid');
+                    element.innerHTML = '&#10008; ' + element.dataset.text;
+                }
+            }
+        }
+    }
+
+    // Form Validation on Submit
+    function validateForm(event) {
+        if (!validateUsername()) {
+            event.preventDefault();
+        }
+
+        const allValid = ['length', 'lowercase', 'uppercase', 'number', 'match'].every(id => {
+            const element = document.getElementById(id);
+            return element && element.classList.contains('valid');
+        });
+
+        if (!allValid) {
+            event.preventDefault();
+            alert("Please ensure all password requirements are met.");
+        }
+    }
+
+    // Event Listeners
+    document.getElementById('username').addEventListener('input', validateUsername);
+    document.getElementById('password').addEventListener('input', validatePassword);
+    document.getElementById('confirm_password').addEventListener('input', validatePassword);
+    document.getElementById('registrationForm').addEventListener('submit', validateForm);
+</script>
+{% endblock %}

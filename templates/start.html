@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-gradient-to-r from-indigo-600 to-purple-600 border border-gray-700 shadow-lg rounded-lg p-8 mt-10 transform hover:scale-105 transition duration-300">
+    <h1 class="text-3xl font-bold text-center text-white mb-6 animate-pulse">Sign In</h1>
+
+    <!-- Login Form -->
+    <form method="POST" action="{{ url_for('start') }}" class="space-y-6">
+        <div class="relative">
+            <label for="username" class="block text-gray-200 font-semibold mb-1">Username</label>
+            <input type="text" id="username" name="username" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+        </div>
+        <div class="relative">
+            <label for="password" class="block text-gray-200 font-semibold mb-1">Password</label>
+            <input type="password" id="password" name="password" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+        </div>
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 duration-200">
+            Login
+        </button>
+    </form>
+
+    <p class="mt-4 text-center text-gray-300">
+        Don't have an account?
+        <a href="{{ url_for('register') }}" class="text-green-400 hover:underline">Sign Up</a>
+    </p>
+</div>
+{% endblock %}
