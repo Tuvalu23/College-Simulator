@@ -11,8 +11,12 @@
 <div class="relative max-w-6xl mx-auto bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg rounded-lg p-8 mt-10 shadow-lg">
     <!-- Welcome Section -->
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-4 animate-bounce">Welcome to the College Application Simulator</h1>
-        <p class="text-lg text-gray-600">Navigate your way through the college application process with our interactive tools.</p>
+        <h1 class="text-5xl font-extrabold text-gray-800 mb-4 animate-subtle-bounce">
+            Welcome to the College Application Simulator
+        </h1>        
+        <p class="text-xl text-gray-600 font-serif font-medium">
+            Navigate your way through the college application process with our interactive tools!
+        </p>        
     </div>
     
     <!-- Buttons Section -->
@@ -54,13 +58,23 @@
         </div>
     </div>
     
-    <!-- Advertisement Section -->
-    <div class="bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 rounded-lg p-6 shadow-md animate-pulse">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Enhance Your Academic Journey</h2>
-        <p class="text-gray-700 mb-4">
-            Unlock a wealth of academic resources and guidance at <a href="https://studyforallhub.com" target="_blank" class="text-indigo-600 hover:underline">StudyForAll</a>. Elevate your learning experience with expert advice and comprehensive materials.
+    <!-- Who We Are Section -->
+    <div class="bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600 rounded-lg p-8 shadow-lg transition-transform transform hover:scale-105" style="margin-bottom: 30px;">
+        <h2 class="text-3xl font-semibold text-white mb-4">Who We Are</h2>
+        <p class="text-white">
+            The College Application Simulator is designed to help students navigate the complexities of the college admission process. Our platform offers a range of simulation tools that provide insights into application strategies, admission probabilities, and personalized recommendations based on individual profiles. Whether you're aiming for top-tier institutions or exploring a variety of options, our simulator equips you with the knowledge and confidence to make informed decisions about your academic future.
         </p>
-        <a href="https://studyforallhub.com" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full transition duration-300">
+    </div>
+    
+    <!-- Advertisement Section -->
+    <div class="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-600 rounded-lg p-8 shadow-lg transition-transform transform hover:scale-105">
+        <h2 class="text-3xl font-semibold text-white mb-4">
+            Enhance Your Academic Journey
+        </h2>
+        <p class="text-white mb-6">
+            Unlock a wealth of academic resources and guidance at <a href="https://studyforallhub.com" target="_blank" class="text-yellow-300 hover:underline">StudyForAll</a>. Elevate your learning experience with expert advice and comprehensive materials.
+        </p>
+        <a href="https://studyforallhub.com" target="_blank" class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-110">
             Visit StudyForAll
         </a>
     </div>
@@ -70,7 +84,7 @@
 <script>
     // Example: Fade-in animations for sections
     document.addEventListener('DOMContentLoaded', () => {
-        const elements = document.querySelectorAll('.animate-bounce, .animate-pulse');
+        const elements = document.querySelectorAll('.animate-bounce, .animate-fadeIn');
         elements.forEach(el => {
             el.classList.add('opacity-0');
             setTimeout(() => {
