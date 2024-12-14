@@ -5,6 +5,7 @@ import os
 from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash
 from functools import wraps
 from models import init_db, User
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = 'Tuvalu23'
@@ -109,7 +110,35 @@ def logout():
     return redirect(url_for('start'))
 
 # profile route (access user info etc)
-
+@app.route('/profile', methods=["GET", "POST"])
+@login_required
+def profile():
+    if request.method == "POST":
+        # Delete user account
+        user = User.get_by_id(session['user_id'])
+        if user:
+            User.delete_user(user['id'])
+            session.pop('user_id', None)
+            flash("Your account has been deleted.", "info")
+            return redirect(url_for('start'))
+        else:
+            flash("User not found.", "danger")
+            return redirect(url_for('profile'))
+    else:
+        # GET request, show profile
+        user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+        user = User.get_by_id(session['user_id'])
+        if user:
+            username = user['username']
+        else:
+            username = "Unknown"
+        return render_template(
+            "profile.html",
+            name=user_data["name"],
+            date=user_data["date"],
+            username=username
+        )
+        
 # statistics route
 
 # quick sim

@@ -61,3 +61,10 @@ class User:
     @staticmethod
     def verify_password(stored_hash, password):
         return stored_hash == hash_password(password)
+    
+    @staticmethod
+    def delete_user(user_id):
+        with sqlite3.connect(DATABASE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+            conn.commit()

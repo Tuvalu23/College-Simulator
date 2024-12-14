@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block background %}
+<!-- Blurry Background Image -->
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/profile_image.jpeg') }}');"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10">
+    <div class="max-w-md mx-auto bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 p-8 rounded-lg shadow-lg animate-fadeIn">
+        <h1 class="text-4xl font-extrabold text-center text-white mb-6 animate-subtle-bounce">
+            Your Profile
+        </h1>
+        <div class="text-center text-white mb-6">
+            <p class="text-lg">Name: <span class="font-semibold">{{ name }}</span></p>
+            <p class="text-lg">Date: <span class="font-semibold">{{ date }}</span></p>
+            <p class="text-lg">Username: <span class="font-semibold">{{ username }}</span></p>
+        </div>
+        <div class="flex justify-center space-x-4">
+            <form method="POST" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+                <button type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition transform hover:scale-105">
+                    Delete Account
+                </button>
+            </form>
+            <a href="{{ url_for('dashboard') }}"
+                class="bg-white bg-opacity-30 hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-lg transition transform hover:scale-105">
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
