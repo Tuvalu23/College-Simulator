@@ -12,7 +12,6 @@ app.secret_key = 'Tuvalu23'
 # init db
 init_db()
 
-user_data = {"name": "", "date": ""}
 
 # List of universities
 university_list = [
@@ -113,37 +112,79 @@ def logout():
 
 # statistics route
 
-
-
-def index():
+# quick sim
+@app.route("/quicksim", methods=["GET", "POST"])
+@login_required
+def quicksim():
     if request.method == "POST":
-        user_data["name"] = request.form["name"]
-        user_data["date"] = datetime.strptime(request.form["date"], "%Y-%m-%d").strftime("%B %d, %Y")
-        return redirect(url_for("select_university"))
-    return render_template("index.html", user_data=user_data)
+        name = request.form.get("name", "").strip()
+        date_input = request.form.get("date", "").strip()
+        
+        # Validate inputs
+        if not name:
+            flash("Name is required.", "danger")
+            return redirect(url_for('quicksim'))
+        if not date_input:
+            flash("Date is required.", "danger")
+            return redirect(url_for('quicksim'))
+        
+        # Process the date
+        try:
+            formatted_date = datetime.strptime(date_input, "%Y-%m-%d").strftime("%B %d, %Y")
+        except ValueError:
+            flash("Invalid date format. Please select a valid date.", "danger")
+            return redirect(url_for('quicksim'))
+        
+        # Store data in session
+        session['quicksim_data'] = {
+            "name": name,
+            "date": formatted_date
+        }
+        
+        flash("Quick Simulation data submitted successfully!", "success")
+        return redirect(url_for("universities"))  # Ensure this route exists
+    
+    return render_template("quicksim.html")
 
 # University Selection Page
 @app.route("/universities", methods=["GET", "POST"])
-def select_university():
-    return render_template("universities.html", name=user_data["name"], university_list=university_list, user_data=user_data)
+@login_required
+def universities():
+    # Retrieve user_data from session
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    
+    # Ensure 'name' exists in user_data
+    name = user_data.get("name", "User")
+    date = user_data.get("date", "N/A")
+    
+    # Render the template with 'date' passed separately
+    return render_template(
+        "universities.html",
+        name=name,
+        date=date,
+        university_list=university_list,
+        user_data=user_data
+    )
 
 @app.route("/<college>/login", methods=["GET", "POST"])
 def login(college):
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
         # Check for missing inputs
         if not email or not password:
-            return render_template(f"{college}/login.html", error="Please fill out all fields.", college=college)
+            return render_template(f"{college}/login.html", error="Please fill out all fields.", college=college, date=user_data["date"])
         
         # Redirect to ustatus if inputs are valid
         return redirect(url_for("ustatus", college=college))
     
-    return render_template(f"{college}/login.html", name=user_data["name"], college=college)
+    return render_template(f"{college}/login.html", name=user_data["name"], college=college, date=user_data["date"])
 
+# ustatus route
 @app.route("/<college>/ustatus", methods=["GET", "POST"])
 def ustatus(college):
-    
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     if request.method == "POST":
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
@@ -151,14 +192,16 @@ def ustatus(college):
         return redirect(url_for("rejection", college=college))
     return render_template(f"{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
 
-# Acceptance Page
+# acceptance route
 @app.route("/<college>/acceptance")
 def acceptance(college):
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     return render_template(f"{college}/acceptance.html", name=user_data["name"], date=user_data["date"], college=college)
 
-# Rejection Page
+# rejection route
 @app.route("/<college>/rejection")
 def rejection(college):
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
 # files

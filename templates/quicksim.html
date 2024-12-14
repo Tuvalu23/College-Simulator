@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Quick Simulation{% endblock %}
+
+{% block background %}
+<!-- Blurry Background Image -->
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/quicksim_image.jpg') }}');"></div>
+{% endblock %}
+
+{% block content %}
+<!-- QuickSim Form Container -->
+<div class="flex items-center justify-center min-h-screen">
+    <div class="max-w-lg w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-8 rounded-lg shadow-lg backdrop-filter backdrop-blur-lg">
+        <h1 class="text-4xl font-extrabold text-white text-center mb-6 animate-subtle-bounce">
+            Quick College Simulation
+        </h1>
+        <p class="text-center text-white mb-8 text-lg font-medium">
+            Enter your details to get an instant simulation of your college application outcomes!
+        </p>
+        <form method="POST" class="space-y-6">
+            <div>
+                <label for="name" class="block text-sm font-medium text-white mb-1">Name</label>
+                <input type="text" id="name" name="name" required
+                    class="w-full px-4 py-2 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent text-gray-900">
+            </div>
+            <div>
+                <label for="date" class="block text-sm font-medium text-white mb-1">Date</label>
+                <input type="date" id="date" name="date" required
+                    class="w-full px-4 py-2 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent text-gray-900">
+            </div>
+            <div>
+                <button type="submit"
+                    class="w-full bg-white bg-opacity-30 hover:bg-opacity-50 text-white font-bold py-2 px-4 rounded-lg transition transform hover:scale-105">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

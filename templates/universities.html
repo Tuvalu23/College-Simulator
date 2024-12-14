@@ -2,15 +2,28 @@
 
 {% block title %}Choose a University{% endblock %}
 
+{% block background %}
+<!-- Blurry Background Image -->
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/uni_image.jpg') }}');"></div>
+{% endblock %}
+
 {% block content %}
 <div class="container mx-auto py-10">
-    <h1 class="text-3xl font-bold text-center mb-10">Welcome, {{ name }}! Choose a University</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <h1 class="text-4xl font-extrabold text-center text-white mb-5">
+        Welcome, {{ name }}! Choose a University
+    </h1>
+    <p class="text-center text-white mb-10">
+        Simulation Date: {{ date }}
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {% for uni in university_list %}
-        <div class="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl transition">
-            <img src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" alt="{{ uni.display_name }} Logo"
-                class="w-full h-32 object-contain mb-4">
-            <a href="{{ url_for('login', college=uni.name) }}" target="_blank" class="block text-xl font-bold text-center text-white">
+        <div class="p-6 rounded-lg shadow-lg flex flex-col" style="background: white;">
+            <div class="flex justify-center mb-4">
+                <img src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" alt="{{ uni.display_name }} Logo"
+                    class="w-48 h-48 object-contain">
+            </div>
+            <a href="{{ url_for('login', college=uni.name) }}" target="_blank"
+                class="block text-2xl font-bold text-center text-black hover:text-yellow-400 transition-colors duration-200">
                 {{ uni.display_name }}
             </a>
         </div>
