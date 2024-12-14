@@ -140,6 +140,35 @@ def profile():
         )
         
 # statistics route
+@app.route('/statistics')
+@login_required
+def statistics():
+    # Retrieve user_data from session
+    user_id = session['user_id']
+    simulations = User.get_simulations(user_id)  # Fetch all simulations for the user
+    
+    # Aggregate statistics per university
+    stats = {}
+    for uni in university_list:
+        uni_name = uni['name']
+        uni_simulations = [sim for sim in simulations if sim['university_name'] == uni_name]
+        total = len(uni_simulations)
+        acceptances = len([sim for sim in uni_simulations if sim['result'] == 'acceptance'])
+        rejections = len([sim for sim in uni_simulations if sim['result'] == 'rejection'])
+        success_rate = (acceptances / total) * 100 if total > 0 else 0
+        stats[uni_name] = {
+            'display_name': uni['display_name'],
+            'logo': uni['logo'],
+            'total_simulations': total,
+            'acceptances': acceptances,
+            'rejections': rejections,
+            'success_rate': round(success_rate, 2)
+        }
+    
+    # Sort stats by total simulations in descending order
+    sorted_stats = sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
+    
+    return render_template('statistics.html', sorted_stats=sorted_stats)
 
 # quick sim
 @app.route("/quicksim", methods=["GET", "POST"])
@@ -221,16 +250,20 @@ def ustatus(college):
         return redirect(url_for("rejection", college=college))
     return render_template(f"{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
 
-# acceptance route
 @app.route("/<college>/acceptance")
 def acceptance(college):
+    user_id = session.get('user_id')
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'acceptance')
     return render_template(f"{college}/acceptance.html", name=user_data["name"], date=user_data["date"], college=college)
 
-# rejection route
 @app.route("/<college>/rejection")
 def rejection(college):
+    user_id = session.get('user_id')
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'rejection')
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
 # files

@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: 'Aktiv Grotesk', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
         }
 
@@ -26,26 +26,11 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
-        @keyframes subtleBounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px); /* Reduced bounce height */
-            }
-        }
-        
-        .animate-subtle-bounce {
-            animation: subtleBounce 2s ease-in-out infinite;
-        }
-        
 
         /* Custom scrollbar for better aesthetics */
         ::-webkit-scrollbar {
@@ -70,12 +55,12 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            filter: blur(4px); /* Reduced blur */
+            filter: blur(4px);
             z-index: -1;
             opacity: 0.6;
         }
 
-        /* Header and Footer Styling with Animated Gradient */
+        /* Header and Footer Styling */
         .header,
         .footer {
             background: linear-gradient(270deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
@@ -88,61 +73,63 @@
             0% {
                 background-position: 0% 50%;
             }
-
             50% {
                 background-position: 100% 50%;
             }
-
             100% {
                 background-position: 0% 50%;
             }
         }
 
-        /* Increased Footer Thickness */
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .header-buttons a {
+            font-size: 0.875rem;
+            color: #ffffff;
+            transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .header-buttons a:hover {
+            color: #e0e0e0;
+        }
+
+        /* Footer Styling */
         .footer {
-            padding: 1.5rem 0; /* Increased padding for a thicker footer */
+            padding: 1rem 0;
+            font-size: 0.875rem;
+            color: #ffffff;
         }
 
-        /* Button Enhancements */
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
-            transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+        .footer a {
+            color: #ffffff;
+            text-decoration: underline;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-            box-shadow: 0 6px 8px rgba(102, 126, 234, 0.4);
-            transform: translateY(-2px);
+        /* Home Icon Styling */
+        .home-icon {
+            filter: invert(1) brightness(200%);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(240, 147, 251, 0.3);
-            transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+        /* Navigation and Button Animations */
+        .nav-btn,
+        .btn-primary,
+        .btn-secondary,
+        .header-title,
+        .home-icon {
+            transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
-            box-shadow: 0 6px 8px rgba(240, 147, 251, 0.4);
-            transform: translateY(-2px);
-        }
-
-        /* Validation Icons */
-        .validation-icon {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem; /* One line spacing */
-        }
-
-        /* Text for validation */
-        .validation-text {
-            margin-left: 0.5rem;
-            color: white; /* Make text white */
+        .nav-btn:hover,
+        .btn-primary:hover,
+        .btn-secondary:hover,
+        .header-title:hover,
+        .home-icon:hover {
+            transform: scale(1.05);
+            color: #e0e0e0;
         }
     </style>
 </head>
@@ -153,35 +140,27 @@
     {% endblock %}
 
     <!-- Header -->
-    <header class="header fixed top-0 left-0 w-full z-50">
-        <div class="container mx-auto flex justify-between items-center px-6 py-4">
-            <!-- Logo and Home Link -->
+    <header class="header fixed top-0 left-0 w-full z-50 py-4 bg-white">
+        <div class="flex items-center px-6 w-full">
+            <!-- Left side: Home Icon and Title -->
             <div class="flex items-center gap-4">
-                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-2">
-                    <img src="{{ url_for('static', filename='icons/home-icon.png') }}" alt="Home" class="w-10 h-10 transition transform hover:scale-110">
-                    <span class="text-xl font-bold tracking-wider uppercase text-gray-800">College Admission Simulator</span>
+                <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-2 transition transform hover:scale-105 hover:text-gray-300">
+                    <img src="{{ url_for('static', filename='icons/home-icon.png') }}" alt="Home" class="home-icon w-10 h-10">
+                    <span class="header-title">College Admission Simulator</span>
                 </a>
             </div>
 
-            <!-- Navigation Icons and Auth Buttons -->
-            <div class="flex items-center gap-4">
-                <a href="https://studyforallhub.com" target="_blank" class="relative group">
-                    <img src="{{ url_for('static', filename='icons/study-icon.png') }}" alt="StudyForAll" class="w-10 h-10 transition transform hover:scale-110">
-                    <span class="absolute bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition">
-                        <span class="bg-white text-gray-800 text-xs rounded py-1 px-2">Visit StudyForAll</span>
-                    </span>
-                </a>
+            <!-- Right side: Navigation Buttons (Moved slightly to the left) -->
+            <div class="header-buttons flex items-center space-x-4 ml-auto mr-20">
+                <a href="{{ url_for('quicksim') }}" class="nav-btn hover:text-gray-300"><strong>Quick Sim</strong></a>
+                <a href="{{ url_for('universities') }}" class="nav-btn hover:text-gray-300"><strong>Advanced Sim</strong></a>
+                <a href="{{ url_for('statistics') }}" class="nav-btn hover:text-gray-300"><strong>Statistics</strong></a>
+                <a href="{{ url_for('profile') }}" class="nav-btn hover:text-gray-300"><strong>Profile</strong></a>
                 {% if session.get('user_id') %}
-                <a href="{{ url_for('logout') }}" class="btn-primary text-white py-2 px-4 rounded-lg shadow-md transition">
-                    Logout
-                </a>
+                    <a href="{{ url_for('logout') }}" class="btn-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">Logout</a>
                 {% else %}
-                <a href="{{ url_for('start') }}" class="btn-primary text-white py-2 px-4 rounded-lg shadow-md transition">
-                    Sign In
-                </a>
-                <a href="{{ url_for('register') }}" class="btn-secondary text-white py-2 px-4 rounded-lg shadow-md transition">
-                    Sign Up
-                </a>
+                    <a href="{{ url_for('start') }}" class="btn-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">Sign In</a>
+                    <a href="{{ url_for('register') }}" class="btn-secondary text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">Sign Up</a>
                 {% endif %}
             </div>
         </div>
@@ -210,34 +189,15 @@
                 </div>
             {% endif %}
         {% endwith %}
-        
+
         {% block content %}
         {% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="footer mt-10">
-        <div class="container mx-auto text-center text-sm text-gray-600">
-            &copy; 2024 University Simulator. All rights reserved.
-        </div>
+    <footer class="footer text-center">
+        <div>&copy; 2024 University Simulator. All rights reserved.</div>
     </footer>
-
-    <!-- Optional: Add some interactive JavaScript for animations or UI enhancements -->
-    <script>
-        // Example: Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

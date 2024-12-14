@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Your Statistics{% endblock %}
+
+{% block background %}
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/statistics.jpg') }}');"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10">
+    <h1 class="text-4xl font-extrabold text-center text-white mb-10">Your Statistics</h1>
+    
+    <!-- Quick College Simulator Section -->
+    <div>
+        <h2 class="text-3xl font-bold text-center text-white mb-6">Quick College Simulator</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {% for stat in sorted_stats %}
+            <div 
+                class="{% if loop.index == 1 %}bg-gradient-to-tr from-yellow-400 via-yellow-500 to-yellow-600{% 
+                          elif loop.index == 2 %}bg-gradient-to-tr from-gray-400 via-gray-500 to-gray-600{% 
+                          elif loop.index == 3 %}bg-gradient-to-tr from-yellow-800 via-orange-700 to-yellow-600{% 
+                          else %}bg-gradient-to-tr from-indigo-700 via-purple-700 to-indigo-700{% endif %} 
+                          p-6 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 ease-in-out flex flex-col">
+                <div class="flex items-center justify-center mb-4">
+                    <img src="{{ url_for('static', filename=stat.logo.split('static/')[-1]) }}" alt="{{ stat.display_name }} Logo"
+                        class="w-48 h-48 object-contain">
+                </div>
+                <h3 class="text-2xl font-bold text-center text-white mb-2">
+                    #{{ loop.index }} {{ stat.display_name }}
+                </h3>
+                <div class="text-white text-center">
+                    <p>Total Simulations: {{ stat.total_simulations }}</p>
+                    <p>Acceptances: {{ stat.acceptances }}</p>
+                    <p>Rejections: {{ stat.rejections }}</p>
+                    <p>Success Rate: {{ stat.success_rate }}%</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Advanced Features Section -->
+    <div class="mt-12">
+        <h2 class="text-3xl font-bold text-center text-white mb-4">Advanced College Simulator</h2>
+        <div class="text-white text-center py-8 rounded-lg shadow-lg transform hover:scale-105 transition duration-300">
+            <p class="text-lg font-semibold animate-pulse">Coming Soon!</p>
+        </div>
+    </div>
+    
+    <!-- Back to Dashboard Button -->
+    <div class="mt-10 text-center">
+        <a href="{{ url_for('dashboard') }}"
+           class="bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
+            Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
