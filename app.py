@@ -1,9 +1,15 @@
-from flask import Flask, render_template, redirect, request, url_for, send_from_directory
 import random
 from datetime import datetime
 import os
 
+from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash
+from models import init_db, add_user, user_exists, verify_user
+
 app = Flask(__name__, template_folder="templates")
+app.secret_key = 'Tuvalu23'
+
+# init db
+init_db()
 
 user_data = {"name": "", "date": ""}
 
@@ -33,8 +39,64 @@ university_list = [
 ]
 
 
-# Intro Page
+# login or register Page
 @app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.get_by_username(username)
+        if user and user.verify_password(user.password_hash, password):
+            session['user_id'] = user.id
+            flash("Login successful!", "success")
+            return redirect(url_for('home'))
+        else:
+            flash("Invalid username or password.", "danger")
+    return render_template('login.html')
+
+# register
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        # password validation (server-side)
+        errors = []
+        if password != confirm_password:
+            errors.append("Passwords do not match.")
+        if len(password) < 4:
+            errors.append("Password must be at least 12 characters long.")
+
+        if errors:
+            for error in errors:
+                flash(error, 'danger')
+            return redirect(url_for('register'))
+
+        if User.get_by_username(username):
+            flash("Username already exists.", 'danger')
+            return redirect(url_for('register'))
+
+        User.create(username, password)
+        flash("Account created! Log in now.", 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
+# logout route
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash("You have been logged out.", 'info')
+    return redirect(url_for('home'))
+
+# profile route (access user info etc)
+
+# statistics route
+
+# dashboard route
+
+
 def index():
     if request.method == "POST":
         user_data["name"] = request.form["name"]
