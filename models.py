@@ -43,6 +43,20 @@ class User:
                 "password_hash": row[2]
             }
         return None
+    
+    @staticmethod
+    def get_by_id(user_id):
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, username FROM users WHERE id = ?", (user_id,))
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+            return {
+                "id": row[0],
+                "username": row[1]
+            }
+        return None
 
     @staticmethod
     def verify_password(stored_hash, password):

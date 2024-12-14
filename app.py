@@ -99,7 +99,8 @@ def register():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    user = User.get_by_id(session['user_id'])
+    return render_template('dashboard.html', user=user)
 
 # logout route
 @app.route('/logout')
