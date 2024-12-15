@@ -11,7 +11,7 @@
     
           // Start a single animation frame loop
           (function frame() {
-            if (Math.random() < 0.06) {
+            if (Math.random() < 0.09) {
             confetti({
               particleCount: 1, // Adjusted particle count per frame
               spread: 1000,
@@ -44,22 +44,19 @@
 
 <main id="c_wrapper" class="cr">
     
-    <div id="c_pagepiling" style="width: 70%; margin: 0 auto; font-family: Roboto, sans-serif; margin-top: 110px; padding: 20px; border: 2px solid lightgray; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); background-color: white;">
-        <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
-            <img src="./acceptance_files/cmu-crazy.jpg" alt="CMU Logo" style="width: 450px; height: auto;">
-            <div style="text-align: right; font-size: 0.9em; line-height: 1.4;">
-                <strong>Office of Admission</strong><br>
-                Carnegie Mellon University<br>
-                5000 Forbes Avenue<br>
-                Pittsburgh, Pennsylvania, 15213<br>
-                Tel: 412-268-4646<br>
-                Fax: 412-268-7838
-            </div>
-        </div>
-    
-        <!-- Date -->
-        <div style="font-size: 1em; margin-bottom: 20px;">{{ date }}</div>
+  <div id="c_pagepiling" style="width: 70%; margin: 0 auto; font-family: Roboto, sans-serif; margin-top: 110px; padding: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); background-color: white;">
+    <!-- Date and Download -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1em;">
+        <div style="font-weight: bold; color: black;">{{ date }}</div>
+        <a href="#" style="color: #0056b3; font-weight: bold; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Download PDF</a>
+    </div>
+
+    <!-- Office of Admission -->
+    <div style="text-align: left; font-size: 1em; line-height: 1.6; color: black; margin-bottom: 30px;">
+        Carnegie Mellon University<br>
+        5000 Forbes Avenue<br>
+        Pittsburgh, Pennsylvania, 15213<br>
+    </div>
     
         <!-- Letter Body -->
         <div style="line-height: 1.6; font-size: 1em; color: black;">

@@ -13,23 +13,20 @@
 "></a></div><div class="c_header-bar__navigation cr"><nav data-search="false" class="cr"><ul class="c_nav cr"><li class=" cr"><a target="" data-label="Who We Are" href="https://www.cmu.edu/admission/who-we-are" class="cr">Who We Are</a></li><li class=" cr"><a target="" data-label="Majors and Programs" href="https://www.cmu.edu/admission/majors-programs" class="cr">Majors &amp; Programs</a></li><li class=" cr"><a target="" data-label="Visit Opportunities" href="https://www.cmu.edu/admission/visit" class="cr">Visit Opportunities</a></li><li class=" cr"><a target="" data-label="Admission" href="https://www.cmu.edu/admission/admission" class="cr">Admission</a></li><li class=" cr"><a target="" data-label="Cost and Aid" href="https://www.cmu.edu/admission/costs-aid" class="cr">Cost &amp; Aid</a></li><li class=" cr"><a target="" data-label="Campus Experience" href="https://www.cmu.edu/admission/campus-experience" class="cr">Campus Experience</a></li></ul></nav></div></div></header>
 
 <main id="c_wrapper" class="cr">
-    <div id="c_pagepiling" style="width: 70%; margin: 0 auto; font-family: Roboto, sans-serif; margin-top: 110px; padding: 20px; border: 2px solid lightgray; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); background-color: white;">
-        <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
-            <img src="./rejection_files/cmu-crazy.jpg" alt="CMU Logo" style="width: 450px; height: auto;">
-            <div style="text-align: right; font-size: 0.9em; line-height: 1.4;">
-                <strong>Office of Admission</strong><br>
-                Carnegie Mellon University<br>
-                5000 Forbes Avenue<br>
-                Pittsburgh, Pennsylvania, 15213<br>
-                Tel: 412-268-4646<br>
-                Fax: 412-268-7838
-            </div>
+    <div id="c_pagepiling" style="width: 70%; margin: 0 auto; font-family: Roboto, sans-serif; margin-top: 110px; padding: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); background-color: white;">
+        <!-- Date and Download -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1em;">
+            <div style="font-weight: bold; color: black;">{{ date }}</div>
+            <a href="#" style="color: #0056b3; font-weight: bold; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Download PDF</a>
         </div>
-    
-        <!-- Date -->
-        <div style="font-size: 1em; margin-bottom: 20px;">{{ date }}</div>
-    
+
+        <!-- Office of Admission -->
+        <div style="text-align: left; font-size: 1em; line-height: 1.6; color: black; margin-bottom: 30px;">
+            Carnegie Mellon University<br>
+            5000 Forbes Avenue<br>
+            Pittsburgh, Pennsylvania, 15213<br>
+        </div>
+
         <!-- Letter Body -->
         <div style="line-height: 1.6; font-size: 1em; color: black;">
             <p>Dear {{ name }},</p>
@@ -40,9 +37,9 @@
             <p>Sincerely,</p>
             <p style="margin-top: 20px;">John D. Smith<br>Senior Admission Officer</p>
         </div>
-
-        <!-- Return to Application Status -->
     </div>
+
+    <!-- Return to Application Status -->
     <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
         <a href="{{ url_for('ustatus', college=college) }}" style="color: red; font-weight: bold; text-decoration: none; font-size: 1.2em;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">
             Return to Application Status
