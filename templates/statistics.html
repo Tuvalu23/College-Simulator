@@ -13,10 +13,10 @@
     <!-- Quick College Simulator Section -->
     <div>
         <h2 class="text-3xl font-bold text-center text-white drop-shadow-lg mb-6">Quick College Simulator</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 auto-rows-fr">
             {% for stat in sorted_stats %}
             {% set rank = loop.index %}
-
+        
             <!-- Determine gradient based on rank -->
             {% if rank == 1 %}
                 {% set gradient_classes = "from-yellow-400 via-yellow-500 to-yellow-600" %}
@@ -27,39 +27,35 @@
             {% else %}
                 {% set gradient_classes = "from-indigo-700 via-purple-700 to-indigo-700" %}
             {% endif %}
-
-            <div class="transform hover:scale-105 transition duration-500 hover:shadow-2xl">
-                <div class="card-container">
+        
+            <!-- Card -->
+            <div class="transform hover:scale-105 transition duration-500 hover:shadow-2xl flex flex-col h-full">
+                <div class="card-container min-h-[450px]">
                     <!-- Front of the card -->
-                    <div class="front card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-center items-center">
+                    <div class="front card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-between items-center h-full">
                         <div class="flex flex-col items-center mb-4">
                             <img src="{{ url_for('static', filename=stat.logo.split('static/')[-1]) }}" alt="{{ stat.display_name }} Logo"
                                  class="w-48 h-48 object-contain mb-2">
-                            <!-- Rank and name that flips card on click -->
                             <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
                                 data-side="front">
                                 #{{ rank }} {{ stat.display_name }}
                             </h3>
                         </div>
-                        <div class="text-white text-center">
+                        <div class="text-white text-center mt-auto">
                             <p>Total Simulations: {{ stat.total_simulations }}</p>
                             <p>Acceptances: {{ stat.acceptances }}</p>
                             <p>Rejections: {{ stat.rejections }}</p>
                             <p>Success Rate: {{ stat.success_rate }}%</p>
                         </div>
                     </div>
-
+        
                     <!-- Back of the card -->
-                    <div class="back card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-center items-center">
-                        <div class="flex flex-col items-center mb-4">
-                            
-                            <!-- Rank and name that flips card on click -->
-                            <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
-                                data-side="back">
-                                #{{ rank }} {{ stat.display_name }}
-                            </h3>
-                        </div>
-                        <p class="text-white text-center px-2">
+                    <div class="back card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-between items-center h-full">
+                        <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
+                            data-side="back">
+                            #{{ rank }} {{ stat.display_name }}
+                        </h3>
+                        <p class="text-white text-center px-2 flex-grow mt-4">
                             {{ stat.description }}
                         </p>
                     </div>
@@ -67,7 +63,7 @@
             </div>
             {% endfor %}
         </div>
-    </div>
+    </div>        
 
     <!-- Advanced Features Section -->
     <div class="mt-12">

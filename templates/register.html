@@ -16,7 +16,7 @@
             <!-- Username Requirements -->
             <ul class="mt-2 text-sm">
                 <li id="no-space" data-text="Cannot start with a space" class="validation-icon invalid flex items-center">
-                    &#10008; <span class="validation-text ml-2">Cannot start with a space</span>
+                    ❌ <span class="validation-text ml-2">Cannot start with a space</span>
                 </li>
             </ul>
         </div>
@@ -36,10 +36,10 @@
         <!-- Password Requirements -->
         <ul class="mt-2 text-sm space-y-1">
             <li id="length" data-text="At least 5 characters" class="validation-icon invalid flex items-center">
-                &#10008; <span class="validation-text ml-2">At least 5 characters</span>
+                ❌ <span class="validation-text ml-2">At least 5 characters</span>
             </li>
             <li id="match" data-text="Passwords must match" class="validation-icon invalid flex items-center">
-                &#10008; <span class="validation-text ml-2">Passwords must match</span>
+                ❌ <span class="validation-text ml-2">Passwords must match</span>
             </li>
         </ul>
 
@@ -64,12 +64,12 @@
         if (username && username.startsWith(' ')) {
             noSpaceRequirement.classList.remove('valid');
             noSpaceRequirement.classList.add('invalid');
-            noSpaceRequirement.innerHTML = '&#10008; <span class="validation-text ml-2">Cannot start with a space</span>';
+            noSpaceRequirement.innerHTML = '❌ <span class="validation-text ml-2">Cannot start with a space</span>';
             return false;
         } else {
             noSpaceRequirement.classList.remove('invalid');
             noSpaceRequirement.classList.add('valid');
-            noSpaceRequirement.innerHTML = '&#10004; <span class="validation-text ml-2">Cannot start with a space</span>';
+            noSpaceRequirement.innerHTML = '✔ <span class="validation-text ml-2">Cannot start with a space</span>';
             return true;
         }
     }
@@ -90,11 +90,11 @@
                 if (value) {
                     element.classList.remove('invalid');
                     element.classList.add('valid');
-                    element.innerHTML = '&#10004; <span class="validation-text ml-2">' + element.dataset.text + '</span>';
+                    element.innerHTML = '✔ <span class="validation-text ml-2">' + element.dataset.text + '</span>';
                 } else {
                     element.classList.remove('valid');
                     element.classList.add('invalid');
-                    element.innerHTML = '&#10008; <span class="validation-text ml-2">' + element.dataset.text + '</span>';
+                    element.innerHTML = '❌ <span class="validation-text ml-2">' + element.dataset.text + '</span>';
                 }
             }
         }

@@ -17,6 +17,12 @@ init_db()
 # List of universities
 university_list = [
     {
+    "name": "bing",
+    "display_name": "Binghamton University",
+    "logo": "static/logos/bing-logo.png",
+    "description": "Binghamton University, part of the State University of New York (SUNY) system, is a premier public institution known for its academic excellence and research opportunities. Located in Vestal, New York, Binghamton offers a diverse and vibrant campus community, rigorous academic programs, and a strong emphasis on affordability and student success."
+    },
+    {
         "name": "brown",
         "display_name": "Brown University",
         "logo": "static/logos/brown-logo.jpg",
@@ -150,7 +156,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
             flash("You must be logged in to access this page.", "danger")
-            return redirect(url_for('login'))
+            return redirect(url_for('start'))
         return f(*args, **kwargs)
     return decorated_function
 
