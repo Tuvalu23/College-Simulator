@@ -125,6 +125,20 @@
             transform: scale(1.05);
             color: #e0e0e0;
         }
+
+        @keyframes subtleBounce {
+            0%, 100% {
+                transform: translateY(0); /* Default position */
+            }
+            50% {
+                transform: translateY(-5px); /* Slight upward motion */
+            }
+        }
+    
+        /* Subtle bounce animation class */
+        .animate-subtle-bounce {
+            animation: subtleBounce 1.5s infinite ease-in-out;
+        }
     </style>
 </head>
 

@@ -23,7 +23,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Berkeley
 - [X] Caltech
 - [X] CMU
-- [ ] UMich
+- [X] UMich
 - [ ] UCLA
 
 ## TO GET ADVANCED RIBBONS

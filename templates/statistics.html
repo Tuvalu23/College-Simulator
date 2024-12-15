@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="container mx-auto py-10 relative z-10">
-    <h1 class="text-4xl font-extrabold text-center text-white drop-shadow-lg mb-10">Your Statistics</h1>
+    <h1 class="text-4xl font-extrabold text-center text-white drop-shadow-lg mb-10 animate-subtle-bounce">Your Statistics</h1>
 
     <!-- Quick College Simulator Section -->
     <div>
@@ -28,7 +28,7 @@
                 {% set gradient_classes = "from-indigo-700 via-purple-700 to-indigo-700" %}
             {% endif %}
 
-            <div class="transform hover:scale-105 transition duration-300 hover:shadow-2xl">
+            <div class="transform hover:scale-105 transition duration-500 hover:shadow-2xl">
                 <div class="card-container">
                     <!-- Front of the card -->
                     <div class="front card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-center items-center">
@@ -36,7 +36,7 @@
                             <img src="{{ url_for('static', filename=stat.logo.split('static/')[-1]) }}" alt="{{ stat.display_name }} Logo"
                                  class="w-48 h-48 object-contain mb-2">
                             <!-- Rank and name that flips card on click -->
-                            <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-300"
+                            <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
                                 data-side="front">
                                 #{{ rank }} {{ stat.display_name }}
                             </h3>
@@ -54,7 +54,7 @@
                         <div class="flex flex-col items-center mb-4">
                             
                             <!-- Rank and name that flips card on click -->
-                            <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-300"
+                            <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
                                 data-side="back">
                                 #{{ rank }} {{ stat.display_name }}
                             </h3>
@@ -72,7 +72,7 @@
     <!-- Advanced Features Section -->
     <div class="mt-12">
         <h2 class="text-3xl font-bold text-center text-white drop-shadow-lg mb-4">Advanced College Simulator</h2>
-        <div class="text-white text-center py-8 rounded-lg shadow-lg transform hover:scale-105 transition duration-300 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500">
+        <div class="text-white text-center py-8 rounded-lg shadow-lg transform hover:scale-105 transition duration-500 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500">
             <p class="text-lg font-semibold animate-pulse">Coming Soon!</p>
         </div>
     </div>
