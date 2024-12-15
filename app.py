@@ -308,10 +308,17 @@ def statistics():
             'success_rate': round(success_rate, 2)
         }
 
-    # Sort by total simulations
-    sorted_stats = sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
+    # Sort by acceptances and rejections
+    sorted_by_acceptances = sorted(stats.values(), key=lambda x: x['acceptances'], reverse=True)[:5]
+    sorted_by_rejections = sorted(stats.values(), key=lambda x: x['rejections'], reverse=True)[:5]
 
-    return render_template('statistics.html', sorted_stats=sorted_stats)
+    return render_template(
+        'statistics.html',
+        acceptances_stats=sorted_by_acceptances,
+        rejections_stats=sorted_by_rejections,
+        sorted_stats=sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
+    )
+
 
 # quick sim
 @app.route("/quicksim", methods=["GET", "POST"])

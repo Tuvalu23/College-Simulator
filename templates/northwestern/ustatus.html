@@ -10,11 +10,39 @@ If you have any questions please reach out to us at&nbsp;</span><a href="mailto:
     <h3>Status Update</h3>
     <p>An update to your application was last posted {{ date }}.</p>
     <form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
-      <a href="#" onclick="this.closest('form').submit();" style="font-weight: bold; text-decoration: none;">
-        Click to see your decision
-      </a>
+        <a href="#" onclick="this.closest('form').submit();" style="
+            font-weight: bold; 
+            text-decoration: none; 
+            color: #4E2A84; 
+            position: relative;
+            display: inline-block;">
+            Click to see your decision
+            <span style="
+                content: ''; 
+                position: absolute; 
+                bottom: 0; 
+                left: 0; 
+                width: 0; 
+                height: 2px; 
+                background-color: #4E2A84; 
+                transition: all 0.3s ease-in-out;">
+            </span>
+        </a>
     </form>
-  </div>
+    <script>
+        document.querySelectorAll('a').forEach(function(anchor) {
+            anchor.addEventListener('mouseenter', function() {
+                let span = this.querySelector('span');
+                if (span) span.style.width = '100%';
+            });
+            anchor.addEventListener('mouseleave', function() {
+                let span = this.querySelector('span');
+                if (span) span.style.width = '0';
+            });
+        });
+    </script>
+</div>
+
 </div>
 <div class="part" id="part_e1f9d222-ab82-4fa5-aefe-2367721f1b2d"><br></div><div class="part" id="part_3b2f3db6-c9b7-48aa-831a-934f75396ecf">
   <div style="text-align:center; margin-top:50px; padding:10px; border-top:1px solid black; border-bottom:1px solid black;">
