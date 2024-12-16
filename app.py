@@ -440,7 +440,7 @@ def rejection(college):
         User.log_simulation(user_id, college, 'rejection')
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
-# advanced sim stuff
+# advanced sm stuff
 submissions = []
 
 @app.route("/advancedsim", methods=["GET", "POST"])
@@ -451,34 +451,106 @@ def advancedsim():
         name = request.form.get("name", "").strip()
         gpa = request.form.get("gpa", "").strip()
         test_option = request.form.get("test_option", "")
-        sat_score = request.form.get("sat_score", "")
-        act_score = request.form.get("act_score", "")
-        extracurriculars = request.form.get("extracurriculars", "")
-        essays = request.form.get("essays", "")
-        ap_courses = request.form.get("ap_courses", "")
-        race = request.form.get("race", "")
-        gender = request.form.get("gender", "")
+        sat_score = request.form.get("sat_score", "").strip()
+        act_score = request.form.get("act_score", "").strip()
+        extracurriculars = request.form.get("extracurriculars", "").strip()
+        essays = request.form.get("essays", "").strip()
+        ap_courses = request.form.get("ap_courses", "").strip()
+        race = request.form.get("race", "").strip()
+        gender = request.form.get("gender", "").strip()
         first_gen = request.form.get("first_gen", "off") == "on"
-        terms = request.form.get("terms", "off") == "on"
 
-        # Store submission in global list
+        # Initialize error flag and messages
+        error = False
+        error_messages = []
+
+        # Server-side Validation
+        if not name:
+            error = True
+            error_messages.append("Name is required.")
+
+        try:
+            gpa_val = float(gpa)
+            if not (65 <= gpa_val <= 100):
+                raise ValueError
+        except ValueError:
+            error = True
+            error_messages.append("GPA must be a number between 65 and 100.")
+
+        if test_option == 'sat':
+            try:
+                sat_val = int(sat_score)
+                if not (400 <= sat_val <= 1600) or sat_val % 10 != 0:
+                    raise ValueError
+            except ValueError:
+                error = True
+                error_messages.append("SAT score must be an integer between 400 and 1600 in increments of 10.")
+        elif test_option == 'act':
+            try:
+                act_val = int(act_score)
+                if not (1 <= act_val <= 36):
+                    raise ValueError
+            except ValueError:
+                error = True
+                error_messages.append("ACT score must be an integer between 1 and 36.")
+
+        try:
+            extracurriculars_val = int(extracurriculars)
+            if not (0 <= extracurriculars_val <= 10):
+                raise ValueError
+        except ValueError:
+            error = True
+            error_messages.append("Extracurricular activities rating must be an integer between 0 and 10.")
+
+        try:
+            essays_val = int(essays)
+            if not (0 <= essays_val <= 10):
+                raise ValueError
+        except ValueError:
+            error = True
+            error_messages.append("Essays rating must be an integer between 0 and 10.")
+
+        try:
+            ap_val = int(ap_courses)
+            if ap_val < 0:
+                raise ValueError
+        except ValueError:
+            error = True
+            error_messages.append("AP courses taken must be a non-negative integer.")
+
+        if not race:
+            error = True
+            error_messages.append("Race/Ethnicity selection is required.")
+
+        if not gender:
+            error = True
+            error_messages.append("Gender selection is required.")
+
+        if error:
+            for message in error_messages:
+                flash(message)
+            # Optionally, you can repopulate the form with previously entered data here
+            return render_template("advancedsim.html")
+        
+        # If all validations pass, store the submission
         submission_data = {
             "name": name,
-            "gpa": gpa,
+            "gpa": gpa_val,
             "test_option": test_option,
-            "sat_score": sat_score,
-            "act_score": act_score,
-            "extracurriculars": extracurriculars,
-            "essays": essays,
-            "ap_courses": ap_courses,
+            "sat_score": sat_val if test_option == 'sat' else None,
+            "act_score": act_val if test_option == 'act' else None,
+            "extracurriculars": extracurriculars_val,
+            "essays": essays_val,
+            "ap_courses": ap_val,
             "race": race,
             "gender": gender,
             "first_gen": first_gen,
         }
         submissions.append(submission_data)
 
-        # Redirect or show a success page if desired
-        return redirect(url_for("advancedsim"))
+        flash("Application submitted successfully!", "success")
+        # Redirect to a success page or the same form
+        return redirect(url_for("earlydecision"))
 
     return render_template("advancedsim.html")
 
@@ -491,21 +563,28 @@ def earlydecision():
     if request.method == 'POST':
         ed_choice = request.form.get('ed_choice')
         session['ed_choice'] = ed_choice
-        if ed_choice == 'yes':
-            ed_school = request.form.get('ed_school')  # User selects one ED school
+
+        if ed_choice == 'yes':  # User selects ED
+            ed_school = request.form.get('ed_school')  # Get the selected ED school
             if ed_school:
                 session['ed_school'] = ed_school
                 session['selected_schools'].append(ed_school)  # Add ED school to the list
-                session.modified = True  # Mark session as modified
-                return redirect(url_for('rea'))
+                session.modified = True
+                return redirect(url_for('earlyaction'))  # Skip REA, go to EA
             else:
                 flash("Please select an Early Decision school.", "danger")
-        else:
+        else:  # User selects No
             session['ed_school'] = None
-            return redirect(url_for('rea'))
+            return redirect(url_for('rea'))  # Proceed to REA
 
     # Filter ED schools: ED available if column[2] != "N"
-    ed_schools = [u for u in college_list if u[2] != "N"]
+    ed_schools = [
+        {
+            "name": u[0],
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+        }
+        for u in college_list if u[2] != "N"
+    ]
 
     return render_template('earlydecision.html', ed_schools=ed_schools)
 

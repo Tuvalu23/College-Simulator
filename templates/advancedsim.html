@@ -33,15 +33,6 @@
         z-index:-2;
     }
 
-    /* Updated Dramatic Aqua to Dark Blue Gradient */
-    body::after {
-        content:"";
-        position:fixed;
-        top:0; left:0;
-        width:100%; height:100%;
-        z-index:-1;
-    }
-
     /* Keyframe Animations */
     @keyframes subtleZoom {
         0% { transform: scale(1); }
@@ -67,12 +58,6 @@
         60% { transform:translateX(-5px); }
         80% { transform:translateX(5px); }
         100% { transform:translateX(0); }
-    }
-
-    @keyframes colorShift {
-        0% { background:#00bfff; }
-        50% { background:#00e0ff; }
-        100% { background:#00bfff; }
     }
 
     @keyframes gradientAnimation {
@@ -128,6 +113,17 @@
 
     .section-title:hover {
         color:#00e0ff;
+    }
+
+    /* Flash Message */
+    .flash-message {
+        background-color: rgba(35, 212, 68, 0.8);
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+        animation: fadeInUp 0.5s ease;
     }
 
     /* Labels and Inputs */
@@ -192,16 +188,14 @@
 
     /* Buttons */
     .buttons {
-        text-align:right; 
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
         margin-top:30px;
     }
 
-    .buttons a {
+    .buttons a, .buttons button {
         display: inline-block;
-        text-decoration: none;
-    }
-
-    .buttons button, .buttons a {
         border:none; 
         border-radius:25px; 
         padding:12px 25px; 
@@ -211,6 +205,8 @@
         font-weight:600;
         margin-left:15px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: white !important;
     }
 
     /* Updated Back Button Styling */
@@ -230,6 +226,7 @@
         width: 100%;
         height: 100%;
         background: rgba(255, 255, 255, 0.1);
+        color: white;
         transition: transform 0.5s ease;
         transform: translateX(0);
         z-index: -1;
@@ -252,6 +249,15 @@
         animation: gradientAnimation 8s ease infinite;
         position: relative;
         overflow: hidden;
+        border: none;
+        /* Initially disabled styling */
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .submit-button.enabled {
+        opacity: 1;
+        cursor: pointer;
     }
 
     .submit-button::after {
@@ -270,7 +276,7 @@
         opacity:1;
     }
 
-    .submit-button:hover {
+    .submit-button.enabled:hover {
         transform: scale(1.05);
     }
 
@@ -309,269 +315,351 @@
     #sat-score-wrapper, #act-score-wrapper {
         transition: all 0.4s ease;
     }
-
 </style>
 </head>
 <body>
+    <div class="form-container">
+        <h1>Begin Your Application</h1>
 
-<div class="form-container">
-    <h1>Begin Your Application</h1>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-message">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
 
-    <form method="POST" style="margin:0; padding:0;">
-
-        <!-- Basic Information Section -->
-        <section style="margin-bottom:30px;">
-            <h2 class="section-title">Basic Information</h2>
-            <!-- Remove * from label -->
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" required>
-            <div id="name-message" class="validation-message">Please enter your name</div>
-            <div id="name-valid" class="valid-check">Looks good ✅</div>
-            <div id="name-invalid" class="invalid-check">Invalid name ❌</div>
-        </section>
-
-        <div class="section-divider"></div>
-
-        <!-- Your Statistics Section -->
-        <section>
-            <h2 class="section-title">Your Statistics</h2>
+        <form method="POST" id="application-form">
+    
+            <!-- Basic Information Section -->
+            <section style="margin-bottom:30px;">
+                <h2 class="section-title">Basic Information</h2>
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required>
+                <div id="name-message" class="validation-message">Please enter your name</div>
+                <div id="name-valid" class="valid-check">Looks good ✅</div>
+                <div id="name-invalid" class="invalid-check">Invalid name ❌</div>
+            </section>
+    
+            <div class="section-divider"></div>
+    
+            <!-- Your Statistics Section -->
+            <section>
+                <h2 class="section-title">Your Statistics</h2>
+                
+                <label for="gpa">GPA</label>
+                <input type="number" name="gpa" id="gpa" step="0.01" min="65" max="100" required>
+                <div id="gpa-message" class="validation-message">GPA must be between 65 and 100</div>
+                <div id="gpa-valid" class="valid-check">Valid GPA ✅</div>
+                <div id="gpa-invalid" class="invalid-check">Invalid GPA ❌</div>
+    
+                <p style="margin:20px 0 5px; font-weight:bold; color:#ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Are you submitting test scores?</p>
+                <div style="margin-bottom:20px;">
+                    <label style="margin-right:10px;">
+                        <input type="radio" name="test_option" value="no_tests" checked> I do not wish to submit test scores
+                    </label>
+                    <label style="margin-right:10px;">
+                        <input type="radio" name="test_option" value="sat"> SAT
+                    </label>
+                    <label style="margin-right:10px;">
+                        <input type="radio" name="test_option" value="act"> ACT
+                    </label>
+                </div>
+    
+                <div id="sat-score-wrapper" style="display:none;">
+                    <label for="sat_score">Enter your SAT score</label>
+                    <input type="number" name="sat_score" id="sat_score">
+                    <div id="sat-message" class="validation-message">SAT must be 400-1600 in increments of 10</div>
+                    <div id="sat-valid" class="valid-check">Valid SAT score ✅</div>
+                    <div id="sat-invalid" class="invalid-check">Invalid SAT score ❌</div>
+                </div>
+    
+                <div id="act-score-wrapper" style="display:none;">
+                    <label for="act_score">Enter your ACT score</label>
+                    <input type="number" name="act_score" id="act_score">
+                    <div id="act-message" class="validation-message">ACT must be between 1 and 36</div>
+                    <div id="act-valid" class="valid-check">Valid ACT score ✅</div>
+                    <div id="act-invalid" class="invalid-check">Invalid ACT score ❌</div>
+                </div>
+    
+                <label for="extracurriculars">Extracurricular activities rating (0 to 10)</label>
+                <input type="number" name="extracurriculars" id="extracurriculars" min="0" max="10" step="1" required>
+                <div id="extracurriculars-message" class="validation-message">Must be between 0 and 10</div>
+                <div id="extracurriculars-valid" class="valid-check">Looks good ✅</div>
+                <div id="extracurriculars-invalid" class="invalid-check">Invalid extracurricular rating ❌</div>
+    
+                <label for="essays">Essays rating (0 to 10)</label>
+                <input type="number" name="essays" id="essays" min="0" max="10" step="1" required>
+                <div id="essays-message" class="validation-message">Must be between 0 and 10</div>
+                <div id="essays-valid" class="valid-check">Looks good ✅</div>
+                <div id="essays-invalid" class="invalid-check">Invalid essays rating ❌</div>
+    
+                <label for="ap_courses">AP courses taken (including senior year)</label>
+                <input type="number" name="ap_courses" id="ap_courses" min="0" step="1" required>
+                <div id="ap-message" class="validation-message">Must be 0 or more</div>
+                <div id="ap-valid" class="valid-check">Good number of AP courses ✅</div>
+                <div id="ap-invalid" class="invalid-check">Invalid AP number ❌</div>
+            </section>
+    
+            <div class="section-divider"></div>
+    
+            <!-- Demographics Section -->
+            <section>
+                <h2 class="section-title">Demographics</h2>
+                
+                <label for="race">Race/Ethnicity</label>
+                <select name="race" id="race" required>
+                    <option value="">-- Select One --</option>
+                    <option value="Caucasian">Caucasian</option>
+                    <option value="African-American">African-American</option>
+                    <option value="Hispanic or Latino">Hispanic or Latino</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Native American or Alaskan Native">Native American or Alaskan Native</option>
+                    <option value="Pacific Islander">Pacific Islander</option>
+                    <option value="Middle Eastern or North African">Middle Eastern or North African</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                    <option value="Other">Other</option>
+                </select>
+    
+                <label for="gender">Gender</label>
+                <select name="gender" id="gender" required>
+                    <option value="">-- Select One --</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+    
+                <div style="margin:10px 0;">
+                    <label style="font-weight:normal;">
+                        <input type="checkbox" name="first_gen" id="first_gen"> I am a first-generation college student
+                    </label>
+                </div>
+            </section>
+    
+            <div class="section-divider"></div>
             
-            <label for="gpa">GPA</label>
-            <input type="number" name="gpa" id="gpa" step="0.01" min="65" max="100" required>
-            <div id="gpa-message" class="validation-message">GPA must be between 65 and 100</div>
-            <div id="gpa-valid" class="valid-check">Valid GPA ✅</div>
-            <div id="gpa-invalid" class="invalid-check">Invalid GPA ❌</div>
-
-            <p style="margin:20px 0 5px; font-weight:bold; color:#ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Are you submitting test scores?</p>
-            <!-- Keep structure same -->
-            <div style="margin-bottom:20px;">
-                <label style="margin-right:10px;"><input type="radio" name="test_option" value="no_tests" checked> I do not wish to submit test scores</label>
-                <label style="margin-right:10px;"><input type="radio" name="test_option" value="sat"> SAT</label>
-                <label style="margin-right:10px;"><input type="radio" name="test_option" value="act"> ACT</label>
+            <!-- Buttons with improved alignment -->
+            <div class="buttons">
+                <a href="{{ url_for('dashboard') }}" class="back-button">Back</a>
+                <button id="submit-btn" type="submit" class="submit-button" disabled>Create Application</button>
             </div>
+        </form>
+    </div>
+    
+    <script>
+        // JavaScript for Form Validation and Submit Button Control
 
-            <div id="sat-score-wrapper" style="display:none;">
-                <label for="sat_score">Enter your SAT score</label>
-                <input type="number" name="sat_score" id="sat_score">
-                <div id="sat-message" class="validation-message">SAT must be 400-1600 in increments of 10</div>
-                <div id="sat-valid" class="valid-check">Valid SAT score ✅</div>
-                <div id="sat-invalid" class="invalid-check">Invalid SAT score ❌</div>
-            </div>
+        // Get all necessary elements
+        const testOptions = document.getElementsByName('test_option');
+        const satWrapper = document.getElementById('sat-score-wrapper');
+        const actWrapper = document.getElementById('act-score-wrapper');
 
-            <div id="act-score-wrapper" style="display:none;">
-                <label for="act_score">Enter your ACT score</label>
-                <input type="number" name="act_score" id="act_score">
-                <div id="act-message" class="validation-message">ACT must be between 1 and 36</div>
-                <div id="act-valid" class="valid-check">Valid ACT score ✅</div>
-                <div id="act-invalid" class="invalid-check">Invalid ACT score ❌</div>
-            </div>
+        const nameInput = document.getElementById('name');
+        const nameMessage = document.getElementById('name-message');
+        const nameValid = document.getElementById('name-valid');
+        const nameInvalid = document.getElementById('name-invalid');
 
-            <label for="extracurriculars">Extracurricular activities rating (0 to 10)</label>
-            <input type="number" name="extracurriculars" id="extracurriculars" min="0" max="10" step="1" required>
-            <div id="extracurriculars-message" class="validation-message">Must be between 0 and 10</div>
-            <div id="extracurriculars-valid" class="valid-check">Looks good ✅</div>
-            <div id="extracurriculars-invalid" class="invalid-check">Invalid extracurricular rating ❌</div>
+        const gpaInput = document.getElementById('gpa');
+        const gpaMessage = document.getElementById('gpa-message');
+        const gpaValid = document.getElementById('gpa-valid');
+        const gpaInvalid = document.getElementById('gpa-invalid');
 
-            <label for="essays">Essays rating (0 to 10)</label>
-            <input type="number" name="essays" id="essays" min="0" max="10" step="1" required>
-            <div id="essays-message" class="validation-message">Must be between 0 and 10</div>
-            <div id="essays-valid" class="valid-check">Looks good ✅</div>
-            <div id="essays-invalid" class="invalid-check">Invalid essays rating ❌</div>
+        const satInput = document.getElementById('sat_score');
+        const satMessage = document.getElementById('sat-message');
+        const satValid = document.getElementById('sat-valid');
+        const satInvalid = document.getElementById('sat-invalid');
 
-            <label for="ap_courses">AP courses taken (including senior year)</label>
-            <input type="number" name="ap_courses" id="ap_courses" min="0" step="1" required>
-            <div id="ap-message" class="validation-message">Must be 0 or more</div>
-            <div id="ap-valid" class="valid-check">Good number of AP courses ✅</div>
-            <div id="ap-invalid" class="invalid-check">Invalid AP number ❌</div>
-        </section>
+        const actInput = document.getElementById('act_score');
+        const actMessage = document.getElementById('act-message');
+        const actValid = document.getElementById('act-valid');
+        const actInvalid = document.getElementById('act-invalid');
 
-        <div class="section-divider"></div>
+        const extracurricularsInput = document.getElementById('extracurriculars');
+        const extracurricularsMessage = document.getElementById('extracurriculars-message');
+        const extracurricularsValid = document.getElementById('extracurriculars-valid');
+        const extracurricularsInvalid = document.getElementById('extracurriculars-invalid');
 
-        <!-- Demographics Section -->
-        <section>
-            <h2 class="section-title">Demographics</h2>
-            
-            <label for="race">Race/Ethnicity</label>
-            <select name="race" id="race" required>
-                <option value="">-- Select One --</option>
-                <option value="Caucasian">Caucasian</option>
-                <option value="African-American">African-American</option>
-                <option value="Hispanic or Latino">Hispanic or Latino</option>
-                <option value="Asian">Asian</option>
-                <option value="Native American or Alaskan Native">Native American or Alaskan Native</option>
-                <option value="Pacific Islander">Pacific Islander</option>
-                <option value="Middle Eastern or North African">Middle Eastern or North African</option>
-                <option value="Prefer not to say">Prefer not to say</option>
-                <option value="Other">Other</option>
-            </select>
+        const essaysInput = document.getElementById('essays');
+        const essaysMessage = document.getElementById('essays-message');
+        const essaysValid = document.getElementById('essays-valid');
+        const essaysInvalid = document.getElementById('essays-invalid');
 
-            <label for="gender">Gender</label>
-            <select name="gender" id="gender" required>
-                <option value="">-- Select One --</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select>
+        const apInput = document.getElementById('ap_courses');
+        const apMessage = document.getElementById('ap-message');
+        const apValid = document.getElementById('ap-valid');
+        const apInvalid = document.getElementById('ap-invalid');
 
-            <div style="margin:10px 0;">
-                <label style="font-weight:normal;">
-                    <input type="checkbox" name="first_gen" id="first_gen"> I am a first-generation college student
-                </label>
-            </div>
-        </section>
+        const raceSelect = document.getElementById('race');
+        const genderSelect = document.getElementById('gender');
 
-        <div class="section-divider"></div>
-        
-        <!-- Buttons with improved animations -->
-        <div class="buttons">
-            <a href="{{ url_for('dashboard') }}" class="back-button">Back</a>
-            <a href="#" class="submit-button">Create Application</a>
-        </div>
-        
-    </form>
-</div>
+        const submitBtn = document.getElementById('submit-btn');
 
-<script>
-    // Validation Logic with Live Checks
-    const testOptions = document.getElementsByName('test_option');
-    const satWrapper = document.getElementById('sat-score-wrapper');
-    const actWrapper = document.getElementById('act-score-wrapper');
-
-    const nameInput = document.getElementById('name');
-    const nameMessage = document.getElementById('name-message');
-    const nameValid = document.getElementById('name-valid');
-    const nameInvalid = document.getElementById('name-invalid');
-
-    const gpaInput = document.getElementById('gpa');
-    const gpaMessage = document.getElementById('gpa-message');
-    const gpaValid = document.getElementById('gpa-valid');
-    const gpaInvalid = document.getElementById('gpa-invalid');
-
-    const satInput = document.getElementById('sat_score');
-    const satMessage = document.getElementById('sat-message');
-    const satValid = document.getElementById('sat-valid');
-    const satInvalid = document.getElementById('sat-invalid');
-
-    const actInput = document.getElementById('act_score');
-    const actMessage = document.getElementById('act-message');
-    const actValid = document.getElementById('act-valid');
-    const actInvalid = document.getElementById('act-invalid');
-
-    const extracurricularsInput = document.getElementById('extracurriculars');
-    const extracurricularsMessage = document.getElementById('extracurriculars-message');
-    const extracurricularsValid = document.getElementById('extracurriculars-valid');
-    const extracurricularsInvalid = document.getElementById('extracurriculars-invalid');
-
-    const essaysInput = document.getElementById('essays');
-    const essaysMessage = document.getElementById('essays-message');
-    const essaysValid = document.getElementById('essays-valid');
-    const essaysInvalid = document.getElementById('essays-invalid');
-
-    const apInput = document.getElementById('ap_courses');
-    const apMessage = document.getElementById('ap-message');
-    const apValid = document.getElementById('ap-valid');
-    const apInvalid = document.getElementById('ap-invalid');
-
-    for (let opt of testOptions) {
-        opt.addEventListener('change', handleTestOptions);
-    }
-
-    function handleTestOptions() {
-        let selected = '';
+        // Event Listeners
         for (let opt of testOptions) {
-            if (opt.checked) {
-                selected = opt.value;
-                break;
+            opt.addEventListener('change', handleTestOptions);
+        }
+
+        nameInput.addEventListener('input', () => {validateName(); checkAllValid();});
+        gpaInput.addEventListener('input', () => {validateGPA(); checkAllValid();});
+        satInput.addEventListener('input', () => {validateSAT(); checkAllValid();});
+        actInput.addEventListener('input', () => {validateACT(); checkAllValid();});
+        extracurricularsInput.addEventListener('input', () => {validateExtracurriculars(); checkAllValid();});
+        essaysInput.addEventListener('input', () => {validateEssays(); checkAllValid();});
+        apInput.addEventListener('input', () => {validateAP(); checkAllValid();});
+        raceSelect.addEventListener('change', checkAllValid);
+        genderSelect.addEventListener('change', checkAllValid);
+
+        // Validation Functions
+        function validateName() {
+            const val = nameInput.value.trim();
+            if (val) {
+                showValid(nameValid, nameInvalid, nameMessage);
+            } else {
+                showInvalid(nameValid, nameInvalid, nameMessage);
             }
         }
-        if (selected === 'sat') {
-            satWrapper.style.display = 'block';
-            actWrapper.style.display = 'none';
-        } else if (selected === 'act') {
-            actWrapper.style.display = 'block';
-            satWrapper.style.display = 'none';
-        } else {
-            satWrapper.style.display = 'none';
-            actWrapper.style.display = 'none';
+
+        function validateGPA() {
+            const val = parseFloat(gpaInput.value);
+            if (!isNaN(val) && val >= 65 && val <= 100) {
+                showValid(gpaValid, gpaInvalid, gpaMessage);
+            } else {
+                showInvalid(gpaValid, gpaInvalid, gpaMessage);
+            }
         }
-    }
 
-    nameInput.addEventListener('input', () => {
-        const val = nameInput.value.trim();
-        if (val) {
-            showValid(nameValid, nameInvalid, nameMessage);
-        } else {
-            showInvalid(nameValid, nameInvalid, nameMessage);
+        function validateSAT() {
+            const selected = getTestOption();
+            if (selected !== 'sat') return; // If not SAT chosen, ignore
+            const val = parseInt(satInput.value, 10);
+            if (!isNaN(val) && val >= 400 && val <= 1600 && val % 10 === 0) {
+                showValid(satValid, satInvalid, satMessage);
+            } else {
+                showInvalid(satValid, satInvalid, satMessage);
+            }
         }
-    });
 
-    gpaInput.addEventListener('input', () => {
-        const val = parseFloat(gpaInput.value);
-        if (!isNaN(val) && val >= 65 && val <= 100) {
-            showValid(gpaValid, gpaInvalid, gpaMessage);
-        } else {
-            showInvalid(gpaValid, gpaInvalid, gpaMessage);
+        function validateACT() {
+            const selected = getTestOption();
+            if (selected !== 'act') return; // If not ACT chosen, ignore
+            const val = parseInt(actInput.value, 10);
+            if (!isNaN(val) && val >= 1 && val <= 36) {
+                showValid(actValid, actInvalid, actMessage);
+            } else {
+                showInvalid(actValid, actInvalid, actMessage);
+            }
         }
-    });
 
-    satInput.addEventListener('input', () => {
-        const val = parseInt(satInput.value, 10);
-        if (!isNaN(val) && val >= 400 && val <= 1600 && val % 10 === 0) {
-            showValid(satValid, satInvalid, satMessage);
-        } else {
-            showInvalid(satValid, satInvalid, satMessage);
+        function validateExtracurriculars() {
+            const val = parseFloat(extracurricularsInput.value);
+            if (!isNaN(val) && val >= 0 && val <= 10) {
+                showValid(extracurricularsValid, extracurricularsInvalid, extracurricularsMessage);
+            } else {
+                showInvalid(extracurricularsValid, extracurricularsInvalid, extracurricularsMessage);
+            }
         }
-    });
 
-    actInput.addEventListener('input', () => {
-        const val = parseInt(actInput.value, 10);
-        if (!isNaN(val) && val >= 1 && val <= 36) {
-            showValid(actValid, actInvalid, actMessage);
-        } else {
-            showInvalid(actValid, actInvalid, actMessage);
+        function validateEssays() {
+            const val = parseFloat(essaysInput.value);
+            if (!isNaN(val) && val >= 0 && val <= 10) {
+                showValid(essaysValid, essaysInvalid, essaysMessage);
+            } else {
+                showInvalid(essaysValid, essaysInvalid, essaysMessage);
+            }
         }
-    });
 
-    extracurricularsInput.addEventListener('input', () => {
-        const val = parseFloat(extracurricularsInput.value);
-        if (!isNaN(val) && val >= 0 && val <= 10) {
-            showValid(extracurricularsValid, extracurricularsInvalid, extracurricularsMessage);
-        } else {
-            showInvalid(extracurricularsValid, extracurricularsInvalid, extracurricularsMessage);
+        function validateAP() {
+            const val = parseInt(apInput.value, 10);
+            if (!isNaN(val) && val >= 0) {
+                showValid(apValid, apInvalid, apMessage);
+            } else {
+                showInvalid(apValid, apInvalid, apMessage);
+            }
         }
-    });
 
-    essaysInput.addEventListener('input', () => {
-        const val = parseFloat(essaysInput.value);
-        if (!isNaN(val) && val >= 0 && val <= 10) {
-            showValid(essaysValid, essaysInvalid, essaysMessage);
-        } else {
-            showInvalid(essaysValid, essaysInvalid, essaysMessage);
+        function getTestOption() {
+            for (let opt of testOptions) {
+                if (opt.checked) return opt.value;
+            }
+            return 'no_tests';
         }
-    });
 
-    apInput.addEventListener('input', () => {
-        const val = parseInt(apInput.value, 10);
-        if (!isNaN(val) && val >= 0) {
-            showValid(apValid, apInvalid, apMessage);
-        } else {
-            showInvalid(apValid, apInvalid, apMessage);
+        function allFieldsValid() {
+            // Check name
+            if (nameInvalid.style.display === 'block') return false;
+            // Check GPA
+            if (gpaInvalid.style.display === 'block') return false;
+            // Check test scores based on option
+            const selected = getTestOption();
+            if (selected === 'sat') {
+                if (satInput.value.trim() === '' || satInvalid.style.display === 'block') return false;
+            }
+            if (selected === 'act') {
+                if (actInput.value.trim() === '' || actInvalid.style.display === 'block') return false;
+            }
+            // Check extracurriculars
+            if (extracurricularsInvalid.style.display === 'block') return false;
+            // Check essays
+            if (essaysInvalid.style.display === 'block') return false;
+            // Check AP
+            if (apInvalid.style.display === 'block') return false;
+            // Check race and gender
+            if (!raceSelect.value) return false;
+            if (!genderSelect.value) return false;
+
+            // All checks passed
+            return true;
         }
-    });
 
-    function showValid(validEl, invalidEl, msgEl) {
-        msgEl.style.display='none';
-        invalidEl.style.display='none';
-        validEl.style.display='block';
-    }
+        function checkAllValid() {
+            const valid = allFieldsValid();
+            if (valid) {
+                submitBtn.disabled = false;
+                submitBtn.classList.add('enabled');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('enabled');
+            }
+        }
 
-    function showInvalid(validEl, invalidEl, msgEl) {
-        validEl.style.display='none';
-        invalidEl.style.display='block';
-        msgEl.classList.add('show');
-        msgEl.style.display='block';
-    }
-</script>
+        function showValid(validEl, invalidEl, msgEl) {
+            msgEl.style.display='none';
+            invalidEl.style.display='none';
+            validEl.style.display='block';
+        }
+
+        function showInvalid(validEl, invalidEl, msgEl) {
+            validEl.style.display='none';
+            invalidEl.style.display='block';
+            msgEl.classList.add('show');
+            msgEl.style.display='block';
+        }
+
+        // Handle Test Options Visibility
+        function handleTestOptions() {
+            let selected = getTestOption();
+            if (selected === 'sat') {
+                satWrapper.style.display = 'block';
+                actWrapper.style.display = 'none';
+            } else if (selected === 'act') {
+                actWrapper.style.display = 'block';
+                satWrapper.style.display = 'none';
+            } else {
+                satWrapper.style.display = 'none';
+                actWrapper.style.display = 'none';
+            }
+            checkAllValid();
+        }
+
+        // Initial Check on Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleTestOptions();
+            checkAllValid();
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
