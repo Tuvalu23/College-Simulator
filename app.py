@@ -107,6 +107,12 @@ university_list = [
         "description": "Princeton University, founded in 1746 in Princeton, New Jersey, is one of the world’s foremost Ivy League institutions. Consistently ranked #1 or #2 among U.S. universities, Princeton is celebrated for its rigorous undergraduate focus, generous financial aid, and research excellence across the humanities, sciences, and engineering."
     },
     {
+    "name": "rice",
+    "display_name": "Rice University",
+    "logo": "static/logos/rice-logo.jpg",
+    "description": "Founded in 1912 in Houston, Texas, Rice University is a leading research institution known for its distinctive residential college system, close-knit campus community, and interdisciplinary approach to education. Consistently ranked among the nation’s top universities, Rice boasts a strong emphasis on undergraduate teaching, world-class STEM programs, and a tradition of fostering collaboration, innovation, and scholarly excellence."
+    },
+    {
         "name": "stanford",
         "display_name": "Stanford University",
         "logo": "static/logos/stanford-logo.jpg",
@@ -155,23 +161,24 @@ college_list = [
     ["stanford", "0.03", "N", "1.3", "REA"],
     ["upenn", "0.03", "2.3", "N", "P"],
     ["caltech", "0.03", "N", "1.1", "REA"],
+    ["jhu", "0.05", "1.7", "N", "P"],
+    ["dartmouth", "0.05", "2.3", "N", "P"],
     ["princeton", "0.06", "N", "1.3", "REA"],
     ["mit", "0.06", "N", "1.2", "P"],
     ["yale", "0.07", "N", "1.3", "REA"],
-    ["harvard", "0.08", "N", "1.3", "REA"],
-    ["uchicago", "0.08", "2.5", "1.3", "P"],
-    ["jhu", "0.05", "1.7", "N", "P"],
-    ["dartmouth", "0.09", "2.3", "N", "P"],
-    ["brown", "0.09", "2.0", "N", "P"],
+    ["harvard", "0.07", "N", "1.3", "REA"],
+    ["brown", "0.08", "2.0", "N", "P"],
+    ["uchicago", "0.09", "2.5", "1.3", "P"],
+    ["northwestern", "0.09", "2.2", "N", "P"],
     ["duke", "0.10", "2.0", "N", "P"],
-    ["northwestern", "0.12", "2.2", "N", "P"],
-    ["cornell", "0.18", "2.2", "N", "P"],
-    ["umich", "0.18", "N", "1.3", "PUB"],
+    ["rice", "0.12", "2", "N", "P"],
+    ["cornell", "0.15", "2.2", "N", "P"],
+    ["gtech", "0.15", "N", "1.4", "PUB"],
     ["berkeley", "0.15", "N", "N", "PUB"],
     ["usc", "0.17", "N", "1.3", "P"],
+    ["umich", "0.2", "N", "1.3", "PUB"],
     ["nyu", "0.22", "1.5", "N", "P"],
-    ["gtech", "0.16", "N", "1.4", "PUB"],
-    ["bing", "0.70", "N", "1.3", "PUB"]
+    ["bing", "0.65", "N", "1.3", "PUB"],
 ]
 
 def login_required(f):
