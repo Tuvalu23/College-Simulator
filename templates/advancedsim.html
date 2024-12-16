@@ -1,0 +1,577 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Create Account | Common App</title>
+
+<!-- Google Fonts: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin:0; 
+        font-family:'Poppins', sans-serif; 
+        overflow-x:hidden;
+        position: relative;
+    }
+
+    /* Background Setup */
+    body::before {
+        content: "";
+        position: fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(4px);
+        z-index:-2;
+    }
+
+    /* Updated Dramatic Aqua to Dark Blue Gradient */
+    body::after {
+        content:"";
+        position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        z-index:-1;
+    }
+
+    /* Keyframe Animations */
+    @keyframes subtleZoom {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+        from {opacity:0; transform:translateY(20px);}
+        to {opacity:1; transform:translateY(0);}
+    }
+
+    @keyframes glowBorder {
+        0% {box-shadow:0 0 0px rgba(0, 255, 255, 0);}
+        50% {box-shadow:0 0 10px rgba(0, 255, 255, 0.7);}
+        100% {box-shadow:0 0 0px rgba(0, 255, 255, 0);}
+    }
+
+    @keyframes shakeError {
+        0% { transform:translateX(0); }
+        20% { transform:translateX(-5px); }
+        40% { transform:translateX(5px); }
+        60% { transform:translateX(-5px); }
+        80% { transform:translateX(5px); }
+        100% { transform:translateX(0); }
+    }
+
+    @keyframes colorShift {
+        0% { background:#00bfff; }
+        50% { background:#00e0ff; }
+        100% { background:#00bfff; }
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes subtleBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+
+    /* Container for Form */
+    .form-container {
+        width:60%; 
+        min-width:320px; 
+        margin:80px auto 40px auto; 
+        background: linear-gradient(135deg, #00ffff 0%, #0099ff 40%, #0066cc 70%, #003366 100%);
+        border: 2px solid #cce0f5; 
+        border-radius:12px; 
+        padding:30px; 
+        box-sizing:border-box; 
+        font-size:14px;
+        position:relative;
+        animation: fadeInUp 1s ease forwards;
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .form-container:hover {
+        transform: scale(1.02);
+        box-shadow:0px 20px 40px rgba(0,0,0,0.35);
+    }
+
+    .form-container h1 {
+        font-size:2rem; 
+        margin-bottom:25px; 
+        color: white; 
+        font-weight:600;
+        text-align:center;
+        animation: subtleBounce 2s infinite;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-title {
+        font-size:1.4rem; 
+        margin:0 0 15px; 
+        font-weight:500; 
+        color: white; 
+        transition:color 0.3s ease;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .section-title:hover {
+        color:#00e0ff;
+    }
+
+    /* Labels and Inputs */
+    label {
+        display:block; 
+        margin:10px 0 5px; 
+        font-weight:bold; 
+        color: white; 
+        transition: color 0.3s ease;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    label:hover {
+        color:#00ffff;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        width:100%; 
+        padding:10px; 
+        border:1px solid #00bfff; 
+        border-radius:6px; 
+        font-size:14px;
+        transition: all 0.3s ease;
+        background:rgba(255,255,255,0.8);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+        border-color:#00ffff;
+        box-shadow: 0 0 10px rgba(0,255,255,0.5);
+        outline:none;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+        margin-right:5px;
+    }
+
+    /* Validation Messages */
+    .validation-message {
+        font-size:12px; 
+        color:#ff4d4d; 
+        display:none; 
+        margin-top:3px; 
+        transition:opacity 0.3s ease;
+    }
+
+    .validation-message.show {
+        display:block;
+        animation: shakeError 0.5s ease;
+    }
+
+    /* Horizontal Dividers */
+    .section-divider {
+        border-top:1px solid #00bfff; 
+        margin:30px 0;
+    }
+
+    /* Buttons */
+    .buttons {
+        text-align:right; 
+        margin-top:30px;
+    }
+
+    .buttons a {
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .buttons button, .buttons a {
+        border:none; 
+        border-radius:25px; 
+        padding:12px 25px; 
+        cursor:pointer; 
+        font-size:16px; 
+        transition:all 0.3s ease;
+        font-weight:600;
+        margin-left:15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Updated Back Button Styling */
+    .back-button {
+        background:#333333; /* Dark Gray Background */
+        color:#ffffff; /* White Text */
+        position: relative;
+        overflow: hidden;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .back-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transition: transform 0.5s ease;
+        transform: translateX(0);
+        z-index: -1;
+    }
+
+    .back-button:hover::before {
+        transform: translateX(100%);
+    }
+
+    .back-button:hover {
+        background:#555555; /* Slightly Lighter Gray on Hover */
+        color:#ffffff; /* Ensure Text Remains White */
+    }
+
+    /* Updated Submit Button Styling */
+    .submit-button {
+        background: linear-gradient(45deg, #00ffff, #0077ff, #00ffff);
+        background-size: 600% 600%;
+        color:#ffffff;
+        animation: gradientAnimation 8s ease infinite;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-button::after {
+        content: '';
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background: rgba(255,255,255,0.1);
+        opacity:0;
+        transition: opacity 0.3s ease;
+    }
+
+    .submit-button:hover::after {
+        opacity:1;
+    }
+
+    .submit-button:hover {
+        transform: scale(1.05);
+    }
+
+    /* Additional Styling for Animated Valid/Invalid Checks (Optional) */
+    .valid-check {
+        font-size:12px; 
+        margin-top:3px; 
+        display:none; 
+        color:#4CAF50; 
+        animation: glowBorder 1s ease-in-out;
+    }
+
+    .invalid-check {
+        font-size:12px; 
+        margin-top:3px; 
+        display:none; 
+        color:#ff4d4d;
+        animation: shakeError 0.5s ease;
+    }
+
+    /* Hover animations on radio/checkbox labels */
+    .form-container input[type="radio"] + label,
+    .form-container input[type="checkbox"] + label {
+        display:inline;
+        color:#ffffff;
+        transition: color 0.3s ease;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .form-container input[type="radio"] + label:hover,
+    .form-container input[type="checkbox"] + label:hover {
+        color:#00ffff;
+    }
+
+    /* Sub-sections Animations */
+    #sat-score-wrapper, #act-score-wrapper {
+        transition: all 0.4s ease;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Begin Your Application</h1>
+
+    <form method="POST" style="margin:0; padding:0;">
+
+        <!-- Basic Information Section -->
+        <section style="margin-bottom:30px;">
+            <h2 class="section-title">Basic Information</h2>
+            <!-- Remove * from label -->
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" required>
+            <div id="name-message" class="validation-message">Please enter your name</div>
+            <div id="name-valid" class="valid-check">Looks good ✅</div>
+            <div id="name-invalid" class="invalid-check">Invalid name ❌</div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Your Statistics Section -->
+        <section>
+            <h2 class="section-title">Your Statistics</h2>
+            
+            <label for="gpa">GPA</label>
+            <input type="number" name="gpa" id="gpa" step="0.01" min="65" max="100" required>
+            <div id="gpa-message" class="validation-message">GPA must be between 65 and 100</div>
+            <div id="gpa-valid" class="valid-check">Valid GPA ✅</div>
+            <div id="gpa-invalid" class="invalid-check">Invalid GPA ❌</div>
+
+            <p style="margin:20px 0 5px; font-weight:bold; color:#ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Are you submitting test scores?</p>
+            <!-- Keep structure same -->
+            <div style="margin-bottom:20px;">
+                <label style="margin-right:10px;"><input type="radio" name="test_option" value="no_tests" checked> I do not wish to submit test scores</label>
+                <label style="margin-right:10px;"><input type="radio" name="test_option" value="sat"> SAT</label>
+                <label style="margin-right:10px;"><input type="radio" name="test_option" value="act"> ACT</label>
+            </div>
+
+            <div id="sat-score-wrapper" style="display:none;">
+                <label for="sat_score">Enter your SAT score</label>
+                <input type="number" name="sat_score" id="sat_score">
+                <div id="sat-message" class="validation-message">SAT must be 400-1600 in increments of 10</div>
+                <div id="sat-valid" class="valid-check">Valid SAT score ✅</div>
+                <div id="sat-invalid" class="invalid-check">Invalid SAT score ❌</div>
+            </div>
+
+            <div id="act-score-wrapper" style="display:none;">
+                <label for="act_score">Enter your ACT score</label>
+                <input type="number" name="act_score" id="act_score">
+                <div id="act-message" class="validation-message">ACT must be between 1 and 36</div>
+                <div id="act-valid" class="valid-check">Valid ACT score ✅</div>
+                <div id="act-invalid" class="invalid-check">Invalid ACT score ❌</div>
+            </div>
+
+            <label for="extracurriculars">Extracurricular activities rating (0 to 10)</label>
+            <input type="number" name="extracurriculars" id="extracurriculars" min="0" max="10" step="1" required>
+            <div id="extracurriculars-message" class="validation-message">Must be between 0 and 10</div>
+            <div id="extracurriculars-valid" class="valid-check">Looks good ✅</div>
+            <div id="extracurriculars-invalid" class="invalid-check">Invalid extracurricular rating ❌</div>
+
+            <label for="essays">Essays rating (0 to 10)</label>
+            <input type="number" name="essays" id="essays" min="0" max="10" step="1" required>
+            <div id="essays-message" class="validation-message">Must be between 0 and 10</div>
+            <div id="essays-valid" class="valid-check">Looks good ✅</div>
+            <div id="essays-invalid" class="invalid-check">Invalid essays rating ❌</div>
+
+            <label for="ap_courses">AP courses taken (including senior year)</label>
+            <input type="number" name="ap_courses" id="ap_courses" min="0" step="1" required>
+            <div id="ap-message" class="validation-message">Must be 0 or more</div>
+            <div id="ap-valid" class="valid-check">Good number of AP courses ✅</div>
+            <div id="ap-invalid" class="invalid-check">Invalid AP number ❌</div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Demographics Section -->
+        <section>
+            <h2 class="section-title">Demographics</h2>
+            
+            <label for="race">Race/Ethnicity</label>
+            <select name="race" id="race" required>
+                <option value="">-- Select One --</option>
+                <option value="Caucasian">Caucasian</option>
+                <option value="African-American">African-American</option>
+                <option value="Hispanic or Latino">Hispanic or Latino</option>
+                <option value="Asian">Asian</option>
+                <option value="Native American or Alaskan Native">Native American or Alaskan Native</option>
+                <option value="Pacific Islander">Pacific Islander</option>
+                <option value="Middle Eastern or North African">Middle Eastern or North African</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="gender">Gender</label>
+            <select name="gender" id="gender" required>
+                <option value="">-- Select One --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <div style="margin:10px 0;">
+                <label style="font-weight:normal;">
+                    <input type="checkbox" name="first_gen" id="first_gen"> I am a first-generation college student
+                </label>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+        
+        <!-- Buttons with improved animations -->
+        <div class="buttons">
+            <a href="{{ url_for('dashboard') }}" class="back-button">Back</a>
+            <a href="#" class="submit-button">Create Application</a>
+        </div>
+        
+    </form>
+</div>
+
+<script>
+    // Validation Logic with Live Checks
+    const testOptions = document.getElementsByName('test_option');
+    const satWrapper = document.getElementById('sat-score-wrapper');
+    const actWrapper = document.getElementById('act-score-wrapper');
+
+    const nameInput = document.getElementById('name');
+    const nameMessage = document.getElementById('name-message');
+    const nameValid = document.getElementById('name-valid');
+    const nameInvalid = document.getElementById('name-invalid');
+
+    const gpaInput = document.getElementById('gpa');
+    const gpaMessage = document.getElementById('gpa-message');
+    const gpaValid = document.getElementById('gpa-valid');
+    const gpaInvalid = document.getElementById('gpa-invalid');
+
+    const satInput = document.getElementById('sat_score');
+    const satMessage = document.getElementById('sat-message');
+    const satValid = document.getElementById('sat-valid');
+    const satInvalid = document.getElementById('sat-invalid');
+
+    const actInput = document.getElementById('act_score');
+    const actMessage = document.getElementById('act-message');
+    const actValid = document.getElementById('act-valid');
+    const actInvalid = document.getElementById('act-invalid');
+
+    const extracurricularsInput = document.getElementById('extracurriculars');
+    const extracurricularsMessage = document.getElementById('extracurriculars-message');
+    const extracurricularsValid = document.getElementById('extracurriculars-valid');
+    const extracurricularsInvalid = document.getElementById('extracurriculars-invalid');
+
+    const essaysInput = document.getElementById('essays');
+    const essaysMessage = document.getElementById('essays-message');
+    const essaysValid = document.getElementById('essays-valid');
+    const essaysInvalid = document.getElementById('essays-invalid');
+
+    const apInput = document.getElementById('ap_courses');
+    const apMessage = document.getElementById('ap-message');
+    const apValid = document.getElementById('ap-valid');
+    const apInvalid = document.getElementById('ap-invalid');
+
+    for (let opt of testOptions) {
+        opt.addEventListener('change', handleTestOptions);
+    }
+
+    function handleTestOptions() {
+        let selected = '';
+        for (let opt of testOptions) {
+            if (opt.checked) {
+                selected = opt.value;
+                break;
+            }
+        }
+        if (selected === 'sat') {
+            satWrapper.style.display = 'block';
+            actWrapper.style.display = 'none';
+        } else if (selected === 'act') {
+            actWrapper.style.display = 'block';
+            satWrapper.style.display = 'none';
+        } else {
+            satWrapper.style.display = 'none';
+            actWrapper.style.display = 'none';
+        }
+    }
+
+    nameInput.addEventListener('input', () => {
+        const val = nameInput.value.trim();
+        if (val) {
+            showValid(nameValid, nameInvalid, nameMessage);
+        } else {
+            showInvalid(nameValid, nameInvalid, nameMessage);
+        }
+    });
+
+    gpaInput.addEventListener('input', () => {
+        const val = parseFloat(gpaInput.value);
+        if (!isNaN(val) && val >= 65 && val <= 100) {
+            showValid(gpaValid, gpaInvalid, gpaMessage);
+        } else {
+            showInvalid(gpaValid, gpaInvalid, gpaMessage);
+        }
+    });
+
+    satInput.addEventListener('input', () => {
+        const val = parseInt(satInput.value, 10);
+        if (!isNaN(val) && val >= 400 && val <= 1600 && val % 10 === 0) {
+            showValid(satValid, satInvalid, satMessage);
+        } else {
+            showInvalid(satValid, satInvalid, satMessage);
+        }
+    });
+
+    actInput.addEventListener('input', () => {
+        const val = parseInt(actInput.value, 10);
+        if (!isNaN(val) && val >= 1 && val <= 36) {
+            showValid(actValid, actInvalid, actMessage);
+        } else {
+            showInvalid(actValid, actInvalid, actMessage);
+        }
+    });
+
+    extracurricularsInput.addEventListener('input', () => {
+        const val = parseFloat(extracurricularsInput.value);
+        if (!isNaN(val) && val >= 0 && val <= 10) {
+            showValid(extracurricularsValid, extracurricularsInvalid, extracurricularsMessage);
+        } else {
+            showInvalid(extracurricularsValid, extracurricularsInvalid, extracurricularsMessage);
+        }
+    });
+
+    essaysInput.addEventListener('input', () => {
+        const val = parseFloat(essaysInput.value);
+        if (!isNaN(val) && val >= 0 && val <= 10) {
+            showValid(essaysValid, essaysInvalid, essaysMessage);
+        } else {
+            showInvalid(essaysValid, essaysInvalid, essaysMessage);
+        }
+    });
+
+    apInput.addEventListener('input', () => {
+        const val = parseInt(apInput.value, 10);
+        if (!isNaN(val) && val >= 0) {
+            showValid(apValid, apInvalid, apMessage);
+        } else {
+            showInvalid(apValid, apInvalid, apMessage);
+        }
+    });
+
+    function showValid(validEl, invalidEl, msgEl) {
+        msgEl.style.display='none';
+        invalidEl.style.display='none';
+        validEl.style.display='block';
+    }
+
+    function showInvalid(validEl, invalidEl, msgEl) {
+        validEl.style.display='none';
+        invalidEl.style.display='block';
+        msgEl.classList.add('show');
+        msgEl.style.display='block';
+    }
+</script>
+</body>
+</html>
+{% endblock %}

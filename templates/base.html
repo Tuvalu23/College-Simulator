@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title | default("University Simulator") }}</title>
-    <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+    <title>{{ title | default("College Admissions Simulator") }}</title>
+    <!-- Updated Favicon Link -->
+    <link rel="icon" href="{{ url_for('static', filename='icons/study-icon.png') }}" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -105,9 +106,6 @@
             text-decoration: underline;
         }
 
-        .home-icon {
-            filter: invert(1) brightness(200%);
-        }
 
         .nav-btn,
         .btn-primary,
@@ -149,14 +147,14 @@
         <div class="flex items-center px-6 w-full">
             <div class="flex items-center gap-4">
                 <a href="{{ url_for('dashboard') }}" class="flex items-center space-x-2 transition transform hover:scale-105 hover:text-gray-300">
-                    <img src="{{ url_for('static', filename='icons/home-icon.png') }}" alt="Home" class="home-icon w-10 h-10">
+                    <img src="{{ url_for('static', filename='icons/study-icon.png') }}" alt="Home" class="home-icon w-10 h-10">
                     <span class="header-title">College Admission Simulator</span>
                 </a>
             </div>
 
             <div class="header-buttons flex items-center space-x-4 ml-auto mr-20">
                 <a href="{{ url_for('quicksim') }}" class="nav-btn hover:text-gray-300"><strong>Quick Sim</strong></a>
-                <a href="{{ url_for('universities') }}" class="nav-btn hover:text-gray-300"><strong>Advanced Sim</strong></a>
+                <a href="{{ url_for('advancedsim') }}" class="nav-btn hover:text-gray-300"><strong>Advanced Sim</strong></a>
                 <a href="{{ url_for('statistics') }}" class="nav-btn hover:text-gray-300"><strong>Statistics</strong></a>
                 <a href="{{ url_for('profile') }}" class="nav-btn hover:text-gray-300"><strong>Profile</strong></a>
                 {% if session.get('user_id') %}

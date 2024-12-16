@@ -416,6 +416,47 @@ def rejection(college):
         User.log_simulation(user_id, college, 'rejection')
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
+submissions = []
+@app.route("/advancedsim", methods=["GET", "POST"])
+@login_required
+def advancedsim():
+    if request.method == "POST":
+        # Extract form data
+        name = request.form.get("name", "").strip()
+        gpa = request.form.get("gpa", "").strip()
+        test_option = request.form.get("test_option", "")
+        sat_score = request.form.get("sat_score", "")
+        act_score = request.form.get("act_score", "")
+        extracurriculars = request.form.get("extracurriculars", "")
+        essays = request.form.get("essays", "")
+        ap_courses = request.form.get("ap_courses", "")
+        race = request.form.get("race", "")
+        gender = request.form.get("gender", "")
+        first_gen = request.form.get("first_gen", "off") == "on"
+        terms = request.form.get("terms", "off") == "on"
+
+        # Store submission in global list
+        submission_data = {
+            "name": name,
+            "gpa": gpa,
+            "test_option": test_option,
+            "sat_score": sat_score,
+            "act_score": act_score,
+            "extracurriculars": extracurriculars,
+            "essays": essays,
+            "ap_courses": ap_courses,
+            "race": race,
+            "gender": gender,
+            "first_gen": first_gen,
+            "terms": terms
+        }
+        submissions.append(submission_data)
+
+        # Redirect or show a success page if desired
+        return redirect(url_for("advancedsim"))
+
+    return render_template("advancedsim.html")
+
 # files
 @app.route('/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
@@ -437,6 +478,10 @@ def ball_files_static(college, filename):
 def rejection_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'rejection_files'), filename)
 
+@app.route('/advancedsim_files/<path:filename>')
+def advanced_files_static(filename):
+    file_directory = os.path.join(app.root_path, 'templates', 'advancedsim_files')
+    return send_from_directory(file_directory, filename)
 
 
 if __name__ == "__main__":
