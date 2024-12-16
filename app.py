@@ -711,19 +711,61 @@ def prepare_ea_schools():
 def regulardecision():
     if request.method == 'POST':
         rd_schools_selected = request.form.getlist('rd_schools')  # Multiple RD schools
+        
+        if not rd_schools_selected:
+            flash("Please select at least one Regular Decision school.", "danger")
+            return render_template('regulardecision.html', rd_schools=prepare_rd_schools())
+        
+        # Initialize 'selected_schools' in session if not present
+        if 'selected_schools' not in session:
+            session['selected_schools'] = []
+        
+        # Prevent duplicates before extending
+        new_rd_schools = [school for school in rd_schools_selected if school not in session['selected_schools']]
         session['rd_schools'] = rd_schools_selected
-        session['selected_schools'].extend(rd_schools_selected)  # Add RD schools to the list
+        session['selected_schools'].extend(new_rd_schools)  # Add RD schools to the list
         session.modified = True  # Mark session as modified
 
-        # Display confirmation or redirect to a summary page
+        flash("Regular Decision schools selected successfully!", "success")
         return redirect(url_for('summary'))
 
+    # GET request logic
     chosen_all = session.get('selected_schools', [])
 
-    # RD shows all not chosen yet in ED/REA/EA
+    # RD shows all not chosen yet in ED/REA/EA/RD
     rd_schools = [u for u in college_list if u[0] not in chosen_all]
 
-    return render_template('regulardecision.html', rd_schools=rd_schools)
+    # Prepare RD schools as list of dictionaries with 'name' and 'display_name'
+    rd_schools_prepared = [
+        {
+            "name": u[0],
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+        }
+        for u in rd_schools
+    ]
+
+    return render_template('regulardecision.html', rd_schools=rd_schools_prepared)
+
+def prepare_rd_schools():
+    """
+    Helper function to prepare RD schools list of dictionaries.
+    This ensures consistency and avoids repetition.
+    """
+    chosen_all = session.get('selected_schools', [])
+
+    # RD shows all not chosen yet in ED/REA/EA/RD
+    rd_schools = [u for u in college_list if u[0] not in chosen_all]
+
+    # Prepare RD schools as list of dictionaries
+    rd_schools_prepared = [
+        {
+            "name": u[0],
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+        }
+        for u in rd_schools
+    ]
+
+    return rd_schools_prepared
 
 # files
 @app.route('/<college>/login_files/<path:filename>')
