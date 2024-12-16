@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>REA Application | Common App</title>
+
+<!-- Google Fonts: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin:0; 
+        font-family:'Poppins', sans-serif; 
+        overflow-x:hidden;
+        position: relative;
+    }
+
+    /* Background Setup */
+    body::before {
+        content: "";
+        position: fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(4px);
+        z-index:-2;
+    }
+
+    body::after {
+        content:"";
+        position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        z-index:-1;
+    }
+
+    /* Keyframe Animations */
+    @keyframes subtleZoom {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+        from {opacity:0; transform:translateY(20px);}
+        to {opacity:1; transform:translateY(0);}
+    }
+
+    @keyframes glowBorder {
+        0% {box-shadow:0 0 0px rgba(0, 255, 255, 0);}
+        50% {box-shadow:0 0 10px rgba(0, 255, 255, 0.7);}
+        100% {box-shadow:0 0 0px rgba(0, 255, 255, 0);}
+    }
+
+    @keyframes shakeError {
+        0% { transform:translateX(0); }
+        20% { transform:translateX(-5px); }
+        40% { transform:translateX(5px); }
+        60% { transform:translateX(-5px); }
+        80% { transform:translateX(5px); }
+        100% { transform:translateX(0); }
+    }
+
+    @keyframes colorShift {
+        0% { background:#00bfff; }
+        50% { background:#00e0ff; }
+        100% { background:#00bfff; }
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes subtleBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+
+    /* Container for Form */
+    .form-container {
+        width:60%; 
+        min-width:320px; 
+        margin:80px auto 40px auto; 
+        background: linear-gradient(135deg, #00ffff 0%, #0099ff 40%, #0066cc 70%, #003366 100%);
+        border: 2px solid #ffe0f5; 
+        border-radius:12px; 
+        padding:30px; 
+        box-sizing:border-box; 
+        font-size:14px;
+        position:relative;
+        animation: fadeInUp 1s ease forwards;
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .form-container:hover {
+        transform: scale(1.02);
+        box-shadow:0px 20px 40px rgba(0,0,0,0.35);
+    }
+
+    .form-container h1 {
+        font-size:2rem; 
+        margin-bottom:25px; 
+        color: white; 
+        font-weight:600;
+        text-align:center;
+        animation: subtleBounce 2s infinite;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-title {
+        font-size:1.4rem; 
+        margin-bottom:20px; 
+        font-weight:500; 
+        color: white; 
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        transition:color 0.3s ease;
+    }
+
+    .section-title:hover {
+        color:#00e0ff;
+    }
+
+    /* Radio Group */
+    .radio-group {
+        margin-bottom:20px;
+    }
+
+    .radio-label {
+        margin-right:20px; 
+        font-weight:bold; 
+        color:white; 
+        text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+        display:inline-block;
+    }
+
+    .radio-label input[type="radio"] {
+        margin-right:10px; 
+        transform:scale(1.2); 
+        accent-color:#ff6f91;
+    }
+
+    /* Dropdown Container */
+    .dropdown-container {
+        margin-top:20px;
+    }
+
+    .dropdown-container.hidden {
+        display:none;
+    }
+
+    .dropdown-label {
+        font-weight:bold; 
+        display:block; 
+        margin-bottom:10px; 
+        color:white; 
+        text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .select-field {
+        width:100%; 
+        padding:12px; 
+        border:1px solid #ccc; 
+        border-radius:6px; 
+        font-size:16px; 
+        background:rgba(255,255,255,0.8); 
+        margin-bottom:20px; 
+        color:#333;
+    }
+
+    /* Buttons */
+    .buttons {
+        text-align:right; 
+        margin-top:30px;
+    }
+
+    .buttons a, .buttons button {
+        border:none; 
+        border-radius:25px; 
+        padding:15px 25px; 
+        cursor:pointer; 
+        font-size:16px; 
+        font-weight:600; 
+        margin-left:15px; 
+        position:relative; 
+        overflow:hidden; 
+        transition:all 0.3s ease;
+        text-decoration:none;
+    }
+
+    .back-button {
+        background:#333333; 
+        color:#ffffff; 
+    }
+
+    .back-button:hover {
+        background:#555555; /* Slightly Lighter Gray on Hover */
+        color:#ffffff; /* Ensure Text Remains White */
+        transform:scale(1.05);
+    }
+
+    .submit-button {
+        background: linear-gradient(45deg, #ff7f50, #ff6f91);
+        background-size:600% 600%; 
+        color:#ffffff; 
+        animation: gradientAnimation 8s ease infinite; 
+    }
+
+    .submit-button:hover {
+        transform:scale(1.05);
+    }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Restrictive Early Action Application</h1>
+
+    <form method="POST" id="ed-form">
+        <section class="ed-section">
+            <h2 class="section-title">Do you want to apply Restrictive Early Action?</h2>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="rea_choice" value="yes" 
+                           {% if session.rea_choice == 'yes' %}checked{% endif %}
+                           onclick="toggleDropdown(true)"> Yes
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="rea_choice" value="no" 
+                           {% if session.rea_choice == 'no' %}checked{% endif %}
+                           onclick="toggleDropdown(false)"> No
+                </label>
+            </div>
+        </section>
+
+        <div id="dropdown-container" class="dropdown-container {% if session.rea_choice != 'yes' %}hidden{% endif %}">
+            <label for="rea_school" class="dropdown-label">Select your Restrictive Early Action school:</label>
+            <select name="rea_school" id="rea_school" class="select-field">
+                <option value="">-- Select School --</option>
+                {% for school in rea_schools %}
+                    <option value="{{ school.name }}">{{ school.display_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="buttons">
+            <a href="{{ url_for('earlydecision') }}" class="back-button">Back</a>
+            <button type="submit" class="submit-button">Continue</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleDropdown(show) {
+        const dropdown = document.getElementById('dropdown-container');
+        if (show) {
+            dropdown.classList.remove('hidden');
+        } else {
+            dropdown.classList.add('hidden');
+        }
+    }
+</script>
+</body>
+</html>
+{% endblock %}

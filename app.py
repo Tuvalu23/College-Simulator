@@ -169,7 +169,6 @@ college_list = [
     ["umich", "0.18", "N", "1.3", "PUB"],
     ["berkeley", "0.15", "N", "N", "PUB"],
     ["usc", "0.17", "N", "1.3", "P"],
-    ["University of Virginia (UVA)", "0.15", "N", "1.3", "PUB"],
     ["nyu", "0.22", "1.5", "N", "P"],
     ["gtech", "0.16", "N", "1.4", "PUB"],
     ["bing", "0.70", "N", "1.3", "PUB"]
@@ -608,7 +607,13 @@ def rea():
             return redirect(url_for('earlyaction'))
 
     # Filter REA schools: column[4] == "REA"
-    rea_schools = [u for u in college_list if u[4] == "REA"]
+    rea_schools = [
+        {
+            "name": u[0],
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+        }
+        for u in college_list if u[4] == "REA"
+    ]
 
     return render_template('rea.html', rea_schools=rea_schools)
 
@@ -616,30 +621,90 @@ def rea():
 @login_required
 def earlyaction():
     if request.method == 'POST':
-        ea_schools_selected = request.form.getlist('ea_schools')  # Multiple EA schools
-        session['ea_schools'] = ea_schools_selected
-        session['selected_schools'].extend(ea_schools_selected)  # Add EA schools to the list
-        session.modified = True  # Mark session as modified
-        return redirect(url_for('regulardecision'))
+        ea_choice = request.form.get('ea_choice')
+        session['ea_choice'] = ea_choice
 
+        if ea_choice == 'yes':
+            ea_schools_selected = request.form.getlist('ea_schools')  # Multiple EA schools
+
+            if not ea_schools_selected:
+                flash("Please select at least one Early Action school.", "danger")
+                return render_template('earlyaction.html', ea_schools=prepare_ea_schools())
+
+            # Initialize 'selected_schools' in session if not present
+            if 'selected_schools' not in session:
+                session['selected_schools'] = []
+
+            # Prevent duplicates
+            for school in ea_schools_selected:
+                if school not in session['selected_schools']:
+                    session['selected_schools'].append(school)
+
+            session['ea_schools'] = ea_schools_selected
+            session.modified = True  # Mark session as modified
+
+            flash("Early Action schools selected successfully!", "success")
+            return redirect(url_for('regulardecision'))
+        else:
+            session['ea_schools'] = []
+            flash("No Early Action schools selected.", "info")
+            return redirect(url_for('regulardecision'))
+
+    # GET request logic
     chosen_ed = session.get('ed_school')
     chosen_rea = session.get('rea_school')
+    chosen_ea = session.get('ea_schools', [])
 
-    # Exclude ED and REA chosen from the list
-    chosen = [c for c in [chosen_ed, chosen_rea] if c]
+    # Exclude ED, REA, and already selected EA schools from the list
+    excluded_schools = set(filter(None, [chosen_ed, chosen_rea])) | set(chosen_ea)
 
-    # If REA chosen, only public EA schools
+    # If REA is chosen, only public EA schools
     if chosen_rea:
-        ea_schools = [u for u in college_list if u[0] not in chosen and u[4] == "PUB"]
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB"  and u[3] != "N"]
     else:
         # Show both private (P) and public (PUB) schools not chosen yet
-        ea_schools = [u for u in college_list if u[0] not in chosen and (u[4] == "P" or u[4] == "PUB")]
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"]  and u[3] != "N"]
 
-    # Exclude ED schools from EA if ED was chosen
-    if chosen_ed:
-        ea_schools = [u for u in ea_schools if u[0] != chosen_ed]
+    # Prepare EA schools as list of dictionaries
+    ea_schools = [
+        {
+            "name": u[0],
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+        }
+        for u in filtered_colleges
+    ]
 
     return render_template('earlyaction.html', ea_schools=ea_schools)
+
+def prepare_ea_schools():
+    """
+    Helper function to prepare EA schools list of dictionaries.
+    This ensures consistency and avoids repetition.
+    """
+    chosen_ed = session.get('ed_school')
+    chosen_rea = session.get('rea_school')
+    chosen_ea = session.get('ea_schools', [])
+
+    # Exclude ED, REA, and already selected EA schools from the list
+    excluded_schools = set(filter(None, [chosen_ed, chosen_rea])) | set(chosen_ea)
+
+    # If REA is chosen, only public EA schools
+    if chosen_rea:
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB" and u[3] != "N"]
+    else:
+        # Show both private (P) and public (PUB) schools not chosen yet
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"]  and u[3] != "N"]
+
+    # Prepare EA schools as list of dictionaries
+    ea_schools = [
+        {
+            "name": u[0],
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+        }
+        for u in filtered_colleges
+    ]
+
+    return ea_schools
 
 @app.route('/regulardecision', methods=['GET', 'POST'])
 @login_required

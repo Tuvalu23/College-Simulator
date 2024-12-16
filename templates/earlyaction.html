@@ -1,0 +1,435 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Early Action Application | Common App</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin:0; 
+            font-family:'Poppins', sans-serif; 
+            overflow-x:hidden;
+            position: relative;
+        }
+    
+        /* Background Setup */
+        body::before {
+            content: "";
+            position: fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(4px);
+            z-index:-2;
+        }
+    
+        body::after {
+            content:"";
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            z-index:-1;
+        }
+    
+        /* Keyframe Animations */
+        @keyframes subtleZoom {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    
+        @keyframes fadeInUp {
+            from {opacity:0; transform:translateY(20px);}
+            to {opacity:1; transform:translateY(0);}
+        }
+    
+        @keyframes glowBorder {
+            0% {box-shadow:0 0 0px rgba(0, 255, 255, 0);}
+            50% {box-shadow:0 0 10px rgba(0, 255, 255, 0.7);}
+            100% {box-shadow:0 0 0px rgba(0, 255, 255, 0);}
+        }
+    
+        @keyframes shakeError {
+            0% { transform:translateX(0); }
+            20% { transform:translateX(-5px); }
+            40% { transform:translateX(5px); }
+            60% { transform:translateX(-5px); }
+            80% { transform:translateX(5px); }
+            100% { transform:translateX(0); }
+        }
+    
+        @keyframes colorShift {
+            0% { background:#00bfff; }
+            50% { background:#00e0ff; }
+            100% { background:#00bfff; }
+        }
+    
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    
+        @keyframes subtleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+    
+        /* Container for Form */
+        .form-container {
+            width:60%; 
+            min-width:320px; 
+            margin:80px auto 40px auto; 
+            background: linear-gradient(135deg, #00ffff 0%, #0099ff 40%, #0066cc 70%, #003366 100%);
+            border: 2px solid #ffe0f5; 
+            border-radius:12px; 
+            padding:30px; 
+            box-sizing:border-box; 
+            font-size:14px;
+            position:relative;
+            animation: fadeInUp 1s ease forwards;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+    
+        .form-container:hover {
+            transform: scale(1.02);
+            box-shadow:0px 20px 40px rgba(0,0,0,0.35);
+        }
+    
+        .form-container h1 {
+            font-size:2rem; 
+            margin-bottom:25px; 
+            color: white; 
+            font-weight:600;
+            text-align:center;
+            animation: subtleBounce 2s infinite;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    
+        .section-title {
+            font-size:1.4rem; 
+            margin-bottom:20px; 
+            font-weight:500; 
+            color: white; 
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            transition:color 0.3s ease;
+        }
+    
+        .section-title:hover {
+            color:#00e0ff;
+        }
+    
+        /* Radio Group */
+        .radio-group {
+            margin-bottom:20px;
+        }
+    
+        .radio-label {
+            margin-right:20px; 
+            font-weight:bold; 
+            color:white; 
+            text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+            display:inline-block;
+        }
+    
+        .radio-label input[type="radio"] {
+            margin-right:10px; 
+            transform:scale(1.2); 
+            accent-color:#ff6f91;
+        }
+    
+        /* Dropdown Container */
+        .dropdown-container {
+            margin-top:20px;
+        }
+    
+        .dropdown-container.hidden {
+            display:none;
+        }
+    
+        .dropdown-label {
+            font-weight:bold; 
+            display:block; 
+            margin-bottom:10px; 
+            color:white; 
+            text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+        }
+    
+        .select-field {
+            width:100%; 
+            padding:12px; 
+            border:1px solid #ccc; 
+            border-radius:6px; 
+            font-size:16px; 
+            background:rgba(255,255,255,0.8); 
+            margin-bottom:20px; 
+            color:#333;
+        }
+    
+        /* Buttons */
+        .buttons {
+            text-align:right; 
+            margin-top:30px;
+        }
+    
+        .buttons a, .buttons button {
+            border:none; 
+            border-radius:25px; 
+            padding:15px 25px; 
+            cursor:pointer; 
+            font-size:16px; 
+            font-weight:600; 
+            margin-left:15px; 
+            position:relative; 
+            overflow:hidden; 
+            transition:all 0.3s ease;
+            text-decoration:none;
+        }
+    
+        .back-button {
+            background:#333333; 
+            color:#ffffff; 
+        }
+    
+        .back-button:hover {
+            background:#555555; /* Slightly Lighter Gray on Hover */
+            color:#ffffff; /* Ensure Text Remains White */
+            transform:scale(1.05);
+        }
+    
+        .submit-button {
+            background: linear-gradient(45deg, #ff7f50, #ff6f91);
+            background-size:600% 600%; 
+            color:#ffffff; 
+            animation: gradientAnimation 8s ease infinite; 
+        }
+    
+        .submit-button:hover {
+            transform:scale(1.05);
+        }
+
+        .ea-schools-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px; /* Increased space between bubbles */
+            margin-top: 10px;
+        }
+        
+        .bubble-label {
+            display: flex;
+            align-items: center;
+            background-color: #007BFF; /* Initial Bubble Background Color */
+            color: #ffffff; /* White Font */
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            font-size: 14px; /* Adjust font size as needed */
+        }
+        
+        .bubble-label input[type="checkbox"] {
+            display: none; /* Hide the default checkbox */
+        }
+        
+        .bubble-label span {
+            margin-left: 10px;
+            transition: color 0.3s;
+        }
+        
+        /* Hover effect */
+        .bubble-label:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05);
+        }
+        
+        /* Selected state styling */
+        .bubble-label.selected {
+            background-color: #28a745; /* Green Background When Selected */
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Add a checkmark before the school name when selected */
+        .bubble-label.selected::before {
+            content: '✓ ';
+            color: #ffffff;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        
+        
+        /* Validation message styling */
+        .validation-message {
+            font-size: 14px;
+            color: #ff4d4d; /* Red color for error messages */
+            margin-top: 10px;
+            display: none; /* Hidden by default */
+        }
+        
+        /* Show validation message when needed */
+        .validation-message.show {
+            display: block;
+            animation: shakeError 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Early Action Application</h1>
+    
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-message">
+              {% for category, message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+    
+        <form method="POST" id="ea-form">
+            <section class="ea-section">
+                <h2 class="section-title">Do you want to apply Early Action?</h2>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="ea_choice" value="yes" 
+                               {% if session.ea_choice == 'yes' %}checked{% endif %}
+                               onclick="toggleDropdown(true)"> Yes
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="ea_choice" value="no" 
+                               {% if session.ea_choice == 'no' %}checked{% endif %}
+                               onclick="toggleDropdown(false)"> No
+                    </label>
+                </div>
+            </section>
+    
+            <div id="dropdown-container" class="dropdown-container {% if session.ea_choice != 'yes' %}hidden{% endif %}">
+                <label for="ea_schools" class="dropdown-label">Select your Early Action schools:</label>
+                <div class="ea-schools-container">
+                    {% for school in ea_schools %}
+                        <label class="bubble-label">
+                            <input type="checkbox" name="ea_schools" value="{{ school.name }}"
+                                   {% if school.name in session.get('ea_schools', []) %}checked{% endif %}>
+                            <span>{{ school.display_name }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <div id="ea-schools-message" class="validation-message">Please select at least one Early Action school.</div>
+            </div>
+            
+            
+            <div class="buttons">
+                <a href="{{ url_for('rea') }}" class="back-button">Back</a>
+                <button type="submit" id="submit-btn" class="submit-button" disabled>Continue</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Function to toggle dropdown visibility based on EA choice
+        function toggleDropdown(show) {
+            const dropdown = document.getElementById('dropdown-container');
+            if (show) {
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.classList.add('hidden');
+            }
+            checkAllValid();
+        }
+    
+        // Form elements
+        const eaChoiceRadios = document.getElementsByName('ea_choice');
+        const eaSchoolsCheckboxes = document.getElementsByName('ea_schools');
+        const submitBtn = document.getElementById('submit-btn');
+        const eaSchoolsMessage = document.getElementById('ea-schools-message');
+    
+        // Add event listeners to radios
+        eaChoiceRadios.forEach(radio => {
+            radio.addEventListener('change', checkAllValid);
+        });
+    
+        // Add event listeners to checkboxes
+        eaSchoolsCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    this.parentElement.classList.add('selected');
+                } else {
+                    this.parentElement.classList.remove('selected');
+                }
+                checkAllValid();
+            });
+        });
+    
+        // Function to check form validity
+        function checkAllValid() {
+            const selectedEaChoice = getSelectedEaChoice();
+            let valid = true;
+    
+            if (selectedEaChoice === 'yes') {
+                const selectedSchools = getSelectedEaSchools();
+                if (selectedSchools.length === 0) {
+                    valid = false;
+                    eaSchoolsMessage.style.display = 'block';
+                } else {
+                    valid = true;
+                    eaSchoolsMessage.style.display = 'none';
+                }
+            }
+    
+            // Enable or disable the submit button based on validity
+            if (valid) {
+                submitBtn.disabled = false;
+                submitBtn.classList.add('enabled');
+                submitBtn.classList.remove('disabled');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('disabled');
+                submitBtn.classList.remove('enabled');
+            }
+        }
+    
+        // Helper functions to get selected choices
+        function getSelectedEaChoice() {
+            for (let radio of eaChoiceRadios) {
+                if (radio.checked) return radio.value;
+            }
+            return 'no';
+        }
+    
+        function getSelectedEaSchools() {
+            const selected = [];
+            for (let checkbox of eaSchoolsCheckboxes) {
+                if (checkbox.checked) selected.push(checkbox.value);
+            }
+            return selected;
+        }
+    
+        // Initial validation check on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add 'selected' class based on pre-checked checkboxes
+            eaSchoolsCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checkbox.parentElement.classList.add('selected');
+                }
+            });
+            checkAllValid();
+        });
+    </script>
+    
+    </body>
+    </html>
+    {% endblock %}
