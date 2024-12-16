@@ -553,6 +553,20 @@ def advancedsim():
 
     return render_template("advancedsim.html")
 
+# Helper Functions for Session Management
+def add_school(school):
+    if 'selected_schools' not in session:
+        session['selected_schools'] = []
+    if school not in session['selected_schools']:
+        session['selected_schools'].append(school)
+    session.modified = True
+
+def remove_school(school):
+    if 'selected_schools' in session and school in session['selected_schools']:
+        session['selected_schools'].remove(school)
+        session.modified = True
+        
+# Early Decision Route
 @app.route('/earlydecision', methods=['GET', 'POST'])
 @login_required
 def earlydecision():
@@ -567,14 +581,29 @@ def earlydecision():
             ed_school = request.form.get('ed_school')  # Get the selected ED school
             if ed_school:
                 session['ed_school'] = ed_school
-                session['selected_schools'].append(ed_school)  # Add ED school to the list
-                session.modified = True
+                add_school(ed_school)  # Add ED school to the list
                 return redirect(url_for('earlyaction'))  # Skip REA, go to EA
             else:
                 flash("Please select an Early Decision school.", "danger")
         else:  # User selects No
+            # If previously selected ED, remove it
+            ed_school = session.get('ed_school')
+            if ed_school:
+                remove_school(ed_school)
             session['ed_school'] = None
             return redirect(url_for('rea'))  # Proceed to REA
+
+    if request.method == 'GET':
+        # Check if the user is navigating back
+        action = request.args.get('action')
+        if action == 'back':
+            # Clear ED selections
+            ed_school = session.get('ed_school')
+            if ed_school:
+                remove_school(ed_school)
+                session['ed_school'] = None
+                flash("Early Decision school has been cleared as you navigated back.", "info")
+            return redirect(url_for('advancedsim'))  # Adjust as per your flow
 
     # Filter ED schools: ED available if column[2] != "N"
     ed_schools = [
@@ -587,6 +616,7 @@ def earlydecision():
 
     return render_template('earlydecision.html', ed_schools=ed_schools)
 
+# REA Route
 @app.route('/rea', methods=['GET', 'POST'])
 @login_required
 def rea():
@@ -597,14 +627,29 @@ def rea():
             rea_school = request.form.get('rea_school')  # User selects one REA school
             if rea_school:
                 session['rea_school'] = rea_school
-                session['selected_schools'].append(rea_school)  # Add REA school to the list
-                session.modified = True  # Mark session as modified
+                add_school(rea_school)  # Add REA school to the list
                 return redirect(url_for('earlyaction'))
             else:
                 flash("Please select a Restricted Early Action school.", "danger")
         else:
+            # If previously selected REA, remove it
+            rea_school = session.get('rea_school')
+            if rea_school:
+                remove_school(rea_school)
             session['rea_school'] = None
             return redirect(url_for('earlyaction'))
+
+    if request.method == 'GET':
+        # Check if the user is navigating back
+        action = request.args.get('action')
+        if action == 'back':
+            # Clear REA selections
+            rea_school = session.get('rea_school')
+            if rea_school:
+                remove_school(rea_school)
+                session['rea_school'] = None
+                flash("Restricted Early Action school has been cleared as you navigated back.", "info")
+            return redirect(url_for('earlydecision'))
 
     # Filter REA schools: column[4] == "REA"
     rea_schools = [
@@ -617,6 +662,7 @@ def rea():
 
     return render_template('rea.html', rea_schools=rea_schools)
 
+# Early Action Route
 @app.route('/earlyaction', methods=['GET', 'POST'])
 @login_required
 def earlyaction():
@@ -637,8 +683,7 @@ def earlyaction():
 
             # Prevent duplicates
             for school in ea_schools_selected:
-                if school not in session['selected_schools']:
-                    session['selected_schools'].append(school)
+                add_school(school)
 
             session['ea_schools'] = ea_schools_selected
             session.modified = True  # Mark session as modified
@@ -646,11 +691,26 @@ def earlyaction():
             flash("Early Action schools selected successfully!", "success")
             return redirect(url_for('regulardecision'))
         else:
+            # If previously selected EA schools, remove them
+            ea_schools = session.get('ea_schools', [])
+            for school in ea_schools:
+                remove_school(school)
             session['ea_schools'] = []
             flash("No Early Action schools selected.", "info")
             return redirect(url_for('regulardecision'))
 
-    # GET request logic
+    if request.method == 'GET':
+        # Check if the user is navigating back
+        action = request.args.get('action')
+        if action == 'back':
+            # Clear EA selections
+            ea_schools = session.get('ea_schools', [])
+            for school in ea_schools:
+                remove_school(school)
+            session['ea_schools'] = []
+            flash("Early Action schools have been cleared as you navigated back.", "info")
+            return redirect(url_for('rea'))
+
     chosen_ed = session.get('ed_school')
     chosen_rea = session.get('rea_school')
     chosen_ea = session.get('ea_schools', [])
@@ -660,10 +720,10 @@ def earlyaction():
 
     # If REA is chosen, only public EA schools
     if chosen_rea:
-        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB"  and u[3] != "N"]
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB"]
     else:
         # Show both private (P) and public (PUB) schools not chosen yet
-        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"]  and u[3] != "N"]
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"]]
 
     # Prepare EA schools as list of dictionaries
     ea_schools = [
@@ -676,6 +736,7 @@ def earlyaction():
 
     return render_template('earlyaction.html', ea_schools=ea_schools)
 
+# Helper Function to Prepare EA Schools
 def prepare_ea_schools():
     """
     Helper function to prepare EA schools list of dictionaries.
@@ -690,10 +751,10 @@ def prepare_ea_schools():
 
     # If REA is chosen, only public EA schools
     if chosen_rea:
-        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB" and u[3] != "N"]
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB"]
     else:
         # Show both private (P) and public (PUB) schools not chosen yet
-        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"]  and u[3] != "N"]
+        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"]]
 
     # Prepare EA schools as list of dictionaries
     ea_schools = [
@@ -706,28 +767,42 @@ def prepare_ea_schools():
 
     return ea_schools
 
+# Regular Decision Route
 @app.route('/regulardecision', methods=['GET', 'POST'])
 @login_required
 def regulardecision():
     if request.method == 'POST':
         rd_schools_selected = request.form.getlist('rd_schools')  # Multiple RD schools
-        
+
         if not rd_schools_selected:
             flash("Please select at least one Regular Decision school.", "danger")
             return render_template('regulardecision.html', rd_schools=prepare_rd_schools())
-        
+
         # Initialize 'selected_schools' in session if not present
         if 'selected_schools' not in session:
             session['selected_schools'] = []
-        
+
         # Prevent duplicates before extending
-        new_rd_schools = [school for school in rd_schools_selected if school not in session['selected_schools']]
+        for school in rd_schools_selected:
+            add_school(school)
+
         session['rd_schools'] = rd_schools_selected
-        session['selected_schools'].extend(new_rd_schools)  # Add RD schools to the list
         session.modified = True  # Mark session as modified
 
         flash("Regular Decision schools selected successfully!", "success")
         return redirect(url_for('summary'))
+
+    if request.method == 'GET':
+        # Check if the user is navigating back
+        action = request.args.get('action')
+        if action == 'back':
+            # Clear RD selections
+            rd_schools = session.get('rd_schools', [])
+            for school in rd_schools:
+                remove_school(school)
+            session['rd_schools'] = []
+            flash("Regular Decision schools have been cleared as you navigated back.", "info")
+            return redirect(url_for('earlyaction'))
 
     # GET request logic
     chosen_all = session.get('selected_schools', [])
@@ -744,8 +819,13 @@ def regulardecision():
         for u in rd_schools
     ]
 
+    # Debugging: Print available RD schools
+    print("Selected Schools:", session.get('selected_schools', []))
+    print("RD Schools Available:", rd_schools_prepared)
+
     return render_template('regulardecision.html', rd_schools=rd_schools_prepared)
 
+# Helper Function to Prepare RD Schools
 def prepare_rd_schools():
     """
     Helper function to prepare RD schools list of dictionaries.
@@ -764,6 +844,10 @@ def prepare_rd_schools():
         }
         for u in rd_schools
     ]
+
+    # Debugging: Print prepared RD schools
+    print("Preparing RD Schools:")
+    print(rd_schools_prepared)
 
     return rd_schools_prepared
 
