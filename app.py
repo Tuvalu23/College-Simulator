@@ -150,6 +150,30 @@ university_list = [
     }
 ]
 
+college_list = [
+    ["columbia", "0.02", "1.9", "N", "P"],
+    ["stanford", "0.03", "N", "1.3", "REA"],
+    ["upenn", "0.03", "2.3", "N", "P"],
+    ["caltech", "0.03", "N", "1.1", "REA"],
+    ["princeton", "0.06", "N", "1.3", "REA"],
+    ["mit", "0.06", "N", "1.2", "P"],
+    ["yale", "0.07", "N", "1.3", "REA"],
+    ["harvard", "0.08", "N", "1.3", "REA"],
+    ["uchicago", "0.08", "2.5", "1.3", "P"],
+    ["jhu", "0.05", "1.7", "N", "P"],
+    ["dartmouth", "0.09", "2.3", "N", "P"],
+    ["brown", "0.09", "2.0", "N", "P"],
+    ["duke", "0.10", "2.0", "N", "P"],
+    ["northwestern", "0.12", "2.2", "N", "P"],
+    ["cornell", "0.18", "2.2", "N", "P"],
+    ["umich", "0.18", "N", "1.3", "PUB"],
+    ["berkeley", "0.15", "N", "N", "PUB"],
+    ["usc", "0.17", "N", "1.3", "P"],
+    ["University of Virginia (UVA)", "0.15", "N", "1.3", "PUB"],
+    ["nyu", "0.22", "1.5", "N", "P"],
+    ["gtech", "0.16", "N", "1.4", "PUB"],
+    ["bing", "0.70", "N", "1.3", "PUB"]
+]
 
 def login_required(f):
     @wraps(f)
@@ -416,7 +440,9 @@ def rejection(college):
         User.log_simulation(user_id, college, 'rejection')
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
+# advanced sim stuff
 submissions = []
+
 @app.route("/advancedsim", methods=["GET", "POST"])
 @login_required
 def advancedsim():
@@ -448,7 +474,6 @@ def advancedsim():
             "race": race,
             "gender": gender,
             "first_gen": first_gen,
-            "terms": terms
         }
         submissions.append(submission_data)
 
@@ -456,6 +481,105 @@ def advancedsim():
         return redirect(url_for("advancedsim"))
 
     return render_template("advancedsim.html")
+
+@app.route('/earlydecision', methods=['GET', 'POST'])
+@login_required
+def earlydecision():
+    if 'selected_schools' not in session:
+        session['selected_schools'] = []  # Initialize the list to store selected schools
+
+    if request.method == 'POST':
+        ed_choice = request.form.get('ed_choice')
+        session['ed_choice'] = ed_choice
+        if ed_choice == 'yes':
+            ed_school = request.form.get('ed_school')  # User selects one ED school
+            if ed_school:
+                session['ed_school'] = ed_school
+                session['selected_schools'].append(ed_school)  # Add ED school to the list
+                session.modified = True  # Mark session as modified
+                return redirect(url_for('rea'))
+            else:
+                flash("Please select an Early Decision school.", "danger")
+        else:
+            session['ed_school'] = None
+            return redirect(url_for('rea'))
+
+    # Filter ED schools: ED available if column[2] != "N"
+    ed_schools = [u for u in college_list if u[2] != "N"]
+
+    return render_template('earlydecision.html', ed_schools=ed_schools)
+
+@app.route('/rea', methods=['GET', 'POST'])
+@login_required
+def rea():
+    if request.method == 'POST':
+        rea_choice = request.form.get('rea_choice')
+        session['rea_choice'] = rea_choice
+        if rea_choice == 'yes':
+            rea_school = request.form.get('rea_school')  # User selects one REA school
+            if rea_school:
+                session['rea_school'] = rea_school
+                session['selected_schools'].append(rea_school)  # Add REA school to the list
+                session.modified = True  # Mark session as modified
+                return redirect(url_for('earlyaction'))
+            else:
+                flash("Please select a Restricted Early Action school.", "danger")
+        else:
+            session['rea_school'] = None
+            return redirect(url_for('earlyaction'))
+
+    # Filter REA schools: column[4] == "REA"
+    rea_schools = [u for u in college_list if u[4] == "REA"]
+
+    return render_template('rea.html', rea_schools=rea_schools)
+
+@app.route('/earlyaction', methods=['GET', 'POST'])
+@login_required
+def earlyaction():
+    if request.method == 'POST':
+        ea_schools_selected = request.form.getlist('ea_schools')  # Multiple EA schools
+        session['ea_schools'] = ea_schools_selected
+        session['selected_schools'].extend(ea_schools_selected)  # Add EA schools to the list
+        session.modified = True  # Mark session as modified
+        return redirect(url_for('regulardecision'))
+
+    chosen_ed = session.get('ed_school')
+    chosen_rea = session.get('rea_school')
+
+    # Exclude ED and REA chosen from the list
+    chosen = [c for c in [chosen_ed, chosen_rea] if c]
+
+    # If REA chosen, only public EA schools
+    if chosen_rea:
+        ea_schools = [u for u in college_list if u[0] not in chosen and u[4] == "PUB"]
+    else:
+        # Show both private (P) and public (PUB) schools not chosen yet
+        ea_schools = [u for u in college_list if u[0] not in chosen and (u[4] == "P" or u[4] == "PUB")]
+
+    # Exclude ED schools from EA if ED was chosen
+    if chosen_ed:
+        ea_schools = [u for u in ea_schools if u[0] != chosen_ed]
+
+    return render_template('earlyaction.html', ea_schools=ea_schools)
+
+@app.route('/regulardecision', methods=['GET', 'POST'])
+@login_required
+def regulardecision():
+    if request.method == 'POST':
+        rd_schools_selected = request.form.getlist('rd_schools')  # Multiple RD schools
+        session['rd_schools'] = rd_schools_selected
+        session['selected_schools'].extend(rd_schools_selected)  # Add RD schools to the list
+        session.modified = True  # Mark session as modified
+
+        # Display confirmation or redirect to a summary page
+        return redirect(url_for('summary'))
+
+    chosen_all = session.get('selected_schools', [])
+
+    # RD shows all not chosen yet in ED/REA/EA
+    rd_schools = [u for u in college_list if u[0] not in chosen_all]
+
+    return render_template('regulardecision.html', rd_schools=rd_schools)
 
 # files
 @app.route('/<college>/login_files/<path:filename>')
