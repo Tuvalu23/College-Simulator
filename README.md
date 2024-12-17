@@ -24,9 +24,9 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Caltech
 - [X] CMU
 - [X] UMich
-- [ ] Bing
+- [X] Bing
+- [X] Rice
 - [ ] Buffalo
-- [ ] Rice
 
 ## TO GET ADVANCED RIBBONS
 Add this above style:
