@@ -2,20 +2,186 @@
 {% block title %}Register{% endblock %}
 
 {% block background %}
-<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/register_image.jpg') }}');"></div>
+<style>
+    /* Background Setup */
+    .background-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{{ url_for('static', filename='images/register_image.jpg') }}') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(5px);
+        z-index: -1;
+        animation: subtleZoom 20s infinite alternate;
+    }
+
+    /* Keyframe Animations */
+    @keyframes subtleZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.05); }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    @keyframes shakeError {
+        0% { transform: translateX(0); }
+        20% { transform: translateX(-5px); }
+        40% { transform: translateX(5px); }
+        60% { transform: translateX(-5px); }
+        80% { transform: translateX(5px); }
+        100% { transform: translateX(0); }
+    }
+
+    /* Form Container */
+    .register-container {
+        max-width: 500px;
+        margin: 60px auto;
+        background: linear-gradient(135deg, rgb(255, 206, 84) 0%, rgb(255, 163, 77) 40%, rgb(255, 123, 67) 70%, rgb(255, 94, 77)  100%);
+        border: 2px solid #C0B3E5;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    /* Heading */
+    .register-container h1 {
+        text-align: center;
+        color: #ffffff;
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+        animation: pulse 2s infinite;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        font-weight: 700;
+    }
+
+    /* Labels */
+    .register-container label {
+        color: #dddddd;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+    }
+
+    .register-container label:hover {
+        color: #00ffff;
+    }
+
+    /* Inputs */
+    .register-container input {
+        width: 100%;
+        padding: 12px 18px;
+        border: 2px solid #555555;
+        border-radius: 8px;
+        background: #333333;
+        color: #ffffff;
+        margin-bottom: 12px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        font-weight: 600;
+    }
+
+    .register-container input:focus {
+        border-color: #00ffff;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        outline: none;
+    }
+
+    /* Validation Messages */
+    .validation-icon {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        margin-top: 6px;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .validation-icon.valid {
+        color: #4CAF50;
+        transform: scale(1);
+    }
+
+    .validation-icon.invalid {
+        color: #FF4D4D;
+        transform: scale(1);
+    }
+
+    .validation-icon.valid.animate {
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .validation-icon.invalid.animate {
+        animation: shakeError 0.5s ease;
+    }
+
+    /* Submit Button */
+    .register-container button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(45deg, #00ffff, #0077ff, #00ffff);
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        opacity: 0.95;
+    }
+
+    .register-container button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        opacity: 1;
+    }
+
+    .register-container button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* Sign In Link */
+    .register-container p {
+        text-align: center;
+        color: #cccccc;
+        margin-top: 20px;
+        font-weight: 600;
+    }
+
+    .register-container p a {
+        color: #00ffff;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+
+    .register-container p a:hover {
+        color: #ffffff;
+    }
+</style>
+<div class="background-overlay"></div>
 {% endblock %}
 
 {% block content %}
-<div class="relative max-w-md mx-auto bg-gradient-to-r from-green-500 to-teal-500 border border-gray-700 shadow-lg rounded-lg p-8 mt-10">
-    <h1 class="text-3xl font-bold text-center text-white mb-6 animate-pulse">Register</h1>
+<div class="register-container">
+    <h1>Register</h1>
     <form id="registrationForm" action="{{ url_for('register') }}" method="POST" class="space-y-6">
         <!-- Username Field -->
         <div class="relative">
-            <label for="username" class="block text-gray-200 font-semibold mb-1">Username:</label>
-            <input type="text" id="username" name="username" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
             <!-- Username Requirements -->
-            <ul class="mt-2 text-sm">
-                <li id="no-space" data-text="Cannot start with a space" class="validation-icon invalid flex items-center">
+            <ul class="mt-1">
+                <li id="no-space" data-text="Cannot start with a space" class="validation-icon invalid">
                     ❌ <span class="validation-text ml-2">Cannot start with a space</span>
                 </li>
             </ul>
@@ -23,34 +189,34 @@
 
         <!-- Password Field -->
         <div class="relative">
-            <label for="password" class="block text-gray-200 font-semibold mb-1">Password:</label>
-            <input type="password" id="password" name="password" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
         </div>
 
         <!-- Confirm Password Field -->
         <div class="relative">
-            <label for="confirm_password" class="block text-gray-200 font-semibold mb-1">Retype Password:</label>
-            <input type="password" id="confirm_password" name="confirm_password" class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 p-3 transition duration-200" required>
+            <label for="confirm_password">Retype Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
         </div>
 
         <!-- Password Requirements -->
-        <ul class="mt-2 text-sm space-y-1">
-            <li id="length" data-text="At least 5 characters" class="validation-icon invalid flex items-center">
+        <ul class="mt-1">
+            <li id="length" data-text="At least 5 characters" class="validation-icon invalid">
                 ❌ <span class="validation-text ml-2">At least 5 characters</span>
             </li>
-            <li id="match" data-text="Passwords must match" class="validation-icon invalid flex items-center">
+            <li id="match" data-text="Passwords must match" class="validation-icon invalid">
                 ❌ <span class="validation-text ml-2">Passwords must match</span>
             </li>
         </ul>
 
-        <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 rounded-lg shadow-md transition transform hover:scale-105 duration-200">
+        <button type="submit" class="transition duration-200" disabled>
             Register
         </button>
     </form>
 
-    <p class="mt-4 text-center text-gray-300">
+    <p>
         Already have an account?
-        <a href="{{ url_for('start') }}" class="text-blue-400 hover:underline">Sign In</a>
+        <a href="{{ url_for('start') }}">Sign In</a>
     </p>
 </div>
 
@@ -63,12 +229,12 @@
 
         if (username && username.startsWith(' ')) {
             noSpaceRequirement.classList.remove('valid');
-            noSpaceRequirement.classList.add('invalid');
+            noSpaceRequirement.classList.add('invalid', 'animate');
             noSpaceRequirement.innerHTML = '❌ <span class="validation-text ml-2">Cannot start with a space</span>';
             return false;
         } else {
-            noSpaceRequirement.classList.remove('invalid');
-            noSpaceRequirement.classList.add('valid');
+            noSpaceRequirement.classList.remove('invalid', 'animate');
+            noSpaceRequirement.classList.add('valid', 'animate');
             noSpaceRequirement.innerHTML = '✔ <span class="validation-text ml-2">Cannot start with a space</span>';
             return true;
         }
@@ -79,34 +245,38 @@
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm_password').value;
 
-        const checks = {
-            length: password.length >= 5,
-            match: password === confirmPassword && password !== ''
-        };
+        const lengthCheck = document.getElementById('length');
+        const matchCheck = document.getElementById('match');
 
-        for (const [key, value] of Object.entries(checks)) {
-            const element = document.getElementById(key);
-            if (element) {
-                if (value) {
-                    element.classList.remove('invalid');
-                    element.classList.add('valid');
-                    element.innerHTML = '✔ <span class="validation-text ml-2">' + element.dataset.text + '</span>';
-                } else {
-                    element.classList.remove('valid');
-                    element.classList.add('invalid');
-                    element.innerHTML = '❌ <span class="validation-text ml-2">' + element.dataset.text + '</span>';
-                }
-            }
+        // Length Validation
+        if (password.length >= 5) {
+            lengthCheck.classList.remove('invalid', 'animate');
+            lengthCheck.classList.add('valid', 'animate');
+            lengthCheck.innerHTML = '✔ <span class="validation-text ml-2">At least 5 characters</span>';
+        } else {
+            lengthCheck.classList.remove('valid', 'animate');
+            lengthCheck.classList.add('invalid', 'animate');
+            lengthCheck.innerHTML = '❌ <span class="validation-text ml-2">At least 5 characters</span>';
         }
+
+        // Match Validation
+        if (password === confirmPassword && password !== '') {
+            matchCheck.classList.remove('invalid', 'animate');
+            matchCheck.classList.add('valid', 'animate');
+            matchCheck.innerHTML = '✔ <span class="validation-text ml-2">Passwords must match</span>';
+        } else {
+            matchCheck.classList.remove('valid', 'animate');
+            matchCheck.classList.add('invalid', 'animate');
+            matchCheck.innerHTML = '❌ <span class="validation-text ml-2">Passwords must match</span>';
+        }
+
+        return password.length >= 5 && password === confirmPassword && password !== '';
     }
 
     // Form Validation on Submit
     function validateForm(event) {
         const isUsernameValid = validateUsername();
-        const isPasswordValid = ['length', 'match'].every(id => {
-            const element = document.getElementById(id);
-            return element && element.classList.contains('valid');
-        });
+        const isPasswordValid = validatePassword();
 
         if (!isUsernameValid || !isPasswordValid) {
             event.preventDefault();
@@ -114,10 +284,34 @@
         }
     }
 
+    // Enable/Disable Submit Button
+    function toggleSubmitButton() {
+        const isUsernameValid = validateUsername();
+        const isPasswordValid = validatePassword();
+
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (isUsernameValid && isPasswordValid) {
+            submitButton.disabled = false;
+            submitButton.classList.add('enabled');
+        } else {
+            submitButton.disabled = true;
+            submitButton.classList.remove('enabled');
+        }
+    }
+
     // Event Listeners
-    document.getElementById('username').addEventListener('input', validateUsername);
-    document.getElementById('password').addEventListener('input', validatePassword);
-    document.getElementById('confirm_password').addEventListener('input', validatePassword);
+    document.getElementById('username').addEventListener('input', () => {
+        validateUsername();
+        toggleSubmitButton();
+    });
+    document.getElementById('password').addEventListener('input', () => {
+        validatePassword();
+        toggleSubmitButton();
+    });
+    document.getElementById('confirm_password').addEventListener('input', () => {
+        validatePassword();
+        toggleSubmitButton();
+    });
     document.getElementById('registrationForm').addEventListener('submit', validateForm);
 </script>
 {% endblock %}

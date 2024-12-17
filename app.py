@@ -453,6 +453,7 @@ submissions = []
 @app.route("/advancedsim", methods=["GET", "POST"])
 @login_required
 def advancedsim():
+    clear_session()
     if request.method == "POST":
         # Extract form data
         name = request.form.get("name", "").strip()
@@ -592,6 +593,11 @@ def clear_all_schools():
     session.pop('selected_schools', None)
     session.modified = True
     print("Cleared all selected_schools")
+    
+def clear_session():
+    session.pop('selected_schools', None)  # Remove the key completely
+    print("Session cleared!")
+
 
 # Early Decision Route
 @app.route('/earlydecision', methods=['GET', 'POST'])
