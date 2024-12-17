@@ -5,6 +5,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+    .badge.outstanding {
+        background-color: #2ecc71; /* Green */
+    }
+
+    .badge.strong {
+        background-color: #27ae60; /* Darker Green */
+    }
+
+    .badge.moderate {
+        background-color: #f1c40f; /* Yellow */
+    }
+
+    .badge.fair {
+        background-color: #e67e22; /* Orange */
+    }
+
+    .badge.weak {
+        background-color: #e74c3c; /* Red */
+    }
+
+    .badge.terrible {
+        background-color: #c0392b; /* Dark Red */
+    }
+
+    .badge.na {
+        background-color: #7f8c8d; /* Gray */
+    }
+
+    /* Optional: Adjust text color for better contrast */
+    .badge.outstanding,
+    .badge.strong,
+    .badge.moderate,
+    .badge.fair,
+    .badge.weak,
+    .badge.terrible,
+    .badge.na {
+        color: #ffffff;
+        margin-right: 5px;
+    }
 
     body {
         margin: 0; 
@@ -355,7 +394,7 @@
     <section class="section profile-section">
         <h2>Your Profile</h2>
         <div class="profile-details">
-            <!-- Profile Card Example -->
+            <!-- Personal Information Card -->
             <div class="profile-card">
                 <h3>Personal Information</h3>
                 <ul>
@@ -365,6 +404,7 @@
                     <li><strong>First Generation:</strong> {{ user_profile["First Generation"] }}</li>
                 </ul>
             </div>
+            <!-- Academic Information Card -->
             <div class="profile-card">
                 <h3>Academic Information</h3>
                 <ul>
@@ -375,11 +415,24 @@
                     <li><strong>AP Courses Taken:</strong> {{ user_profile["AP Courses Taken"] }}</li>
                 </ul>
             </div>
+            <!-- Additional Information Card -->
             <div class="profile-card">
                 <h3>Additional Information</h3>
                 <ul>
                     <li><strong>Extracurricular Activities:</strong> {{ user_profile["Extracurricular Activities"] }}</li>
                     <li><strong>Essays Rating:</strong> {{ user_profile["Essays Rating"] }}</li>
+                </ul>
+            </div>
+            <!-- Demographic Score Card -->
+            <div class="profile-card">
+                <h3>Demographic Score</h3>
+                <ul>
+                    <li><strong>Score:</strong> {{ user_profile["Demographic Score"] }}</li>
+                    <li><strong>Category:</strong> 
+                        <span class="badge {{ user_profile["Demographic Class"] }}">
+                            {{ user_profile["Demographic Category"] }}
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>

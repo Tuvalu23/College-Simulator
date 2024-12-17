@@ -385,7 +385,7 @@ def quicksim():
     return render_template("quicksim.html")
 
 # University Selection Page
-@app.route("/universities", methods=["GET", "POST"])
+@app.route("/quicksim/universities", methods=["GET", "POST"])
 @login_required
 def universities():
     # Retrieve user_data from session
@@ -464,9 +464,28 @@ def advancedsim():
         extracurriculars = request.form.get("extracurriculars", "").strip()
         essays = request.form.get("essays", "").strip()
         ap_courses = request.form.get("ap_courses", "").strip()
-        race = request.form.get("race", "").strip()
-        gender = request.form.get("gender", "").strip()
+        race_str = request.form.get("race", "").strip()
+        gender_str = request.form.get("gender", "").strip()
         first_gen = request.form.get("first_gen", "off") == "on"
+
+        # Mapping Dictionaries
+        RACE_MAPPING = {
+            "Caucasian": 1,
+            "African-American": 2,
+            "Hispanic or Latino": 3,
+            "Asian": 4,
+            "Native American or Alaskan Native": 5,
+            "Pacific Islander": 6,
+            "Middle Eastern or North African": 7,
+            "Prefer not to say": 8,
+            "Other": 9
+        }
+
+        GENDER_MAPPING = {
+            "Male": 1,
+            "Female": 2,
+            "Other": 3  # Assuming 'Other' represents Non-binary or similar categories
+        }
 
         # Initialize error flag and messages
         error = False
@@ -526,11 +545,11 @@ def advancedsim():
             error = True
             error_messages.append("AP courses taken must be a non-negative integer.")
 
-        if not race:
+        if not race_str:
             error = True
             error_messages.append("Race/Ethnicity selection is required.")
 
-        if not gender:
+        if not gender_str:
             error = True
             error_messages.append("Gender selection is required.")
 
@@ -540,7 +559,78 @@ def advancedsim():
             # Optionally, you can repopulate the form with previously entered data here
             return render_template("advancedsim.html")
         
-        # If all validations pass, store the submission
+        # Map race and gender strings to integer codes
+        race = RACE_MAPPING.get(race_str)
+        gender = GENDER_MAPPING.get(gender_str)
+
+        # Validate mapping
+        if race is None:
+            flash("Invalid Race/Ethnicity selection.", "danger")
+            return render_template("advancedsim.html")
+
+        if gender is None:
+            flash("Invalid Gender selection.", "danger")
+            return render_template("advancedsim.html")
+
+        # Function to compute demographic score
+        def demScore(gender, race, firstGen):
+            score = 5  # Base score
+
+            # Gender-based adjustments
+            if gender in [2, 3]:  # Female or Non-binary
+                score += 2.3  # Fixed adjustment instead of random
+
+            # First-generation adjustment
+            if firstGen:
+                score += 3  # Fixed adjustment instead of random
+
+            # Race-based adjustments
+            if race == 1:  # Caucasian
+                score -= 2
+            elif race == 2:  # African-American
+                score += 4.5
+            elif race == 3:  # Hispanic or Latino
+                score += 4.5
+            elif race == 4:  # Asian
+                score -= 3.5
+            elif race == 5:  # Native American or Alaskan Native
+                score += 4
+            elif race == 6:  # Pacific Islander
+                score += 3
+            elif race == 7:  # Middle Eastern or North African
+                score += 2
+            elif race == 8:  # Prefer not to say
+                score -= 1
+            elif race == 9:  # Other
+                score += 1.5
+            # No adjustment for undefined races
+
+            # Clamp the score between 0 and 10
+            score = max(0.0, min(score, 10.0))
+            return round(score, 2)
+
+        # Function to categorize the demographic score
+        def rate(score):
+            if 8.7 <= score <= 10:
+                return "Outstanding", "outstanding"
+            elif 7.2 <= score < 8.7:
+                return "Strong", "strong"
+            elif 6 <= score < 7.2:
+                return "Moderate", "moderate"
+            elif 4.5 <= score < 6:
+                return "Fair", "fair"
+            elif 2 <= score < 4.5:
+                return "Weak", "weak"
+            elif 0 <= score < 2:
+                return "Terrible", "terrible"
+            else:
+                return "N/A", "na"
+
+        # Compute demographic score and category
+        dem_score = demScore(gender, race, first_gen)
+        dem_category, dem_class = rate(dem_score)
+
+        # Add demographic score and category to submission_data
         submission_data = {
             "name": name,
             "gpa": gpa_val,
@@ -550,9 +640,12 @@ def advancedsim():
             "extracurriculars": extracurriculars_val,
             "essays": essays_val,
             "ap_courses": ap_val,
-            "race": race,
-            "gender": gender,
+            "race": race,       # Stored as integer code
+            "gender": gender,   # Stored as integer code
             "first_gen": first_gen,
+            "dem_score": dem_score,          # Store Demographic Score
+            "dem_category": dem_category,    # Store Demographic Category
+            "dem_class": dem_class           # Store CSS Class for Category
         }
         submissions.append(submission_data)
         
@@ -567,6 +660,7 @@ def advancedsim():
         return redirect(url_for("earlydecision"))
 
     return render_template("advancedsim.html")
+
 
 # Helper Functions for Session Management
 def add_school(school):
@@ -600,7 +694,7 @@ def clear_session():
 
 
 # Early Decision Route
-@app.route('/earlydecision', methods=['GET', 'POST'])
+@app.route('/advancedsim/earlydecision', methods=['GET', 'POST'])
 @login_required
 def earlydecision():
     if 'selected_schools' not in session:
@@ -662,7 +756,7 @@ def earlydecision():
 
 
 # REA Route
-@app.route('/rea', methods=['GET', 'POST'])
+@app.route('/advancedsim/rea', methods=['GET', 'POST'])
 @login_required
 def rea():
     if request.method == 'POST':
@@ -719,7 +813,7 @@ def rea():
 
 
 # Early Action Route
-@app.route('/earlyaction', methods=['GET', 'POST'])
+@app.route('/advancedsim/earlyaction', methods=['GET', 'POST'])
 @login_required
 def earlyaction():
     if request.method == 'POST':
@@ -829,7 +923,7 @@ def prepare_ea_schools():
     return ea_schools
 
 # Regular Decision Route
-@app.route('/regulardecision', methods=['GET', 'POST'])
+@app.route('/advancedsim/regulardecision', methods=['GET', 'POST'])
 @login_required
 def regulardecision():
     if request.method == 'POST':
@@ -910,7 +1004,7 @@ def prepare_rd_schools():
     return rd_schools_prepared
 
 # Summary Route
-@app.route('/summary')
+@app.route('/advancedsim/summary')
 @login_required
 def summary():
     # Retrieve User Profile Data from session['quicksim_data']
@@ -926,7 +1020,10 @@ def summary():
         "AP Courses Taken": user_data.get("ap_courses", "N/A"),
         "Race/Ethnicity": user_data.get("race", "N/A"),
         "Gender": user_data.get("gender", "N/A"),
-        "First Generation": "Yes" if user_data.get("first_gen") else "No"
+        "First Generation": "Yes" if user_data.get("first_gen") else "No",
+        "Demographic Score": user_data.get("dem_score", "N/A"),
+        "Demographic Category": user_data.get("dem_category", "N/A"),
+        "Demographic Class": user_data.get("dem_class", "na")
     }
 
     # Gather Applied Colleges with Application Types
@@ -990,7 +1087,6 @@ def summary():
 
     return render_template('summary.html', user_profile=user_profile, applied_colleges=applied_colleges)
 
-# files
 @app.route('/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'login_files'), filename)
