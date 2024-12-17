@@ -535,7 +535,7 @@ def advancedsim():
 
         if error:
             for message in error_messages:
-                flash(message)
+                flash(message, "danger")
             # Optionally, you can repopulate the form with previously entered data here
             return render_template("advancedsim.html")
         
@@ -555,15 +555,14 @@ def advancedsim():
         }
         submissions.append(submission_data)
         
-        if request.method == "GET":
-            # Clear all past selections when accessing /advancedsim
-            clear_all_schools()
-            # Also clear quicksim_data if necessary
-            session.pop('quicksim_data', None)
-            flash("All previous selections have been cleared. Starting a new simulation.", "info")
+        # Update session['quicksim_data'] with submission_data
+        if 'quicksim_data' in session:
+            session['quicksim_data'].update(submission_data)
+        else:
+            session['quicksim_data'] = submission_data
 
         flash("Application submitted successfully!", "success")
-        # Redirect to a success page or the next step
+        # Redirect to the next step in your application process
         return redirect(url_for("earlydecision"))
 
     return render_template("advancedsim.html")
@@ -641,7 +640,7 @@ def earlydecision():
                 remove_school(ed_school)
                 session['ed_school'] = None
                 flash("Early Decision school has been cleared as you navigated back.", "info")
-            return redirect(url_for('advancedsim'))  # Redirect to Advanced Sim
+            return redirect(url_for('earlydecision'))  # Redirect to Advanced Sim
 
     # Filter ED schools: ED available if column[2] != "N"
     ed_schools = [
@@ -904,37 +903,39 @@ def prepare_rd_schools():
 
     return rd_schools_prepared
 
+# Summary Route
 @app.route('/summary')
 @login_required
 def summary():
-    # Retrieve User Profile Data from Session
+    # Retrieve User Profile Data from session['quicksim_data']
+    user_data = session.get('quicksim_data', {})
     user_profile = {
-        "Name": session.get("name", "N/A"),
-        "GPA": session.get("gpa", "N/A"),
-        "Test Option": session.get("test_option", "N/A").upper(),
-        "SAT Score": session.get("sat_score") if session.get("test_option") == 'sat' else "N/A",
-        "ACT Score": session.get("act_score") if session.get("test_option") == 'act' else "N/A",
-        "Extracurricular Activities": session.get("extracurriculars", "N/A"),
-        "Essays Rating": session.get("essays", "N/A"),
-        "AP Courses Taken": session.get("ap_courses", "N/A"),
-        "Race/Ethnicity": session.get("race", "N/A"),
-        "Gender": session.get("gender", "N/A"),
-        "First Generation": "Yes" if session.get("first_gen") else "No"
+        "Name": user_data.get("name", "N/A"),
+        "GPA": user_data.get("gpa", "N/A"),
+        "Test Option": user_data.get("test_option", "N/A").upper(),
+        "SAT Score": user_data.get("sat_score", "N/A") if user_data.get("test_option") == 'sat' else "N/A",
+        "ACT Score": user_data.get("act_score", "N/A") if user_data.get("test_option") == 'act' else "N/A",
+        "Extracurricular Activities": user_data.get("extracurriculars", "N/A"),
+        "Essays Rating": user_data.get("essays", "N/A"),
+        "AP Courses Taken": user_data.get("ap_courses", "N/A"),
+        "Race/Ethnicity": user_data.get("race", "N/A"),
+        "Gender": user_data.get("gender", "N/A"),
+        "First Generation": "Yes" if user_data.get("first_gen") else "No"
     }
-    
+
     # Gather Applied Colleges with Application Types
     applied_colleges = []
-    
+
     # Early Decision (ED)
     ed_school = session.get('ed_school')
     if ed_school:
         college_info = next((col for col in college_list if col[0] == ed_school), None)
-        if college_info:
+        university_info = next((uni for uni in university_list if uni["name"] == ed_school), None)
+        if college_info and university_info:
             applied_colleges.append({
                 "type": "ED",
-                "name": college_info[0],
-                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
-                "logo_url": get_college_logo(college_info[0]),
+                "name": university_info["display_name"],
+                "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
 
@@ -942,12 +943,12 @@ def summary():
     rea_school = session.get('rea_school')
     if rea_school:
         college_info = next((col for col in college_list if col[0] == rea_school), None)
-        if college_info:
+        university_info = next((uni for uni in university_list if uni["name"] == rea_school), None)
+        if college_info and university_info:
             applied_colleges.append({
                 "type": "REA",
-                "name": college_info[0],
-                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
-                "logo_url": get_college_logo(college_info[0]),
+                "name": university_info["display_name"],
+                "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
 
@@ -955,12 +956,12 @@ def summary():
     ea_schools = session.get('ea_schools', [])
     for ea_school in ea_schools:
         college_info = next((col for col in college_list if col[0] == ea_school), None)
-        if college_info:
+        university_info = next((uni for uni in university_list if uni["name"] == ea_school), None)
+        if college_info and university_info:
             applied_colleges.append({
                 "type": "EA",
-                "name": college_info[0],
-                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
-                "logo_url": get_college_logo(college_info[0]),
+                "name": university_info["display_name"],
+                "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
 
@@ -968,12 +969,12 @@ def summary():
     rd_schools = session.get('rd_schools', [])
     for rd_school in rd_schools:
         college_info = next((col for col in college_list if col[0] == rd_school), None)
-        if college_info:
+        university_info = next((uni for uni in university_list if uni["name"] == rd_school), None)
+        if college_info and university_info:
             applied_colleges.append({
                 "type": "RD",
-                "name": college_info[0],
-                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
-                "logo_url": get_college_logo(college_info[0]),
+                "name": university_info["display_name"],
+                "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
 
