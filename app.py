@@ -610,15 +610,25 @@ def earlydecision():
             if ed_school:
                 session['ed_school'] = ed_school
                 add_school(ed_school)  # Add ED school to the list
+
+                # **Clear REA Selection if Exists**
+                rea_school = session.get('rea_school')
+                if rea_school:
+                    remove_school(rea_school)
+                    session['rea_school'] = None
+                    session['rea_choice'] = 'no'
+                    flash("Restrictive Early Action school has been cleared as you selected Early Decision.", "info")
+
                 return redirect(url_for('earlyaction'))  # Skip REA, go to EA
             else:
                 flash("Please select an Early Decision school.", "danger")
-        else:  # User selects No
+        else:  # User selects No for ED
             # If previously selected ED, remove it
             ed_school = session.get('ed_school')
             if ed_school:
                 remove_school(ed_school)
             session['ed_school'] = None
+
             return redirect(url_for('rea'))  # Proceed to REA
 
     if request.method == 'GET':
@@ -645,6 +655,7 @@ def earlydecision():
     return render_template('earlydecision.html', ed_schools=ed_schools)
 
 
+
 # REA Route
 @app.route('/rea', methods=['GET', 'POST'])
 @login_required
@@ -657,6 +668,15 @@ def rea():
             if rea_school:
                 session['rea_school'] = rea_school
                 add_school(rea_school)  # Add REA school to the list
+
+                # **Clear ED Selection if Exists**
+                ed_school = session.get('ed_school')
+                if ed_school:
+                    remove_school(ed_school)
+                    session['ed_school'] = None
+                    session['ed_choice'] = 'no'
+                    flash("Early Decision school has been cleared as you selected Restrictive Early Action.", "info")
+
                 return redirect(url_for('earlyaction'))
             else:
                 flash("Please select a Restricted Early Action school.", "danger")
@@ -666,6 +686,7 @@ def rea():
             if rea_school:
                 remove_school(rea_school)
             session['rea_school'] = None
+            session['rea_choice'] = 'no'
             return redirect(url_for('earlyaction'))
 
     if request.method == 'GET':
@@ -677,8 +698,8 @@ def rea():
             if rea_school:
                 remove_school(rea_school)
                 session['rea_school'] = None
-                flash("Restricted Early Action school has been cleared as you navigated back.", "info")
-            return redirect(url_for('earlydecision'))  # Redirect to Early Decision
+                flash("Restrictive Early Action school has been cleared as you navigated back.", "info")
+            return redirect(url_for('rea'))  # Redirect to Early Decision
 
     # Filter REA schools: column[4] == "REA" and u[3] != "N"
     rea_schools = [
@@ -692,7 +713,6 @@ def rea():
     return render_template('rea.html', rea_schools=rea_schools)
 
 
-# Early Action Route
 # Early Action Route
 @app.route('/earlyaction', methods=['GET', 'POST'])
 @login_required
@@ -736,7 +756,7 @@ def earlyaction():
                 remove_school(school)
             session['ea_schools'] = []
             flash("Early Action schools have been cleared as you navigated back.", "info")
-            return redirect(url_for('rea'))  # Redirect to REA
+            return redirect(url_for('earlyaction'))  # Redirect to REA
 
     chosen_ed = session.get('ed_school')
     chosen_rea = session.get('rea_school')
@@ -803,12 +823,6 @@ def prepare_ea_schools():
 
     return ea_schools
 
-@app.route('/clear_session')
-def clear_session():
-    session.pop('selected_schools', None)  # Remove the key completely
-    return "Session cleared!"
-
-
 # Regular Decision Route
 @app.route('/regulardecision', methods=['GET', 'POST'])
 @login_required
@@ -840,7 +854,7 @@ def regulardecision():
                 remove_school(school)
             session['rd_schools'] = []
             flash("Regular Decision schools have been cleared as you navigated back.", "info")
-            return redirect(url_for('earlyaction'))  # Redirect to Early Action
+            return redirect(url_for('regulardecision'))  # Redirect to Early Action
 
     # GET request logic
     chosen_all = session.get('selected_schools', [])
@@ -893,8 +907,81 @@ def prepare_rd_schools():
 @app.route('/summary')
 @login_required
 def summary():
-    # sutff
-    return render_template('summary.html')
+    # Retrieve User Profile Data from Session
+    user_profile = {
+        "Name": session.get("name", "N/A"),
+        "GPA": session.get("gpa", "N/A"),
+        "Test Option": session.get("test_option", "N/A").upper(),
+        "SAT Score": session.get("sat_score") if session.get("test_option") == 'sat' else "N/A",
+        "ACT Score": session.get("act_score") if session.get("test_option") == 'act' else "N/A",
+        "Extracurricular Activities": session.get("extracurriculars", "N/A"),
+        "Essays Rating": session.get("essays", "N/A"),
+        "AP Courses Taken": session.get("ap_courses", "N/A"),
+        "Race/Ethnicity": session.get("race", "N/A"),
+        "Gender": session.get("gender", "N/A"),
+        "First Generation": "Yes" if session.get("first_gen") else "No"
+    }
+    
+    # Gather Applied Colleges with Application Types
+    applied_colleges = []
+    
+    # Early Decision (ED)
+    ed_school = session.get('ed_school')
+    if ed_school:
+        college_info = next((col for col in college_list if col[0] == ed_school), None)
+        if college_info:
+            applied_colleges.append({
+                "type": "ED",
+                "name": college_info[0],
+                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
+                "logo_url": get_college_logo(college_info[0]),
+                "public": "Public" if college_info[4] == "PUB" else "Private"
+            })
+
+    # Restrictive Early Action (REA)
+    rea_school = session.get('rea_school')
+    if rea_school:
+        college_info = next((col for col in college_list if col[0] == rea_school), None)
+        if college_info:
+            applied_colleges.append({
+                "type": "REA",
+                "name": college_info[0],
+                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
+                "logo_url": get_college_logo(college_info[0]),
+                "public": "Public" if college_info[4] == "PUB" else "Private"
+            })
+
+    # Early Action (EA)
+    ea_schools = session.get('ea_schools', [])
+    for ea_school in ea_schools:
+        college_info = next((col for col in college_list if col[0] == ea_school), None)
+        if college_info:
+            applied_colleges.append({
+                "type": "EA",
+                "name": college_info[0],
+                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
+                "logo_url": get_college_logo(college_info[0]),
+                "public": "Public" if college_info[4] == "PUB" else "Private"
+            })
+
+    # Regular Decision (RD)
+    rd_schools = session.get('rd_schools', [])
+    for rd_school in rd_schools:
+        college_info = next((col for col in college_list if col[0] == rd_school), None)
+        if college_info:
+            applied_colleges.append({
+                "type": "RD",
+                "name": college_info[0],
+                "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == college_info[0]), college_info[0]),
+                "logo_url": get_college_logo(college_info[0]),
+                "public": "Public" if college_info[4] == "PUB" else "Private"
+            })
+
+    # Sort Applied Colleges by Application Type Order (ED, REA, EA, RD)
+    type_order = {"ED": 1, "REA": 2, "EA": 3, "RD": 4}
+    applied_colleges.sort(key=lambda x: type_order.get(x["type"], 5))
+
+    return render_template('summary.html', user_profile=user_profile, applied_colleges=applied_colleges)
 
 # files
 @app.route('/<college>/login_files/<path:filename>')
