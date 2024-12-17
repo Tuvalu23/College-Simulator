@@ -1087,6 +1087,76 @@ def summary():
 
     return render_template('summary.html', user_profile=user_profile, applied_colleges=applied_colleges)
 
+# helper functions for chancing
+def sim10():
+    var1 = random.uniform(0, 10)
+    if var1 < 1:
+        var2 = random.uniform(0, 2)
+    elif var1 < 3:
+        var2 = random.uniform(0, 5.5)
+    elif var1 < 5:
+        var2 = random.uniform(0, 9)
+    elif var1 < 7:
+        var2 = 2 + random.uniform(0, 8)
+    elif var1 < 9:
+        var2 = 3 + random.uniform(0, 8)
+    else:
+        var2 = 9 + random.uniform(0, 1.2)
+
+    if var2 > 10:
+        var2 = 10.0
+    if var2 < 5:
+        if var2 <= 1:
+            var2 += random.uniform(0, 1.5)
+        var2 = var2 - 1 + random.uniform(0, 2.5)
+    if var2 < 0:
+        var2 = 0.0
+
+    return round(var2, 2)
+
+def getType(chance):
+    if chance > 80:
+        return "Highly Likely", "highly-likely"
+    elif chance > 65:
+        return "Safety", "safety"
+    elif chance > 45:
+        return "Target", "target"
+    elif chance > 30:
+        return "Hard Target", "hard-target"
+    elif chance > 21:
+        return "Competitive", "competitive"
+    elif chance > 12:
+        return "Reach", "reach"
+    elif chance > 5:
+        return "Big Reach", "big-reach"
+    else:
+        return "Huge Reach", "huge-reach"
+
+def classify(student_num):
+    # Define classification based on student_num
+    # Assuming student_num ranges from 0 to 100, map to tier 1-10
+    if student_num >= 96:
+        return 1
+    elif student_num >= 92:
+        return 2
+    elif student_num >= 87:
+        return 3
+    elif student_num >= 83:
+        return 4
+    elif student_num >= 76:
+        return 5
+    elif student_num >= 70:
+        return 6
+    elif student_num >= 63:
+        return 7
+    elif student_num >= 51:
+        return 8
+    elif student_num >= 37:
+        return 9
+    else:
+        return 10
+
+
 @app.route('/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'login_files'), filename)
