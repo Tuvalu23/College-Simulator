@@ -275,107 +275,96 @@
 
 
 
-                                  <div id="content" style=" width: 80%; float:left; margin-right:10px; padding:15px">
-
-                                  <h1>Application Status for {{ name }}</h1>
-                                    <h2 style="display: none;">Application Status</h2>
-                                    <p>Thank you for submitting an application to Yale College. Please use the&nbsp;resources
-                                        below to track your application materials and notify the Office of Undergraduate
-                                        Admissions of any changes to your personal information or updates to your
-                                        application.</p>
-                                    <p>An admissions decision will be posted to this Admissions Status Portal on the
-                                        date specified below:</p>
-                                    <ul>
-                                        <li>Early Action: December 16, 2024</li>
-                                        <li>Regular Decision: March 26, 2025</li>
-                                    </ul><!--
-    <p>
-      <em>QuestBridge will release decisions for the National College Match on December 1, 2017</em>
-    </p>
-
-    <p>
-      The Application Checklist has been disabled for the current freshman admissions cycle.
-    </p>
---><span style="font-size:20px;">Our records indicate that you have submitted an application for <span style="color:#FF0000;"><strong>Regular Decision</strong></span>.</span>
-                                    <p style="font-family: thesans-bold;"></p>
-                                    <p style="font-family: thesans-bold;"></p>
-                                    <p style="font-family: thesans-bold;"></p>
-                                    <p style="font-family: thesans-bold;"></p>
-<br>
+                                <div id="content" style="width: 100%; margin: 0 auto; margin-left: 55px;">
 
 
-                                    <div style="margin-top: 10px;">
+                                 <!-- Top Banner -->
+<div style="width:100%; margin:0; margin-left: 10px;">
+    <img src="./ustatus_files/banner.png" alt="Banner" style="width:100%; display:block;">
+  </div>
+  
+  <!-- Name in blue text, full width -->
+  <h1 style="color:#00356b; font-size:32px; margin:20px 10px 10px 10px; font-weight:normal; text-align:left;">
+    {{ name }}
+  </h1>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
 
-                                      <div style="margin-bottom:20px; margin-top:8px; border-style: dotted; border-color:#ffffc9; background:#ffffc9">
-                              				  <div>
+  <!-- Application Record ID and Instructions -->
+  <div style="margin:10px 10px 20px 10px; font-size:18px; line-height:1.6;">
+    <span style="color:#000; font-family: 'Lora', serif; "><strong>Application Record ID:</span> 386433266</strong><br>
+    <span style="font-family: 'Lora', serif;">Use this portal to track your application materials and submit updates to the Office of Undergraduate Admissions or Office of Undergraduate Financial Aid.
+  </div>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-                              				    <div style="margin-bottom: -10px;"> <strong>Status Update</strong> </div>
+  <!-- Status Update Box -->
+  <div style="margin:20px 10px; border-left:5px solid #ffff00; background:#ffffc9; padding:15px; font-family: 'Lora', serif;">
+    <div style="font-size:18px; margin-bottom:8px; color:#000;"><strong>Status Update</strong></div>
+    <div style="font-size:16px; margin-bottom:13px;">New updates to your application were posted {{ date }}</div>
+    <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display:inline;">
+        <button type="submit" 
+                style="font-family: 'Lora', serif; font-size:18px; font-weight:normal; color:#003399; background:none; border:none; cursor:pointer; text-decoration:underline; padding:0;" 
+                onmouseover="this.style.color='#0b6aa0'" 
+                onmouseout="this.style.color='#003399'">
+            <span style="font-family: 'Lexend', sans-serif;">View Update</stpan>
+        </button>
+    </form>
+</div>
 
-                              				     <div style="margin-bottom: 10px;"> <br>New updates to your application were posted {{ date }}<br></div>
-
-                              				 <div>  <strong> <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display: inline;">
-                                                <button type="submit" style="font-size: large; font-weight: bold; background: none; border: none; color: #577A7A;
- cursor: pointer; text-decoration: underline; padding: 0;">
-                                                    View Update &gt;&gt;
-                                                </button>
-                                            </form>
-                                        </strong>
-
-                                
-                              				  </div>
-                              				</div>
-
-
-
-
-                                    </div>
-
-
-
-
-
-
-                                    <strong>Application Updates and Questions</strong>
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0);">Update Application</a> - Use this form to notify Yale of
-                                            changes or updates to your application.
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);">Change Name or Phone Number</a> - Use this form to
-                                            request a change of name or phone number.
-                                        </li>
-                                    </ul>
-                                    <p>If you have a question that is not answered on our <a href="javascript:void(0);">website</a>, you may
-                                        <a href="javascript:void(0);">email&nbsp;a
-                                            question to the admissions office</a>&nbsp;or call 203-432-9300&nbsp;Mon-Fri
-                                        8:30am-4:30pm.</p>
-
-
-
-
-                                    <h3>Verify Address</h3>
-                                    <p>We have your addresses listed as follows:</p>
-                                    <div style="clear: both; margin: 1em 0;">
-                                        <div style="float: left; margin-right: 25px; width: 200px;"><em>Mailing
-                                            Address</em><br>1600 Pennsylvania Ave<br>Washington, DC 20500<br>United
-                                            States
-                                        </div>
-                                        <div style="float: left; margin-right: 25px; width: 200px;"><em>Permanent
-                                            Address</em><br>1600 Pennsylvania Ave<br>Washington, DC 20500<br>United
-                                            States
-                                        </div>
-                                        <div style="clear: both;"></div>
-                                    </div>
-                                    <p style="clear: both; margin-top: 1em;"><a href="javascript:void(0);" onclick="">Edit Addresses</a></p>
-                                    <div style="clear: both;"></div>
-                                    <p style="margin-top: 50px; text-align: center;"><span style="font-weight: bold; margin-right: 1em;">Account Tools:</span><a href="javascript:void(0);" style="margin-right: 1em;">Change Email Address</a><a href="javascript:void(0);" style="margin-right: 1em;">Change Password</a><a href="javascript:void(0);" style="margin-right: 1em;">Logout</a></p>
-                                    <div style="clear: both;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <!-- Horizontal Line -->
+  <hr style="border:0; height:1px; background:#ccc; margin:20px 10px;">
+  
+  <!-- Buttons for Admissions and Financial Aid -->
+  <div style="margin:20px 10px; font-family: 'Lora', serif;">
+    <button style="font-family: 'Lora', serif; background:#00356b; color:#fff; font-size:18px; font-weight:normal; border:none; padding:20px 80px; margin-right:10px; cursor:pointer;">
+      <strong>Admissions</strong>
+    </button>
+    <button style="font-family: 'Lora', serif; background:#fff; color:#666; font-size:18px; font-weight:normal; border:1px solid #ccc; padding:20px 80px; cursor:pointer;">
+      <strong>Financial Aid</strong>
+    </button>
+  </div>
+  
+  <!-- Application Updates and Questions -->
+  <div style="margin:20px 10px; font-size:16px; line-height:1.8; color:#000; font-family: 'Lora', serif;">
+    <strong>Application Updates and Questions</strong><br>
+    <strong>Update Application</strong> - Use this form to notify Yale of changes or updates to your application.<br>
+    <strong>Change Name or Phone Number</strong> - Use this form to request a change of name or phone number.<br><br>
+    If you have a question that is not answered on our 
+    <a href="javascript:void(0);" style="color:#003399; text-decoration:underline;">website</a>, 
+    you may <a href="javascript:void(0);" style="color:#003399; text-decoration:underline;">email a question to the admissions office</a> 
+    or call 203-432-9300 Mon-Fri 8:30am-4:30pm.
+  </div>
+  
+  <!-- Verify Address Section -->
+  <div style="margin:20px 10px; font-size:16px; color:#000;">
+    <strong>Verify Address</strong><br>
+    We have your addresses listed as follows:<br><br>
+    
+    <div style="display:inline-block; vertical-align:top; margin-right:50px;">
+      <em>Mailing Address</em><br>
+      1600 Pennsylvania Ave<br>
+      Washington, DC 20500<br>
+      United States
+    </div>
+    
+    <div style="display:inline-block; vertical-align:top;">
+      <em>Permanent Address</em><br>
+      1600 Pennsylvania Ave<br>
+      Washington, DC 20500<br>
+      United States
+    </div>
+    
+    <div style="margin-top:20px;">
+      <a href="javascript:void(0);" style="color:#003399; text-decoration:underline;">Edit Addresses</a>
+    </div>
+  </div>
+  
+  <!-- Account Tools -->
+  <div style="margin-top:50px; text-align:center; font-size:16px;">
+    <span style="font-weight:bold; margin-right:1em;">Account Tools:</span>
+    <a href="javascript:void(0);" style="margin-right:1em; color:#003399; text-decoration:underline;">Change Email Address</a>
+    <a href="javascript:void(0);" style="margin-right:1em; color:#003399; text-decoration:underline;">Change Password</a>
+    <a href="javascript:void(0);" style="color:#003399; text-decoration:underline;">Logout</a>
+  </div>
             </div>
             <div id="c_zone-postscript-wrapper" class="c_zone-wrapper c_zone-postscript-wrapper c_clearfix cr">
                 <div id="c_zone-postscript" class="c_zone c_zone-postscript c_clearfix c_container-10 cr">
