@@ -29,6 +29,12 @@ university_list = [
         "description": "Brown University, founded in 1764 and located in Providence, Rhode Island, is an Ivy League institution known for its innovative Open Curriculum. Ranked consistently among the top 20 universities in the United States, Brown emphasizes interdisciplinary scholarship, undergraduate teaching, and a vibrant campus culture."
     },
     {
+    "name": "buffalo",
+    "display_name": "University at Buffalo",
+    "logo": "static/logos/buffalo-logo.jpg",
+    "description": "The University at Buffalo, part of the State University of New York (SUNY) system, is a leading public research university located in Buffalo, New York. Known for its diverse academic programs, robust research opportunities, and vibrant campus life, UB offers students an affordable yet world-class education. With a strong focus on innovation and community engagement, UB prepares students for success in a global society."
+    },
+    {
         "name": "caltech",
         "display_name": "California Institute of Technology",
         "logo": "static/logos/caltech-logo.jpg",
@@ -179,6 +185,7 @@ college_list = [
     ["umich", "0.2", "N", "1.3", "PUB"],
     ["nyu", "0.22", "1.5", "N", "P"],
     ["bing", "0.65", "N", "1.3", "PUB"],
+    ["buffalo", "0.87", "N", "1.2", "PUB"]
 ]
 
 def login_required(f):
@@ -404,7 +411,7 @@ def universities():
         user_data=user_data
     )
 
-@app.route("/<college>/login", methods=["GET", "POST"])
+@app.route("/quicksim/<college>/login", methods=["GET", "POST"])
 def login(college):
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     if request.method == "POST":
@@ -420,7 +427,7 @@ def login(college):
     return render_template(f"{college}/login.html", name=user_data["name"], college=college, date=user_data["date"])
 
 # ustatus route
-@app.route("/<college>/ustatus", methods=["GET", "POST"])
+@app.route("/quicksim/<college>/ustatus", methods=["GET", "POST"])
 def ustatus(college):
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     if request.method == "POST":
@@ -430,7 +437,7 @@ def ustatus(college):
         return redirect(url_for("rejection", college=college))
     return render_template(f"{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
 
-@app.route("/<college>/acceptance")
+@app.route("/quicksim/<college>/acceptance")
 def acceptance(college):
     user_id = session.get('user_id')
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
@@ -438,7 +445,7 @@ def acceptance(college):
         User.log_simulation(user_id, college, 'acceptance')
     return render_template(f"{college}/acceptance.html", name=user_data["name"], date=user_data["date"], college=college)
 
-@app.route("/<college>/rejection")
+@app.route("/quicksim/<college>/rejection")
 def rejection(college):
     user_id = session.get('user_id')
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
@@ -450,7 +457,7 @@ def rejection(college):
 submissions = []
 
 # Advanced Simulation Route
-@app.route("/advancedsim", methods=["GET", "POST"])
+@app.route("/quicksim/advancedsim", methods=["GET", "POST"])
 @login_required
 def advancedsim():
     clear_session()
@@ -626,7 +633,18 @@ def advancedsim():
             else:
                 return "N/A", "na"
 
+        def weighted_GPA(gpa, ap_courses):
+            wgpa = gpa
+            count = ap_courses
+            while count > 0:
+                wgpa += random.uniform(0, 0.4)  # Adds a random value between 0 and 0.4 for each AP course
+                count -= 1
+            # Optionally, you might want to cap the WGPA to a maximum value, e.g., 100
+            wgpa = min(wgpa, 100.0)
+            return round(wgpa, 2)  # Round to two decimal places for consistency
+        
         # Compute demographic score and category
+        wgpa = weighted_GPA(gpa_val, ap_val)
         dem_score = demScore(gender, race, first_gen)
         dem_category, dem_class = rate(dem_score)
 
@@ -645,7 +663,8 @@ def advancedsim():
             "first_gen": first_gen,
             "dem_score": dem_score,          # Store Demographic Score
             "dem_category": dem_category,    # Store Demographic Category
-            "dem_class": dem_class           # Store CSS Class for Category
+            "dem_class": dem_class,          # Store CSS Class for Category
+            "wgpa": wgpa  
         }
         submissions.append(submission_data)
         
@@ -1032,7 +1051,8 @@ def summary():
         "First Generation": "Yes" if user_data.get("first_gen") else "No",
         "Demographic Score": user_data.get("dem_score", "N/A"),
         "Demographic Category": user_data.get("dem_category", "N/A"),
-        "Demographic Class": user_data.get("dem_class", "na")
+        "Demographic Class": user_data.get("dem_class", "na"),
+        "Weighted GPA": user_data.get("wgpa", "N/A")
     }
 
     # Gather Applied Colleges with Application Types
@@ -1680,23 +1700,23 @@ def chances():
 
     return render_template('chances.html', interview_chances=interview_chances)
 
-@app.route('/<college>/login_files/<path:filename>')
+@app.route('/quicksim/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'login_files'), filename)
 
-@app.route('/<college>/ustatus_files/<path:filename>')
+@app.route('/quicksim/<college>/ustatus_files/<path:filename>')
 def ustatus_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'ustatus_files'), filename)
 
-@app.route('/<college>/acceptance_files/<path:filename>')
+@app.route('/quicksim/<college>/acceptance_files/<path:filename>')
 def acceptance_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'acceptance_files'), filename)
 
-@app.route('/<college>/ball_images/<path:filename>')
+@app.route('/quicksim/<college>/ball_images/<path:filename>')
 def ball_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'ball_images'), filename)
 
-@app.route('/<college>/rejection_files/<path:filename>')
+@app.route('/quicksim/<college>/rejection_files/<path:filename>')
 def rejection_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'rejection_files'), filename)
 

@@ -21,32 +21,7 @@
     <script src="{{ url_for('ustatus_files_static', college=college, filename='per.js.download') }}"></script>
     <script src="{{ url_for('ustatus_files_static', college=college, filename='base(1).js.download') }}"></script>
 
-</script><script>/*<![CDATA[*/
-				$(function(){
-	$("p > a:contains('Start New Application')").addClass('complete-btn');
-					//$(".header:contains('Start New Application')").html("Complete Your Registration");
-	
-						
-	function checkDOMChange()
-		{
-		// check for new element being inserted here
-		//$('.dialog_host .header:contains("Start New Application")').html('Complete Your Registration');
-		$('.dialog_host .header:contains("Application Details")').html('Confirm Application Term');
-		$('.dialog_host table tbody tr td:contains("In Progress")').html('IN PROGRESS - Note: you may be prompted to confirm your application term more than once.');
-		//$('.dialog_host .action > button:contains("Create Application")').html('Next');
-		//$('.dialog_host .action > button:contains("Open Application")').html('Next');
-
-
-	// call the function again after 100 milliseconds-removing per Alex
-	 
-	
-	setTimeout(checkDOMChange, 100);
-	}
-
-	$('.complete-btn').on('click', checkDOMChange());
-	
-	});
-				/*]]>*/</script><script src="{{ url_for('ustatus_files_static', college=college, filename='functions.js.download') }}"></script><script>/*<![CDATA[*/0/*]]>*/</script><script async="async" id="session_expires" src="{{ url_for('ustatus_files_static', college=college, filename='session.js.download') }}" data-now="1732937586" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="1732941186"></script><title>UChicago Account (App Status Portal) | The University of Chicago College Admissions</title><style>/*<![CDATA[*/.col-1 {
+</script><title>UChicago Account (App Status Portal) | The University of Chicago College Admissions</title><style>/*<![CDATA[*/.col-1 {
   padding-right: 5px;
 }
 

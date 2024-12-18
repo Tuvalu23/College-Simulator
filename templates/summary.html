@@ -420,6 +420,7 @@
                 <h3>Academic Information</h3>
                 <ul>
                     <li><strong>GPA:</strong> {{ user_profile["GPA"] }}</li>
+                    <li><strong>Weighted GPA:</strong> {{ user_profile["Weighted GPA"] }}</li>
                     <li><strong>Test Option:</strong> {{ user_profile["Test Option"] }}</li>
                     <li><strong>SAT Score:</strong> {{ user_profile["SAT Score"] }}</li>
                     <li><strong>ACT Score:</strong> {{ user_profile["ACT Score"] }}</li>
@@ -479,7 +480,7 @@
     <form method="POST" action="{{ url_for('chances') }}">
         <div class="buttons">
             <a href="{{ url_for('regulardecision') }}" class="back-button">Back</a>
-            <button type="submit" class="continue-button">Continue Application</button>
+            <button type="submit" class="continue-button">See My Chances</button>
         </div>
     </form>
 </div>
