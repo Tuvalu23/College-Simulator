@@ -689,9 +689,19 @@ def clear_all_schools():
     print("Cleared all selected_schools")
     
 def clear_session():
-    session.pop('selected_schools', None)  # Remove the key completely
+    keys_to_clear = [
+        'selected_schools',
+        'ed_school',
+        'rea_school',
+        'ea_schools',
+        'rd_schools',
+        'applied_colleges',
+        'interview_chances',
+        'quicksim_data'  # Include if you want to reset all user data
+    ]
+    for key in keys_to_clear:
+        session.pop(key, None)
     print("Session cleared!")
-
 
 # Early Decision Route
 @app.route('/advancedsim/earlydecision', methods=['GET', 'POST'])
@@ -1003,7 +1013,6 @@ def prepare_rd_schools():
 
     return rd_schools_prepared
 
-# Summary Route
 @app.route('/advancedsim/summary')
 @login_required
 def summary():
@@ -1037,7 +1046,7 @@ def summary():
         if college_info and university_info:
             applied_colleges.append({
                 "type": "ED",
-                "name": university_info["display_name"],
+                "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
@@ -1050,7 +1059,7 @@ def summary():
         if college_info and university_info:
             applied_colleges.append({
                 "type": "REA",
-                "name": university_info["display_name"],
+                "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
@@ -1063,7 +1072,7 @@ def summary():
         if college_info and university_info:
             applied_colleges.append({
                 "type": "EA",
-                "name": university_info["display_name"],
+                "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
@@ -1076,7 +1085,7 @@ def summary():
         if college_info and university_info:
             applied_colleges.append({
                 "type": "RD",
-                "name": university_info["display_name"],
+                "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
                 "public": "Public" if college_info[4] == "PUB" else "Private"
             })
@@ -1084,6 +1093,9 @@ def summary():
     # Sort Applied Colleges by Application Type Order (ED, REA, EA, RD)
     type_order = {"ED": 1, "REA": 2, "EA": 3, "RD": 4}
     applied_colleges.sort(key=lambda x: type_order.get(x["type"], 5))
+
+    # **Store `applied_colleges` in the session**
+    session['applied_colleges'] = applied_colleges
 
     return render_template('summary.html', user_profile=user_profile, applied_colleges=applied_colleges)
 
@@ -1137,25 +1149,536 @@ def classify(student_num):
     # Assuming student_num ranges from 0 to 100, map to tier 1-10
     if student_num >= 96:
         return 1
-    elif student_num >= 92:
+    elif student_num >= 91:
         return 2
-    elif student_num >= 87:
-        return 3
     elif student_num >= 83:
+        return 3
+    elif student_num >= 75:
         return 4
-    elif student_num >= 76:
-        return 5
     elif student_num >= 70:
+        return 5
+    elif student_num >= 67:
         return 6
-    elif student_num >= 63:
+    elif student_num >= 58:
         return 7
     elif student_num >= 51:
         return 8
-    elif student_num >= 37:
+    elif student_num >= 40:
         return 9
     else:
         return 10
+    
+def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurriculars, ap_courses, essayStrength, gpa, interviewStrength, app_type):
+    baseChance = float(collegeList[i][1])  # Acceptance rate as percentage (0-100)
+    interviewScore = interviewStrength
 
+    student_num = 0.0
+    if testOptional:
+        # GPA = 40 pts, EC = 20 pts, Essay = 15 pts, AP = 10 pts, Interview = 15 pts
+        if gpa > 99:
+            student_num += 40
+        elif gpa > 98:
+            student_num += 39
+        elif gpa > 97:
+            student_num += 38
+        elif gpa > 96:
+            student_num += 36
+        elif gpa > 95:
+            student_num += 34
+        elif gpa > 94:
+            student_num += 32
+        elif gpa > 93:
+            student_num += 29
+        elif gpa > 92:
+            student_num += 26.5
+        elif gpa > 91:
+            student_num += 25
+        elif gpa > 90:
+            student_num += 22
+        elif gpa > 88:
+            student_num += 21
+        elif gpa > 85:
+            student_num += 16
+        elif gpa > 82.5:
+            student_num += 13
+        elif gpa > 80:
+            student_num += 11
+        elif gpa > 75:
+            student_num += 8
+        elif gpa > 70:
+            student_num += 5
+        else:
+            student_num += 2
+        student_num += extracurriculars * 2
+        student_num += ap_courses * 0.9
+        student_num += interviewScore * 1.5
+        student_num += essayStrength * 1.5
+        student_num -= 4
+    else:
+        # GPA = 35 pts, EC = 15 pts, Essay = 15 pts, AP = 10 pts, Interview = 10 pts, SAT/ACT = 15 pts
+        if gpa > 99:
+            student_num += 35
+        elif gpa > 98:
+            student_num += 34
+        elif gpa > 97:
+            student_num += 33
+        elif gpa > 96:
+            student_num += 32
+        elif gpa > 95:
+            student_num += 30
+        elif gpa > 94:
+            student_num += 28
+        elif gpa > 93:
+            student_num += 26
+        elif gpa > 92:
+            student_num += 24
+        elif gpa > 91:
+            student_num += 22
+        elif gpa > 90:
+            student_num += 20
+        elif gpa > 88:
+            student_num += 18
+        elif gpa > 85:
+            student_num += 15
+        elif gpa > 82.5:
+            student_num += 12
+        elif gpa > 80:
+            student_num += 10
+        elif gpa > 75:
+            student_num += 7
+        elif gpa > 70:
+            student_num += 5
+        else:
+            student_num += 3
+
+        student_num += extracurriculars * 1.5
+        student_num += ap_courses * 1
+        student_num += interviewScore * 1.25
+        student_num += essayStrength * 1
+
+        # SAT/ACT contribution (15 pts max)
+        if sat != -1:
+            if sat == 1600:
+                student_num += 15
+            elif sat >= 1570:
+                student_num += 14
+            elif sat >= 1540:
+                student_num += 13
+            elif sat >= 1510:
+                student_num += 11.5
+            elif sat >= 1490:
+                student_num += 10.5
+            elif sat >= 1450:
+                student_num += 9
+            elif sat >= 1400:
+                student_num += 6
+            elif sat >= 1300:
+                student_num += 3
+            else:
+                student_num += 1
+        elif act != -1:
+            if act == 36:
+                student_num += 15
+            elif act >= 35:
+                student_num += 14
+            elif act >= 34:
+                student_num += 13
+            elif act >= 33:
+                student_num += 12
+            elif act >= 32:
+                student_num += 11
+            elif act >= 31:
+                student_num += 10
+            elif act >= 30:
+                student_num += 9
+            elif act >= 29:
+                student_num += 7
+            elif act >= 27:
+                student_num += 5
+            elif act >= 25:
+                student_num += 3
+            elif act >= 23:
+                student_num += 2
+            else:
+                student_num += 1
+
+    if demScore > 5:
+        student_num += (demScore - 5)
+    else:
+        student_num -= (5 - demScore)
+
+    tier = classify(student_num)
+    chances = 0
+
+    if baseChance < 0.05:  # <5%
+        if tier == 1:
+            chances = 34 + random.uniform(-3, 2)  # 36 + (random *8 -4 -2)
+        elif tier == 2:
+            chances = 24 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 19 + random.uniform(-4, 2)
+        elif tier == 4:
+            chances = 11 + random.uniform(-5, 1)
+        elif tier == 5:
+            chances = 4 + random.uniform(-3, 3)
+        elif tier == 6:
+            chances = 2 + random.uniform(-3, 3)
+        elif tier == 7:
+            chances = 1 + random.uniform(-1, 1)
+        elif tier == 8:
+            chances = 0.5 + random.uniform(-0.2, 0.2)
+        elif tier == 9:
+            chances = 0.2 + random.uniform(-0.1, 0.1)
+        elif tier == 10:
+            chances = 0.1
+        else:
+            chances = 0.05
+    elif baseChance < 0.1:  # <10%
+        if tier == 1:
+            chances = 44 + random.uniform(-6, 2)  # 46 + (random *8 -4 -2)
+        elif tier == 2:
+            chances = 31 + random.uniform(-6, 2)
+        elif tier == 3:
+            chances = 23 + random.uniform(-6, 2)
+        elif tier == 4:
+            chances = 16 + random.uniform(-5, 1)
+        elif tier == 5:
+            chances = 10 + random.uniform(-3, 3)
+        elif tier == 6:
+            chances = 6 + random.uniform(-3, 3)
+        elif tier == 7:
+            chances = 2 + random.uniform(-1, 1)
+        elif tier == 8:
+            chances = 0.5 + random.uniform(-0.2, 0.2)
+        elif tier == 9:
+            chances = 0.2 + random.uniform(-0.1, 0.1)
+        elif tier == 10:
+            chances = 0.1
+        else:
+            chances = 0.05
+    elif baseChance < 0.16:  # <16%
+        if tier == 1:
+            chances = 54 + random.uniform(-6, 2)
+        elif tier == 2:
+            chances = 41 + random.uniform(-5, 2)
+        elif tier == 3:
+            chances = 32 + random.uniform(-5, 2)
+        elif tier == 4:
+            chances = 23 + random.uniform(-5, 2)
+        elif tier == 5:
+            chances = 18 + random.uniform(-5, 2)
+        elif tier == 6:
+            chances = 11 + random.uniform(-5, 2)
+        elif tier == 7:
+            chances = 5 + random.uniform(-3, 0)
+        elif tier == 8:
+            chances = 3 + random.uniform(-2.2, 0)
+        elif tier == 9:
+            chances = 2 + random.uniform(-0.1, 0.1)
+        elif tier == 10:
+            chances = 1 + random.uniform(-0.1, 0.1)
+        else:
+            chances = 0.5 + random.uniform(-0.05, 0.05)
+    elif baseChance < 0.25:  # <25%
+        if tier == 1:
+            chances = 63 + random.uniform(-5, 5)
+        elif tier == 2:
+            chances = 52 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 38 + random.uniform(-3, 2)
+        elif tier == 4:
+            chances = 31 + random.uniform(-3, 2)
+        elif tier == 5:
+            chances = 23 + random.uniform(-3, 2)
+        elif tier == 6:
+            chances = 17 + random.uniform(-3, 2)
+        elif tier == 7:
+            chances = 11 + random.uniform(-3, 2)
+        elif tier == 8:
+            chances = 6 + random.uniform(-3, 2)
+        elif tier == 9:
+            chances = 3 + random.uniform(-3, 2)
+        elif tier == 10:
+            chances = 2 + random.uniform(-0.1, 0.1)
+        else:
+            chances = 0.7 + random.uniform(-0.05, 0.05)
+    elif baseChance < 0.35:  # <35%
+        if tier == 1:
+            chances = 71 + random.uniform(-5, 5)
+        elif tier == 2:
+            chances = 63 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 55 + random.uniform(-4, 2)
+        elif tier == 4:
+            chances = 44 + random.uniform(-4, 2)
+        elif tier == 5:
+            chances = 36 + random.uniform(-4, 2)
+        elif tier == 6:
+            chances = 31 + random.uniform(-4, 2)
+        elif tier == 7:
+            chances = 23 + random.uniform(-4, 2)
+        elif tier == 8:
+            chances = 17 + random.uniform(-4, 2)
+        elif tier == 9:
+            chances = 14 + random.uniform(-4, 2)
+        elif tier == 10:
+            chances = 7 + random.uniform(-4, 2)
+        else:
+            chances = 3 + random.uniform(-1, 1) - 2
+    elif baseChance < 0.45:  # <45%
+        if tier == 1:
+            chances = 75 + random.uniform(-5, 5)
+        elif tier == 2:
+            chances = 67 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 62 + random.uniform(-4, 2)
+        elif tier == 4:
+            chances = 55 + random.uniform(-4, 2)
+        elif tier == 5:
+            chances = 44 + random.uniform(-4, 2)
+        elif tier == 6:
+            chances = 37 + random.uniform(-4, 2)
+        elif tier == 7:
+            chances = 33 + random.uniform(-4, 2)
+        elif tier == 8:
+            chances = 25 + random.uniform(-4, 2)
+        elif tier == 9:
+            chances = 18 + random.uniform(-4, 2)
+        elif tier == 10:
+            chances = 12 + random.uniform(-4, 2)
+        else:
+            chances = 4 + random.uniform(-0.1, 0.1) - 2
+    elif baseChance < 0.6:  # <60%
+        if tier == 1:
+            chances = 81 + random.uniform(-6, 2)
+        elif tier == 2:
+            chances = 74 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 67 + random.uniform(-4, 2)
+        elif tier == 4:
+            chances = 62 + random.uniform(-4, 2)
+        elif tier == 5:
+            chances = 53 + random.uniform(-4, 2)
+        elif tier == 6:
+            chances = 46 + random.uniform(-4, 2)
+        elif tier == 7:
+            chances = 36 + random.uniform(-5, 2)
+        elif tier == 8:
+            chances = 25 + random.uniform(-4, 2)
+        elif tier == 9:
+            chances = 16 + random.uniform(-3, 2)
+        elif tier == 10:
+            chances = 7 + random.uniform(-3, 2)
+        else:
+            chances = 3 + random.uniform(-1, 1) - 2
+    elif baseChance < 0.8:  # <80%
+        if tier == 1:
+            chances = 86 + random.uniform(-6, 2)
+        elif tier == 2:
+            chances = 81 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 74 + random.uniform(-4, 2)
+        elif tier == 4:
+            chances = 69 + random.uniform(-4, 2)
+        elif tier == 5:
+            chances = 63 + random.uniform(-4, 2)
+        elif tier == 6:
+            chances = 56 + random.uniform(-4, 2)
+        elif tier == 7:
+            chances = 45 + random.uniform(-5, 2)
+        elif tier == 8:
+            chances = 37 + random.uniform(-4, 2)
+        elif tier == 9:
+            chances = 28 + random.uniform(-3, 2)
+        elif tier == 10:
+            chances = 24 + random.uniform(-3, 2)
+        else:
+            chances = 18 + random.uniform(-1, 1) - 2
+    else:
+        # baseChance >=80%
+        if tier == 1:
+            chances = 93 + random.uniform(-6, 2)
+        elif tier == 2:
+            chances = 87 + random.uniform(-4, 2)
+        elif tier == 3:
+            chances = 80 + random.uniform(-4, 2)
+        elif tier == 4:
+            chances = 74 + random.uniform(-4, 2)
+        elif tier == 5:
+            chances = 65 + random.uniform(-4, 2)
+        elif tier == 6:
+            chances = 56 + random.uniform(-4, 2)
+        elif tier == 7:
+            chances = 45 + random.uniform(-5, 2)
+        elif tier == 8:
+            chances = 37 + random.uniform(-4, 2)
+        elif tier == 9:
+            chances = 28 + random.uniform(-3, 2)
+        elif tier == 10:
+            chances = 24 + random.uniform(-3, 2)
+        else:
+            chances = 18 + random.uniform(-1, 1) - 2
+
+    # Application type adjustments
+    if app_type == "ED" and collegeList[i][2] != "N":
+        chances *= float(collegeList[i][2])
+    if app_type in ["EA", "REA"] and collegeList[i][3] != "N":
+        chances *= float(collegeList[i][3])
+
+    chances -= random.uniform(-1, 3)  # Simulating chances -= Math.random()*4 -1
+
+    if interviewScore < 2:
+        chances -= random.uniform(0, 7)
+    if interviewScore > 8:
+        chances += random.uniform(0, 7)
+    if chances <= 0.0:
+        chances = 0.0
+        chances += random.uniform(0, 1.5)
+    if chances >= 100.0:
+        chances = 100.0
+        chances -= random.uniform(0, 3)
+    if chances >= 97:
+        chances -= random.uniform(0, 6)
+
+    chances = max(0.0, min(chances, 100.0))
+    return round(chances, 2)
+
+def getType(chances_value):
+    # Placeholder for categorizing chances
+    if chances_value >= 80:
+        return "Highly Likely", "highly-likely"
+    elif chances_value >= 60:
+        return "Safety", "safety"
+    elif chances_value >= 40:
+        return "Target", "target"
+    elif chances_value >= 20:
+        return "Hard Target", "hard-target"
+    else:
+        return "Competitive", "competitive"
+
+def rate(score):
+    if 8.7 <= score <= 10:
+        return "Outstanding", "outstanding"
+    elif 7.2 <= score < 8.7:
+        return "Strong", "strong"
+    elif 6 <= score < 7.2:
+        return "Moderate", "moderate"
+    elif 4.5 <= score < 6:
+        return "Fair", "fair"
+    elif 2 <= score < 4.5:
+        return "Weak", "weak"
+    elif 0 <= score < 2:
+        return "Terrible", "terrible"
+    else:
+        return "N/A", "na"
+
+@app.route('/advancedsim/chances', methods=["GET", "POST"])
+@login_required
+def chances():
+    if request.method == 'POST':
+        # Handle finalization or proceeding to the next step
+        flash("Chances reviewed successfully!", "success")
+        return redirect(url_for('chances'))  # Redirect to the same route or another appropriate route
+
+    user_data = session.get('quicksim_data', {})
+    applied_colleges = session.get('applied_colleges', [])
+
+    if not applied_colleges:
+        flash("No applied colleges found.", "warning")
+        return redirect(url_for('summary'))
+
+    # Fetch user attributes
+    demScore = user_data.get('dem_score', 0.0)
+    testOption = user_data.get('test_option', 'rd').lower()
+    testOptional = testOption == 'optional'
+
+    # Safely retrieve and cast SAT and ACT scores
+    sat = user_data.get('sat_score', -1)
+    try:
+        sat = int(sat) if sat is not None else -1
+    except (ValueError, TypeError):
+        sat = -1
+
+    act = user_data.get('act_score', -1)
+    try:
+        act = int(act) if act is not None else -1
+    except (ValueError, TypeError):
+        act = -1
+
+    extracurriculars = user_data.get('extracurriculars', 0)
+    ap_courses = user_data.get('ap_courses', 0)
+    essayStrength = user_data.get('essays', 0)
+    gpa = user_data.get('gpa', 0.0)
+
+    # Recompute interview_chances regardless of session to include new fields
+    interview_chances = {}
+    for college in applied_colleges:
+        display_name = college['display_name']
+        app_type = college['type']  # ED, REA, EA, RD
+
+        # Find the corresponding university in university_list by display_name
+        university_info = next((uni for uni in university_list if uni['display_name'] == display_name), None)
+        if not university_info:
+            flash(f"University '{display_name}' not found in the university list.", "danger")
+            continue
+
+        short_name = university_info['name']
+
+        # Find the corresponding college in college_list by short_name
+        college_entry = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
+        if not college_entry:
+            flash(f"College entry for '{display_name}' not found in the college list.", "danger")
+            continue
+
+        i = college_list.index(college_entry)
+        # Generate interview score
+        interview_score = sim10()
+        # Calculate chance
+        chances_value = chanceCollege(
+            collegeList=college_list,
+            i=i,
+            demScore=demScore,
+            testOptional=testOptional,
+            sat=sat,
+            act=act,
+            extracurriculars=extracurriculars,
+            ap_courses=ap_courses,
+            essayStrength=essayStrength,
+            gpa=gpa,
+            interviewStrength=interview_score,
+            app_type=app_type
+        )
+        # Get chance category
+        chance_category, chance_class = getType(chances_value)
+
+        # Get rate based on interview score
+        rate_label, rate_class = rate(interview_score)
+
+        # Determine public/private status
+        school_type = college_entry[4]  # Assuming index 4 is "P" or "PUB"
+        public_status = "Public" if school_type.upper() in ["P", "PUB"] else "Private"
+
+        # Store in interview_chances
+        interview_chances[short_name] = {
+            "display_name": university_info["display_name"],  # Added for template usage
+            "interview_score": interview_score,
+            "interview_rate_label": rate_label,
+            "interview_rate_class": rate_class,
+            "chances": chances_value,
+            "chance_category": chance_category,
+            "chance_class": chance_class,
+            "type": app_type,
+            "public": public_status,
+            "logo_url": university_info["logo"]
+        }
+
+    # Update session with the new interview_chances
+    session['interview_chances'] = interview_chances
+
+    # Debug: Print interview_chances to console (optional)
+    print("Interview Chances:", interview_chances)
+
+    return render_template('chances.html', interview_chances=interview_chances)
 
 @app.route('/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):

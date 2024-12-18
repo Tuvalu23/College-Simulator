@@ -1,0 +1,529 @@
+<!-- templates/chances.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Google Fonts: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    .badge {
+        padding: 5px 10px;
+        border-radius: 12px;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    /* Application Type Badges */
+    .badge.ed {
+        background-color: #e74c3c; /* Red */
+    }
+
+    .badge.rae {
+        background-color: #f1c40f; /* Yellow */
+    }
+
+    .badge.ea {
+        background-color: #3498db; /* Blue */
+    }
+
+    .badge.rd {
+        background-color: #2ecc71; /* Green */
+    }
+
+    /* Chance Category Badges */
+    .badge.highly-likely {
+        background-color: #2ecc71; /* Green */
+    }
+
+    .badge.safety {
+        background-color: #27ae60; /* Darker Green */
+    }
+
+    .badge.target {
+        background-color: #3498db; /* Blue */
+    }
+
+    .badge.hard-target {
+        background-color: #9b59b6; /* Purple */
+    }
+
+    .badge.competitive {
+        background-color: #f1c40f; /* Yellow */
+    }
+
+    .badge.reach {
+        background-color: #e67e22; /* Orange */
+    }
+
+    .badge.big-reach {
+        background-color: #e74c3c; /* Red */
+    }
+
+    .badge.huge-reach {
+        background-color: #c0392b; /* Dark Red */
+    }
+
+    .badge.na {
+        background-color: #7f8c8d; /* Gray */
+    }
+
+    /* Rate Badges */
+    .badge.outstanding {
+        background-color: #8e44ad; /* Purple */
+    }
+
+    .badge.strong {
+        background-color: #2980b9; /* Blue */
+    }
+
+    .badge.moderate {
+        background-color: #27ae60; /* Green */
+    }
+
+    .badge.fair {
+        background-color: #f39c12; /* Orange */
+    }
+
+    .badge.weak {
+        background-color: #d35400; /* Dark Orange */
+    }
+
+    .badge.terrible {
+        background-color: #c0392b; /* Red */
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(4px);
+        z-index: -2;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .chances-container {
+        width: 80%;
+        max-width: 1200px;
+        margin: 80px auto 40px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        font-size: 16px;
+        animation: fadeInUp 1s ease forwards;
+        position: relative;
+        min-height: 400px;
+    }
+
+    .chances-container h1 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        color: #333333;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .section {
+        margin-bottom: 40px;
+    }
+
+    .section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #0066cc;
+        border-bottom: 2px solid #f1f1f1;
+        padding-bottom: 10px;
+        display: inline-block;
+        position: relative;
+    }
+
+    .section h2::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 3px;
+        background: #0066cc;
+        bottom: -2px;
+        left: 0;
+    }
+
+    .colleges-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .college-card.ed {
+        border-left: 5px solid #e74c3c; /* Red */
+    }
+
+    .college-card.rae {
+        border-left: 5px solid #f1c40f; /* Yellow */
+    }
+
+    .college-card.ea {
+        border-left: 5px solid #3498db; /* Blue */
+    }
+
+    .college-card.rd {
+        border-left: 5px solid #2ecc71; /* Green */
+    }
+
+    .college-card {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    .college-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 10;
+        background-color:rgb(211, 223, 235);
+    }
+
+    .college-logo img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        border-radius: 50%;
+        margin-right: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .college-card:hover .college-logo img {
+        transform: scale(1.1);
+    }
+
+    .college-info {
+        flex: 1;
+        padding-right: 60px;
+    }
+
+    .college-info h3 {
+        margin: 0 0 10px 0;
+        color: #333333;
+        font-size: 1.2rem;
+    }
+
+    .college-info p {
+        margin: 5px 0;
+        color: #555555;
+        font-size: 0.95rem;
+    }
+
+    .application-type {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .college-name {
+        display: flex;
+        align-items: center;
+    }
+    
+    .college-name img {
+        flex-shrink: 0;
+        margin-right: 15px;
+    }
+    
+    .college-name span {
+        display: block;
+        /* Ensure the name container has a fixed height to accommodate maximum expected lines */
+        height: 3em; /* Adjust based on font-size and desired number of lines */
+        overflow: hidden;
+        /* Optional: Truncate text with ellipsis after a certain number of lines */
+        text-overflow: ellipsis;
+        white-space: nowrap; /* Prevent wrapping; use 'normal' for multi-line truncation */
+        /* If you prefer multi-line truncation, use the following instead of 'nowrap': */
+        /* display: -webkit-box;
+        -webkit-line-clamp: 2; */ /* Limit to 2 lines */
+        /* -webkit-box-orient: vertical;
+        overflow: hidden; */
+    }
+
+    @media (max-width: 768px) {
+        .chances-container {
+            width: 90%;
+            padding: 20px;
+        }
+
+        .college-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .college-logo img {
+            margin-bottom: 15px;
+        }
+
+        .application-type {
+            position: static;
+            margin-top: 10px;
+        }
+
+        .college-info {
+            padding-right: 0;
+        }
+    }
+
+    .interview-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    .interview-table th, .interview-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .interview-table th {
+        background-color: #f2f2f2;
+        color: #333333;
+    }
+
+    .interview-table tbody tr {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.5s forwards;
+        transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* On hover, entire row enlarges and highlights */
+    .interview-table tbody tr:hover {
+        transform: scale(1.03);
+        background-color:rgb(229, 220, 190);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Enhanced Animations */
+    .interview-table tbody tr {
+        animation: fadeInUp 0.5s forwards;
+    }
+
+    .interview-table tbody tr:nth-child(odd) {
+        animation-delay: 0.2s;
+    }
+
+    .interview-table tbody tr:nth-child(even) {
+        animation-delay: 0.4s;
+    }
+
+    /* Rate Badges - Additional Styling if Needed */
+    .badge.outstanding {
+        background-color: #8e44ad; /* Purple */
+    }
+
+    .badge.strong {
+        background-color: #2980b9; /* Blue */
+    }
+
+    .badge.moderate {
+        background-color: #27ae60; /* Green */
+    }
+
+    .badge.fair {
+        background-color: #f39c12; /* Orange */
+    }
+
+    .badge.weak {
+        background-color: #d35400; /* Dark Orange */
+    }
+
+    .badge.terrible {
+        background-color: #c0392b; /* Red */
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .buttons a, .buttons button {
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .back-button {
+        background: #555555;
+        color: #ffffff;
+    }
+
+    .back-button:hover {
+        background: #333333;
+        transform: scale(1.05);
+    }
+
+    .continue-button {
+        background: linear-gradient(45deg, #ff7f50, #ff6f91);
+        background-size: 600% 600%;
+        color: #ffffff;
+        animation: gradientAnimation 8s ease infinite;
+    }
+
+    .continue-button:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="chances-container">
+    <h1>Chances Overview</h1>
+
+    <!-- Interview Strengths Section -->
+    <section class="section interview-scores-section">
+        <h2>Interview Strengths</h2>
+        <table class="interview-table">
+            <thead>
+                <tr>
+                    <th>College Name</th>
+                    <th>Interview Score</th>
+                    <th>Application Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ED first, then REA, then EA, then RD -->
+                {% for type_order in ['ED', 'REA', 'EA', 'RD'] %}
+                    {% for short_name, data in interview_chances.items() if data.type == type_order %}
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <img src="{{ url_for('static', filename=data.logo_url.split('static/')[1]) }}" 
+                                         alt="{{ data.display_name }} Logo" width="80" height="80" 
+                                         style="border-radius: 50%; margin-right: 15px; flex-shrink: 0;">
+                                    <span>{{ data.display_name }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span>{{ data.interview_score }}</span>
+                                    {% if data.interview_rate_label %}
+                                        <span class="badge {{ data.interview_rate_class }}" style="margin-left: 10px;">
+                                            {{ data.interview_rate_label }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge {{ data.type | lower }}">{{ data.type }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Chances Section -->
+    <section class="section chances-section">
+        <h2>Chances</h2>
+        <div class="colleges-list">
+            <!-- ED first, then REA, then EA, then RD -->
+            {% for type_order in ['ED', 'REA', 'EA', 'RD'] %}
+                {% for short_name, data in interview_chances.items() if data.type == type_order %}
+                    <div class="college-card {{ data.type | lower }}">
+                        <div class="college-logo">
+                            <img src="{{ url_for('static', filename=data.logo_url.split('static/')[1]) }}" alt="{{ data.display_name }} Logo" />
+                        </div>
+                        <div class="college-info">
+                            <h3>{{ data.display_name }}</h3>
+                            <p><strong>Chance of Acceptance:</strong> {{ data.chances }}%</p>
+                            <p><strong>Category:</strong> 
+                                <span class="badge {{ data.chance_class }}">{{ data.chance_category }}</span>
+                            </p>
+                            <p><strong>School Type:</strong> {{ data.public }}</p>
+                        </div>
+                        <div class="application-type">
+                            <span class="badge {{ data.type | lower }}">{{ data.type }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <form method="POST" action="{{ url_for('chances') }}">
+        <div class="buttons">
+            <a href="{{ url_for('summary') }}" class="back-button">Back</a>
+            <button type="submit" class="continue-button">Continue Application</button>
+        </div>
+    </form>
+</div>
+
+<!-- Include Animate.css for additional animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.college-card');
+        cards.forEach(card => {
+            card.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+
+        const rows = document.querySelectorAll('.interview-table tbody tr');
+        rows.forEach((row, index) => {
+            row.classList.add('animate__animated', 'animate__fadeInUp');
+            // Enhanced animation delay for more pronounced effect
+            row.style.animationDelay = `${index * 0.3}s`;
+        });
+
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            section.classList.add('animate__animated', 'animate__fadeIn');
+        });
+    });
+</script>
+{% endblock %}

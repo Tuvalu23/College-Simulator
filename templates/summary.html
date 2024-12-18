@@ -5,6 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+    /* Your provided CSS styles */
     .badge.outstanding {
         background-color: #2ecc71; /* Green */
     }
@@ -240,12 +241,12 @@
         z-index: 1;
     }
 
-    /* Cooler animations on hover - enlarge and slight rotate */
+    /* Hover Effects */
     .college-card:hover {
-        transform: scale(1.2);
+        transform: scale(1.05);
         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         z-index: 10; /* Ensure hovered card is above others */
-        background-color: #ADD8E6;
+        background-color:rgb(211, 223, 235);
     }
 
     .college-logo img {
@@ -355,6 +356,17 @@
         transform: scale(1.05);
     }
 
+    /* Submit Button (if needed) */
+    .submit-button {
+        background: #3498db;
+        color: #ffffff;
+    }
+
+    .submit-button:hover {
+        background: #2980b9;
+        transform: scale(1.05);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .summary-container {
@@ -384,7 +396,6 @@
             padding-right: 0;
         }
     }
-
 </style>
 
 <div class="summary-container">
@@ -446,10 +457,10 @@
                 {% for college in applied_colleges %}
                     <div class="college-card {{ college.type | lower }}">
                         <div class="college-logo">
-                            <img src="{{ url_for('static', filename=college.logo_url.split('static/')[1]) }}" alt="{{ college.name }} Logo" />
+                            <img src="{{ url_for('static', filename=college.logo_url.split('static/')[1]) }}" alt="{{ college.display_name }} Logo" />
                         </div>
                         <div class="college-info">
-                            <h3>{{ college.name }}</h3>
+                            <h3>{{ college.display_name }}</h3>
                             <p><strong>Application Type:</strong> {{ college.type }}</p>
                             <p><strong>School Type:</strong> {{ college.public }}</p>
                         </div>
@@ -465,10 +476,12 @@
     </section>
 
     <!-- Navigation Buttons -->
-    <div class="buttons">
-        <a href="{{ url_for('regulardecision', action='back') }}" class="back-button">Back</a>
-        <a href="#" class="continue-button">Continue</a>
-    </div>
+    <form method="POST" action="{{ url_for('chances') }}">
+        <div class="buttons">
+            <a href="{{ url_for('regulardecision') }}" class="back-button">Back</a>
+            <button type="submit" class="continue-button">Continue Application</button>
+        </div>
+    </form>
 </div>
 
 <!-- Animations (Using Animate.css for simplicity) -->
