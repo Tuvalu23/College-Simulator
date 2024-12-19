@@ -1061,53 +1061,53 @@ def summary():
     # Early Decision (ED)
     ed_school = session.get('ed_school')
     if ed_school:
-        college_info = next((col for col in college_list if col[0] == ed_school), None)
-        university_info = next((uni for uni in university_list if uni["name"] == ed_school), None)
-        if college_info and university_info:
+        college_entry = next((col for col in college_list if col[0].lower() == ed_school.lower()), None)
+        university_info = next((uni for uni in university_list if uni["name"].lower() == ed_school.lower()), None)
+        if college_entry and university_info:
             applied_colleges.append({
                 "type": "ED",
                 "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
-                "public": "Public" if college_info[4] == "PUB" else "Private"
+                "public": "Public" if college_entry[4].upper() in ["PUB", "P"] else "Private"
             })
 
     # Restrictive Early Action (REA)
     rea_school = session.get('rea_school')
     if rea_school:
-        college_info = next((col for col in college_list if col[0] == rea_school), None)
-        university_info = next((uni for uni in university_list if uni["name"] == rea_school), None)
-        if college_info and university_info:
+        college_entry = next((col for col in college_list if col[0].lower() == rea_school.lower()), None)
+        university_info = next((uni for uni in university_list if uni["name"].lower() == rea_school.lower()), None)
+        if college_entry and university_info:
             applied_colleges.append({
                 "type": "REA",
                 "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
-                "public": "Public" if college_info[4] == "PUB" else "Private"
+                "public": "Public" if college_entry[4].upper() in ["PUB", "P"] else "Private"
             })
 
     # Early Action (EA)
     ea_schools = session.get('ea_schools', [])
     for ea_school in ea_schools:
-        college_info = next((col for col in college_list if col[0] == ea_school), None)
-        university_info = next((uni for uni in university_list if uni["name"] == ea_school), None)
-        if college_info and university_info:
+        college_entry = next((col for col in college_list if col[0].lower() == ea_school.lower()), None)
+        university_info = next((uni for uni in university_list if uni["name"].lower() == ea_school.lower()), None)
+        if college_entry and university_info:
             applied_colleges.append({
                 "type": "EA",
                 "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
-                "public": "Public" if college_info[4] == "PUB" else "Private"
+                "public": "Public" if college_entry[4].upper() in ["PUB", "P"] else "Private"
             })
 
     # Regular Decision (RD)
     rd_schools = session.get('rd_schools', [])
     for rd_school in rd_schools:
-        college_info = next((col for col in college_list if col[0] == rd_school), None)
-        university_info = next((uni for uni in university_list if uni["name"] == rd_school), None)
-        if college_info and university_info:
+        college_entry = next((col for col in college_list if col[0].lower() == rd_school.lower()), None)
+        university_info = next((uni for uni in university_list if uni["name"].lower() == rd_school.lower()), None)
+        if college_entry and university_info:
             applied_colleges.append({
                 "type": "RD",
                 "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
-                "public": "Public" if college_info[4] == "PUB" else "Private"
+                "public": "Public" if college_entry[4].upper() in ["PUB", "P"] else "Private"
             })
 
     # Sort Applied Colleges by Application Type Order (ED, REA, EA, RD)
@@ -1595,17 +1595,22 @@ def rate(score):
 @app.route('/advancedsim/chances', methods=["GET", "POST"])
 @login_required
 def chances():
+    # Clear previous simulation state
+    session.pop('read_emails', None)
+    session.pop('current_sim_date', None)
+    session.pop('simulation_started', None)
+    
     if request.method == 'POST':
-        # after reviewing chances, proceed to results page
+        # After reviewing chances, proceed to results page
         flash("Chances reviewed successfully!", "success")
         # Generate final decisions and store them
         user_data = session.get('quicksim_data', {})
         applied_colleges = session.get('applied_colleges', [])
         interview_chances = session.get('interview_chances', {})
-
+    
         final_results = {}
         for short_name, data in interview_chances.items():
-            college_entry = next((c for c in college_list if c[0] == short_name), None)
+            college_entry = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
             if not college_entry:
                 continue
             chances_val = data['chances']
@@ -1613,23 +1618,27 @@ def chances():
             idx = college_list.index(college_entry)
             # Get final decision
             decision_code = admissionsDecision(chances_val, app_type, idx, college_list)
-            final_results[short_name] = {
+            final_results[short_name.lower()] = {
                 "decision_code": decision_code,
                 "display_name": data['display_name'],
                 "app_type": app_type,
                 "logo_url": data['logo_url'],
-                "public": data['public']
+                "public": data['public'],
+                "chances": data['chances']
             }
+    
         session['final_results'] = final_results
-
+    
         return redirect(url_for('results'))
-
+    
+    # Handle GET request
     user_data = session.get('quicksim_data', {})
     applied_colleges = session.get('applied_colleges', [])
     if not applied_colleges:
         flash("No applied colleges found.", "warning")
         return redirect(url_for('summary'))
-
+    
+    # Extract user data
     demScore = user_data.get('dem_score', 0.0)
     testOption = user_data.get('test_option', 'rd').lower()
     testOptional = (testOption == 'optional')
@@ -1647,7 +1656,7 @@ def chances():
     ap_courses = user_data.get('ap_courses', 0)
     essayStrength = user_data.get('essays', 0)
     gpa = user_data.get('gpa', 0.0)
-
+    
     interview_chances = {}
     for college in applied_colleges:
         display_name = college['display_name']
@@ -1678,9 +1687,9 @@ def chances():
         chance_category, chance_class = getType(chances_value)
         rate_label, rate_class = rate(interview_score)
         public_status = college_entry[4]
-        public_status = "Public" if public_status.upper() in ["P", "PUB"] else "Private"
-
-        interview_chances[short_name] = {
+        public_status = "Public" if public_status.upper() in ["PUB", "P"] else "Private"
+    
+        interview_chances[short_name.lower()] = {
             "display_name": university_info["display_name"],
             "interview_score": interview_score,
             "interview_rate_label": rate_label,
@@ -1692,9 +1701,9 @@ def chances():
             "public": public_status,
             "logo_url": university_info["logo"]
         }
-
+    
     session['interview_chances'] = interview_chances
-
+    
     return render_template('chances.html', interview_chances=interview_chances)
 
 # see if u get accepted or no
@@ -1706,6 +1715,7 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         if yourFate < chances:
             return "A"    # Admitted
         elif yourFate < chances + random.random() * 30:
+            schedule_deferred_decision(collegeName)
             return "D"    # Deferred
         else:
             return "R"    # Rejected
@@ -1713,6 +1723,7 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         if yourFate < chances:
             return "A"
         elif yourFate < chances + random.random() * 25:
+            schedule_deferred_decision(collegeName)
             return "D"
         else:
             return "R"
@@ -1720,6 +1731,7 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         if yourFate < chances:
             return "A"
         elif yourFate < chances + random.random() * 40:
+            schedule_deferred_decision(collegeName)
             return "D"
         else:
             return "R"
@@ -1737,25 +1749,112 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
             return "R"
     return "NO"
 
+def schedule_deferred_decision(college_name):
+    """
+    Schedules a deferred decision by storing it in the session.
+
+    Args:
+        college_name (str): The short name of the college.
+    """
+    # Retrieve the RD date from college_list
+    college_entry = next((c for c in college_list if c[0].lower() == college_name.lower()), None)
+    if college_entry and college_entry[7] != "N":
+        rd_date_str = college_entry[7]
+        try:
+            rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
+        except ValueError:
+            rd_date_str = "2099-01-01"  # Fallback date
+            rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
+        
+        # Store the deferred decision with the RD date
+        if 'deferred_decisions' not in session:
+            session['deferred_decisions'] = {}
+        session['deferred_decisions'][college_name.lower()] = {
+            "rd_date": rd_date_str,
+            "status": "deferred"
+        }
+        session.modified = True
+        
+def generate_final_decision(college_name):
+    """
+    Generates the final admission decision for a deferred application.
+
+    Args:
+        college_name (str): The short name of the college.
+
+    Returns:
+        str: The final decision code ('A', 'D', 'R', etc.).
+    """
+    chances_val = get_final_chances(college_name)
+    college_index = get_college_index(college_name)
+    
+    if college_index == -1:
+        # College not found, default to Rejected
+        return "R"
+    
+    final_decision = admissionsDecision(
+        chances=chances_val,
+        appType="RD",
+        collegeIndex=college_index,
+        collegesApplied=college_list
+    )
+    
+    return final_decision
+
+def get_final_chances(college_name):
+    """
+    Retrieves the chances value for a given college.
+
+    Args:
+        college_name (str): The short name of the college.
+
+    Returns:
+        float: The chances value (0-100).
+    """
+    interview_chances = session.get('interview_chances', {})
+    if college_name.lower() in interview_chances:
+        return interview_chances[college_name.lower()].get('chances', 50.0)
+    return 50.0  # Default chance if not found
+
+def get_college_index(college_name):
+    """
+    Retrieves the index of a college in the college_list.
+
+    Args:
+        college_name (str): The short name of the college.
+
+    Returns:
+        int: The index of the college in college_list, or -1 if not found.
+    """
+    for index, college in enumerate(college_list):
+        if college[0].lower() == college_name.lower():
+            return index
+    return -1  # Not found
+
 # RESULTS PAGE - GMAIL LIKE
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
     final_results = session.get('final_results', {})
-    if not final_results:
+    deferred_decisions = session.get('deferred_decisions', {})
+    
+    if not final_results and not deferred_decisions:
         flash("No final results found. Please complete the chances step first.", "warning")
         return redirect(url_for('chances'))
-
-    # Simulate date starting from 2024-11-01
+    
+    # Initialize simulation state
     if 'current_sim_date' not in session:
         session['current_sim_date'] = "2024-11-01"
-
+        session['simulation_started'] = False
+    
     current_date_str = session['current_sim_date']
     current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
-
+    
     emails = []
+    
+    # Process final_results
     for short_name, data in final_results.items():
-        c = next((cl for cl in college_list if cl[0] == short_name), None)
+        c = next((cl for cl in college_list if cl[0].lower() == short_name.lower()), None)
         if not c:
             continue
         app_type = data['app_type']
@@ -1767,15 +1866,20 @@ def results():
             release_date_str = c[6]  # EA date
         else:
             release_date_str = c[7]  # RD date
-
+    
         if release_date_str == "N":
             release_date_str = "2099-01-01"
-
-        release_date = datetime.strptime(release_date_str, "%Y-%m-%d")
+    
+        try:
+            release_date = datetime.strptime(release_date_str, "%Y-%m-%d")
+        except ValueError:
+            release_date_str = "2099-01-01"
+            release_date = datetime.strptime(release_date_str, "%Y-%m-%d")
+        
         email_available = (release_date <= current_date)
-
+    
         emails.append({
-            "short_name": short_name,
+            "short_name": short_name.lower(),
             "display_name": data['display_name'],
             "app_type": app_type,
             "release_date": release_date_str,
@@ -1783,29 +1887,72 @@ def results():
             "decision_code": data['decision_code'],
             "logo_url": data['logo_url']
         })
-
+    
+    # Process deferred_decisions
+    for college_name, def_data in list(deferred_decisions.items()):
+        rd_date_str = def_data['rd_date']
+        try:
+            rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
+        except ValueError:
+            rd_date_str = "2099-01-01"
+            rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
+        
+        if rd_date <= current_date:
+            # Generate the final decision now
+            decision_code = generate_final_decision(college_name)
+            display_name = next((uni["display_name"] for uni in university_list if uni["name"].lower() == college_name.lower()), college_name)
+            logo_url = next((uni["logo"] for uni in university_list if uni["name"].lower() == college_name.lower()), "")
+            
+            emails.append({
+                "short_name": college_name.lower(),
+                "display_name": display_name,
+                "app_type": "RD",
+                "release_date": rd_date_str,
+                "available": True,
+                "decision_code": decision_code,
+                "logo_url": logo_url
+            })
+            # Remove from deferred_decisions
+            del deferred_decisions[college_name]
+            session['deferred_decisions'] = deferred_decisions
+            session.modified = True
+    
+    # Sort emails by release_date
     emails.sort(key=lambda x: x['release_date'])
-
+    
+    # Determine if there are future dates
+    all_dates = [datetime.strptime(e['release_date'], "%Y-%m-%d") for e in emails if e['release_date'] != "N"]
+    future_dates = [d for d in all_dates if d > current_date]
+    
+    simulation_started = session.get('simulation_started', False)
+    no_future_dates = (len(future_dates) == 0)
+    
     if request.method == 'POST':
-        # Move forward in time
-        all_dates = [datetime.strptime(e['release_date'], "%Y-%m-%d") for e in emails if e['release_date'] != "N"]
-        if all_dates:
-            future_dates = [d for d in all_dates if d > current_date]
-            if future_dates:
-                next_release = min(future_dates)
-                session['current_sim_date'] = next_release.strftime("%Y-%m-%d")
-            else:
-                # No future releases, move a few days ahead
-                new_date = current_date + timedelta(days=5)
-                session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
-        else:
-            # No release dates at all
-            new_date = current_date + timedelta(days=1)
-            session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
+        # Receive the new date from client-side simulation
+        new_date_str = request.form.get('new_sim_date')
+        if new_date_str:
+            try:
+                new_date = datetime.strptime(new_date_str, "%Y-%m-%d")
+                session['current_sim_date'] = new_date_str
+            except ValueError:
+                flash("Invalid date format.", "danger")
+        # Receive 'action' if needed
+        action = request.form.get('action')
+        if action == 'start':
+            session['simulation_started'] = True
+        elif action == 'continue':
+            # 'Continue' was pressed after reaching a release date
+            pass  # Already handled via 'new_sim_date'
+        
         return redirect(url_for('results'))
-
-    return render_template('results.html', emails=emails, current_date=current_date_str, final_results=final_results)
-
+    
+    return render_template('results.html', 
+                           emails=emails, 
+                           current_date=current_date_str, 
+                           final_results=final_results, 
+                           getType=getType,
+                           simulation_started=simulation_started,
+                           no_future_dates=no_future_dates)
 
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
 def adv_login(college):
@@ -1825,7 +1972,7 @@ def adv_login(college):
 def adv_ustatus(college):
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
     final_results = session.get('final_results', {})
-    decision_code = final_results.get(college, {}).get("decision_code", "R")
+    decision_code = final_results.get(college.lower(), {}).get("decision_code", "R")
 
     if request.method == "POST":
         if decision_code == "A":
@@ -1841,6 +1988,17 @@ def adv_ustatus(college):
     
     return render_template(f"adv/{college}/ustatus.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
 
+@app.route('/advancedsim/mark_as_read', methods=["POST"])
+@login_required
+def mark_as_read():
+    short_name = request.form.get('short_name')
+    if 'read_emails' not in session:
+        session['read_emails'] = {}
+    session['read_emails'][short_name] = True
+    session.modified = True
+    return {'status': 'success'}
+
+# Acceptance, Rejection, Deferred, Waitlist Routes
 @app.route("/advancedsim/<college>/acceptance")
 def adv_acceptance(college):
     user_id = session.get('user_id')
@@ -1884,7 +2042,6 @@ def adv_waitlist(college):
     if user_id:
         User.log_simulation(user_id, college, 'waitlist')
     return render_template(f"adv/{college}/waitlist.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
-
 
 @app.route('/quicksim/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
