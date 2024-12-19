@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .sidebar {
+        border-right: 1px solid #ddd;
+        height: 80vh;
+        overflow-y: auto;
+    }
+    .sidebar .email-item {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    .sidebar .email-item.unread .email-subject {
+        font-weight: bold;
+    }
+    .sidebar .email-item.read .email-subject {
+        font-weight: normal;
+    }
+    .sidebar .email-item:not(.available) {
+        opacity: 0.6;
+    }
+    .email-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .clock-display {
+        font-size: 1.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .clock-display i {
+        font-size: 1.2rem;
+        color: #555;
+    }
+
+    .btn-start {
+        margin-right: 15px;
+    }
+
+    /* Right overview styling */
+    .overview-card {
+        margin-bottom: 15px;
+    }
+    .badge {
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="clock-display">
+            <i class="bi bi-calendar"></i> <!-- Requires Bootstrap Icons -->
+            <span>Current Simulation Date: {{ current_date }}</span>
+        </div>
+        <form method="post" class="d-inline">
+            <button type="submit" class="btn btn-primary btn-start">Start Simulation</button>
+        </form>
+    </div>
+
+    <div class="row" style="height:80vh;">
+        <!-- Left Sidebar (Inbox) -->
+        <div class="col-3 sidebar">
+            <h5 class="p-3 border-bottom">Inbox</h5>
+            {% if emails %}
+                {% for email in emails %}
+                    {% set is_unread = (email.available and not session.get('read_emails', {}).get(email.short_name, False)) %}
+                    <div class="email-item {{ 'available' if email.available else '' }} {{ 'unread' if is_unread else 'read' }}">
+                        <div class="email-subject">
+                            {% if email.decision_code == 'A' %}
+                                <span class="me-2">🎉</span> {{ email.display_name }} Admissions Decision
+                            {% elif email.decision_code == 'E' %}
+                                <span class="me-2">🎉</span> {{ email.display_name }} ED Decision
+                            {% elif email.decision_code == 'D' %}
+                                <span class="me-2">🤔</span> {{ email.display_name }} Deferred Update
+                            {% elif email.decision_code == 'W' %}
+                                <span class="me-2">🕑</span> {{ email.display_name }} Waitlist Update
+                            {% else %}
+                                <span class="me-2">🚫</span> {{ email.display_name }} Admissions Decision
+                            {% endif %}
+                        </div>
+                        <div class="small text-muted">Type: {{ email.app_type }} | Release: {{ email.release_date }}</div>
+                        {% if email.available %}
+                            <a href="{{ url_for('adv_login', college=email.short_name) }}" class="btn btn-link p-0 mt-1" onclick="markAsRead('{{ email.short_name }}')">Open Your Status Update</a>
+                        {% else %}
+                            <div class="small text-muted">Not Yet Available</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="p-3 text-muted">No emails yet.</div>
+            {% endif %}
+        </div>
+
+        <!-- Right Content (Overview) -->
+        <div class="col-9">
+            <h4 class="mt-3">Your Application Results Overview</h4>
+            <p class="text-muted">As decisions become available, this overview will update.</p>
+            <div class="row">
+                {% for short_name, result in final_results.items() %}
+                    {% set decision = result.decision_code %}
+                    {% if decision == 'A' %}
+                        {% set badge_class = 'bg-success' %}
+                        {% set status_text = 'Accepted' %}
+                    {% elif decision == 'E' %}
+                        {% set badge_class = 'bg-info' %}
+                        {% set status_text = 'Accepted (ED)' %}
+                    {% elif decision == 'D' %}
+                        {% set badge_class = 'bg-warning text-dark' %}
+                        {% set status_text = 'Deferred' %}
+                    {% elif decision == 'W' %}
+                        {% set badge_class = 'bg-secondary' %}
+                        {% set status_text = 'Waitlisted' %}
+                    {% elif decision == 'R' %}
+                        {% set badge_class = 'bg-danger' %}
+                        {% set status_text = 'Rejected' %}
+                    {% else %}
+                        {% set badge_class = 'bg-light text-dark' %}
+                        {% set status_text = 'Unavailable' %}
+                    {% endif %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm overview-card">
+                            <div class="card-body d-flex align-items-center">
+                                <img src="{{ result.logo_url }}" alt="{{ result.display_name }}" style="width:40px; height:40px; object-fit:contain; margin-right:10px;">
+                                <div>
+                                    <div>{{ result.display_name }}</div>
+                                    <span class="badge {{ badge_class }}">{{ status_text }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if not final_results %}
+                <div class="alert alert-info mt-3">
+                    No decisions yet. Once emails become available, you'll see your results here.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to mark email as read
+    function markAsRead(short_name) {
+        // This would ideally be handled via AJAX to update the session on the server side
+        // For simplicity, we'll just change the class locally
+        const emailItem = event.target.closest('.email-item');
+        emailItem.classList.remove('unread');
+        emailItem.classList.add('read');
+    }
+</script>
+{% endblock %}

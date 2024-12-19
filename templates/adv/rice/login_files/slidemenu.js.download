@@ -1,0 +1,1 @@
+var j=jQuery.noConflict();j(document).ready(function(){j(".cross").hide();j(".slidemenu").hide();j(".hamburger").click(function(){j(".slidemenu").slideToggle("slow",function(){j(".hamburger").hide();j(".cross").show()})});j(".cross").click(function(){j(".slidemenu").slideToggle("slow",function(){j(".cross").hide();j(".hamburger").show()})})});

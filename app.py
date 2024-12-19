@@ -1,5 +1,5 @@
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 
 from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash
@@ -163,29 +163,29 @@ university_list = [
 ]
 
 college_list = [
-    ["columbia", "0.02", "1.9", "N", "P"],
-    ["stanford", "0.03", "N", "1.3", "REA"],
-    ["upenn", "0.03", "2.3", "N", "P"],
-    ["caltech", "0.03", "N", "1.1", "REA"],
-    ["jhu", "0.05", "1.7", "N", "P"],
-    ["dartmouth", "0.05", "2.3", "N", "P"],
-    ["princeton", "0.06", "N", "1.3", "REA"],
-    ["mit", "0.06", "N", "1.2", "P"],
-    ["yale", "0.07", "N", "1.3", "REA"],
-    ["harvard", "0.07", "N", "1.3", "REA"],
-    ["brown", "0.08", "2.0", "N", "P"],
-    ["uchicago", "0.09", "2.5", "1.3", "P"],
-    ["northwestern", "0.09", "2.2", "N", "P"],
-    ["duke", "0.10", "2.0", "N", "P"],
-    ["rice", "0.12", "2", "N", "P"],
-    ["cornell", "0.15", "2.2", "N", "P"],
-    ["gtech", "0.15", "N", "1.4", "PUB"],
-    ["berkeley", "0.15", "N", "N", "PUB"],
-    ["usc", "0.17", "N", "1.3", "P"],
-    ["umich", "0.2", "N", "1.3", "PUB"],
-    ["nyu", "0.22", "1.5", "N", "P"],
-    ["bing", "0.65", "N", "1.3", "PUB"],
-    ["buffalo", "0.87", "N", "1.2", "PUB"]
+    ["columbia", "0.02", "1.9", "N", "P", "2024-12-18", "N", "2025-03-28"],
+    ["stanford", "0.03", "N", "1.3", "REA", "2024-12-13", "N", "2025-03-29"],
+    ["upenn", "0.03", "2.3", "N", "P", "2024-12-18", "N", "2025-03-28"],
+    ["caltech", "0.03", "N", "1.1", "REA", "2024-12-12", "N", "2025-03-25"],
+    ["jhu", "0.05", "1.7", "N", "P", "2024-12-13", "N", "2025-03-21"],
+    ["dartmouth", "0.05", "2.3", "N", "P", "2024-12-13", "N", "2025-03-28"],
+    ["princeton", "0.06", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
+    ["mit", "0.06", "N", "1.2", "P", "N", "2024-12-17", "2025-03-14"],
+    ["yale", "0.07", "N", "1.3", "REA", "2024-12-17", "N", "2025-03-28"],
+    ["harvard", "0.07", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
+    ["brown", "0.08", "2.0", "N", "P", "2024-12-13", "N", "2025-03-28"],
+    ["uchicago", "0.09", "2.5", "1.3", "P", "2024-12-20", "2024-12-20", "2025-03-25"],
+    ["northwestern", "0.09", "2.2", "N", "P", "2024-12-17", "N", "2025-03-24"],
+    ["duke", "0.10", "2.0", "N", "P", "2024-12-16", "N", "2025-03-28"],
+    ["rice", "0.12", "2", "N", "P", "2024-12-14", "N", "2025-03-21"],
+    ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],
+    ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-28"],
+    ["berkeley", "0.15", "N", "N", "PUB", "N", "N", "2025-03-27"],
+    ["usc", "0.17", "N", "1.3", "P", "N", "2025-1-17", "2025-03-16"],
+    ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-1-27", "2025-03-10"],
+    ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-04-01"],
+    ["bing", "0.65", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
+    ["buffalo", "0.87", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
 
 def login_required(f):
@@ -1596,64 +1596,71 @@ def rate(score):
 @login_required
 def chances():
     if request.method == 'POST':
-        # Handle finalization or proceeding to the next step
+        # after reviewing chances, proceed to results page
         flash("Chances reviewed successfully!", "success")
-        return redirect(url_for('chances'))  # Redirect to the same route or another appropriate route
+        # Generate final decisions and store them
+        user_data = session.get('quicksim_data', {})
+        applied_colleges = session.get('applied_colleges', [])
+        interview_chances = session.get('interview_chances', {})
+
+        final_results = {}
+        for short_name, data in interview_chances.items():
+            college_entry = next((c for c in college_list if c[0] == short_name), None)
+            if not college_entry:
+                continue
+            chances_val = data['chances']
+            app_type = data['type']
+            idx = college_list.index(college_entry)
+            # Get final decision
+            decision_code = admissionsDecision(chances_val, app_type, idx, college_list)
+            final_results[short_name] = {
+                "decision_code": decision_code,
+                "display_name": data['display_name'],
+                "app_type": app_type,
+                "logo_url": data['logo_url'],
+                "public": data['public']
+            }
+        session['final_results'] = final_results
+
+        return redirect(url_for('results'))
 
     user_data = session.get('quicksim_data', {})
     applied_colleges = session.get('applied_colleges', [])
-
     if not applied_colleges:
         flash("No applied colleges found.", "warning")
         return redirect(url_for('summary'))
 
-    # Fetch user attributes
     demScore = user_data.get('dem_score', 0.0)
     testOption = user_data.get('test_option', 'rd').lower()
-    testOptional = testOption == 'optional'
-
-    # Safely retrieve and cast SAT and ACT scores
+    testOptional = (testOption == 'optional')
     sat = user_data.get('sat_score', -1)
     try:
         sat = int(sat) if sat is not None else -1
-    except (ValueError, TypeError):
+    except:
         sat = -1
-
     act = user_data.get('act_score', -1)
     try:
         act = int(act) if act is not None else -1
-    except (ValueError, TypeError):
+    except:
         act = -1
-
     extracurriculars = user_data.get('extracurriculars', 0)
     ap_courses = user_data.get('ap_courses', 0)
     essayStrength = user_data.get('essays', 0)
     gpa = user_data.get('gpa', 0.0)
 
-    # Recompute interview_chances regardless of session to include new fields
     interview_chances = {}
     for college in applied_colleges:
         display_name = college['display_name']
-        app_type = college['type']  # ED, REA, EA, RD
-
-        # Find the corresponding university in university_list by display_name
+        app_type = college['type']
         university_info = next((uni for uni in university_list if uni['display_name'] == display_name), None)
         if not university_info:
-            flash(f"University '{display_name}' not found in the university list.", "danger")
             continue
-
         short_name = university_info['name']
-
-        # Find the corresponding college in college_list by short_name
         college_entry = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
         if not college_entry:
-            flash(f"College entry for '{display_name}' not found in the college list.", "danger")
             continue
-
         i = college_list.index(college_entry)
-        # Generate interview score
         interview_score = sim10()
-        # Calculate chance
         chances_value = chanceCollege(
             collegeList=college_list,
             i=i,
@@ -1668,19 +1675,13 @@ def chances():
             interviewStrength=interview_score,
             app_type=app_type
         )
-        # Get chance category
         chance_category, chance_class = getType(chances_value)
-
-        # Get rate based on interview score
         rate_label, rate_class = rate(interview_score)
+        public_status = college_entry[4]
+        public_status = "Public" if public_status.upper() in ["P", "PUB"] else "Private"
 
-        # Determine public/private status
-        school_type = college_entry[4]  # Assuming index 4 is "P" or "PUB"
-        public_status = "Public" if school_type.upper() in ["P", "PUB"] else "Private"
-
-        # Store in interview_chances
         interview_chances[short_name] = {
-            "display_name": university_info["display_name"],  # Added for template usage
+            "display_name": university_info["display_name"],
             "interview_score": interview_score,
             "interview_rate_label": rate_label,
             "interview_rate_class": rate_class,
@@ -1692,13 +1693,198 @@ def chances():
             "logo_url": university_info["logo"]
         }
 
-    # Update session with the new interview_chances
     session['interview_chances'] = interview_chances
 
-    # Debug: Print interview_chances to console (optional)
-    print("Interview Chances:", interview_chances)
-
     return render_template('chances.html', interview_chances=interview_chances)
+
+# see if u get accepted or no
+def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
+    yourFate = min(random.random() * 100, random.random() * 100) + random.random() * 30
+    collegeName = collegesApplied[collegeIndex][0]
+
+    if appType == "ED":
+        if yourFate < chances:
+            return "A"    # Admitted
+        elif yourFate < chances + random.random() * 30:
+            return "D"    # Deferred
+        else:
+            return "R"    # Rejected
+    elif appType == "REA":
+        if yourFate < chances:
+            return "A"
+        elif yourFate < chances + random.random() * 25:
+            return "D"
+        else:
+            return "R"
+    elif appType == "EA":
+        if yourFate < chances:
+            return "A"
+        elif yourFate < chances + random.random() * 40:
+            return "D"
+        else:
+            return "R"
+    elif appType == "RD":
+        if yourFate < chances:
+            return "A"
+        elif yourFate < chances + random.random() * 15:
+            return "W"  # Waitlisted
+        else:
+            return "R"
+    elif appType == "Waitlist":
+        if yourFate < chances:
+            return "A"
+        else:
+            return "R"
+    return "NO"
+
+# RESULTS PAGE - GMAIL LIKE
+@app.route('/advancedsim/results', methods=["GET", "POST"])
+@login_required
+def results():
+    final_results = session.get('final_results', {})
+    if not final_results:
+        flash("No final results found. Please complete the chances step first.", "warning")
+        return redirect(url_for('chances'))
+
+    # Simulate date starting from 2024-11-01
+    if 'current_sim_date' not in session:
+        session['current_sim_date'] = "2024-11-01"
+
+    current_date_str = session['current_sim_date']
+    current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
+
+    emails = []
+    for short_name, data in final_results.items():
+        c = next((cl for cl in college_list if cl[0] == short_name), None)
+        if not c:
+            continue
+        app_type = data['app_type']
+        if app_type == "ED":
+            release_date_str = c[5]  # ED date
+        elif app_type == "REA":
+            release_date_str = c[5]  # Use ED date for REA as well
+        elif app_type == "EA":
+            release_date_str = c[6]  # EA date
+        else:
+            release_date_str = c[7]  # RD date
+
+        if release_date_str == "N":
+            release_date_str = "2099-01-01"
+
+        release_date = datetime.strptime(release_date_str, "%Y-%m-%d")
+        email_available = (release_date <= current_date)
+
+        emails.append({
+            "short_name": short_name,
+            "display_name": data['display_name'],
+            "app_type": app_type,
+            "release_date": release_date_str,
+            "available": email_available,
+            "decision_code": data['decision_code'],
+            "logo_url": data['logo_url']
+        })
+
+    emails.sort(key=lambda x: x['release_date'])
+
+    if request.method == 'POST':
+        # Move forward in time
+        all_dates = [datetime.strptime(e['release_date'], "%Y-%m-%d") for e in emails if e['release_date'] != "N"]
+        if all_dates:
+            future_dates = [d for d in all_dates if d > current_date]
+            if future_dates:
+                next_release = min(future_dates)
+                session['current_sim_date'] = next_release.strftime("%Y-%m-%d")
+            else:
+                # No future releases, move a few days ahead
+                new_date = current_date + timedelta(days=5)
+                session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
+        else:
+            # No release dates at all
+            new_date = current_date + timedelta(days=1)
+            session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
+        return redirect(url_for('results'))
+
+    return render_template('results.html', emails=emails, current_date=current_date_str, final_results=final_results)
+
+
+@app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
+def adv_login(college):
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        if not email or not password:
+            return render_template(f"adv/{college}/login.html", error="Please fill out all fields.", college=college, date=user_data.get("date"))
+        
+        return redirect(url_for("adv_ustatus", college=college))
+    
+    return render_template(f"adv/{college}/login.html", name=user_data.get("name"), college=college, date=user_data.get("date"))
+
+
+@app.route("/advancedsim/<college>/ustatus", methods=["GET", "POST"])
+def adv_ustatus(college):
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
+    decision_code = final_results.get(college, {}).get("decision_code", "R")
+
+    if request.method == "POST":
+        if decision_code == "A":
+            return redirect(url_for("adv_acceptance", college=college))
+        elif decision_code == "E":
+            return redirect(url_for("adv_edacceptance", college=college))
+        elif decision_code == "D":
+            return redirect(url_for("adv_deferred", college=college))
+        elif decision_code == "W":
+            return redirect(url_for("adv_waitlist", college=college))
+        else:
+            return redirect(url_for("adv_rejection", college=college))
+    
+    return render_template(f"adv/{college}/ustatus.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
+@app.route("/advancedsim/<college>/acceptance")
+def adv_acceptance(college):
+    user_id = session.get('user_id')
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'acceptance')
+    return render_template(f"adv/{college}/acceptance.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
+
+@app.route("/advancedsim/<college>/edacceptance")
+def adv_edacceptance(college):
+    user_id = session.get('user_id')
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'ed_acceptance')
+    return render_template(f"adv/{college}/edacceptance.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
+
+@app.route("/advancedsim/<college>/rejection")
+def adv_rejection(college):
+    user_id = session.get('user_id')
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'rejection')
+    return render_template(f"adv/{college}/rejection.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
+
+@app.route("/advancedsim/<college>/deferred")
+def adv_deferred(college):
+    user_id = session.get('user_id')
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'deferred')
+    return render_template(f"adv/{college}/deferred.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
+
+@app.route("/advancedsim/<college>/waitlist")
+def adv_waitlist(college):
+    user_id = session.get('user_id')
+    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    if user_id:
+        User.log_simulation(user_id, college, 'waitlist')
+    return render_template(f"adv/{college}/waitlist.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
 
 @app.route('/quicksim/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
@@ -1724,6 +1910,27 @@ def rejection_files_static(college, filename):
 def advanced_files_static(filename):
     file_directory = os.path.join(app.root_path, 'templates', 'advancedsim_files')
     return send_from_directory(file_directory, filename)
+
+@app.route('/advancedsim/<college>/login_files/<path:filename>')
+def advancedsim_login_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'login_files'), filename)
+
+# Add similar routes for ustatus_files, acceptance_files, etc., if required:
+@app.route('/advancedsim/<college>/ustatus_files/<path:filename>')
+def advancedsim_ustatus_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'ustatus_files'), filename)
+
+@app.route('/advancedsim/<college>/acceptance_files/<path:filename>')
+def advancedsim_acceptance_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'acceptance_files'), filename)
+
+@app.route('/advancedsim/<college>/rejection_files/<path:filename>')
+def advancedsim_rejection_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'rejection_files'), filename)
+
+@app.route('/advancedsim/<college>/ball_images/<path:filename>')
+def advancedsim_ball_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'ball_images'), filename)
 
 
 if __name__ == "__main__":

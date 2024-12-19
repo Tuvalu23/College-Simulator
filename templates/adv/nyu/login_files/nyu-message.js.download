@@ -1,0 +1,44 @@
+
+var console = console || {
+    "log" : function() {
+    }
+};
+//var keys = [];
+function displayAlert(data) {
+    var color = data.color ? data.color : "green";
+    var headlineMessage = data.headlineMessage ? data.headlineMessage
+            : "No headline.";
+    var message = data.message ? data.message : "No message.";
+    var url = data.url ? data.url : "http://www.nyu.edu";
+    if (color == "green")
+        $("div.nyu-message").addClass("nyu-message-green");
+    if (color == "red")
+        $("div.nyu-message").addClass("nyu-message-red");
+    $("div.nyu-message a").attr('href', url);
+    $("div.nyu-message a.message").text(headlineMessage);
+    $("div.nyu-message").show();
+}
+
+$(document).ready(
+    function() {
+        var scrollPosition = window.scrollY || window.pageYOffset
+                || $(window).scrollTop();
+        if (!scrollPosition) {
+            window.scrollTo(0, 1);
+        }
+        //NYU notice message is retrieved
+        $.getJSON('//www.nyu.edu/feeds/status/alerts.json', function(
+                data) {
+            //NYU notice message is displayed
+            if (data.headlineMessage) {
+                displayAlert(data);
+            }
+        });
+        //netid is converted to lowercase
+        $("#netid").blur(function() {
+            $(this).val(function(index, value) {
+                return value.toLowerCase();
+            });
+        });
+    }
+);

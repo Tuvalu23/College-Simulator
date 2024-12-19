@@ -1,0 +1,42 @@
+@font-face {
+	font-family: anziano;
+	src: url(/fonts/AnzianoPro-Regular.woff2) format("woff2"), url(/fonts/AnzianoPro-Regular.woff) format("woff"), url(/fonts/AnzianoPro-Regular.eot) format("eot"), url(/fonts/AnzianoPro-Regular.ttf) format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: anziano;
+	src: url(/fonts/AnzianoPro-Italic.woff2) format("woff2"), url(/fonts/AnzianoPro-Italic.woff) format("woff"), url(/fonts/AnzianoPro-Italic.eot) format("eot"), url(/fonts/AnzianoPro-Italic.ttf) format("truetype");
+	font-weight: 400;
+	font-style: italic;
+}
+@font-face {
+	font-family: anziano;
+	src: url(/fonts/AnzianoPro-Bold.woff2) format("woff2"), url(/fonts/AnzianoPro-Bold.woff) format("woff"), url(/fonts/AnzianoPro-Bold.eot) format("eot"), url(/fonts/AnzianoPro-Bold.ttf) format("truetype");
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: benton-sans;
+	src: url(/fonts/BentonSans-Light.woff2) format("woff2"), url(/fonts/BentonSans-Light.woff) format("woff"), url(/fonts/BentonSans-Light.eot) format("eot"), url(/fonts/BentonSans-Light.ttf) format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+@font-face {
+	font-family: benton-sans;
+	src: url(/fonts/BentonSans-Book.woff2) format("woff2"), url(/fonts/BentonSans-Book.woff) format("woff"), url(/fonts/BentonSans-Book.eot) format("eot"), url(/fonts/BentonSans-Book.ttf) format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: benton-sans;
+	src: url(/fonts/BentonSans-Medium.woff2) format("woff2"), url(/fonts/BentonSans-Medium.woff) format("woff"), url(/fonts/BentonSans-Medium.eot) format("eot"), url(/fonts/BentonSans-Medium.ttf) format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+@font-face {
+	font-family: benton-sans;
+	src: url(/fonts/BentonSans-Bold.woff2) format("woff2"), url(/fonts/BentonSans-Bold.woff) format("woff"), url(/fonts/BentonSans-Bold.eot) format("eot"), url(/fonts/BentonSans-Bold.ttf) format("truetype");
+	font-weight: 700;
+	font-style: normal;
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://ivyhub-simulators.andressevilla.com/brown/portal.html -->
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fw="http://technolutions.com/framework" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xhtml="http://www.w3.org/1999/xhtml" class="supports-boxshadow no-touch"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <link rel="shortcut icon" href="https://apply-college-brown-edu.cdn.technolutions.net/favicon.ico">
+  <link href="./ustatus_files/base.css" rel="stylesheet">
+  <link href="./ustatus_files/base(1).css" rel="stylesheet">
+  <link href="./ustatus_files/build-fonts.css" rel="stylesheet">
+  <link href="./ustatus_files/build-mobile-global.css" rel="stylesheet">
+  <link href="./ustatus_files/build.css" rel="stylesheet">
+  <link href="./ustatus_files/render.css" rel="stylesheet">
+
+
+  <style>
+    /*<![CDATA[*/
+    html>body {
+      line-height: 1.4em;
+      font-size: 1em;
+    }
+
+    ul.cr,
+    li.cr {
+      margin: 0;
+      padding: 0;
+    }
+
+    #content {
+      clear: both;
+      padding: 15px;
+      min-height: 380px;
+    }
+
+    #global {
+      float: right;
+      padding: 15px 0px;
+    }
+
+    #global ul,
+    #global li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /*]]>*/
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" class="cr">
+  <title>Applicant Status Portal</title>
+  <style media="screen">
+    /*<![CDATA[*/
+    .update_released {
+      display: none;
+    }
+
+    /*]]>*/
+  </style>
+  <style media="print">
+    /*<![CDATA[*/
+    .update_released {
+      display: none;
+    }
+
+    /*]]>*/
+  </style><noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2016377125281340&amp;ev=PageView&amp;noscript=1" /></noscript>
+
+  <link rel="stylesheet" href="./ustatus_files/embed.css">
+
+</head>
+
+<body data-gr-c-s-loaded="true">
+  <noscript>
+    <div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+      This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.
+    </div>
+  </noscript>
+  <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+    This website uses resources that are being blocked by your network. Contact your network administrator for more information.
+  </div>
+
+  <div id="page">
+    <div class="c_front c_no-sidebars c_node-type-page c_path-undergraduate-admission c_university-nav-brown cr" style="">
+      <ul class="c_element-invisible c_element-focusable cr">
+        <li class="cr"><a href="https://apply.college.brown.edu/apply/status#content" class="cr">Skip to main content</a></li>
+      </ul>
+      <section id="c_brown-nav" class="cr">
+        <div class="c_marginator cr">
+          <div id="c_brown-header" class="cr">
+            <h1 class="cr"><a href="https://www.brown.edu/" class="cr">Explore Brown University</a></h1>
+          </div>
+        </div>
+        <div class="c_clearfix cr"></div>
+      </section>
+      <div id="c_shell" class="cr">
+        <main class="cr">
+          <div class="c_marginator cr" style="margin: 0 20px; width: 100%;">
+            <div role="main" id="c_content" class="cr">
+              <section id="c_main-content" class="cr">
+                <div id="global" style="margin-left: -50px;">
+                  <ul style="padding-left: 0; list-style: none;">
+                    <li style="margin-bottom: 0;">{{ name }}
+                      <a style="font-size: 10px; margin-left: 5px; text-decoration: none;" href="{{ url_for('login', college=college)}}">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div id="content" style="margin: 0 auto; width: 70%; margin-top: -10px;">
+          
+                  <!-- Add the thanks.png image at the top with smaller size -->
+                  <div style="text-align:center; margin-bottom: 5px;">
+                    <img src="./ustatus_files/thanks.png" alt="Thanks" style="width: 100%; height: auto; max-width: 100%;">
+                  </div>          
+
+                  <!-- Status Update Box spanning the entire page with forced background color -->
+                  <div style="background-color: #ffffc8 !important; margin-top: 30px; border-radius: 5px;">
+                    <h3>Status Update</h3>
+                    <p>An update to your application was last posted {{ date }}. </p>
+                    <strong>
+                      <form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline">
+                        <input type="hidden" name="university" value="brown">
+                        <button type="submit" style="background: none; font-weight: bold; color: red; text-decoration: underline; border: none; cursor: pointer; padding: 0;">
+                          Your Admission Decision.
+                        </button>
+                      </form>
+                    </strong>
+                  </div>
+                  <hr style="border: 1px solid #ccc; margin-top: 10px;">
+
+                  <!-- Other sections below -->
+                  <table class="fixed" style="width: 100%; margin-top: 10px;">
+                    <colgroup>
+                      <col style="width: 50%;">
+                      <col style="width: 50%;">
+                    </colgroup>
+                    <tbody>
+                      <tr style="vertical-align: top; height: 300px">
+                        <td style="padding-right: 15px;">
+                          <div class="part_rows_container">
+                            <div class="part"><br>
+                              <h3>Upload Materials</h3>
+                              <strong>Supplementary Materials:</strong>&nbsp;While not expected, applicants to Brown who wish to provide additional materials may do so below. The majority of students admitted to Brown do&nbsp;<strong>not</strong>&nbsp;submit additional materials; however, the opportunity to do so is available to any candidate.&nbsp;<a href="javascript:void(0);" target="_blank">Visit our website</a> for additional information about supplementary materials.<br><br>
+                              <b>Academic Paper/Research Abstract:</b>&nbsp;If you have completed an advanced academic paper or significant research project, you may upload that document to your application below. Please include a brief note to provide context for your submission. For example: approximate date(s) you were involved, whether you worked on this independently or as part of a team, what external recognition you may have received, and anything else you want us to know.<br>&nbsp;
+                            </div>
+                            <div class="part"><br></div>
+                            <div class="part">
+                              <h3>Test Scores</h3>
+                              You may&nbsp;<a href="javascript:void(0);" target="_blank"><b>self-report</b></a> test scores that were not included on your Common Application. You can view our testing requirements on <a href="javascript:void(0);" target="_blank">our website</a>.
+                            </div>
+                          </div>
+                        </td>
+                        <td style="padding-right: 15px;">
+                          <div class="part_rows_container">
+                            <div class="part">
+                              <h3>Take a Virtual Tour of Brown</h3>
+                              <p>
+                                <iframe scrolling="no" title="Virtual Reality, Virtual Tour" alt="Virtual Reality, Virtual Tour" id="virtualtour_iframe_0" frameborder="0" class="youvisit-embed" style="border: none; overflow: hidden; position: relative; width: 520px; max-width: 100%; min-width: 520px; height: 155px; max-height: 155px; min-height: 155px;" src="./ustatus_files/immersiveIcon.html"></iframe>
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style="clear: both;"></div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+
+        
+        <footer id="c_site-footer" class="cr">
+          <div class="c_marginator cr">
+            <div class="c_block c_block-contact-info c_block-contact-info-contact-info cr">
+              <div class="c_width c_content cr">
+                <h2 class="cr">Office of College Admission</h2><address class="c_h-card cr"><span class="c_p-name c_ghost cr">Office of College Admission</span><span class="c_p-org cr">Brown University</span><span class="c_p-post-office-box cr">Box&nbsp;1876</span><span class="c_p-locality cr">Providence</span>, <span class="c_p-region cr">RI</span>&nbsp;<span class="c_p-postal-code cr">02912</span><br class="cr"></address>
+                <dl class="c_contact cr"><dt class="cr">Phone:</dt>
+                  <dd class="cr"><span class="c_p-tel cr">&nbsp;401-863-2378</span></dd><dt class="cr">Fax:</dt>
+                  <dd class="cr"><span class="c_p-tel cr">&nbsp;401-863-9300</span></dd>
+                </dl>
+                <dl class="c_social cr"><dt class="c_ghost cr">Twitter</dt>
+                  <dd class="cr"><span class="c_p-twitter c_social cr"><a href="javascript:void(0);" class="cr">Twitter</a></span></dd><dt class="c_ghost cr">Facebook</dt>
+                  <dd class="cr"><span class="c_p-facebook c_social cr"><a href="javascript:void(0);" class="cr">Facebook</a></span></dd><dt class="c_ghost cr">Instagram</dt>
+                  <dd class="cr"><span class="c_p-instagram c_social cr"><a href="javascript:void(0);" class="cr">Instagram</a></span></dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </footer>
+        <footer id="c_brown-footer" class="cr">
+          <div id="c_footer-copyright" class="c_clearfix cr">
+            <div class="c_marginator cr">
+              <p class="cr"><span class="c_copyright cr">© 2024 Brown University</span></p>
+            </div>
+          </div>
+        </footer>
+      </div>
+      <div id="c_janus-extension-installed" style="display: none;" class="cr"></div>
+    </div>
+  </div>
+  <div class="progress_box" style="visibility: hidden;"></div>
+  <div>
+    <div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;">
+
+
+  </div><img alt="Youvisit Pixel" src="./ustatus_files/60679.png" style="display: none;"><img alt="Youvisit Pixel" src="./ustatus_files/60679(1).png" style="display: none;">
+
+
+
+</div></body></html>

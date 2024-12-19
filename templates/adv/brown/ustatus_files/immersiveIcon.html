@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)https://ivyhub-simulators.andressevilla.com/brown/brown_portal_files/immersiveicon -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+		 
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<link rel="icon" type="image/gif" href="data:image/gif;">
+		<title>YouVisit Experiences</title> 
+		<style> 
+			html, body {
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+				color: white;
+				width: 100%;
+				height: 100%;
+    			overflow: hidden;
+				font-family: Helvetica, Arial, sans-serif;
+			}
+			a, span, div, canvas, span {
+				position: absolute;
+				font-family: Helvetica, Arial, sans-serif;
+				font-weight: normal;
+				font-style: normal;
+				font-stretch: normal;
+				line-height: normal;
+				letter-spacing: normal;
+    			overflow: hidden;
+			}
+			canvas {
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				-webkit-transition: 0.4s ease-in-out;
+				-moz-transition: 0.4s ease-in-out;
+				-o-transition: 0.4s ease-in-out;
+				transition: 0.4s ease-in-out;
+			}
+			img#imgContent {
+				display: none;
+				width: 150%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center;
+     			transform: translate3d(-25%,0,0);
+			}
+			a#altLink {
+				width: 100%;
+				height: 25px;
+				top: -25px;
+				z-index: 10;
+				text-align: center;
+				background: #f7c60f;
+				color: blue;
+				text-decoration: underline;
+			}
+			a#altLink:focus {
+				top: 0;
+			}
+			.hover canvas, .advancedHover canvas {
+				transform: scale(1.1);
+			}
+			.title, .b .title {
+				-webkit-transition: 0.5s ease-in-out;
+				-moz-transition: 0.5s ease-in-out;
+				-o-transition: 0.5s ease-in-out;
+				transition: 0.5s ease-in-out;
+				max-width: 500px;
+				vertical-align: middle;
+				
+				font-size: 18px;
+				font-weight: 400;
+
+				letter-spacing: 1px;
+				text-align: left;
+				text-shadow: 2px 2px 4px rgba(0,0,0, 0.50);
+				color: #ffffff;
+								
+				line-height: 25px;
+				height: 50px;
+				width: 80%;
+				bottom: 15px;
+				left: 15px;
+			}
+			#image {
+				display: block;
+				width: 100%;
+				height: 100%;
+			}
+			.yellow_btn {
+				width: 95px;
+				height: 36px;
+				border-radius: 2px;
+				background-color: #ffb902;
+				box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+
+				left: 192px;
+				bottom: 40px;
+
+				font-size: 11px;
+				font-weight: bold;
+				line-height: 38px;
+				text-align: center;
+				color: #000000;
+				display: none;
+			}
+			.powered_by {
+				opacity: 0.3;
+				letter-spacing: 0.5px;
+				width: 110px;
+				height: 14px;
+				font-size: 11px;
+				text-align: left;
+				color: #ffffff;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+				left: 26px;
+				bottom: 12px;
+				font-weight: 200;
+				display: none;
+			}
+			.v .powered_by {
+				opacity: 1;
+			}
+			.powered_by .yv {
+				font-family: Helvetica, Arial, sans-serif;
+				font-weight: 400;
+				padding-left: 3px;
+			}
+			.round_btn {
+				width: 52px;
+				height: 52px;
+				background-color: #ffffff;
+				border-radius: 50%;
+
+				transform: translate(-50%,-50%);
+				top: 50%;
+				left: 50%;
+				-webkit-transition: 0.5s ease-in-out;
+				-moz-transition: 0.5s ease-in-out;
+				-o-transition: 0.5s ease-in-out;
+				transition: 0.5s ease-in-out;
+				-webkit-transition-delay: 0.5s;
+				-moz-transition-delay: 0.5s;
+				-o-transition-delay: 0.5s;
+				transition-delay: 0.5s;
+			}
+			.play {
+				width: 18px;
+				height: 18px;
+				object-fit: contain;
+				border-radius: 1px;
+				display: block;
+
+				position: relative;
+				transform: translate(-50%,-50%);
+				top: 50%;
+				left: 50%;
+				opacity: 0.9;
+			}
+			.container {
+				bottom: 0;
+				width: 100%;
+				height: 150px;
+				background: rgba(0, 0, 0, 0.6);
+				background: linear-gradient(to bottom, rgba(58, 58, 58, 0), rgba(0, 0, 0, 0.6));
+				-webkit-transition: 0.7s ease-in-out;
+				-moz-transition: 0.7s ease-in-out;
+				-o-transition: 0.7s ease-in-out;
+				transition: 0.7s ease-in-out;
+				display: none;
+			}
+			.container.right {
+				left: 0;
+				width: 288px;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.6);
+				background: linear-gradient(to left, rgba(58, 58, 58, 0), rgba(0, 0, 0, 0.6));
+				display: none;
+			}
+			.btnRotate {
+				position: absolute;
+				cursor: pointer;
+				z-index: 200;
+				top: 3px;
+				right: 3px;
+				width: 20px;
+			}
+			.logo {
+				position: absolute;
+				z-index: 20;
+				opacity: 0.3;
+				bottom: 2px;
+				right: 6px;
+			}
+			.v .logo {
+				opacity: 1;
+			}
+			.forceLogo .logo {
+				display: block;
+			}
+			.hideLogo .logo, .hideLogo .powered_by, .forceLogo .powered_by {
+				display: none !important;
+			}
+			.yellow_btn {
+				bottom: 64px;
+				left: 26px;	
+			}
+			.b .yellow_btn {
+				left: 26px;
+				bottom: 89px;
+			}
+			.b .container {
+				background: inherit;
+				display: block;
+    			overflow: hidden;
+				
+				width: 354px;
+				height: 150px;
+				bottom: 65px;
+				left: 0;
+				display: none;
+			}
+			.b .container.right:after, .b .container.top:after {
+				position:absolute;
+				content:'';
+				display:block;
+				background-size:cover;
+				background-color: #08001e;
+
+				-webkit-transform: rotate(27deg);
+				-moz-transform: rotate(27deg);
+				transform: rotate(27deg);
+				width: 1062px;
+				height: 402px;
+				left: -739px;
+				top: -266px;
+				
+			}
+			.b .container.top {
+				display: none;
+				width: 100%;
+				height: 150px;
+				bottom: 0;
+				left: 0;
+				display: none;
+			}
+			.b .container.top:after {
+				-webkit-transform: rotate(7deg);
+				-moz-transform: rotate(7deg);
+				transform: rotate(7deg);		
+				width: 800px;
+				height: 200px;
+				left: -15px;
+				top: 48px;
+			}
+			.b .powered_by {
+				left: 172px;
+			}
+			.advancedHover .title, .advancedHover.b .title {
+				-webkit-transition-delay: 0.5s;
+				-moz-transition-delay: 0.5s;
+				-o-transition-delay: 0.5s;
+				transition-delay: 0.5s;
+				opacity: 1; 
+			}
+			.advancedHover .round_btn {
+				-webkit-transition-delay: 0s;
+				-moz-transition-delay: 0s;
+				-o-transition-delay: 0s;
+				transition-delay: 0s;
+			}
+			@media (max-width: 320px) and (max-height: 200px) {		
+				.title, .b .title {
+					transform: translate3d(-50%,-50%,0);
+					bottom: inherit;
+					top: 50%;
+					left: 50%;
+					height: 50px;					
+					opacity: 0;
+				}
+				.advancedHover .round_btn {
+					opacity: 0;
+				}
+			}
+
+			@media (max-width: 500px) and (max-height: 110px) {		
+				.title, .b .title {
+					transform: translate3d(-50%,-50%,0);
+					bottom: inherit;
+					top: 50%;
+					left: 50%;
+					height: 50px;					
+					opacity: 0;
+				}
+				.advancedHover .round_btn {
+					opacity: 0;
+				}
+			}
+			/* 728x90: https://zpl.io/aNBBnED
+			 * B: 728x90: https://zpl.io/25NdJqo
+			 */
+			@media (min-width: 500px) and (min-height: 80px) and (max-height: 180px) {		
+				.title, .b .title {
+					transform: translate3d(0,-50%,0);
+					bottom: inherit;
+					top: 50%;
+					left: 15px;
+					width: 34%;
+					opacity: 1;
+				}
+				.title {
+					width: 40%;
+				}
+				.logo, .b .logo {
+					top: inherit;
+					left: inherit;
+					right: 11px;
+					bottom: 0px;
+				}
+				.round_btn, .b .round_btn {
+					top: 50%;
+					left: 50%;
+				}
+				.container.right {
+					display: block;
+				}
+				.b .container.right {
+					display: block;
+					transform: translate3d(0,-50%,0);
+					bottom: inherit;
+					top: 50%;
+					height: 75px;
+					width: 300px;
+				}
+				.b .container.right:after {
+					display: block;	
+					width: 500px;
+					height: 200px;
+					left: -224px;
+					top: -125px;
+				}
+			}	
+			/* 320x100: https://zpl.io/25ee9Ne
+			 * B: 320x100: https://zpl.io/bl1A0wX
+			 */
+			@media (min-width: 313px) and (max-width: 610px) and (min-height: 90px) and (max-height: 160px) {
+				.container.top, .b .container.right {
+					/* display: block; */
+				}
+				.logo, .b .logo {
+					top: inherit;
+					left: inherit;
+					right: 8px;
+					bottom: 6px;
+				}
+				.title, .b .title {
+					top: 50%;
+					transform: translate3d(0,-50%,0);
+					left: 16px;
+					width: 122px;
+					opacity: 1;
+				}
+				.round_btn {
+					left: 71%;
+				}
+				.b .round_btn {
+					left: 74%;
+				}
+				.advancedHover .round_btn {
+					opacity: 1;
+				}
+				.b .container.top, .container.top {
+					display: none;
+				}
+				.container.right {
+					display: block;
+				}
+				.b .container.right {
+					transform: translate3d(0,-50%,0);				
+					top: 50%;
+					display: block;
+					width: 173px;
+					height: 73px;
+				}
+				.b .container.right:after {
+					display: block;	
+					width: 500px;
+					height: 200px;
+					left: -343px;
+					top: -128px;
+				}
+			}
+			@media (min-width: 450px) and (max-width: 610px) and (min-height: 90px) and (max-height: 160px) {
+				.b .round_btn, .round_btn {
+					left: 50%;
+				}
+			}
+			/* 200x200: https://zpl.io/29llENy
+			 * B: 200x200: https://zpl.io/2y1x6Gp
+			 */
+			@media (min-width: 95px) and (max-width: 312px) and (min-height: 200px) and (max-height: 250px) {
+				.container.top {
+					display: block;
+				}
+				.round_btn, .b .round_btn {
+					top: 35%;
+				}
+				.title, .b .title {
+      				transform: translate3d(0,-50%,0);
+					opacity: 1;
+					top: 75%;
+				}
+				.b .title {
+					top: 80%;
+				}
+				.title {
+					height: 25px;
+				}
+				.title {
+					text-align: center;
+				}
+				.advancedHover .round_btn {
+					opacity: 1;
+				}
+				.advancedHover .title, .advancedHover.b .title {
+					-webkit-transition-delay: 0s;
+					-moz-transition-delay: 0s;
+					-o-transition-delay: 0;
+					transition-delay: 0s;
+				}
+				.round_btn, .b .round_btn {
+					display: block;
+				}
+				.container {
+					height: 74px;
+				}
+				.b .container {
+					height: 86px;
+				}
+				.b .container.top {
+					display: block;
+					height: 108px;
+				}
+				.logo, .b .logo {
+					display: block;
+					bottom: 5px;
+					right: 6px;
+					left: inherit;
+					top: inherit;
+				}
+				.title, .b .title {
+					width: 86%;
+					left: 7%;
+				}
+				.title {
+					top: 71%;
+				}
+				.advancedHover .b .container.top {
+					display: block;
+					height: 108px;
+				}
+				.advancedHover.b .container {
+					height: 0px;
+				}
+				.advancedHover.b .title {
+					opacity: 0;
+				}
+			}	
+			@media (max-width: 100px) and (max-height: 200px) {	
+				.title, .b .title, .b .container, .b .container.top {
+					display: none;
+				}	
+				.round_btn, .b .round_btn {
+					top: 50%;
+				}
+			}
+			/* 336x280: https://zpl.io/bPLLnrD
+			 * B: 336x280: https://zpl.io/bzyRoEM
+			 */
+			@media (min-width: 250px) and (max-width: 759px) and (min-height: 250px) and (max-height: 500px) {
+				.title, .b .title {
+					opacity: 1;
+				    bottom: 22px;
+					left: 24px;
+					transform: inherit;
+					top: inherit;
+				}
+				.title {
+					bottom: 56px;
+				}
+				.powered_by, .b .powered_by, .logo, .b .logo
+				{
+					left: 24px;
+					bottom: 6px;
+				}
+				.b .powered_by, .b .logo {
+    				left: inherit;
+					right: 10px;					
+				}
+				.b .title {
+					bottom: 22px;
+				}
+				.yellow_btn, .b .yellow_btn {
+					display: block;
+					left: inherit;
+					right: 24px;
+					bottom: 20px;
+				}
+				.b .yellow_btn {
+					bottom: 75px;
+				}
+				.container.top {
+					display: block;
+					height: 150px;
+				}
+				.b .container.top {
+					display: block;
+					height: 125px;
+				}
+				.b .container.right, .container.right {
+					display: none;
+				}
+			}
+			@media (min-width: 250px) and (max-width: 759px) and (min-height: 250px) and (max-height: 300px) {
+				.round_btn {
+					top:35%;
+				}
+			}
+			@media (min-width: 395px) and (max-width: 759px) and (min-height: 250px) and (max-height: 500px) {
+				.b .yellow_btn {
+					bottom: 60px;
+				}
+			}	
+			@media (min-width: 500px) and (max-width: 759px) and (min-height: 250px) and (max-height: 500px) {
+				.b .yellow_btn {
+					bottom: 50px;
+				}
+			}	
+			@media (min-width: 650px) and (max-width: 759px) and (min-height: 250px) and (max-height: 500px) {
+				.b .yellow_btn {
+					bottom: 34px;
+				}
+			}	
+			@media (min-width: 300px) and (min-height: 250px) {
+				.logo {
+					display: none;
+				}
+				.powered_by {
+					display: block;
+				}
+			}
+			@media (min-width: 250px) and (max-width: 500px) and (min-height: 320px) and (max-height: 500px) {
+				.round_btn {
+					top: 50%;
+				}
+			}
+			@media (min-width: 400px) and (max-width: 500px) and (min-height: 250px) and (max-height: 500px) {
+				.title {
+					width: 62%;
+					bottom: 24px;
+				}
+			}
+			/* 300x600: https://zpl.io/V4PPdEz
+			 * B: 300x600: https://zpl.io/aggKQvQ
+			 */
+			@media (min-width: 300px) and (max-width: 450px) and (min-height: 500px) {
+				.title, .b .title {
+					opacity: 1;
+					left: 26px;
+	      			width: 84%;
+					height: 50px;
+					top: inherit;
+					transform: inherit;
+					max-width: inherit;	
+					font-size: 20px;	
+				}
+				.title {
+					bottom: 57px;
+				}
+				.round_btn, .b .round_btn {
+					top: 35%;
+				}
+				.b .title {
+					bottom: 38px;
+				}
+				.b .container.top, .container.top {
+					display: block;
+				}
+				.b .container.right, .container.right {
+					display: none;
+				}
+				.yellow_btn {
+					display: none;
+				}
+				.b .yellow_btn {
+					display: block;
+					bottom: 102px;
+					left: inherit;
+					right: 15px;
+				}
+				.b .powered_by {
+					left: inherit;
+					right: 10px;
+				}
+			}
+			/**
+			 * Full width: https://zpl.io/VxKKvnR
+			 * B: Full width: https://zpl.io/ag9BdZ1
+			 */	
+			@media (min-width: 760px) and (min-height: 350px) {
+				.yellow_btn, .b .yellow_btn, 
+				.b .container, .container.right, 
+				.title, .b .title {
+					display: block;
+					opacity: 1;
+				}
+				.title, .b .title {
+					transform: inherit;
+					left: 26px;
+					top: inherit;
+				}
+				.b .title {
+					font-size: 20px;
+					bottom: 145px;
+					width: 295px;
+				}
+				.title { 
+					font-size: 24px;
+					bottom: 105px;
+				}
+				.b .powered_by  {
+					bottom: 71px;
+				}
+				.b .yellow_btn {
+					bottom: 90px;
+				}
+			}
+			@media (min-width: 780px) and (min-height: 270px) {
+				.yellow_btn, .b .yellow_btn, 
+				.b .container, .container.right, 
+				.title, .b .title {
+					display: block;
+					opacity: 1;
+				}
+				.title, .b .title {
+					transform: inherit;
+					left: 26px;
+					top: inherit;
+				}
+				.b .title {
+					bottom: 145px;
+					width: 295px;
+				}
+				.title { 
+					bottom: 105px;
+				}
+				.b .powered_by  {
+					bottom: 71px;
+				}
+				.b .yellow_btn {
+					bottom: 90px;
+				}
+			}	
+
+			.minui .yellow_btn,
+			.minui .container,
+			.minui .container.right, 
+			.minui .container.top,
+			.minui .title
+			{
+				display: none;
+			}
+		</style> 
+	</head> 
+	<body> 
+		<a tabindex="1" aria-label="Open the accessible version of Brown University&#39;s virtual experience." alt="Open the accessible version of Brown University&#39;s virtual experience." id="altLink" href="https://www.youvisit.com/tour/ada/60679?pl=v" target="_blank">Open the accessible version of Brown University's virtual experience.</a>
+		<a class="YouVisitThreeSixtyAd  v " aria-label="Explore Our Campus Now&#39;s virtual experience." alt="Explore Our Campus Now&#39;s virtual experience." id="href" href="https://cdn.youvisit.com/tour/Embed/immersiveIcon?v=2020.02.26.11&amp;ab=&amp;inst=60679&amp;loc=&amp;pl=v&amp;index=0&amp;debug=&amp;titleshow=&amp;pl=v&amp;uiclass=&amp;hover=1#yv-advertisement?" style="width:100%;height:100%;display: block;" onmouseover="_onmouseover(this)" onmouseout="_onmouseout(this)" onkeyup="_onkeyup(this)" onfocus="_onfocus(this)" onblur="_onblur(this)">
+				<img id="imgContent" alt="Experience immersive image content" style="display: none;">
+				<canvas id="content" alt="Experience immersive panorama content" width="520" height="155" style="display: block;"></canvas>
+				<div class="container top"></div>
+				<div class="container right"></div>
+				<span class="yellow_btn" role="button" tabindex="5" alt="Let&#39;s Go. Explore Our Campus Now&#39;s virtual experience.">LET'S GO</span>
+				<span alt="Powered by YouVisit" class="powered_by">Powered by<span class="yv"> YouVisit</span></span>
+				<div class="round_btn" role="button" tabindex="5" alt="Play Experience. Explore Our Campus Now&#39;s virtual experience.">
+					<img src="./triangle.svg" alt="play immersive experience" class="play">
+				</div>
+				<img alt="Powered by YouVisit" src="./yvsmile.svg" class="logo">	
+				<span class="title">
+					Explore Our Campus Now				</span>
+		</a>
+		<img src="./icon_video_play_transparent.svg" alt="Start panorama rotation" aria-label="Start panorama rotation" role="button" tabindex="1" class="btnRotate Resume" style="display: none;">
+		<img src="./icon_video_pause_transparent.svg" alt="Stop panorama rotation" aria-label="Stop panorama rotation" role="button" tabindex="1" class="btnRotate Pause" style="display: block;">
+	<script type="text/javascript">
+
+	// https://github.com/kaimallea/isMobile
+	// mobile-checker micro-library (use isMobile.any)
+	!function(a){var b=/iPhone/i,c=/iPod/i,d=/iPad/i,e=/(?=.*\bAndroid\b)(?=.*\bMobile\b)/i,f=/Android/i,g=/(?=.*\bAndroid\b)(?=.*\bSD4930UR\b)/i,h=/(?=.*\bAndroid\b)(?=.*\b(?:KFOT|KFTT|KFJWI|KFJWA|KFSOWI|KFTHWI|KFTHWA|KFAPWI|KFAPWA|KFARWI|KFASWI|KFSAWI|KFSAWA)\b)/i,i=/IEMobile/i,j=/(?=.*\bWindows\b)(?=.*\bARM\b)/i,k=/BlackBerry/i,l=/BB10/i,m=/Opera Mini/i,n=/(CriOS|Chrome)(?=.*\bMobile\b)/i,o=/(?=.*\bFirefox\b)(?=.*\bMobile\b)/i,p=new RegExp("(?:Nexus 7|BNTV250|Kindle Fire|Silk|GT-P1000)","i"),q=function(a,b){return a.test(b)},r=function(a){var r=a||navigator.userAgent,s=r.split("[FBAN");return"undefined"!=typeof s[1]&&(r=s[0]),this.apple={phone:q(b,r),ipod:q(c,r),tablet:!q(b,r)&&q(d,r),device:q(b,r)||q(c,r)||q(d,r)},this.amazon={phone:q(g,r),tablet:!q(g,r)&&q(h,r),device:q(g,r)||q(h,r)},this.android={phone:q(g,r)||q(e,r),tablet:!q(g,r)&&!q(e,r)&&(q(h,r)||q(f,r)),device:q(g,r)||q(h,r)||q(e,r)||q(f,r)},this.windows={phone:q(i,r),tablet:q(j,r),device:q(i,r)||q(j,r)},this.other={blackberry:q(k,r),blackberry10:q(l,r),opera:q(m,r),firefox:q(o,r),chrome:q(n,r),device:q(k,r)||q(l,r)||q(m,r)||q(o,r)||q(n,r)},this.seven_inch=q(p,r),this.any=this.apple.device||this.android.device||this.windows.device||this.other.device||this.seven_inch,this.phone=this.apple.phone||this.android.phone||this.windows.phone,this.tablet=this.apple.tablet||this.android.tablet||this.windows.tablet,"undefined"==typeof window?this:void 0},s=function(){var a=new r;return a.Class=r,a};"undefined"!=typeof module&&module.exports&&"undefined"==typeof window?module.exports=r:"undefined"!=typeof module&&module.exports&&"undefined"!=typeof window?module.exports=s():"function"==typeof define&&define.amd?define("isMobile",[],a.isMobile=s()):a.isMobile=s()}(this);
+		var dom = document.getElementById("href");
+
+		_postMessage = function(event){
+			if (false)
+			{
+				return false;
+			}
+						parent.postMessage("data:::" + event + ":::0" , "*");
+			return false;
+				
+
+		};
+		if( dom ) {
+			dom.onclick = onLaunchClick.bind(null, dom, 'launch_tour');	
+			dom.onkeypress = function (e)
+			{
+				if (e.key == 'Enter' || ' ' == e.key)
+					dom.onclick();
+			};
+		}
+
+		/**
+		 * Callback for launch click event - accepts clicked element and event to pass to postMessage
+		 * @param  {dom} element    Form element to submit that opens new tab on mobile devices.
+		 * @param  {string} event   Event passed to postMessage.
+		 */
+		function onLaunchClick(element, event){
+			_postMessage(event);
+			var newtab = false;
+			if(isMobile.any || newtab){
+				if (typeof element.click != 'undefined')
+					element.click();
+				else if (typeof element.submit != 'undefined')
+					element.submit();
+				return true;
+			}
+			window._YouVisitThreeSixtyAd.expLaunched();
+			return false;
+		}
+
+		function _onfocus(el) {
+			_postMessage('focus');
+		}
+
+		function _onblur(el) {
+			_postMessage('blur');
+		}
+
+		function _onmouseover(el) 
+		{
+			var advancedHover = ( window.innerWidth <= 500 && window.innerHeight <= 270 );
+			if (advancedHover && el.className.indexOf("advancedHover") == -1)
+			{
+				el.originaClassName = el.className;
+				el.className += " advancedHover";
+			} else {
+				el.originaClassName = el.className;
+				el.className += " hover";
+			}
+			//indicate passive start, ie only start if we can...
+			window._YouVisitThreeSixtyAd.startRotation(true);
+		}
+		function _onmouseout(el) 
+		{
+			if (typeof el.originaClassName != 'undefined')
+				el.className = el.originaClassName;
+		}
+		function _onkeyup(el) 
+		{
+			//User tabbed and hit enter.
+			if (13 == el.keyCode)
+			{
+				onLaunchClick(dom, 'launch_tour')
+			}
+		}
+		function _toggleRotation(e)
+		{
+			e.stopPropagation && e.stopPropagation();
+			window._YouVisitThreeSixtyAd.toggleRotation();
+			return false;
+		}
+		function _toggleRotationKeypress(e)
+		{
+			if (e.key == 'Enter' || ' ' == e.key)
+				return _toggleRotation(e);
+			return false;
+		}
+		function initExperience()
+		{
+			var title = document.getElementsByClassName("title")[0];
+			var _titleCopy = "Explore Our Campus Now";
+			var _titleWidth = 10.5 * _titleCopy.length;
+			if (typeof title != 'undefined')
+			{
+				if (_titleWidth < title.offsetWidth)
+				{
+					title.setAttribute("style", "line-height: " + title.offsetHeight + "px;");
+				}				
+			}
+			document.querySelector(".btnRotate.Resume").addEventListener("click", _toggleRotation);
+			document.querySelector(".btnRotate.Pause").addEventListener("click", _toggleRotation);
+			document.querySelector(".btnRotate.Resume").addEventListener("keypress", _toggleRotationKeypress);
+			document.querySelector(".btnRotate.Pause").addEventListener("keypress", _toggleRotationKeypress);
+		}
+	</script>
+	 
+	<script type="text/javascript">
+		/**
+		 * YouVisit Advertisment Renderer
+		 */
+
+		(function (global) {
+		  'use strict';
+			var YouVisitThreeSixtyAd = 
+			{
+				/**
+				 * Configuration for Ads
+				 * items with _ should not be overriden by params
+				 */
+		        canvas : false,
+				horizontalRotationSpeed : 0,
+				_horizontalRotationSpeed : 0,
+				verticalRotationSpeed : 0,
+				_verticalRotationSpeed : 0,
+				container : window,
+				_gl : null, //webGL Context
+			  	_pano_texture : null, //Our Texture
+			  	_has_pano_texture: false,
+				_buffer : null,
+				_vertex_shader : null,
+				_fragment_shader : null,
+				_currentProgram : null,
+				_vertex_position : null,
+				_screenWidth:  0, 
+				_screenHeight: 0,
+				_yaw : 0, 
+				_pitch : 0, 
+				_fov : 80,
+				onRotatingStart : false,
+				onRotatingStop : false,
+				_explicitStop : false,
+
+				/**
+				 * webglFallback method to call when we can't render... who knows why?
+				 */
+				_webglFallback : false,
+				/**
+				 * webglReady called on first successful render
+				 */				
+				_webglReady : false,
+
+				/**
+				 * Provides requestAnimationFrame in a cross browser way.
+				 * paulirish.com/2011/requestanimationframe-for-smart-animating/
+				 */
+				_requestAnimationFrame : function( callback, element ) {
+					var call = 	window.requestAnimationFrame ||
+								window.webkitRequestAnimationFrame ||
+								window.mozRequestAnimationFrame ||
+								window.oRequestAnimationFrame ||
+								window.msRequestAnimationFrame ||
+								function( callback, element ) { window.setTimeout( callback, 1000 / 60 ); };
+					call( callback );
+				},
+						 			
+				/**
+				 * Initialize 360 Renderer
+				 *
+				 * WebGL support: https://caniuse.com/#search=webgl
+				 * TODO: add failover support
+				 * 
+				 * @param  array options for configuring exp
+				 *         requires:
+				 * @return void
+				 */
+				initialize : function( options ) {
+					if (options.container)
+						this.container = options.container;
+
+					if (options.canvas)
+						this.canvas = options.canvas;
+					else 
+						throw "YouVisitThreeSixtyAd: Canvas required.";
+					if (options.horizontalRotationSpeed) 
+						this._horizontalRotationSpeed = options.horizontalRotationSpeed;
+					if (options.verticalRotationSpeed) 
+						this._verticalRotationSpeed = options.verticalRotationSpeed;
+					if (options.fov) 
+						this._fov = options.fov;
+					if (options.onRotatingStart) 
+						this.onRotatingStart = options.onRotatingStart;
+					if (options.onRotatingStop) 
+						this.onRotatingStop = options.onRotatingStop;
+					if (options.startRotating)
+						this.startRotation();
+									
+					this._vertex_shader = this._getVertexShader();
+					this._fragment_shader = this._getFragementShader();
+
+					// Initialise WebGL
+					try {
+						this._gl = this.canvas.getContext( 'experimental-webgl' );
+					} catch( error ) { }
+
+					this._webglFallback = options.webglFallback;
+					this._webglReady = options.webglReady;
+					if ( !this._gl ) {
+						this._webglFallback && this._webglFallback();
+						return false;
+					}
+
+					// Create Vertex buffer (2 triangles)
+					this._buffer = this._gl.createBuffer();
+					this._gl.bindBuffer( this._gl.ARRAY_BUFFER, this._buffer );
+					this._gl.bufferData( this._gl.ARRAY_BUFFER, new Float32Array( [ - 1.0, - 1.0, 1.0, - 1.0, - 1.0, 1.0, 1.0, - 1.0, 1.0, 1.0, - 1.0, 1.0 ] ), this._gl.STATIC_DRAW );
+
+					// Create texture for video
+					if (options.image_src)
+						this._createTexture( options.image_src );
+					else
+						throw "YouVisitThreeSixtyAd: No image src defined.";
+
+					// Create Program
+					this._currentProgram = this._createProgram( this._vertex_shader, this._fragment_shader );
+					if (!this._currentProgram)
+					{
+						this._webglFallback && this._webglFallback();	
+						return false;
+					}
+					
+					this._handleResize = this._handleResize.bind(this);
+					this._animate = this._animate.bind(this);
+
+					this.container.addEventListener( 'resize', this._handleResize, false );
+					
+					// Initialise interaction
+					// canvas.ondblclick = this._handleDoubleClick;
+					this._animate();
+					this._sizeCheckInternval = setInterval(this._handleResize, 500);
+				},
+			 
+				_animate : function() {
+					this._yaw += 0.05 * this.horizontalRotationSpeed;
+					this._pitch += 0.05 * this.verticalRotationSpeed;
+
+					this._render();
+					this._requestAnimationFrame( this._animate );
+				},
+			 
+				_render : function() {
+					if ( !this._currentProgram || !this._has_pano_texture ) {
+						return;
+					}
+
+					this._gl.clear( this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT );
+
+					// Load program into GPU
+					this._gl.useProgram( this._currentProgram );
+					
+					this._gl.bindTexture(this._gl.TEXTURE_2D, this._pano_texture);
+
+					// Set values to program variables
+					this._gl.uniform2f( this._gl.getUniformLocation( this._currentProgram, 'resolution' ), this._screenWidth, this._screenHeight );
+					this._gl.uniform1i( this._gl.getUniformLocation( this._currentProgram, 'video' ), 0 );
+
+					this._gl.uniform1f( this._gl.getUniformLocation( this._currentProgram, 'fov' ), this._fov );
+					this._gl.uniform1f( this._gl.getUniformLocation( this._currentProgram, 'yaw' ), this._yaw );
+					this._gl.uniform1f( this._gl.getUniformLocation( this._currentProgram, 'pitch' ), -this._pitch );				
+
+					// Render geometry
+					this._gl.bindBuffer( this._gl.ARRAY_BUFFER, this._buffer );
+					this._gl.vertexAttribPointer( this._vertex_position, 2, this._gl.FLOAT, false, 0, 0 );
+					this._gl.enableVertexAttribArray( this._vertex_position );
+					this._gl.drawArrays( this._gl.TRIANGLES, 0, 6 );
+					this._gl.disableVertexAttribArray( this._vertex_position );
+
+					//Call webglReady on first succesful render
+					if (this._webglReady)
+					{
+						this._webglReady();
+						this._webglReady = false;
+					}
+				},
+
+				_createShader : function( src, type ) {
+					var shader = this._gl.createShader( type );
+
+					this._gl.shaderSource( shader, src );
+					this._gl.compileShader( shader );
+
+					if ( !this._gl.getShaderParameter( shader, this._gl.COMPILE_STATUS ) ) {
+						console.log( ( type == this._gl.VERTEX_SHADER ? "VERTEX" : "FRAGMENT" ) + " SHADER:\n" + this._gl.getShaderInfoLog( shader ) );
+						return null;
+					}
+
+					return shader;
+				},
+
+				_createProgram : function( vertex, fragment ) {
+
+					var program = this._gl.createProgram();
+
+					var vs = this._createShader( vertex, this._gl.VERTEX_SHADER );
+					var fs = this._createShader( '#ifdef GL_ES\nprecision highp float;\n#endif\n\n' + fragment, this._gl.FRAGMENT_SHADER );
+
+					if ( vs == null || fs == null ) return null;
+
+					this._gl.attachShader( program, vs );
+					this._gl.attachShader( program, fs );
+
+					this._gl.deleteShader( vs );
+					this._gl.deleteShader( fs );
+
+					this._gl.linkProgram( program );
+
+					if ( !this._gl.getProgramParameter( program, this._gl.LINK_STATUS ) ) {
+						console.log( "ERROR:\n" +
+						"VALIDATE_STATUS: " + this._gl.getProgramParameter( program, this._gl.VALIDATE_STATUS ) + "\n" +
+						"ERROR: " + this._gl.getError() + "\n\n" +
+						"- Vertex Shader -\n" + vertex + "\n\n" +
+						"- Fragment Shader -\n" + fragment );
+
+						return null;
+					}
+
+					return program;
+				},
+
+				_createTexture : function( image_src ) {
+					this._pano_texture = this._gl.createTexture();
+					this._pano_texture.image = new Image();
+					
+					var that = this;
+					this._pano_texture.image.crossOrigin = "anonymous";
+					this._pano_texture.image.onload = function() {
+						that._has_pano_texture = true;
+						that._gl.bindTexture(that._gl.TEXTURE_2D, that._pano_texture);
+						that._gl.pixelStorei(that._gl.UNPACK_FLIP_Y_WEBGL, true);
+						that._gl.texImage2D(that._gl.TEXTURE_2D, 0, that._gl.RGBA, that._gl.RGBA, that._gl.UNSIGNED_BYTE, that._pano_texture.image);
+						that._gl.texParameteri(that._gl.TEXTURE_2D, that._gl.TEXTURE_MAG_FILTER, that._gl.LINEAR);
+						that._gl.texParameteri(that._gl.TEXTURE_2D, that._gl.TEXTURE_MIN_FILTER, that._gl.LINEAR);
+						that._gl.texParameteri(that._gl.TEXTURE_2D, that._gl.TEXTURE_WRAP_S, that._gl.CLAMP_TO_EDGE);
+						that._gl.texParameteri(that._gl.TEXTURE_2D, that._gl.TEXTURE_WRAP_T, that._gl.CLAMP_TO_EDGE);
+						that._gl.bindTexture(that._gl.TEXTURE_2D, null);
+					};
+					this._pano_texture.image.onerror = function() {
+						that._webglFallback && that._webglFallback();
+					};
+					this._pano_texture.image.src = image_src;
+				},
+
+				updateImage : function( image_src ) {
+					this._createTexture( image_src );
+				},
+				
+				_handleResize : function( event ) {
+					this.canvas.width = this.container.clientWidth;
+					this.canvas.height = this.container.clientHeight;
+
+					this._screenWidth = this.canvas.width;
+					this._screenHeight = this.canvas.height;
+
+					this._gl.viewport( 0, 0, this.canvas.width, this.canvas.height );
+					if (0 != this.canvas.width || 0 != this.canvas.height)
+					{
+						clearInterval( this._sizeCheckInternval );
+					}
+				},	
+
+				toggleRotation : function() {
+					if (this.horizontalRotationSpeed != this._horizontalRotationSpeed || 
+						this.verticalRotationSpeed != this._verticalRotationSpeed)
+						this.startRotation( false );
+					else
+						this.stopRotation( false );
+				},
+				
+				startRotation : function(passiveStart) {
+					//are we triggeredd by hover? or exp launch
+					if (passiveStart && this._explicitStop) return;
+					this._explicitStop = false;
+					if (this.horizontalRotationSpeed != this._horizontalRotationSpeed)
+					{
+						this.horizontalRotationSpeed = this._horizontalRotationSpeed;
+					}
+					if (this.verticalRotationSpeed != this._verticalRotationSpeed)
+					{
+						this.verticalRotationSpeed = this._verticalRotationSpeed;
+					}
+					this.onRotatingStart && this.onRotatingStart();
+				},
+
+				stopRotation : function(passiveStop) {
+					//used to ensure we dont start on hover if explicit pause
+					this._explicitStop = !passiveStop;		
+					this.horizontalRotationSpeed = 0;
+					this.verticalRotationSpeed = 0;
+					this.onRotatingStop && this.onRotatingStop();
+				},
+
+				expLaunched: function() {
+					this.stopRotation( true );
+				},
+
+				_handleDoubleClick : function (event) {
+					var isInFullScreen = (document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen);
+					if(!isInFullScreen) {
+						if (this.canvas.requestFullscreen) {
+							this.canvas.requestFullscreen();
+						} else if (this.canvas.mozRequestFullScreen) {
+							this.canvas.mozRequestFullScreen();
+						} else if (this.canvas.webkitRequestFullscreen) {
+							this.canvas.webkitRequestFullscreen();
+						}			
+					} else {
+						if(document.cancelFullScreen) {
+							document.cancelFullScreen();
+						} else if(document.mozCancelFullScreen) {
+							document.mozCancelFullScreen();
+						} else if(document.webkitCancelFullScreen) {
+							document.webkitCancelFullScreen();
+						}
+					}
+				},
+
+			    /**
+			     * get Vertex Shader
+			     *
+			     * @return string vertex shader
+			     */
+			    _getVertexShader : function() {
+			    	return "\
+						attribute vec3 position;\
+						void main() {\
+							gl_Position = vec4( position, 1.0 );\
+						}";
+			    },
+
+			    /**
+			     * get Vertex Shader
+			     *
+			     * @return string vertex shader
+			     */
+			    _getFragementShader : function() {
+			    	return "\
+						uniform vec2 resolution;\
+						uniform sampler2D texture;\
+						\
+						uniform float fov;\
+						uniform float yaw;\
+						uniform float pitch;\
+						\
+						const float M_PI = 3.141592653589793238462643;\
+						const float M_TWOPI = 6.283185307179586476925286;\
+						\
+						mat3 rotationMatrix(vec2 euler)\
+						{\
+							vec2 se = sin(euler);\
+							vec2 ce = cos(euler);\
+							\
+							return 	mat3(ce.x, 0, -se.x,	0, 1, 0,		se.x, 0, ce.x) * \
+									mat3(1, 0, 0,			0, ce.y, -se.y,	0, se.y, ce.y);\
+						}\
+						\
+						vec3 toCartesian( vec2 st )\
+						{\
+							return normalize(vec3(st.x, st.y, 0.5 / tan(0.5 * radians(fov))));\
+						}\
+						\
+						vec2 toSpherical(vec3 cartesianCoord)\
+						{\
+							vec2 st = vec2(\
+								atan(cartesianCoord.x, cartesianCoord.z),\
+								acos(cartesianCoord.y)\
+							);\
+							if(st.x < 0.0)\
+								st.x += M_TWOPI;\
+							\
+							return st;\
+						}\
+						\
+						void main(void)\
+						{\
+							vec2 sphericalCoord = gl_FragCoord.xy / resolution - vec2(0.5);\
+							sphericalCoord.y *= -resolution.y / resolution.x;\
+							\
+							vec3 cartesianCoord = rotationMatrix(radians(vec2(yaw + 180., -pitch))) * toCartesian(sphericalCoord);\
+							\
+							gl_FragColor = texture2D(texture, toSpherical( cartesianCoord )/vec2(M_TWOPI, M_PI));\
+						}";
+			    }
+			}; 
+			window._YouVisitThreeSixtyAd = YouVisitThreeSixtyAd;
+			var ad = document.getElementsByClassName("YouVisitThreeSixtyAd")[0],
+			new_tab = false,
+			new_target = '';
+			var _canvas = document.getElementById("content");
+			var _imgContent = document.getElementById("imgContent");
+			if (new_target.length > 0) ad.href = new_target;
+			if(new_tab) ad.target = "_blank";
+
+			var maxRes = 0;
+			var panoSize = 6144;
+			var aspecRatio = (ad.clientWidth / ad.clientHeight);
+			// the multiplier should also account for the aspect ratio
+			var panoWSel = Math.max(600, ad.clientWidth*3.25);
+			panoWSel = maxRes && maxRes > 0 ? Math.min(maxRes, panoWSel) : panoWSel;
+			
+			var avalableSize = [512, 1024, 2048, 3072, 4096, 6144];
+			for (var c = 0; c < avalableSize.length; c++) {
+				if (avalableSize[c] >= panoWSel)
+				{
+					panoSize = avalableSize[c];
+					break;
+				}
+			}
+			var pano_src = 'https://www.youvisit.com/media/135720/panoramas/251213/[pano_size].jpg'.replace("[pano_size]", panoSize);
+			var fov = '';
+			if (!fov || fov.length == 0)
+			{
+				var minFOV = 80;
+				var maxFOV = 140;
+				var multiplier = (aspecRatio > 1 ? aspecRatio - 1 : 0);
+				var _fov = minFOV + (maxFOV - minFOV) * multiplier
+				fov = Math.max(minFOV, Math.min(maxFOV, _fov));;
+			}
+			var YV_speed = '';
+			if (YV_speed == '' || YV_speed < 0 || YV_speed > 7)
+			{
+				YV_speed = Math.min(2, Math.max(1, (500 / ad.clientWidth)));;
+			}
+			//Kick off the Ad.
+			var b = YouVisitThreeSixtyAd.initialize( 
+			{ 
+				container : ad,
+				canvas : _canvas,
+				image_src : pano_src,
+				fov: fov,
+				horizontalRotationSpeed : YV_speed,
+				startRotating : true,
+				onRotatingStart : function() {
+					var playBtn = document.querySelector(".btnRotate.Resume");
+					var pauseBtn = document.querySelector(".btnRotate.Pause");
+					playBtn.style.display = "none";
+					pauseBtn.style.display = "block";
+				},
+				onRotatingStop : function() {
+					var playBtn = document.querySelector(".btnRotate.Resume");
+					var pauseBtn = document.querySelector(".btnRotate.Pause");
+					playBtn.style.display = "block";
+					pauseBtn.style.display = "none";
+				},
+				webglFallback : function() {
+					_canvas.style.display = "none";
+					_imgContent.style.display = "block";
+					_imgContent.src = pano_src;
+				},
+				webglReady : function() {
+					_canvas.style.display = "block";
+					_imgContent.style.display = "none";
+				}
+			} );
+			initExperience();
+		})(this);
+	</script>	
+</body></html>

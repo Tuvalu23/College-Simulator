@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 52 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M26,52 C40.3594035,52 52,40.3594035 52,26 C52,11.6405965 40.3594035,0 26,0 C11.6405965,0 0,11.6405965 0,26 C0,40.3594035 11.6405965,52 26,52 Z" id="path-1"></path>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="52" height="52" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Horizontal-feed-view-Video-UI" transform="translate(-129.000000, -759.000000)">
+            <g id="Group-5-Copy-3" transform="translate(129.000000, 759.000000)">
+                <g id="Group-2">
+                    <circle id="Oval-51" fill="#292A3A" opacity="0.158348881" cx="26" cy="26" r="26"></circle>
+                    <use id="Oval-51" stroke="#FFFFFF" mask="url(#mask-2)" stroke-width="5.2" xlink:href="#path-1"></use>
+                    <path d="M22.0603002,15.6948394 C21.739137,15.4344754 21.2963753,15.3826172 20.9233539,15.5603657 C20.5503324,15.7384718 20.3125,16.1154273 20.3125,16.5288623 L20.3125,35.4789223 C20.3125,35.8923573 20.5503324,36.2693128 20.9233539,36.4474189 C21.070345,36.5175169 21.2280655,36.5518506 21.3854283,36.5518506 C21.6264795,36.5518506 21.8657426,36.4706657 22.0603002,36.3129452 L33.769167,26.8379152 C34.0209475,26.6344165 34.1672234,26.327559 34.1672234,26.0038923 C34.1672234,25.6802256 34.0209475,25.3733681 33.769167,25.1698694 L22.0603002,15.6948394" id="Fill-2" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

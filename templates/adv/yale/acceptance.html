@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)https://ivyhub-simulators.andressevilla.com/yale/rejection -->
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fw="http://technolutions.com/framework" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xhtml="http://www.w3.org/1999/xhtml" class="supports-boxshadow no-touch"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+
+
+
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="shortcut icon" href="https://apps-admissions-yale-edu.cdn.technolutions.net/favicon.ico">
+  <link href="./acceptance_files/base.css" rel="stylesheet">
+  <link href="./acceptance_files/base(1).css" rel="stylesheet">
+  <link href="./acceptance_files/build-fonts.css" rel="stylesheet">
+  <link href="./acceptance_files/build.css" rel="stylesheet">
+<script type="text/javascript" async="" src="./acceptance_files/main.MWZiM2ZlMGNjMQ.js.download" data-id="CNH3NIBC77U6RIGJEDDG"></script><script type="text/javascript" async="" src="./acceptance_files/events.js.download"></script><script src="./acceptance_files/6428977797222842" async=""></script><script type="text/javascript" async="" src="./acceptance_files/fbevents.js.download"></script><script type="text/javascript" async="" src="./acceptance_files/scevent.min.js.download"></script><script type="text/javascript" async="" src="./acceptance_files/destination"></script><script type="text/javascript" async="" src="./acceptance_files/destination(1)"></script><script type="text/javascript" async="" src="./acceptance_files/identify_45dd5971.js.download"></script><script type="text/javascript" async="" src="./acceptance_files/main.MWZiM2ZlMGNjMQ.js.download" data-id="CNH3NIBC77U6RIGJEDDG"></script><script type="text/javascript" async="" src="./acceptance_files/events.js.download"></script><script async="" src="file://www.googletagmanager.com/gtm.js?id=GTM-54BJ9H"></script><script type="text/javascript" async="" src="./acceptance_files/destination(2)"></script><script type="text/javascript" async="" src="./acceptance_files/8514.js.download"></script><script type="text/javascript" async="" src="./acceptance_files/identify_45dd5971(1).js.download"></script><script type="text/javascript" async="" src="./acceptance_files/main.MWZiM2ZlMGNjMQ(1).js.download" data-id="CNH3NIBC77U6RIGJEDDG"></script><script type="text/javascript" async="" src="./acceptance_files/events(1).js.download"></script><script async="" src="file://www.googletagmanager.com/gtm.js?id=GTM-54BJ9H"></script><script type="text/javascript" async="" src="./acceptance_files/destination(3)"></script><script type="text/javascript" async="" src="./acceptance_files/8514(1).js.download"></script><script type="text/javascript" async="" src="./acceptance_files/identify_45dd5971(1).download"></script><script async="true" src="./acceptance_files/77826908-c905-41df-8048-c0ee0a176bc6.js.download" crossorigin="anonymous"></script><script type="text/javascript" async="" src="./acceptance_files/main.MTBlZWM4ZGM2MQ.js.download" data-id="CNH3NIBC77U6RIGJEDDG"></script><script type="text/javascript" async="" src="./acceptance_files/events(1).download"></script><script src="./acceptance_files/6428977797222842(1)" async=""></script><script type="text/javascript" async="" src="./acceptance_files/fbevents(1).js.download"></script><script type="text/javascript" async="" src="./acceptance_files/scevent.min(1).js.download"></script><script type="text/javascript" async="" src="./acceptance_files/destination(4)"></script><script type="text/javascript" async="" src="./acceptance_files/destination(5)"></script><script src="./acceptance_files/1db8eb7ffc8594e42c0729400701d1a8.js.download" type="text/javascript" async=""></script><script type="text/javascript" async="" src="./acceptance_files/destination(6)"></script><script type="text/javascript" async="" src="./acceptance_files/8514(1).download"></script><script type="text/javascript" async="" src="./acceptance_files/js"></script><script async="" src="./acceptance_files/gtm.js.download"></script><script src="./acceptance_files/base.js.download"></script><script>/*<![CDATA[*/FW.Config['firstDay'] = 0; FW.Config['Citizenship.Default.Country'] = 'US'; FW.Config['Citizenship.PR'] = 'Permanent Resident'; FW.Config['CDN'] = '//slate-technolutions-net.cdn.technolutions.net'; /*]]>*/</script><script src="./acceptance_files/base(1).js.download"></script><script async="async" src="./acceptance_files/ping"></script><script async="async" id="session_expires" src="./acceptance_files/session.js.download" data-now="1732928223" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="1732931715"></script>
+  <style>
+    /*<![CDATA[*/
+    html>body {
+      line-height: normal;
+    }
+
+    ul.cr,
+    li.cr {
+      margin: 0;
+      padding: 0;
+    }
+
+    #side {
+      width: 175px;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      line-height: 4.2rem;
+      font-family: 'YaleDesign';
+      color: #00356B;
+    }
+
+    #global ul>li {
+      list-style-type: none;
+      font-size: 14.5px;
+      float: right;
+    }
+
+    #global a {
+      font-family: TheSans-Semi;
+      font-size: 17.5px !important;
+      text-decoration: underline !important;
+    }
+
+    /*]]>*/
+
+    #videoModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #videoModal iframe {
+      width: 80%;
+      height: 60%;
+      border: none;
+    }
+
+    #videoModal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=1, user-scalable=yes, target-densitydpi=160dpi" class="cr">
+  <title>Yale University</title>
+  <style>
+    /*<![CDATA[*/
+    h3 {
+      margin-top: 25px !important;
+    }
+
+    /*]]>*/
+  </style>
+</head>
+
+
+<body data-gr-c-s-loaded="true" class="vsc-initialized">
+  <script src="./acceptance_files/confetti.js.download" type="text/javascript"></script>
+  <script type="text/javascript">/*<![CDATA[*/confetti({ colors: [ [ '#0F4D92', '#0F4D92' ], [ '#0F4D92', '#0F4D92' ] ], timeout: 15 });/*]]>*/</script>
+  <div id="video-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.8); z-index: 1000;">
+    <button id="close-btn" style="position: absolute; top: 20px; right: 20px; background: none; color: white; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    <iframe id="yt-video" 
+        src="https://www.youtube.com/embed/KXLREps3blw?si=oBxvKqxD-DX1ptU0" 
+        frameborder="0" 
+        allow="autoplay; fullscreen" 
+        allowfullscreen 
+        style="width: 100%; height: 100%;">
+    </iframe>
+</div>
+
+<script>
+    // Ensure body overlay is active when the page loads
+    document.body.classList.add('overlay-active');
+
+    function closeVideoOverlay() {
+        // Remove iframe and hide the overlay
+        const overlay = document.getElementById('video-overlay');
+        overlay.innerHTML = '';
+        overlay.style.display = 'none';
+        document.body.classList.remove('overlay-active');
+    }
+
+    // Close button functionality
+    document.getElementById('close-btn').addEventListener('click', closeVideoOverlay);
+
+    // Listen for the Escape key to close the video
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeVideoOverlay();
+        }
+    });
+</script>
+
+  <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">
+    This website uses resources that are being blocked by your network. Contact your network administrator for more
+    information.
+  </div>
+
+  <div class="c_html c_not-front c_not-logged-in c_page-node c_page-node- c_page-node-2930 c_node-type-infogrid c_context-freshman-application-process c_two-sidebars c_omega-mediaqueries-processed c_responsive-layout-normal c_supports-boxshadow c_no-touch cr">
+    <div id="c_omega-media-query-dummy" class="cr"></div>
+    <div id="c_skip-link" class="cr"><a href="javascript:void(0);" class="c_element-invisible c_element-focusable cr">Skip to main content</a>
+    </div>
+    <div class="c_region c_region-page-top cr" id="c_region-page-top">
+      <div class="c_region-inner c_region-page-top-inner cr">
+        <div id="c_fb-root" class=" c_fb_reset cr">
+          <div style="position: absolute; top: -10000px; height: 0px; width: 0px;" class="cr">
+            <div class="cr"></div>
+          </div>
+          <div style="position: absolute; top: -10000px; height: 0px; width: 0px;" class="cr">
+            <div class="cr"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="c_page c_clearfix cr" id="c_page">
+      <header id="c_section-header" class="c_section c_section-header cr">
+        <div id="c_zone-branding-wrapper" class="c_zone-wrapper c_zone-branding-wrapper c_clearfix cr">
+          <div id="c_zone-branding" class="c_zone c_zone-branding c_clearfix c_container-10 cr">
+            <div class="c_grid-2 c_region c_region-branding cr" id="c_region-branding">
+              <div class="c_region-inner c_region-branding-inner cr">
+                <div class="c_branding-data c_clearfix cr">
+                  
+                  <div class="c_site-name-slogan cr">
+                    <div class="c_skip-link cr">
+                      <h1 class="c_element-invisible c_element-focusable c_site-name cr" style="letter-spacing: 0em; font-family: &#39;YaleDesign&#39;"><a href="javascript:void(0);" title="Home" class="cr">Yale College
+                          Undergraduate Admissions</a></h1>
+                    </div>
+                    <h2 class="c_yale-site-link-wrapper cr" style="letter-spacing: 0em; font-family: &#39;YaleDesign&#39;; "><a href="javascript:void(0);" class="c_yale-site-link cr" title="Yale">Yale</a>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="c_grid-6 c_region c_region-menu cr" id="c_region-menu" style=" height: 158px; visibility: hidden;">
+              <div class="c_region-inner c_region-menu-inner cr">
+                <ul class="c_mobile-nav cr">
+                  <li class="c_main cr">Main Menu</li>
+                  <li class="c_sub cr"><a href="javascript:void(0);" class="cr">Sub Menu</a></li>
+                </ul>
+                <section class="c_block c_block-menu-block c_block-2 c_block-menu-block-2 c_odd cr" id="c_block-menu-block-2">
+                  <div class="c_block-inner c_clearfix cr">
+                    <h2 class="c_block-title cr">WH<span class="c_last-char cr">Y</span></h2>
+                    <div class="c_content c_clearfix cr">
+                      <div class="c_menu-block-wrapper c_menu-block-2 c_menu-name-main-menu c_parent-mlid-832 c_menu-level-1 cr">
+                        <ul class="c_menu cr">
+                          <li class="c_first c_expanded c_menu-mlid-835 c_menu-learning-at-yale cr">
+                            <a tabindex="0" title="Expand Learning at Yale Menu" class="cr">Learning
+                              at Yale</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-1163 c_menu-a-liberal-arts-education cr">
+                                <a href="javascript:void(0);" title="A Liberal Arts Education" class="cr">A Liberal
+                                  Arts Education</a></li>
+                              <li class="c_leaf c_menu-mlid-1164 c_menu-majors-&amp;-academic-programs cr">
+                                <a href="javascript:void(0);" title="Majors &amp; Academic Programs" class="cr">Majors
+                                  &amp; Academic Programs</a></li>
+                              <li class="c_leaf c_menu-mlid-1165 c_menu-teaching-&amp;-advising cr">
+                                <a href="javascript:void(0);" title="Teaching &amp; Advising" class="cr">Teaching &amp;
+                                  Advising</a></li>
+                              <li class="c_leaf c_menu-mlid-1033 c_menu-undergraduate-research cr">
+                                <a href="javascript:void(0);" title="Undergraduate Research" class="cr">Undergraduate
+                                  Research</a></li>
+                              <li class="c_last c_leaf c_menu-mlid-1034 c_menu-international-experiences cr">
+                                <a href="javascript:void(0);" title="International Experiences" class="cr">International
+                                  Experiences</a></li>
+                            </ul>
+                          </li>
+                          <li class="c_expanded c_menu-mlid-840 c_menu-living-at-yale cr"><a tabindex="0" title="Expand Living at Yale Menu" class="cr">Living
+                              at Yale</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-1166 c_menu-residential-colleges cr">
+                                <a href="javascript:void(0);" title="Residential Colleges" class="cr">Residential
+                                  Colleges</a></li>
+                              <li class="c_leaf c_menu-mlid-1167 c_menu-the-campus cr"><a href="javascript:void(0);" title="The Campus" class="cr">The Campus</a></li>
+                              <li class="c_last c_leaf c_menu-mlid-1174 c_menu-new-haven cr">
+                                <a href="javascript:void(0);" title="New Haven" class="cr">New Haven</a></li>
+                            </ul>
+                          </li>
+                          <li class="c_expanded c_menu-mlid-892 c_menu-student-pursuits cr"><a tabindex="0" title="Expand Student Pursuits Menu" class="cr">Student
+                              Pursuits</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-893 c_menu-extracurriculars cr">
+                                <a href="javascript:void(0);" title="Extracurriculars" class="cr">Extracurriculars</a>
+                              </li>
+                              <li class="c_last c_leaf c_menu-mlid-1175 c_menu-identity,-culture,-faith cr">
+                                <a href="javascript:void(0);" title="Identity, Culture, Faith" class="cr">Identity,
+                                  Culture, Faith</a></li>
+                            </ul>
+                          </li>
+                          <li class="c_last c_expanded c_menu-mlid-1049 c_menu-virtual-tour-&amp;-blogs cr">
+                            <a tabindex="0" title="Expand Virtual Tour &amp; Blogs Menu" class="cr">Virtual Tour &amp; Blogs</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-1239 c_menu-virtual-tour cr">
+                                <a href="javascript:void(0);" title="Virtual Tour" class="cr">Virtual Tour</a></li>
+                              <li class="c_last c_leaf c_menu-mlid-1213 c_menu-bulldogs&#39;-blogs cr">
+                                <a href="javascript:void(0);" title="Bulldogs&#39; Blogs" class="cr">Bulldogs'
+                                  Blogs</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section class="c_block c_block-menu-block c_block-3 c_block-menu-block-3 c_even c_active cr" id="c_block-menu-block-3">
+                  <div class="c_block-inner c_clearfix cr">
+                    <h2 class="c_block-title cr">APPL<span class="c_last-char cr">Y</span></h2>
+                    <div class="c_content c_clearfix cr">
+                      <div class="c_menu-block-wrapper c_menu-block-3 c_menu-name-main-menu c_parent-mlid-833 c_menu-level-1 cr">
+                        <ul class="c_menu cr">
+                          <li class="c_first c_expanded c_active-trail c_menu-mlid-1036 c_menu-application-process cr">
+                            <a tabindex="0" title="Expand Application Process Menu" class="c_active-trail cr">Application Process</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_has-children c_active-trail c_active c_menu-mlid-1176 c_menu-freshman-applicants cr">
+                                <a href="javascript:void(0);" title="Freshman Application Process" class="c_active-trail c_active cr">Freshman
+                                  Applicants</a></li>
+                              <li class="c_leaf c_menu-mlid-1177 c_menu-international-freshman-applicants cr">
+                                <a href="javascript:void(0);" title="International Freshman Applicants" class="cr">International
+                                  Freshman Applicants</a></li>
+                              <li class="c_leaf c_menu-mlid-1178 c_menu-questbridge-freshman-applicants cr">
+                                <a href="javascript:void(0);" title="QuestBridge for Freshman Applicants" class="cr">QuestBridge
+                                  Freshman Applicants</a></li>
+                              <li class="c_leaf c_menu-mlid-1179 c_menu-transfer-applicants cr">
+                                <a href="javascript:void(0);" title="Transfer Program" class="cr">Transfer
+                                  Applicants</a></li>
+                              <li class="c_leaf c_menu-mlid-1180 c_menu-eli-whitney:-non-traditional-applicants cr">
+                                <a href="javascript:void(0);" title="Eli Whitney for Non-Traditional Students" class="cr">Eli Whitney: Non-Traditional Applicants</a>
+                              </li>
+                              <li class="c_last c_leaf c_menu-mlid-1181 c_menu-non-degree-&amp;-alumni-auditing-applicants cr">
+                                <a href="javascript:void(0);" title="Non-Degree &amp; Alumni Auditing Programs" class="cr">Non-Degree &amp; Alumni Auditing
+                                  Applicants</a></li>
+                            </ul>
+                          </li>
+                          <li class="c_expanded c_menu-mlid-1039 c_menu-advice-to-candidates cr">
+                            <a tabindex="0" title="Expand Advice to Candidates Menu Items" class="cr">Advice to Candidates</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-1182 c_menu-what-yale-looks-for cr">
+                                <a href="javascript:void(0);" title="What Yale Looks For" class="cr">What Yale Looks
+                                  For</a></li>
+                              <li class="c_leaf c_menu-mlid-1183 c_menu-selecting-high-school-courses cr">
+                                <a href="javascript:void(0);" title="Advice on Selecting High School Courses" class="cr">Selecting High School Courses</a></li>
+                              <li class="c_leaf c_menu-mlid-1185 c_menu-putting-together-your-application cr">
+                                <a href="javascript:void(0);" title="Advice on Putting Together Your Application" class="cr">Putting Together Your Application</a></li>
+                              <li class="c_leaf c_menu-mlid-1186 c_menu-first-generation-college-applicants cr">
+                                <a href="javascript:void(0);" title="Advice for First-Generation College Applicants" class="cr">First-Generation College Applicants</a></li>
+                              <li class="c_leaf c_menu-mlid-1184 c_menu-choosing-where-to-apply cr">
+                                <a href="javascript:void(0);" title="Advice on Choosing Where to Apply" class="cr">Choosing
+                                  Where to Apply</a></li>
+                              <li class="c_last c_leaf c_menu-mlid-1284 c_menu-application-faqs cr">
+                                <a href="javascript:void(0);" title="Applying to Yale College FAQs" class="cr">Application
+                                  FAQs</a></li>
+                            </ul>
+                          </li>
+                          <li class="c_expanded c_menu-mlid-1217 c_menu-visit-&amp;-connect cr"><a tabindex="0" title="Expand Visit &amp; Connect Menu" class="cr">Visit
+                              &amp; Connect</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-1231 c_menu-visit-campus cr">
+                                <a href="javascript:void(0);" title="Visit Campus" class="cr">Visit Campus</a></li>
+                              <li class="c_leaf c_menu-mlid-1232 c_menu-virtual-tour cr"><a href="javascript:void(0);" title="Virtual Tour" class="cr">Virtual Tour</a></li>
+                              <li class="c_leaf c_menu-mlid-1233 c_menu-admissions-events-near-you cr">
+                                <a href="javascript:void(0);" title="Admissions Events Near You" class="cr">Admissions
+                                  Events Near You</a></li>
+                              <li class="c_last c_leaf c_menu-mlid-1234 c_menu-connect-with-yale-admissions cr">
+                                <a href="javascript:void(0);" title="Connect With Yale Admissions" class="cr">Connect
+                                  With Yale Admissions</a></li>
+                            </ul>
+                          </li>
+                          <li class="c_last c_expanded c_menu-mlid-1188 c_menu-financial-aid cr">
+                            <a tabindex="0" title="Expand Financial Aid Menu" class="cr">Financial
+                              Aid</a>
+                            <ul class="c_menu cr" style="display: none;">
+                              <li class="c_first c_leaf c_menu-mlid-1189 c_menu-the-basics cr">
+                                <a href="javascript:void(0);" title="At-a-Glance" class="cr">The Basics</a></li>
+                              <li class="c_leaf c_menu-mlid-1214 c_menu-in-depth cr"><a href="javascript:void(0);" title="In-Depth" class="cr">In-Depth</a></li>
+                              <li class="c_leaf c_menu-mlid-1215 c_menu-net-price-calculator cr">
+                                <a href="javascript:void(0);" title="Net Price Calculator" class="cr">Net Price
+                                  Calculator</a></li>
+                              <li class="c_last c_leaf c_menu-mlid-1216 c_menu-questbridge cr">
+                                <a href="javascript:void(0);" title="QuestBridge at Yale" class="cr">QuestBridge</a>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+            <div class="c_grid-2 c_region c_region-header-first cr" id="c_region-header-first">
+              <div class="c_region-inner c_region-header-first-inner cr">
+                <div class="c_block c_block-search c_block-form c_block-search-form c_odd c_block-without-title cr" id="c_block-search-form"></div>
+              </div>
+            </div>
+            <div id="global">
+              <ul>
+                <li>{{ name }}
+                  <a href="{{ url_for('login', college='yale') }}" 
+                     style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+              </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section id="c_section-content" class="c_section c_section-content cr" style=" padding-top: 20px;">
+        <div id="c_zone-preface-wrapper" class="c_zone-wrapper c_zone-preface-wrapper c_clearfix cr" style="overflow: hidden; display: none;">
+          <div id="c_zone-preface" class="c_zone c_zone-preface c_clearfix c_container-10 cr">
+            <div class="c_grid-10 c_region c_region-preface-first cr" id="c_region-preface-first">
+              <div class="c_region-inner c_region-preface-first-inner cr">
+                <div class="c_block c_block-headerimage c_block-1 c_block-headerimage-1 c_odd c_block-without-title cr" id="c_block-headerimage-1">
+                  <div class="c_block-inner c_clearfix cr">
+                    <div class="c_content c_clearfix cr">
+                      <div class="c_field c_field-name-body c_field-type-text-with-summary c_field-label-hidden cr">
+                        <div class="c_field-items cr">
+                          <div class="c_field-item c_even cr" property="content:encoded">
+                            <p class="cr">Early Action Applicants, please read this important
+                              message regarding delayed test scores from the SAT and ACT September
+                              and October test dates: <a href="javascript:void(0);" class="cr">http://admissions.yale.edu/news-and-notes</a>
+                            </p><a id="c_alert-close-btn" class="c_alert-close-btn cr" href="javascript:;" title="Close page alert">Close</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="c_zone-content-wrapper" class="c_zone-wrapper c_zone-content-wrapper c_clearfix cr">
+          <div id="c_zone-content" class="c_zone c_zone-content c_clearfix c_container-10 cr">
+            <div class="c_grid-6 c_push-2 c_region c_region-content cr" id="c_region-content">
+              <div class="c_region-inner c_region-content-inner cr">
+                <div class="c_block c_block-system c_block-main c_block-system-main c_odd c_block-without-title cr" id="c_block-system-main">
+
+
+
+
+
+
+                  <div style="float:right; text-decoration: underline;  margin:30px">
+                    <a href="javascript:window.print();">Download PDF</a>
+                  </div>
+                  <div id="content" style=" width: 80%; float:left; margin-right:10px; padding:15px">
+                    <br>
+                    <strong style="large">{{ date }}</strong><br><br>
+                    Dear {{ name }}, <br><br>
+
+                    Welcome to Yale College! It is with the greatest enthusiasm that I write to congratulate you on your admission to the Class of 2029. The world has never been more in need of intelligent, strong, committed, innovative, and visionary young people. I am delighted that we have chosen you to be among those at Yale, and I hope you will join our community next fall.<br><br>
+
+                    For over three hundred years, Yale’s motto Lux et Veritas — “Light and Truth” — has guided Yale students, faculty, and alumni in their pursuit of knowledge and leadership. As a Yale student, you will engage in astonishing intellectual, cultural, and scientific exploration. Your Yale education will equip you with the wisdom and resources to leave a lasting impact on any field, anywhere in the world.<br><br>
+
+                    The Yale experience is shaped by the people who make up its community. It is a place of belonging, respect, and friendship, where diversity and fellowship reinforce each other. I know who your fellow students will be, and I am confident you will not find in one place a more talented, inspiring, and welcoming group of peers.<br><br>
+
+                    We understand that choosing your future home may be both exciting and challenging. Although I wish you could visit campus to meet your future classmates and experience Yale in person, we are excited to bring the community to you. Throughout April, we invite you to attend Bulldog Days events, both virtually and in person, to connect with your peers and experience all that Yale has to offer. Please visit admissions.yale.edu/admits for details.<br><br>
+
+                    When you are ready, please reply to our offer of admission by completing the online reply form on your status portal. We ask that you do so by May 1, but if you need more time to reach your decision, you are welcome to request an extension. If you have any questions, please email us at bulldog@yale.edu.<br><br>
+
+                    We are thrilled to welcome you to Yale and to celebrate your unique contribution to our University’s traditions, life, and mission. It is clear from your application that you are someone who values challenge, excellence, and the pursuit of truth. Congratulations again on your achievements so far. We look forward to all that is yet to come.<br><br>
+                    
+                    Sincerely, <br>
+                    <img src="./acceptance_files/sig.png" style="max-width=100%"><br>
+                    Jeremiah Quinlan<br>
+                    Dean of Undergraduate Admissions
+                    <br><br>
+
+                    <div>
+                      <strong> The following letters are available for this account:</strong>
+                      <br>
+                      <ul>
+                        <li>
+                          Decision Letter - {{ date }} (displayed)
+                        </li>
+                      </ul>
+                    </div><br>
+                    <div style="text-align:center"><a href="{{ url_for('ustatus', college='yale') }}">Return to Application Status</a></p></div>
+                  </div>
+
+
+
+
+
+
+
+
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="c_zone-postscript-wrapper" class="c_zone-wrapper c_zone-postscript-wrapper c_clearfix cr">
+          <div id="c_zone-postscript" class="c_zone c_zone-postscript c_clearfix c_container-10 cr">
+            <div class="c_grid-2 c_region c_region-postscript-first cr" id="c_region-postscript-first">
+              <div class="c_region-inner c_region-postscript-first-inner cr"></div>
+            </div>
+            <div class="c_grid-8 c_region c_region-postscript-second cr" id="c_region-postscript-second">
+              <div class="c_region-inner c_region-postscript-second-inner cr">
+                <div class="c_block c_block-fb-social c_block-fb-like-admission c_block-fb-social-fb-like-admission c_odd c_block-without-title cr" id="c_block-fb-social-fb-like-admission">
+                  <div class="c_block-inner c_clearfix cr">
+                    <div class="c_content c_clearfix cr">
+                      <div class="c_fb-social-like-plugin cr"><span style="vertical-align: bottom; width: 128px; height: 20px;" class="cr"></span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <footer id="c_section-footer" class="c_section c_section-footer cr">
+        <div id="c_zone-footer-wrapper" class="c_zone-wrapper c_zone-footer-wrapper c_clearfix cr">
+          <div id="c_zone-footer" class="c_zone c_zone-footer c_clearfix c_container-10 cr">
+
+
+          </div>
+
+
+        </div>
+        <div id="c_zone-post-footer-wrapper" class="c_zone-wrapper c_zone-post-footer-wrapper c_clearfix cr">
+          <div id="c_zone-post-footer" class="c_zone c_zone-post-footer c_clearfix c_container-10 cr">
+            <div class="c_grid-10 c_region c_region-post-footer-first cr" id="c_region-post-footer-first">
+              <div class="c_region-inner c_region-post-footer-first-inner cr">
+                <div class="c_block c_block-block c_block-3 c_block-block-3 c_odd c_block-without-title cr" id="c_block-block-3">
+                  <div class="c_block-inner c_clearfix cr">
+                    <div class="c_content c_clearfix cr">
+                      <p class="cr">Copyright ©2024 Yale University.
+                        All rights reserved</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <div class="c_region c_region-page-bottom cr" id="c_region-page-bottom">
+      <div class="c_region-inner c_region-page-bottom-inner cr"></div>
+    </div>
+    <div id="c_cboxOverlay" style="display: none;" class="cr"></div>
+    <div id="c_colorbox" class=" cr" style="display: none;">
+      <div id="c_cboxWrapper" class="cr">
+        <div class="cr">
+          <div id="c_cboxTopLeft" style="float: left;" class="cr"></div>
+          <div id="c_cboxTopCenter" style="float: left;" class="cr"></div>
+          <div id="c_cboxTopRight" style="float: left;" class="cr"></div>
+        </div>
+        <div style="clear: left;" class="cr">
+          <div id="c_cboxMiddleLeft" style="float: left;" class="cr"></div>
+          <div id="c_cboxContent" style="float: left;" class="cr">
+            <div id="c_cboxTitle" style="float: left;" class="cr"></div>
+            <div id="c_cboxCurrent" style="float: left;" class="cr"></div>
+            <div id="c_cboxNext" style="float: left;" class="cr"></div>
+            <div id="c_cboxPrevious" style="float: left;" class="cr"></div>
+            <div id="c_cboxSlideshow" style="float: left;" class="cr"></div>
+            <div id="c_cboxClose" style="float: left;" class="cr"></div>
+          </div>
+          <div id="c_cboxMiddleRight" style="float: left;" class="cr"></div>
+        </div>
+        <div style="clear: left;" class="cr">
+          <div id="c_cboxBottomLeft" style="float: left;" class="cr"></div>
+          <div id="c_cboxBottomCenter" style="float: left;" class="cr"></div>
+          <div id="c_cboxBottomRight" style="float: left;" class="cr"></div>
+        </div>
+      </div>
+      <div style="position: absolute; width: 9999px; visibility: hidden; display: none;" class="cr"></div>
+    </div>
+  </div>
+  <div class="progress_box" style="visibility: hidden;"></div>
+
+
+  <div class="progress_box" style="visibility: hidden;"></div>
+
+
+
+</body></html>
