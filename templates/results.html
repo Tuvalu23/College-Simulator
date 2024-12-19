@@ -1,10 +1,6 @@
-<!-- templates/results.html -->
 {% extends "base.html" %}
-
 {% block content %}
-<!-- Animate.css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
 <style>
@@ -18,94 +14,41 @@
         font-weight: 600;
         margin-bottom: 0;
     }
-    .sidebar .email-item {
+    .email-item {
         padding: 10px;
-        cursor: pointer;
         border-bottom: 1px solid #f1f1f1;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        animation: fadeInUp 0.8s ease forwards;
         position: relative;
-    }
-    /* Entire box colored if unread and available */
-    .sidebar .email-item.available.unread {
-        background-color: #fff3cd; /* Light yellow */
-    }
-    .sidebar .email-item.unread {
-        background-color: #e2f0fb; 
-    }
-    .sidebar .email-item:hover {
-        background-color: #f0f0f0;
-        transform: translateX(2px);
+        transition: background-color 0.3s ease;
     }
 
-    .sidebar .email-subject {
+    /* Unread new mail: yellow background and small animation */
+    .email-item.unread.available {
+        background-color: #fff3cd;
+        animation: flash 2s infinite alternate;
+    }
+
+    @keyframes flash {
+        from {background-color: #fff3cd;}
+        to {background-color: #ffecb5;}
+    }
+
+    .email-subject {
         font-size: 1rem;
         margin-bottom: 5px;
-    }
-
-    .sidebar .email-item.unread .email-subject {
         font-weight: bold;
     }
-    .sidebar .email-item.read .email-subject {
+
+    .read .email-subject {
         font-weight: normal;
     }
 
-    .sidebar .email-item:not(.available) {
-        opacity: 0.6;
+    .email-item.unread:hover {
+        background-color: #f7f7c0;
     }
 
-    .clock-display {
-        font-size: 1.5rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .clock-display i {
-        font-size: 1.2rem;
-        color: #555;
-    }
-
-    #simulation-button {
-        margin-right: 15px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-    #simulation-button.running {
-        animation: pulse 1.5s infinite alternate;
-    }
-
-    @keyframes pulse {
-        0% { box-shadow: 0 0 5px rgba(0, 0, 255, 0.5); }
-        100% { box-shadow: 0 0 15px rgba(0, 0, 255, 0.8); }
-    }
-
-    /* Right overview styling */
-    .overview-card {
-        margin-bottom: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    }
     .overview-card:hover {
         transform: scale(1.03);
         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        background-color: #f8f8f8;
-    }
-
-    .decision-details {
-        display: none;
-        font-size: 0.9rem;
-        margin-top: 5px;
-        color: #333;
-    }
-
-    .email-item a.btn-link {
-        transition: color 0.3s ease, transform 0.3s ease;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    .email-item a.btn-link:hover {
-        color: #007bff;
-        transform: scale(1.05);
-        text-decoration: underline;
     }
 </style>
 
@@ -115,7 +58,6 @@
             <i class="bi bi-calendar"></i>
             <span id="current-date">Current Simulation Date: {{ current_date }}</span>
         </div>
-        {% if not no_future_dates %}
         <form method="post" class="d-inline" id="simulation-form">
             <button type="button" id="simulation-button" class="btn btn-primary">
                 {% if not simulation_started %}
@@ -124,10 +66,8 @@
                     Continue
                 {% endif %}
             </button>
-            <!-- Hidden input to send new_sim_date on continue -->
             <input type="hidden" name="new_sim_date" id="new_sim_date" value="">
         </form>
-        {% endif %}
     </div>
 
     <div class="row" style="height:80vh;">
@@ -136,46 +76,42 @@
             <h5 class="p-3 border-bottom">Inbox</h5>
             {% if emails %}
                 {% for email in emails %}
-                    {% set is_unread = (email.available and not session.get('read_emails', {}).get(email.short_name, False)) %}
+                    {% set is_unread = (email.available and email.decision_code == None and not session.get('read_emails', {}).get(email.short_name)) %}
                     <div class="email-item {{ 'available' if email.available else '' }} {{ 'unread' if is_unread else 'read' }}">
                         <div class="email-subject">
-                            {% if is_unread %}
-                                <!-- Unread: show mystery -->
-                                <span class="me-2">❓</span> Mystery Admissions Update
+                            {% if email.decision_code == None %}
+                                ❓ Mystery Admissions Update
                             {% else %}
-                                <!-- Read: show final decision with emoji -->
                                 {% if email.decision_code == 'A' %}
-                                    <span class="me-2">🎉</span> {{ email.display_name }} Admissions Decision
+                                🎉 {{ email.display_name }} Admissions Decision
                                 {% elif email.decision_code == 'E' %}
-                                    <span class="me-2">🎉</span> {{ email.display_name }} ED Decision
+                                🎉 {{ email.display_name }} ED Decision
                                 {% elif email.decision_code == 'D' %}
-                                    {% if email.app_type in ['ED','EA','REA'] %}
-                                        <span class="me-2">🤔</span> {{ email.display_name }} Admissions Decision
-                                    {% else %}
-                                        <span class="me-2">🤔</span> {{ email.display_name }} Deferred Update
-                                    {% endif %}
+                                🤔 {{ email.display_name }} Deferred Update
                                 {% elif email.decision_code == 'W' %}
-                                    <span class="me-2">🕑</span> {{ email.display_name }} Waitlist Update
+                                🕑 {{ email.display_name }} Waitlist Update
                                 {% elif email.decision_code == 'R' %}
-                                    <span class="me-2">🚫</span> {{ email.display_name }} Admissions Decision
+                                🚫 {{ email.display_name }} Admissions Decision
                                 {% else %}
-                                    <span class="me-2">❓</span> {{ email.display_name }} Admissions Update
+                                ❓ {{ email.display_name }} Admissions Update
                                 {% endif %}
                             {% endif %}
                         </div>
                         <div class="small text-muted">Type: {{ email.app_type }} | Release: {{ email.release_date }}</div>
                         {% if email.available %}
-                            <a href="{{ url_for('adv_login', college=email.short_name) }}" class="btn btn-link p-0 mt-1" onclick="openStatusUpdate(event, '{{ email.short_name }}', this.href)">Open Your Status Update</a>
+                            {% if email.decision_code == None %}
+                            <!-- Mystery link leads to login page -->
+                            <a href="{{ url_for('adv_login', college=email.short_name) }}?name={{ name }}&date={{ date }}"
+                               class="btn btn-link p-0 mt-1"
+                               target="_blank">
+                               Open Your Status Update
+                            </a>
+                            {% else %}
+                            <div class="small text-muted">Decision known</div>
+                            {% endif %}
                         {% else %}
                             <div class="small text-muted">Not Yet Available</div>
                         {% endif %}
-                        <div class="decision-details">
-                            {% if is_unread %}
-                                <p><strong>Decision:</strong> Unknown</p>
-                            {% else %}
-                                <p><strong>Decision:</strong> {{ email.decision_code }}</p>
-                            {% endif %}
-                        </div>
                     </div>
                 {% endfor %}
             {% else %}
@@ -186,27 +122,40 @@
         <!-- Right Content (Overview) -->
         <div class="col-9 animate__animated animate__fadeInRight">
             <h4 class="mt-3">Your Application Results Overview</h4>
-            <p class="text-muted">As decisions become available, this overview will update.</p>
+            <p class="text-muted">After opening a status update and revealing your decision, it will appear here.</p>
             <div class="row">
-                {% for short_name, result in final_results.items() %}
-                    <div class="col-md-4 mb-3">
-                        <div class="card shadow-sm overview-card animate__animated animate__fadeInUp">
-                            <div class="card-body d-flex align-items-center">
-                                <img src="{{ url_for('static', filename=result.logo_url.split('static/')[1]) }}" alt="{{ result.display_name }}" style="width:40px; height:40px; object-fit:contain; margin-right:10px;">
-                                <div>
-                                    <div>{{ result.display_name }}</div>
-                                    <span class="badge {{ getType(result.chances)[1] }}">{{ getType(result.chances)[0] }}</span>
+                {% if final_results %}
+                    {% for short_name, result in final_results.items() %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card shadow-sm overview-card animate__animated animate__fadeInUp">
+                                <div class="card-body d-flex align-items-center">
+                                    <img src="{{ url_for('static', filename=result.logo_url.split('static/')[1]) }}" alt="{{ result.display_name }}" style="width:40px; height:40px; object-fit:contain; margin-right:10px;">
+                                    <div>
+                                        <div>{{ result.display_name }}</div>
+                                        {% if result.decision_code == 'A' %}
+                                        <span>🎉 Accepted</span>
+                                        {% elif result.decision_code == 'E' %}
+                                        <span>🎉 ED Acceptance</span>
+                                        {% elif result.decision_code == 'D' %}
+                                        <span>🤔 Deferred</span>
+                                        {% elif result.decision_code == 'W' %}
+                                        <span>🕑 Waitlisted</span>
+                                        {% elif result.decision_code == 'R' %}
+                                        <span>🚫 Rejected</span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info mt-3 animate__animated animate__fadeInUp">
+                            No final decisions revealed yet. Check your inbox for status updates!
+                        </div>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
-            {% if not final_results %}
-                <div class="alert alert-info mt-3 animate__animated animate__fadeInUp">
-                    No decisions yet. Once emails become available, you'll see your results here.
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>
@@ -228,39 +177,29 @@
         }
 
         simulationButton.addEventListener('click', () => {
-            if (!simulationStarted) {
-                // Start simulation
-                simulationStarted = true;
-                simulationButton.textContent = "Running...";
-                simulationButton.classList.add('running');
+            simulationStarted = true;
+            simulationButton.textContent = "Running...";
+            simulationButton.classList.add('running');
 
-                // Find the next release date
-                let nextReleaseDate = getNextReleaseDate();
+            let nextReleaseDate = getNextFutureReleaseDate();
+            if (!nextReleaseDate) {
+                simulationButton.classList.remove('running');
+                simulationButton.textContent = "Continue";
+                return;
+            }
 
-                if (!nextReleaseDate) {
-                    // No future release dates
+            simulationInterval = setInterval(() => {
+                currentDate.setDate(currentDate.getDate() + 1);
+                updateDateDisplay();
+
+                if (currentDate >= nextReleaseDate) {
+                    clearInterval(simulationInterval);
                     simulationButton.classList.remove('running');
                     simulationButton.textContent = "Continue";
-                    return;
+                    newSimDateInput.value = nextReleaseDate.toISOString().split('T')[0];
+                    simulationForm.submit();
                 }
-
-                simulationInterval = setInterval(() => {
-                    currentDate.setDate(currentDate.getDate() + 1);
-                    updateDateDisplay();
-
-                    if (currentDate >= nextReleaseDate) {
-                        // Stop simulation
-                        clearInterval(simulationInterval);
-                        simulationButton.classList.remove('running');
-                        simulationButton.textContent = "Continue";
-                        // Update the hidden input with the new date
-                        newSimDateInput.value = nextReleaseDate.toISOString().split('T')[0];
-                    }
-                }, 100); // Faster clock: 100ms per day
-            } else {
-                // 'Continue' was clicked, submit the form with new_sim_date
-                simulationForm.submit();
-            }
+            }, 100);
         });
     });
 
@@ -270,13 +209,12 @@
         document.getElementById('current-date').textContent = `Current Simulation Date: ${formattedDate}`;
     }
 
-    function getNextReleaseDate() {
+    function getNextFutureReleaseDate() {
         let futureDates = emails
             .map(e => e.release_date)
             .filter(d => d !== 'N')
             .map(d => new Date(d))
             .filter(d => d > currentDate);
-    
         if (futureDates.length === 0) return null;
         futureDates.sort((a,b) => a - b);
         return futureDates[0];
@@ -288,28 +226,7 @@
             .filter(d => d !== 'N')
             .map(d => new Date(d))
             .filter(d => d > currentDate);
-    
         return futureDates.length > 0;
-    }
-
-    function openStatusUpdate(e, short_name, href) {
-        e.preventDefault();
-        // First open status in new tab
-        window.open(href, '_blank');
-        // Then mark as read and reload page
-        fetch("{{ url_for('mark_as_read') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `short_name=${short_name}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === 'success') {
-                location.reload();
-            }
-        });
     }
 </script>
 {% endblock %}

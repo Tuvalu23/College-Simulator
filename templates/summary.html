@@ -477,12 +477,14 @@
     </section>
 
     <!-- Navigation Buttons -->
-    <form method="POST" action="{{ url_for('chances') }}">
-        <div class="buttons">
-            <a href="{{ url_for('regulardecision') }}" class="back-button">Back</a>
-            <button type="submit" class="continue-button">See My Chances</button>
-        </div>
-    </form>
+    <!-- Navigation Buttons at the bottom of summary.html -->
+<form method="GET" action="{{ url_for('chances') }}">
+    <div class="buttons">
+        <a href="{{ url_for('regulardecision') }}" class="back-button">Back</a>
+        <button type="submit" class="continue-button">See My Chances</button>
+    </div>
+</form>
+
 </div>
 
 <!-- Animations (Using Animate.css for simplicity) -->
