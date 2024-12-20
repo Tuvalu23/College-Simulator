@@ -12,8 +12,8 @@
             <!-- Right Section: Name, Logout, and PDF -->
             <div style="text-align: right;">
                 <span style="font-size: 1.1rem; font-weight: 400; color: #444; margin-right: 5px;">{{ name }}</span>
-                <a href="http://127.0.0.1:5000/mit/login" style="font-size: 0.8rem; color: #444; text-decoration: none; cursor: pointer; margin-right: 10px; margin-bottom: 20px; display: inline-block;">Logout</a><br>
-                <a href="http://127.0.0.1:5000/mit/acceptance#" style="font-size: 1rem; color: #444; text-decoration: underline; cursor: pointer; margin-top: 10px; display: inline-block;">Download PDF</a>
+                <a href="{{ url_for('login', college=college)}}" style="font-size: 0.8rem; color: #444; text-decoration: none; cursor: pointer; margin-right: 10px; margin-bottom: 20px; display: inline-block;">Logout</a><br>
+                <a href="#" style="font-size: 1rem; color: #444; text-decoration: underline; cursor: pointer; margin-top: 10px; display: inline-block;">Download PDF</a>
             </div>
         </div>
         

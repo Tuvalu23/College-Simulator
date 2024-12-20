@@ -1,232 +1,308 @@
+<!-- templates/results.html -->
 {% extends "base.html" %}
-{% block content %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 
+{% block title %}Simulation Results{% endblock %}
+
+{% block head %}
 <style>
-    .sidebar {
-        border-right: 1px solid #ddd;
-        height: 80vh;
-        overflow-y: auto;
-        background: #f9f9f9;
-    }
-    .sidebar h5 {
-        font-weight: 600;
-        margin-bottom: 0;
-    }
-    .email-item {
-        padding: 10px;
-        border-bottom: 1px solid #f1f1f1;
-        position: relative;
-        transition: background-color 0.3s ease;
+    /* Fade-in animation */
+    .fade-in {
+        animation: fadeIn 1s ease-in-out;
     }
 
-    /* Unread new mail: yellow background and small animation */
-    .email-item.unread.available {
-        background-color: #fff3cd;
-        animation: flash 2s infinite alternate;
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes flash {
-        from {background-color: #fff3cd;}
-        to {background-color: #ffecb5;}
+    /* Back button bounce animation */
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
+        40% {transform: translateY(-5px);} 
+        60% {transform: translateY(-3px);} 
     }
-
-    .email-subject {
-        font-size: 1rem;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    .read .email-subject {
-        font-weight: normal;
-    }
-
-    .email-item.unread:hover {
-        background-color: #f7f7c0;
-    }
-
-    .overview-card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    .bounce {
+        animation: bounce 2s infinite;
     }
 </style>
+<!-- Animate.css for additional animations (optional) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+{% endblock %}
 
-<div class="container-fluid mt-4 animate__animated animate__fadeIn">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="clock-display">
-            <i class="bi bi-calendar"></i>
-            <span id="current-date">Current Simulation Date: {{ current_date }}</span>
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
+
+    <!-- Header: Simulation Date and Start/Continue Controls -->
+    <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded shadow">
+        <div class="text-lg font-semibold mb-4 md:mb-0 flex items-center space-x-4">
+            <div>Current Simulation Date:</div>
+            <div id="current-date" class="text-blue-600 font-bold">{{ current_date }}</div>
         </div>
-        <form method="post" class="d-inline" id="simulation-form">
-            <button type="button" id="simulation-button" class="btn btn-primary">
-                {% if not simulation_started %}
-                    Start Simulation
-                {% else %}
-                    Continue
-                {% endif %}
+        <div class="flex items-center space-x-4">
+            <button id="start-button"
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300 ease-in-out">
+                Start Simulation
             </button>
-            <input type="hidden" name="new_sim_date" id="new_sim_date" value="">
-        </form>
+            <button id="continue-button"
+                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300 ease-in-out hidden">
+                Continue Simulation
+            </button>
+        </div>
     </div>
 
-    <div class="row" style="height:80vh;">
-        <!-- Left Sidebar (Inbox) -->
-        <div class="col-3 sidebar animate__animated animate__fadeInLeft">
-            <h5 class="p-3 border-bottom">Inbox</h5>
-            {% if emails %}
-                {% for email in emails %}
-                    {% set is_unread = (email.available and email.decision_code == None and not session.get('read_emails', {}).get(email.short_name)) %}
-                    <div class="email-item {{ 'available' if email.available else '' }} {{ 'unread' if is_unread else 'read' }}">
-                        <div class="email-subject">
-                            {% if email.decision_code == None %}
-                                ❓ Mystery Admissions Update
-                            {% else %}
-                                {% if email.decision_code == 'A' %}
-                                🎉 {{ email.display_name }} Admissions Decision
-                                {% elif email.decision_code == 'E' %}
-                                🎉 {{ email.display_name }} ED Decision
-                                {% elif email.decision_code == 'D' %}
-                                🤔 {{ email.display_name }} Deferred Update
-                                {% elif email.decision_code == 'W' %}
-                                🕑 {{ email.display_name }} Waitlist Update
-                                {% elif email.decision_code == 'R' %}
-                                🚫 {{ email.display_name }} Admissions Decision
-                                {% else %}
-                                ❓ {{ email.display_name }} Admissions Update
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                        <div class="small text-muted">Type: {{ email.app_type }} | Release: {{ email.release_date }}</div>
-                        {% if email.available %}
-                            {% if email.decision_code == None %}
-                            <!-- Mystery link leads to login page -->
-                            <a href="{{ url_for('adv_login', college=email.short_name) }}?name={{ name }}&date={{ date }}"
-                               class="btn btn-link p-0 mt-1"
-                               target="_blank">
-                               Open Your Status Update
-                            </a>
-                            {% else %}
-                            <div class="small text-muted">Decision known</div>
-                            {% endif %}
-                        {% else %}
-                            <div class="small text-muted">Not Yet Available</div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="p-3 text-muted">No emails yet.</div>
-            {% endif %}
-        </div>
+    <!-- Main Content: Inbox and Overview -->
+    <div class="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0">
 
-        <!-- Right Content (Overview) -->
-        <div class="col-9 animate__animated animate__fadeInRight">
-            <h4 class="mt-3">Your Application Results Overview</h4>
-            <p class="text-muted">After opening a status update and revealing your decision, it will appear here.</p>
-            <div class="row">
-                {% if final_results %}
-                    {% for short_name, result in final_results.items() %}
-                        <div class="col-md-4 mb-3">
-                            <div class="card shadow-sm overview-card animate__animated animate__fadeInUp">
-                                <div class="card-body d-flex align-items-center">
-                                    <img src="{{ url_for('static', filename=result.logo_url.split('static/')[1]) }}" alt="{{ result.display_name }}" style="width:40px; height:40px; object-fit:contain; margin-right:10px;">
-                                    <div>
-                                        <div>{{ result.display_name }}</div>
-                                        {% if result.decision_code == 'A' %}
-                                        <span>🎉 Accepted</span>
-                                        {% elif result.decision_code == 'E' %}
-                                        <span>🎉 ED Acceptance</span>
-                                        {% elif result.decision_code == 'D' %}
-                                        <span>🤔 Deferred</span>
-                                        {% elif result.decision_code == 'W' %}
-                                        <span>🕑 Waitlisted</span>
-                                        {% elif result.decision_code == 'R' %}
-                                        <span>🚫 Rejected</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="col-12">
-                        <div class="alert alert-info mt-3 animate__animated animate__fadeInUp">
-                            No final decisions revealed yet. Check your inbox for status updates!
-                        </div>
-                    </div>
-                {% endif %}
+        <!-- Inbox Section -->
+        <div class="w-full md:w-1/3 bg-white p-6 rounded shadow fade-in">
+            <h2 class="text-2xl font-bold mb-4 border-b pb-2">Inbox</h2>
+            <p class="text-sm text-gray-500 mb-4">As the simulation date advances, your college decisions will appear here.</p>
+            <div id="inbox" class="space-y-4">
+                <!-- Initially empty. New emails appear when release dates are reached -->
             </div>
         </div>
+
+        <!-- Overview Section -->
+        <div class="w-full md:w-2/3 bg-white p-6 rounded shadow fade-in">
+            <h2 class="text-2xl font-bold mb-4 border-b pb-2">Your Application Results Overview</h2>
+            <p class="text-sm text-gray-500 mb-6">Your decisions will appear here once you open the status updates in the Inbox.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="overview">
+                <!-- Initially empty. Results appear after reading emails -->
+            </div>
+        </div>
+
     </div>
+
+    <!-- Back Button -->
+    <div class="fixed bottom-8 right-8">
+        <a href="{{ url_for('dashboard') }}"
+           class="bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-900 transition duration-300 ease-in-out bounce inline-block">
+            Back
+        </a>
+    </div>
+
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-    let currentDate = new Date("{{ current_date }}");
-    let simulationInterval;
-    let emails = {{ emails|tojson }};
-    let simulationStarted = {{ 'true' if simulation_started else 'false' }};
-    let simulationButton = document.getElementById('simulation-button');
-    let simulationForm = document.getElementById('simulation-form');
-    let newSimDateInput = document.getElementById('new_sim_date');
-
     document.addEventListener('DOMContentLoaded', () => {
-        if (!simulationStarted && hasFutureDates()) {
-            simulationButton.textContent = "Start Simulation";
-        } else if (simulationStarted) {
-            simulationButton.textContent = "Continue";
+        const currentDateElem = document.getElementById('current-date');
+        const startButton = document.getElementById('start-button');
+        const continueButton = document.getElementById('continue-button');
+        const inbox = document.getElementById('inbox');
+        const overview = document.getElementById('overview');
+
+        let simulationStarted = {{ 'true' if simulation_started else 'false' }};
+        let decisionsQueue = {{ decisions_queue|tojson }};
+        let finalResults = {{ final_results|tojson }};
+        let readEmails = {{ read_emails|tojson }};
+        
+        // Sort decisions by release date
+        decisionsQueue.sort((a, b) => new Date(a.release_date) - new Date(b.release_date));
+
+        let currentIndex = 0;
+        let simulationInterval = null;
+        let simulationDate = new Date("{{ current_date }}");
+
+        // Convert string date (YYYY-MM-DD) to JS Date safely
+        function strToDate(str) {
+            const [year, month, day] = str.split('-').map(Number);
+            return new Date(year, month - 1, day);
         }
 
-        simulationButton.addEventListener('click', () => {
-            simulationStarted = true;
-            simulationButton.textContent = "Running...";
-            simulationButton.classList.add('running');
+        // Convert date to YYYY-MM-DD
+        function dateToStr(d) {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
 
-            let nextReleaseDate = getNextFutureReleaseDate();
-            if (!nextReleaseDate) {
-                simulationButton.classList.remove('running');
-                simulationButton.textContent = "Continue";
+        function updateCurrentDateDisplay() {
+            currentDateElem.textContent = dateToStr(simulationDate);
+        }
+
+        // Simulate time passing by one day at a time
+        function startTimeSimulation() {
+            if (currentIndex >= decisionsQueue.length) {
+                // All decisions processed
+                clearInterval(simulationInterval);
+                simulationInterval = null;
                 return;
             }
 
+            // If we haven't started yet, increment day until the next release date
+            const nextDecision = decisionsQueue[currentIndex];
+            const nextReleaseDate = strToDate(nextDecision.release_date);
+
             simulationInterval = setInterval(() => {
-                currentDate.setDate(currentDate.getDate() + 1);
-                updateDateDisplay();
+                simulationDate.setDate(simulationDate.getDate() + 1);
+                updateCurrentDateDisplay();
 
-                if (currentDate >= nextReleaseDate) {
+                if (simulationDate >= nextReleaseDate) {
+                    // Pause simulation at release date
                     clearInterval(simulationInterval);
-                    simulationButton.classList.remove('running');
-                    simulationButton.textContent = "Continue";
-                    newSimDateInput.value = nextReleaseDate.toISOString().split('T')[0];
-                    simulationForm.submit();
+                    simulationInterval = null;
+
+                    // Show the email for this decision
+                    releaseEmail(nextDecision);
+
+                    // Hide start, show continue
+                    startButton.classList.add('hidden');
+                    continueButton.classList.remove('hidden');
                 }
+            }, 1000);
+        }
+
+        // Continue to next decision
+        function continueSimulation() {
+            currentIndex++;
+            if (currentIndex >= decisionsQueue.length) {
+                // No more decisions to process
+                continueButton.classList.add('hidden');
+                return;
+            }
+            // Resume time simulation for the next release date
+            continueButton.classList.add('hidden');
+            startTimeSimulation();
+        }
+
+        // Create email in inbox
+        function releaseEmail(decision) {
+            const emailDiv = document.createElement('div');
+            emailDiv.classList.add('p-4', 'bg-gray-50', 'rounded', 'shadow', 'transition-transform', 'duration-300', 'hover:scale-105', 'opacity-0');
+
+            const subject = `${decision.display_name} ${decision.app_type} Status Update`;
+            emailDiv.innerHTML = `
+                <div class="font-semibold text-lg">${subject}</div>
+                <div class="text-sm text-gray-500">Release Date: ${decision.release_date}</div>
+                <a href="/advancedsim/${decision.short_name}/login" target="_blank"
+                   class="text-blue-600 underline mt-2 block hover:text-blue-800 transition-colors"
+                   data-short-name="${decision.short_name}">
+                   View Status Update
+                </a>
+            `;
+
+            inbox.appendChild(emailDiv);
+            setTimeout(() => {
+                emailDiv.classList.remove('opacity-0');
             }, 100);
+        }
+
+        // Mark email as read in the session
+        function markAsRead(shortName) {
+            return fetch('/advancedsim/results/mark_as_read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'short_name': shortName
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    return true;
+                } else {
+                    alert('Failed to mark as read.');
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while marking as read.');
+                return false;
+            });
+        }
+
+        // Update overview once email is read
+        function updateOverview(shortName) {
+            if (shortName in finalResults) {
+                const decision = finalResults[shortName];
+                const decisionCode = decision.decision_code;
+                const decisionTextMap = {
+                    'A': 'Accepted',
+                    'E': 'ED Acceptance',
+                    'D': 'Deferred',
+                    'W': 'Waitlisted',
+                    'R': 'Rejected'
+                };
+                const decisionText = decisionTextMap[decisionCode] || decisionCode;
+
+                let decisionColor = 'text-gray-700';
+                if (decisionCode === 'A' || decisionCode === 'E') decisionColor = 'text-green-600';
+                if (decisionCode === 'R') decisionColor = 'text-red-600';
+                if (decisionCode === 'D') decisionColor = 'text-yellow-600';
+                if (decisionCode === 'W') decisionColor = 'text-orange-600';
+
+                const overviewDiv = document.createElement('div');
+                overviewDiv.classList.add(
+                    'p-6', 'bg-gray-50', 'rounded', 'shadow',
+                    'transition-transform', 'duration-300', 'ease-in-out', 'transform', 'hover:scale-105', 'animate__animated', 'animate__fadeIn'
+                );
+
+                // Construct the logo path correctly (the final_results["logo_url"] should be a path after 'static/')
+                let logoPath = decision.logo_url;
+                if (logoPath.startsWith('static/')) {
+                    logoPath = "{{ url_for('static', filename='') }}" + logoPath.substring('static/'.length);
+                }
+
+                overviewDiv.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <img src="${logoPath}" alt="${decision.display_name}" class="w-12 h-12 object-contain mr-4">
+                        <div class="font-semibold text-xl">${decision.display_name}</div>
+                    </div>
+                    <div class="text-sm"><strong>Type:</strong> ${decision.app_type}</div>
+                    <div class="text-sm"><strong>Decision:</strong> <span class="${decisionColor}">${decisionText}</span></div>
+                `;
+
+                overview.appendChild(overviewDiv);
+            }
+        }
+
+        // Handle inbox clicks to mark email as read and show decision
+        inbox.addEventListener('click', (event) => {
+            if (event.target.tagName === 'A' && event.target.hasAttribute('data-short-name')) {
+                event.preventDefault();
+                const shortName = event.target.getAttribute('data-short-name');
+                const href = event.target.href;
+
+                markAsRead(shortName).then((success) => {
+                    if (success) {
+                        window.open(href, '_blank');
+
+                        // Update email to show it's read
+                        const parentDiv = event.target.parentElement;
+                        const displayName = parentDiv.querySelector('.font-semibold').textContent;
+                        const releaseDateText = parentDiv.querySelector('.text-sm.text-gray-500').textContent.split(': ')[1];
+                        parentDiv.innerHTML = `
+                            <div class="font-semibold text-lg">${displayName}</div>
+                            <div class="text-sm text-gray-500">Release Date: ${releaseDateText}</div>
+                            <div class="text-green-600 mt-2 animate__animated animate__fadeIn">Decision Revealed</div>
+                        `;
+
+                        // Update overview
+                        updateOverview(shortName);
+                    }
+                });
+            }
         });
+
+        // Start simulation button
+        startButton.addEventListener('click', () => {
+            if (!simulationInterval) {
+                startTimeSimulation();
+            }
+        });
+
+        // Continue simulation button
+        continueButton.addEventListener('click', () => {
+            continueSimulation();
+        });
+
+        updateCurrentDateDisplay();
     });
-
-    function updateDateDisplay() {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const formattedDate = currentDate.toLocaleDateString(undefined, options);
-        document.getElementById('current-date').textContent = `Current Simulation Date: ${formattedDate}`;
-    }
-
-    function getNextFutureReleaseDate() {
-        let futureDates = emails
-            .map(e => e.release_date)
-            .filter(d => d !== 'N')
-            .map(d => new Date(d))
-            .filter(d => d > currentDate);
-        if (futureDates.length === 0) return null;
-        futureDates.sort((a,b) => a - b);
-        return futureDates[0];
-    }
-
-    function hasFutureDates() {
-        let futureDates = emails
-            .map(e => e.release_date)
-            .filter(d => d !== 'N')
-            .map(d => new Date(d))
-            .filter(d => d > currentDate);
-        return futureDates.length > 0;
-    }
 </script>
 {% endblock %}

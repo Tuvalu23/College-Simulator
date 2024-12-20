@@ -17,16 +17,18 @@
     </p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {% for uni in university_list %}
-        <div class="p-6 rounded-lg shadow-lg flex flex-col" style="background: white;">
+        <div class="p-6 rounded-lg shadow-lg flex flex-col bg-white transform hover:scale-105 transition-transform duration-200 hover:shadow-xl">
             <div class="flex justify-center mb-4">
                 <img src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" alt="{{ uni.display_name }} Logo"
                     class="w-48 h-48 object-contain">
             </div>
             <a href="{{ url_for('login', college=uni.name) }}" target="_blank"
-                class="block text-2xl font-bold text-center text-black hover:text-yellow-400 transition-colors duration-200">
+                class="block text-2xl font-bold text-center text-black hover:text-yellow-450 transition-colors duration-200 specific-link">
                 {{ uni.display_name }}
             </a>
-        </div>
+
+
+        </div>        
         {% endfor %}
     </div>
 </div>

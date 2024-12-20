@@ -356,7 +356,6 @@ def statistics():
         sorted_stats=sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
     )
 
-
 # quick sim
 @app.route("/quicksim", methods=["GET", "POST"])
 @login_required
@@ -680,7 +679,6 @@ def advancedsim():
 
     return render_template("advancedsim.html")
 
-
 # Helper Functions for Session Management
 def add_school(school):
     if 'selected_schools' not in session:
@@ -782,8 +780,6 @@ def earlydecision():
 
     return render_template('earlydecision.html', ed_schools=ed_schools)
 
-
-
 # REA Route
 @app.route('/advancedsim/rea', methods=['GET', 'POST'])
 @login_required
@@ -839,7 +835,6 @@ def rea():
     ]
 
     return render_template('rea.html', rea_schools=rea_schools)
-
 
 # Early Action Route
 @app.route('/advancedsim/earlyaction', methods=['GET', 'POST'])
@@ -1004,7 +999,6 @@ def regulardecision():
     print("RD Schools Available:", rd_schools_prepared)
 
     return render_template('regulardecision.html', rd_schools=rd_schools_prepared)
-
 
 # Helper Function to Prepare RD Schools
 def prepare_rd_schools():
@@ -1563,19 +1557,6 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
     chances = max(0.0, min(chances, 100.0))
     return round(chances, 2)
 
-def getType(chances_value):
-    # Placeholder for categorizing chances
-    if chances_value >= 80:
-        return "Highly Likely", "highly-likely"
-    elif chances_value >= 60:
-        return "Safety", "safety"
-    elif chances_value >= 40:
-        return "Target", "target"
-    elif chances_value >= 20:
-        return "Hard Target", "hard-target"
-    else:
-        return "Competitive", "competitive"
-
 def rate(score):
     if 8.7 <= score <= 10:
         return "Outstanding", "outstanding"
@@ -1599,6 +1580,8 @@ def chances():
     session.pop('read_emails', None)
     session.pop('current_sim_date', None)
     session.pop('simulation_started', None)
+    session.pop('final_results', None)
+    session.pop('deferred_decisions', None)  # If you have deferred decisions
     
     if request.method == 'POST':
         # After reviewing chances, proceed to results page
@@ -1832,90 +1815,130 @@ def get_college_index(college_name):
     return -1  # Not found
 
 # RESULTS PAGE - GMAIL LIKE
+# RESULTS PAGE - GMAIL LIKE
+from datetime import datetime
+
+# RESULTS PAGE - GMAIL LIKE
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
+    # Initialize simulation date if not present
     if 'current_sim_date' not in session:
         session['current_sim_date'] = "2024-11-01"
         session['simulation_started'] = False
 
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
-    current_date_str = session['current_sim_date']
-    current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
+    # Retrieve user profile data
+    user_data = session.get('quicksim_data', {"name": "User"})
+    name = user_data.get("name", "User")
 
+    # Retrieve simulation date
+    current_date_str = session['current_sim_date']
+    try:
+        current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
+    except ValueError:
+        flash("Invalid simulation date format. Resetting to default.", "warning")
+        session['current_sim_date'] = "2024-11-01"
+        current_date_str = "2024-11-01"
+        current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
+
+    # Retrieve applied colleges and results from session
     applied_colleges = session.get('applied_colleges', [])
     final_results = session.get('final_results', {})
     read_emails = session.get('read_emails', {})
 
-    # Determine emails to show based on release dates and current date
-    emails_to_show = []
-    for college in applied_colleges:
-        display_name = college['display_name']
-        app_type = college['type']
-        uni_info = next((u for u in university_list if u['display_name'] == display_name), None)
-        if not uni_info:
-            continue
-        short_name = uni_info['name'].lower()
+    # Sort applied colleges by release date ascending
+    def get_release_date(college):
+        app_type = college.get('app_type', None)
+        short_name = college.get('short_name', '').lower()
+
+        if not app_type or not short_name:
+            # If either key is missing, assign a far future date to skip processing
+            return datetime.max
+
+        # Fetch college entry from college_list
         c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
         if not c_entry:
+            # If college entry not found, assign a far future date
+            return datetime.max
+
+        # Determine release date based on application type
+        if app_type in ["ED", "REA"]:
+            release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
+        elif app_type == "EA":
+            release_date_str = c_entry[6] if c_entry[6] != "N" else "2099-01-01"
+        else:  # RD or Deferred
+            release_date_str = c_entry[7] if c_entry[7] != "N" else "2099-01-01"
+
+        # Parse release date
+        try:
+            return datetime.strptime(release_date_str, "%Y-%m-%d")
+        except ValueError:
+            return datetime.strptime("2099-01-01", "%Y-%m-%d")  # Fallback date
+
+    # Sort the applied_colleges based on their release dates
+    applied_colleges_sorted = sorted(applied_colleges, key=get_release_date)
+
+    # Prepare decisions queue for simulation (sorted by release date)
+    decisions_queue = []
+    for college in applied_colleges_sorted:
+        display_name = college.get('display_name', 'Unknown')
+        app_type = college.get('app_type', 'Unknown')
+        short_name = college.get('short_name', '').lower()
+
+        if not short_name or not app_type:
+            # Skip entries missing essential information
             continue
 
-        # Determine release date
-        if app_type == "ED" or app_type == "REA":
+        # Fetch college entry from college_list
+        c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
+        if not c_entry:
+            # Skip if college entry not found
+            continue
+
+        # Determine release date based on application type
+        if app_type in ["ED", "REA"]:
             release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
         elif app_type == "EA":
             release_date_str = c_entry[6] if c_entry[6] != "N" else "2099-01-01"
         else:
             release_date_str = c_entry[7] if c_entry[7] != "N" else "2099-01-01"
 
-        release_date = datetime.strptime(release_date_str, "%Y-%m-%d")
-        email_available = (release_date <= current_date)
+        # Parse release date
+        try:
+            release_date = datetime.strptime(release_date_str, "%Y-%m-%d")
+        except ValueError:
+            release_date = datetime.strptime("2099-01-01", "%Y-%m-%d")  # Fallback date
 
-        if email_available:
-            # If available, show mystery email if not read, else show final decided email
-            is_read = read_emails.get(short_name, False)
-            decision_code = final_results.get(short_name, {}).get("decision_code", None)
+        decisions_queue.append({
+            "short_name": short_name,
+            "display_name": display_name,
+            "app_type": app_type,
+            "release_date": release_date_str
+        })
 
-            if not is_read:
-                # Unread -> Mystery email
-                emails_to_show.append({
-                    "short_name": short_name,
-                    "display_name": display_name,
-                    "app_type": app_type,
-                    "release_date": release_date_str,
-                    "available": True,
-                    "decision_code": None  # mystery
-                })
-            else:
-                # Already read -> email can show known decision (not mystery)
-                emails_to_show.append({
-                    "short_name": short_name,
-                    "display_name": display_name,
-                    "app_type": app_type,
-                    "release_date": release_date_str,
-                    "available": True,
-                    "decision_code": decision_code
-                })
-        # If not available, no email.
-
-    # For the overview:
-    # Show only those colleges that have been read (decisions revealed)
-    overview_colleges = {k: v for k, v in final_results.items() if read_emails.get(k, False)}
+    # Pass decisions_queue to the template for simulation
+    # Also, pass existing emails and final_results
 
     if request.method == 'POST':
+        # Handle simulation date update if applicable
         new_date_str = request.form.get('new_sim_date')
         if new_date_str:
-            session['current_sim_date'] = new_date_str
+            try:
+                # Validate and update simulation date
+                datetime.strptime(new_date_str, "%Y-%m-%d")  # Ensure valid format
+                session['current_sim_date'] = new_date_str
+            except ValueError:
+                flash("Invalid date format. Please use YYYY-MM-DD.", "danger")
         return redirect(url_for('results'))
 
     return render_template(
         'results.html',
         current_date=current_date_str,
         simulation_started=session.get('simulation_started', False),
-        emails=emails_to_show,
-        final_results=overview_colleges,
-        name=user_data["name"],
-        date=user_data["date"]
+        decisions_queue=decisions_queue,
+        final_results=final_results,
+        read_emails=read_emails,
+        name=name
     )
 
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
@@ -1961,13 +1984,16 @@ def adv_ustatus(college):
 
     return render_template(f"adv/{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
 
-@app.route('/advancedsim/mark_as_read', methods=["POST"])
+# Add this new route to handle marking emails as read
+@app.route('/advancedsim/results/mark_as_read', methods=["POST"])
 @login_required
 def mark_as_read():
     short_name = request.form.get('short_name')
+    if not short_name:
+        return {'status': 'fail', 'message': 'No short_name provided'}, 400
     if 'read_emails' not in session:
         session['read_emails'] = {}
-    session['read_emails'][short_name] = True
+    session['read_emails'][short_name.lower()] = True
     session.modified = True
     return {'status': 'success'}
 
