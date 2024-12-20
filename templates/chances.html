@@ -437,7 +437,7 @@
             <tbody>
                 <!-- ED first, then REA, then EA, then RD -->
                 {% for type_order in ['ED', 'REA', 'EA', 'RD'] %}
-                    {% for short_name, data in interview_chances.items() if data.type == type_order %}
+                    {% for short_name, data in interview_chances.items() if data.app_type == type_order %}
                         <tr>
                             <td>
                                 <div style="display: flex; align-items: center;">
@@ -458,7 +458,7 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="badge {{ data.type | lower }}">{{ data.type }}</span>
+                                <span class="badge {{ data.app_type | lower }}">{{ data.app_type }}</span>
                             </td>
                         </tr>
                     {% endfor %}
@@ -473,8 +473,8 @@
         <div class="colleges-list">
             <!-- ED first, then REA, then EA, then RD -->
             {% for type_order in ['ED', 'REA', 'EA', 'RD'] %}
-                {% for short_name, data in interview_chances.items() if data.type == type_order %}
-                    <div class="college-card {{ data.type | lower }}">
+                {% for short_name, data in interview_chances.items() if data.app_type == type_order %}
+                    <div class="college-card {{ data.app_type | lower }}">
                         <div class="college-logo">
                             <img src="{{ url_for('static', filename=data.logo_url.split('static/')[1]) }}" alt="{{ data.display_name }} Logo" />
                         </div>
@@ -487,7 +487,7 @@
                             <p><strong>School Type:</strong> {{ data.public }}</p>
                         </div>
                         <div class="application-type">
-                            <span class="badge {{ data.type | lower }}">{{ data.type }}</span>
+                            <span class="badge {{ data.app_type | lower }}">{{ data.app_type }}</span>
                         </div>
                     </div>
                 {% endfor %}
