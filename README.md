@@ -26,7 +26,8 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] UMich
 - [X] Bing
 - [X] Rice
-- [ ] Buffalo
+- [X] Buffalo
+- [ ] Emory
 
 ## TO GET ADVANCED RIBBONS
 Add this above style:

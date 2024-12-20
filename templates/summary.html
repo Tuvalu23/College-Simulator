@@ -456,17 +456,17 @@
         {% if applied_colleges %}
             <div class="colleges-list">
                 {% for college in applied_colleges %}
-                    <div class="college-card {{ college.type | lower }}">
+                    <div class="college-card {{ college.app_type | lower }}">
                         <div class="college-logo">
                             <img src="{{ url_for('static', filename=college.logo_url.split('static/')[1]) }}" alt="{{ college.display_name }} Logo" />
                         </div>
                         <div class="college-info">
                             <h3>{{ college.display_name }}</h3>
-                            <p><strong>Application Type:</strong> {{ college.type }}</p>
+                            <p><strong>Application Type:</strong> {{ college.app_type }}</p>
                             <p><strong>School Type:</strong> {{ college.public }}</p>
                         </div>
                         <div class="application-type">
-                            <span class="badge {{ college.type | lower }}">{{ college.type }}</span>
+                            <span class="badge {{ college.app_type | lower }}">{{ college.app_type }}</span>
                         </div>
                     </div>
                 {% endfor %}

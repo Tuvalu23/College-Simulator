@@ -6,192 +6,162 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-    /* [Your existing CSS styles for results page] */
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
     .results-container {
-        width: 80%;
+        display: flex;
+        min-height: 80vh;
+        margin: 40px auto;
+        width: 90%;
         max-width: 1200px;
-        margin: 80px auto 40px auto;
         background: #ffffff;
         border-radius: 12px;
-        padding: 40px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        box-sizing: border-box;
-        font-size: 16px;
-        animation: fadeInUp 1s ease forwards;
-        position: relative;
-        min-height: 400px;
-    }
-
-    .results-container h1 {
-        font-size: 2.5rem;
-        margin-bottom: 30px;
-        color: #333333;
-        text-align: center;
-        font-weight: 600;
-    }
-
-    .decisions-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    .decisions-table th, .decisions-table td {
-        padding: 12px 15px;
-        border: 1px solid #ddd;
-        text-align: left;
-        vertical-align: middle;
-    }
-
-    .decisions-table th {
-        background-color: #f2f2f2;
-        color: #333333;
-    }
-
-    .decisions-table tbody tr {
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .decisions-table tbody tr:hover {
-        background-color: #f9f9f9;
-        transform: scale(1.02);
-    }
-
-    .badge.admitted {
-        background-color: #2ecc71; /* Green */
-        padding: 5px 10px;
-        border-radius: 12px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-    .badge.deferred {
-        background-color: #f1c40f; /* Yellow */
-        padding: 5px 10px;
-        border-radius: 12px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-    .badge.waitlisted {
-        background-color: #e67e22; /* Orange */
-        padding: 5px 10px;
-        border-radius: 12px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-    .badge.rejected {
-        background-color: #c0392b; /* Red */
-        padding: 5px 10px;
-        border-radius: 12px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-    .badge.no-decision {
-        background-color: #7f8c8d; /* Gray */
-        padding: 5px 10px;
-        border-radius: 12px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-    .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 30px;
-    }
-
-    .buttons a, .buttons button {
-        border: none;
-        border-radius: 25px;
-        padding: 15px 30px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        position: relative;
         overflow: hidden;
-        transition: all 0.3s ease;
-        text-decoration: none;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+        width: 25%;
+        background-color: #f8f9fa;
+        padding: 20px;
+        box-sizing: border-box;
+        border-right: 1px solid #ddd;
+    }
+
+    .sidebar h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        color: #333333;
+        border-bottom: 2px solid #f1f1f1;
+        padding-bottom: 10px;
         display: inline-block;
     }
 
-    .back-button {
-        background: #555555;
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar li {
+        margin-bottom: 15px;
+    }
+
+    .sidebar .college-link {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: none;
+        background: #ffffff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: background 0.3s, transform 0.3s;
+    }
+
+    .sidebar .college-link:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .badge {
+        padding: 5px 10px;
+        border-radius: 12px;
         color: #ffffff;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+        display: inline-block;
     }
 
-    .back-button:hover {
-        background: #333333;
-        transform: scale(1.05);
+    /* Application Type Badges */
+    .badge.ed {
+        background-color: #e74c3c; /* Red */
     }
 
-    .retry-button {
-        background: #3498db;
-        color: #ffffff;
+    .badge.rea {
+        background-color: #f1c40f; /* Yellow */
     }
 
-    .retry-button:hover {
-        background: #2980b9;
-        transform: scale(1.05);
+    .badge.ea {
+        background-color: #3498db; /* Blue */
+    }
+
+    .badge.rd {
+        background-color: #2ecc71; /* Green */
+    }
+
+    /* Main Content Styling */
+    .main-content {
+        width: 75%;
+        padding: 30px;
+        box-sizing: border-box;
+    }
+
+    .main-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #333333;
+        text-align: center;
+    }
+
+    .placeholder-message {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #555555;
+        margin-top: 50px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .results-container {
+            flex-direction: column;
+        }
+
+        .sidebar, .main-content {
+            width: 100%;
+        }
+
+        .sidebar {
+            border-right: none;
+            border-bottom: 1px solid #ddd;
+        }
     }
 </style>
 
 <div class="results-container">
-    <h1>Admission Decisions</h1>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Status Updates</h2>
+        <ul>
+            {% for decision in decisions_queue %}
+                <li>
+                    <a href="{{ url_for('adv_ustatus', college=decision.short_name) }}" 
+                       class="college-link" 
+                       target="_blank">
+                        <span>
+                            {{ decision.display_name }} {{ decision.app_type }} Status Update
+                        </span>
+                        <span class="badge {{ decision.app_type | lower }}">
+                            {{ decision.app_type }}
+                        </span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-    {% if final_results %}
-        <table class="decisions-table">
-            <thead>
-                <tr>
-                    <th>College Name</th>
-                    <th>Application Type</th>
-                    <th>Chance of Acceptance</th>
-                    <th>Decision</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for short_name, data in final_results.items() %}
-                    <tr>
-                        <td>{{ data.display_name }}</td>
-                        <td>{{ data.app_type }}</td>
-                        <td>{{ data.chances }}%</td>
-                        <td>
-                            {% if data.decision_code == "A" %}
-                                <span class="badge admitted">Admitted</span>
-                            {% elif data.decision_code == "D" %}
-                                <span class="badge deferred">Deferred</span>
-                            {% elif data.decision_code == "W" %}
-                                <span class="badge waitlisted">Waitlisted</span>
-                            {% elif data.decision_code == "R" %}
-                                <span class="badge rejected">Rejected</span>
-                            {% else %}
-                                <span class="badge no-decision">No Decision</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>No decisions to display.</p>
-    {% endif %}
-
-    <div class="buttons">
-        <a href="{{ url_for('dashboard') }}" class="back-button">Dashboard</a>
-        <a href="{{ url_for('chances') }}" class="retry-button">View Chances Again</a>
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Admission Decisions</h1>
+        <div class="placeholder-message">
+            <p>Please click on a status update in the sidebar to view your admission decision for each college.</p>
+        </div>
     </div>
 </div>
 

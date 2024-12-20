@@ -456,7 +456,7 @@ def rejection(college):
 submissions = []
 
 # Advanced Simulation Route
-@app.route("/quicksim/advancedsim", methods=["GET", "POST"])
+@app.route("/advancedsim", methods=["GET", "POST"])
 @login_required
 def advancedsim():
     clear_session()
@@ -667,11 +667,11 @@ def advancedsim():
         }
         submissions.append(submission_data)
         
-        # Update session['quicksim_data'] with submission_data
-        if 'quicksim_data' in session:
-            session['quicksim_data'].update(submission_data)
+        # Update session['advancedsim_data'] with submission_data
+        if 'advancedsim_data' in session:
+            session['advancedsim_data'].update(submission_data)
         else:
-            session['quicksim_data'] = submission_data
+            session['advancedsim_data'] = submission_data
 
         flash("Application submitted successfully!", "success")
         # Redirect to the next step in your application process
@@ -714,7 +714,7 @@ def clear_session():
         'rd_schools',
         'applied_colleges',
         'interview_chances',
-        'quicksim_data'  # Include if you want to reset all user data
+        'advancedsim_data'  # Include if you want to reset all user data
     ]
     for key in keys_to_clear:
         session.pop(key, None)
@@ -1030,7 +1030,7 @@ def prepare_rd_schools():
 @login_required
 def summary():
     # Retrieve User Profile Data from session['quicksim_data']
-    user_data = session.get('quicksim_data', {})
+    user_data = session.get('advancedsim_data', {})
     user_profile = {
         "Name": user_data.get("name", "N/A"),
         "GPA": user_data.get("gpa", "N/A"),
@@ -1593,7 +1593,7 @@ def chances():
         # After reviewing chances, proceed to results page
         flash("Chances reviewed successfully!", "success")
         # Generate final decisions and store them
-        user_data = session.get('quicksim_data', {})
+        user_data = session.get('advancedsim_data', {})
         applied_colleges = session.get('applied_colleges', [])
         interview_chances = session.get('interview_chances', {})
     
@@ -1621,7 +1621,7 @@ def chances():
         return redirect(url_for('results'))
     
     # Handle GET request
-    user_data = session.get('quicksim_data', {})
+    user_data = session.get('advancedsim_data', {})
     applied_colleges = session.get('applied_colleges', [])
     if not applied_colleges:
         flash("No applied colleges found.", "warning")
@@ -1759,14 +1759,14 @@ def schedule_deferred_decision(college_name):
     """
     # Retrieve the RD date from college_list
     college_entry = next((c for c in college_list if c[0].lower() == college_name.lower()), None)
-    if college_entry and college_entry[7] != "N":
+    if college_entry and len(college_entry) > 7 and college_entry[7] != "N":
         rd_date_str = college_entry[7]
         try:
             rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
         except ValueError:
             rd_date_str = "2099-01-01"  # Fallback date
             rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
-        
+
         # Store the deferred decision with the RD date
         if 'deferred_decisions' not in session:
             session['deferred_decisions'] = {}
@@ -1775,6 +1775,8 @@ def schedule_deferred_decision(college_name):
             "status": "deferred"
         }
         session.modified = True
+
+        print(f"Deferred Decision Scheduled for {college_name} on {rd_date_str}")
         
 def generate_final_decision(college_name):
     """
@@ -1832,28 +1834,15 @@ def get_college_index(college_name):
             return index
     return -1  # Not found
 
-# RESULTS PAGE - GMAIL LIKE
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
-    # Initialize simulation date if not present
-    if 'current_sim_date' not in session:
-        session['current_sim_date'] = "2024-11-01"
-        session['simulation_started'] = False
+    # Initialize simulation date if not present (Not needed for advancedsim)
+    # Removed 'current_sim_date' since it's irrelevant for advancedsim
 
-    # Retrieve user profile data
-    user_data = session.get('quicksim_data', {"name": "User"})
+    # Retrieve user profile data from 'advancedsim_data'
+    user_data = session.get('advancedsim_data', {"name": "User"})
     name = user_data.get("name", "User")
-
-    # Retrieve simulation date
-    current_date_str = session['current_sim_date']
-    try:
-        current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
-    except ValueError:
-        flash("Invalid simulation date format. Resetting to default.", "warning")
-        session['current_sim_date'] = "2024-11-01"
-        current_date_str = "2024-11-01"
-        current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
 
     # Retrieve applied colleges and results from session
     applied_colleges = session.get('applied_colleges', [])
@@ -1863,68 +1852,75 @@ def results():
     print("Applied Colleges:", applied_colleges)  # Debugging
     print("Final Results:", final_results)        # Debugging
 
-    # Sort applied colleges by release date ascending
-    def get_release_date(college):
-        app_type = college.get('app_type', None)
-        short_name = college.get('short_name', '').lower()
-
-        if not app_type or not short_name:
-            return datetime.max
-
-        # Corrected Access
-        c_entry = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
-        if not c_entry:
-            return datetime.max
-
-        # Determine release date based on application type
-        if app_type in ["ED", "REA"]:
-            release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
-        elif app_type == "EA":
-            release_date_str = c_entry[6] if c_entry[6] != "N" else "2099-01-01"
-        else:  # RD or Deferred
-            release_date_str = c_entry[7] if c_entry[7] != "N" else "2099-01-01"
-
-        # Parse release date
-        try:
-            return datetime.strptime(release_date_str, "%Y-%m-%d")
-        except ValueError:
-            return datetime.strptime("2099-01-01", "%Y-%m-%d")  # Fallback date
-
+    # Build decisions_queue with necessary information
     decisions_queue = []
     for college in applied_colleges:
         short_name = college.get('short_name', '').lower()
         display_name = college.get('display_name', 'Unknown')
         app_type = college.get('app_type', 'Unknown')
+        logo_url = college.get('logo_url', 'static/logos/default-logo.jpg')  # Default logo if missing
 
-        # Fetch release_date from college_list
-        c_entry = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
+        # Fetch release_date based on app_type from college_list
+        c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
         if not c_entry:
+            print(f"College '{short_name}' not found in college_list. Skipping.")
             continue
 
+        # Determine release date based on application type
         if app_type in ["ED", "REA"]:
-            release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
+            release_date_str = c_entry[4] if c_entry[4] != "N" else "2099-01-01"  # ED or REA
+            if app_type == "REA":
+                release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
         elif app_type == "EA":
             release_date_str = c_entry[6] if c_entry[6] != "N" else "2099-01-01"
-        else:
+        else:  # RD or Deferred
             release_date_str = c_entry[7] if c_entry[7] != "N" else "2099-01-01"
 
+        # Append to decisions_queue
         decisions_queue.append({
             "short_name": short_name,
             "display_name": display_name,
             "app_type": app_type,
-            "release_date": release_date_str
+            "release_date": release_date_str,
+            "logo_url": logo_url
         })
 
+        # Update final_results with release_date
+        if short_name in final_results:
+            final_results[short_name]['release_date'] = release_date_str
+        else:
+            final_results[short_name] = {'decision_code': 'R', 'release_date': release_date_str}  # Default decision_code if not present
+
     # Sort decisions_queue by release_date
-    decisions_queue_sorted = sorted(decisions_queue, key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
+    try:
+        decisions_queue_sorted = sorted(
+            decisions_queue,
+            key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d')
+        )
+    except ValueError as e:
+        print(f"Error sorting decisions: {e}")
+        decisions_queue_sorted = decisions_queue  # Fallback to unsorted if error
+
     print("Decisions Queue Sorted:", decisions_queue_sorted)  # Debugging
+
+    # Update session with updated final_results
+    session['final_results'] = final_results
+
+    # Format release dates for better readability
+    for decision in decisions_queue_sorted:
+        try:
+            date_obj = datetime.strptime(decision['release_date'], '%Y-%m-%d')
+            decision['formatted_release_date'] = date_obj.strftime('%B %d, %Y')  # e.g., December 19, 2024
+        except ValueError:
+            decision['formatted_release_date'] = "Unknown Date"
+
+    print("Decisions Queue Sorted with Formatted Dates:", decisions_queue_sorted)  # Debugging
 
     # Pass to template
     return render_template(
         'results.html',
-        current_date=current_date_str,
         simulation_started=session.get('simulation_started', False),
-        decisions_queue=decisions_queue_sorted,
+        decisions_queue=decisions_queue_sorted,  # Pass sorted decisions
         final_results=final_results,
         read_emails=read_emails,
         name=name
@@ -1932,26 +1928,31 @@ def results():
 
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
 def adv_login(college):
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    user_data = session.get('advancedsim_data', {"name": "User"})
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
         if not email or not password:
-            return render_template(f"adv/{college}/login.html", error="Please fill out all fields.", college=college, date=user_data.get("date"))
+            return render_template(f"adv/{college}/login.html", error="Please fill out all fields.", college=college)
         
         return redirect(url_for("adv_ustatus", college=college))
     
-    return render_template(f"adv/{college}/login.html", name=user_data.get("name"), college=college, date=user_data.get("date"))
+    return render_template(f"adv/{college}/login.html", name=user_data.get("name"), college=college)
 
 
+# Advanced Simulation Ustatus Route
 @app.route("/advancedsim/<college>/ustatus", methods=["GET", "POST"])
+@login_required
 def adv_ustatus(college):
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    # Retrieve user data from 'advancedsim_data'
+    user_data = session.get('advancedsim_data', {"name": "User", "date": "N/A"})
     final_results = session.get('final_results', {})
-    # Decision already computed at chances stage, just not revealed until now.
-
-    decision_code = final_results.get(college.lower(), {}).get('decision_code', 'R')  # default if not found
-
+    
+    # Retrieve decision information for the college
+    decision_info = final_results.get(college.lower(), {})
+    decision_code = decision_info.get('decision_code', 'R')  # Default to 'R' (Rejected) if not found
+    release_date_str = decision_info.get('release_date', 'Unknown Date')  # Get release date
+    
     if request.method == "POST":
         # Mark email as read now that user revealed decision
         if 'read_emails' not in session:
@@ -1959,7 +1960,7 @@ def adv_ustatus(college):
         session['read_emails'][college.lower()] = True
         session.modified = True
 
-        # Redirect to final decision page
+        # Redirect to final decision page based on decision code
         if decision_code == "A":
             return redirect(url_for("adv_acceptance", college=college))
         elif decision_code == "E":
@@ -1971,7 +1972,17 @@ def adv_ustatus(college):
         else:
             return redirect(url_for("adv_rejection", college=college))
 
-    return render_template(f"adv/{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
+    # Safely retrieve 'name' from user_data
+    name = user_data.get("name", "User")
+    date = release_date_str  # Use release_date_str from decision_info
+
+    return render_template(
+        f"adv/{college}/ustatus.html",
+        name=name,
+        date=date,  # Pass the release date to the template
+        college=college,
+        decision_code=decision_code  # Pass decision_code for template use
+    )
 
 # Add this new route to handle marking emails as read
 @app.route('/advancedsim/results/mark_as_read', methods=["POST"])
@@ -1988,48 +1999,134 @@ def mark_as_read():
 
 # Acceptance, Rejection, Deferred, Waitlist Routes
 @app.route("/advancedsim/<college>/acceptance")
+@login_required
 def adv_acceptance(college):
     user_id = session.get('user_id')
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
+    decision_info = final_results.get(college.lower(), {})
+    decision_code = decision_info.get('decision_code', 'A')  # 'A' for acceptance
+    release_date_str = decision_info.get('release_date', 'Unknown Date')
+
     if user_id:
         User.log_simulation(user_id, college, 'acceptance')
-    return render_template(f"adv/{college}/acceptance.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
 
+    # Format the release date
+    try:
+        date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    return render_template(
+        f"adv/{college}/acceptance.html",
+        name=session.get("advancedsim_data", {}).get("name", "User"),
+        date=formatted_date,
+        college=college
+    )
 
 @app.route("/advancedsim/<college>/edacceptance")
+@login_required
 def adv_edacceptance(college):
     user_id = session.get('user_id')
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
+    decision_info = final_results.get(college.lower(), {})
+    decision_code = decision_info.get('decision_code', 'E')  # 'E' for ED acceptance
+    release_date_str = decision_info.get('release_date', 'Unknown Date')
+
     if user_id:
         User.log_simulation(user_id, college, 'ed_acceptance')
-    return render_template(f"adv/{college}/edacceptance.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
 
+    # Format the release date
+    try:
+        date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    return render_template(
+        f"adv/{college}/edacceptance.html",
+        name=session.get("advancedsim_data", {}).get("name", "User"),
+        date=formatted_date,
+        college=college
+    )
 
 @app.route("/advancedsim/<college>/rejection")
+@login_required
 def adv_rejection(college):
     user_id = session.get('user_id')
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
+    decision_info = final_results.get(college.lower(), {})
+    decision_code = decision_info.get('decision_code', 'R')  # 'R' for rejection
+    release_date_str = decision_info.get('release_date', 'Unknown Date')
+
     if user_id:
         User.log_simulation(user_id, college, 'rejection')
-    return render_template(f"adv/{college}/rejection.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
 
+    # Format the release date
+    try:
+        date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    return render_template(
+        f"adv/{college}/rejection.html",
+        name=session.get("advancedsim_data", {}).get("name", "User"),
+        date=formatted_date,
+        college=college
+    )
 
 @app.route("/advancedsim/<college>/deferred")
+@login_required
 def adv_deferred(college):
     user_id = session.get('user_id')
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
+    decision_info = final_results.get(college.lower(), {})
+    decision_code = decision_info.get('decision_code', 'D')  # 'D' for deferred
+    release_date_str = decision_info.get('release_date', 'Unknown Date')
+
     if user_id:
         User.log_simulation(user_id, college, 'deferred')
-    return render_template(f"adv/{college}/deferred.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
 
+    # Format the release date
+    try:
+        date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    return render_template(
+        f"adv/{college}/deferred.html",
+        name=session.get("advancedsim_data", {}).get("name", "User"),
+        date=formatted_date,
+        college=college
+    )
 
 @app.route("/advancedsim/<college>/waitlist")
+@login_required
 def adv_waitlist(college):
     user_id = session.get('user_id')
-    user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
+    decision_info = final_results.get(college.lower(), {})
+    decision_code = decision_info.get('decision_code', 'W')  # 'W' for waitlist
+    release_date_str = decision_info.get('release_date', 'Unknown Date')
+
     if user_id:
         User.log_simulation(user_id, college, 'waitlist')
-    return render_template(f"adv/{college}/waitlist.html", name=user_data.get("name"), date=user_data.get("date"), college=college)
+
+    # Format the release date
+    try:
+        date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    return render_template(
+        f"adv/{college}/waitlist.html",
+        name=session.get("advancedsim_data", {}).get("name", "User"),
+        date=formatted_date,
+        college=college
+    )
 
 @app.route('/quicksim/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
