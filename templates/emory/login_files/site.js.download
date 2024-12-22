@@ -1,0 +1,116 @@
+/**
+ *  site.js
+ *  
+ *  This file contains the scripts for the site header and/or footer.
+ */
+
+$(document).ready(function() {
+	"use strict";
+
+	// For window resizing below 991px breakpoint.
+	var $window		= $(window);
+
+	function resizeAdj() {
+		/********** HEADER PANE RESIZE ADJUSTMENT **********/
+
+		if ($window.width() < 992 && $('#header-pane-icon').hasClass('collapsed')) { 
+			$('header > section.menu').addClass('collapsed'); 
+		}
+        else if ($window.width() < 992) {
+            $('.search-toggle').addClass('collapsed');
+            $('.search-form').removeClass('slide-out');
+            $('.menu-main > li.dropdown').removeClass('hide');
+        }
+		else { $('header > section.menu').removeClass('collapsed'); }
+
+		/********** STATS FRAME ADJUSTMENT [[TO BE ADDED]] **********/
+
+		if ($window.width() < 768) {
+			$('.stats > li > figure.framed').removeClass('stats-frame');
+			$('.stats > li > figure.framed').removeClass('stats-frame-v1 stats-frame-v2 stats-frame-v3 stats-frame-v4 stats-frame-v5');
+			$('.stats-v2 > li > figure.framed').removeClass('stats-frame');
+			$('.stats-v2 > li > figure.framed').removeClass('stats-frame-v1 stats-frame-v2 stats-frame-v3 stats-frame-v4 stats-frame-v5');
+		}
+		else { 
+			$('.stats > li > figure.framed').addClass('stats-frame');
+			$('.stats > li > figure.framed').each(function (index, value) {
+				$(value).addClass('stats-frame-v'+ (index+1));
+			});
+			$('.stats-v2 > li > figure.framed').addClass('stats-frame');
+			$('.stats-v2 > li > figure.framed').each(function (index, value) {
+				$(value).addClass('stats-frame-v'+ (index+1));
+			});
+		}
+	}
+	$window.resize(resizeAdj).trigger('resize');
+	
+	
+	function scrollAdj() {
+		/********** COMPACT HEADER ON SCROLL **********/
+        
+		if ($window.width() > 992 && $window.scrollTop() > 80) {
+			$('header').addClass('scroll-down');
+            $('header').removeClass('scroll-up');
+		}
+		else {
+			$('header').addClass('scroll-up');
+            $('header').removeClass('scroll-down');
+		}
+	}
+	$window.scroll(scrollAdj).trigger('scroll');
+
+
+	setMenuIndicators();
+	function setMenuIndicators() {
+		var path = window.location.pathname;
+		path = path.replace(/\/$/, "");
+		path = decodeURIComponent(path);
+
+		if (path.endsWith('.php')) {
+			$('#header-pane-menu div.sub-nav > ul > li > a').each(function() {
+				if ($(this).attr('href') === path) {
+                    $(this).parent().addClass('current');
+                    $(this).parent().parent().parent().parent().addClass('current');
+				}
+			});  
+		}
+	}
+
+	/*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU Main Navigation Dropdowns ~~~~~~~~~~~~~~~~~~*/
+
+	$('#header-pane-menu > ul > li').click(function() {
+		if ( $(this).hasClass('active') ) {
+            $(this).removeClass('active');
+			$(this).children('a').removeClass('active');
+			$(this).children('.sub-menu').removeClass('show');
+		}
+		else {
+            $('#header-pane-menu > ul > li').removeClass('active');
+			$('#header-pane-menu > ul > li > a').removeClass('active');
+			$('#header-pane-menu .sub-menu').removeClass('show');
+            $(this).toggleClass('active');
+			$(this).children('a').toggleClass('active');
+			$(this).children('.sub-menu').toggleClass('show');  
+		}
+	});  
+
+	/*~~~~~~~~~~~~~~~~~~ HEADER PANE ICON Main Navigation Toggle less than 991px ~~~~~~~~~~~~~~~~~~*/
+
+	$('body').on('click', '#header-pane-icon', function() {
+		$(this).toggleClass('collapsed');
+		$('header > section.menu').toggleClass('collapsed');
+	});
+
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE SEARCH Toggle more than 991px ~~~~~~~~~~~~~~~~~~*/
+  
+	$('body').on('click', '.search-toggle', function() {
+		let searchWindow = window.open('https://search.emory.edu/', '_blank');
+        if (searchWindow) {
+            //Browser has allowed it to be opened
+            searchWindow.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+	});
+});

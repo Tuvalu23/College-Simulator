@@ -1,0 +1,53 @@
+/**
+ *  rotateimgs.js
+ *  
+ *  This file contains the scripts for the image rotation display.
+ */
+
+$(document).ready(function() {
+  "use strict";
+  
+
+  /********** Get HEADER Images for Slate Template **********/
+  $.ajax({
+    async: false,
+    data: "section=slate-template&type=header",
+    dataType: 'jsonp',
+    error: function(err) {
+      var content   = "<img alt=\"Check out Emory students in their element\" height=\"100%\" src=\"https://www.emoryadmission.com/develop_apply/images/header/heroImage_slateE_8192x5464.jpg\" width=\"100%\" />";
+      $('section.hero-image-top').html(content);
+    },
+    success: function(data) {
+      var content   = "<img alt=\"Check out Emory students in their element\" height=\"100%\" src=\"https://www.emoryadmission.com/develop_apply/images/header/heroImage_slateE_8192x5464.jpg\" width=\"100%\" />";
+      if (data.length > 0) {
+        var index   = Math.floor( Math.random() * data.length );
+        content     = "<img alt=\"Check out Emory students in their element\" height=\"100%\" src=\""+ data[index] +"\" width=\"100%\" />";
+      }
+      $('section.hero-image-top').html(content);      
+    },
+    type: "GET",
+    url: "https://apply.emory.edu/_phpinclude/files.php?callback=?"
+  });
+  
+  
+  /********** Get FOOTER Images for Slate Template **********/
+  $.ajax({
+    async: false,
+    data: "section=slate-template&type=footer",
+    dataType: 'jsonp',
+    error: function(err) {
+      var content     = "<img alt=\"Check out parts of the Emory Campus\" height=\"100%\" src=\"https://www.emoryadmission.com/develop_apply/images/footer/footerImage_slateA_2859x1374.jpg\" width=\"100%\" />"; $('section.hero-image-bottom').html(content); 
+    },
+    success: function(data) { 
+      var content     = "<img alt=\"Check out parts of the Emory Campus\" height=\"100%\" src=\"https://www.emoryadmission.com/develop_apply/images/footer/footerImage_slateA_2859x1374.jpg\" width=\"100%\" />";
+      if (data.length > 0) {
+        var index     = Math.floor( Math.random() * data.length );
+        content       = "<img alt=\"Check out parts of the Emory Campus\" height=\"100%\" src=\""+ data[index] +"\" width=\"100%\" />";
+      }
+      $('section.hero-image-bottom').html(content);      
+    },
+    type: "GET",
+    url: "https://apply.emory.edu/_phpinclude/files.php?callback=?"
+  });
+  
+});

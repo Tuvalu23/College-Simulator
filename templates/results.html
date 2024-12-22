@@ -285,7 +285,7 @@
                 <li>
                     {% set is_opened = decision.unique_id in opened_colleges %}
                     {% set is_available = decision.unique_id == selected_college %}
-                    
+
                     {% if is_available %}
                         <a href="#" 
                            class="college-link available {% if decision.unique_id == selected_college %}active{% endif %}"
@@ -330,20 +330,19 @@
     <div class="main-content">
         <h1>Admission Decisions</h1>
         {% if opened_decisions %}
-    {% for decision in opened_decisions %}
-        <div class="decision-box">
-            <h3>{{ decision.display_name }} - {{ decision.app_type }}</h3>
-            <p>
-                <strong>Decision:</strong> 
-                <span class="badge {{ decision.badge_class }}">
-                    {{ decision.decision }}
-                </span>
-            </p>
-            <p><strong>Release Date:</strong> {{ decision.release_date }}</p>
-        </div>
-    {% endfor %}
-{% endif %}
-
+            {% for decision in opened_decisions %}
+                <div class="decision-box">
+                    <h3>{{ decision.display_name }} - {{ decision.app_type }}</h3>
+                    <p>
+                        <strong>Decision:</strong> 
+                        <span class="badge {{ decision.badge_class }}">
+                            {{ decision.decision }}
+                        </span>
+                    </p>
+                    <p><strong>Release Date:</strong> {{ decision.release_date }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
 
         {% if not opened_decisions %}
             <div class="placeholder-message">
