@@ -11,6 +11,19 @@
         font-family: 'Poppins', sans-serif;
     }
 
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(4px);
+        z-index: -2;
+    }
+
     .results-container {
         display: flex;
         min-height: 80vh;
@@ -21,11 +34,12 @@
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        position: relative; /* To position buttons absolutely within this container */
     }
 
     /* Sidebar Styling */
     .sidebar {
-        width: 25%;
+        width: 35%;  /* Increased from 25% */
         background-color: #f8f9fa;
         padding: 20px;
         box-sizing: border-box;
@@ -61,6 +75,7 @@
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         transition: background 0.3s, transform 0.3s;
+        cursor: pointer;
     }
 
     .sidebar .college-link:hover {
@@ -79,33 +94,43 @@
         display: inline-block;
     }
 
-    /* Application Type Badges */
-    .badge.ed {
-        background-color: #e74c3c; /* Red */
+    /* Decision Badges */
+    .badge.acceptance {
+        background-color: #28a745; /* Green */
     }
 
-    .badge.rea {
-        background-color: #f1c40f; /* Yellow */
+    .badge.rejection {
+        background-color: #dc3545; /* Red */
     }
 
-    .badge.ea {
-        background-color: #3498db; /* Blue */
+    .badge.waitlist {
+        background-color: #ffc107; /* Yellow */
     }
 
-    .badge.rd {
-        background-color: #2ecc71; /* Green */
+    .badge.deferred {
+        background-color: #17a2b8; /* Teal */
+    }
+
+    /* Release Date Styling */
+    .release-date {
+        margin-left: 10px;
+        font-size: 0.8rem;
+        color: #666666;
     }
 
     /* Main Content Styling */
     .main-content {
-        width: 75%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 65%;  /* Adjusted from 75% */
         padding: 30px;
         box-sizing: border-box;
     }
 
     .main-content h1 {
         font-size: 2.5rem;
-        margin-bottom: 20px;
+        margin-bottom: 10px; /* Reduced margin */
         color: #333333;
         text-align: center;
     }
@@ -114,7 +139,124 @@
         text-align: center;
         font-size: 1.2rem;
         color: #555555;
-        margin-top: 50px;
+        margin-top: 10px; /* Reduced margin */
+    }
+
+    /* Decision Box Styling */
+    .decision-box {
+        background-color: #f1f1f1;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 15px; /* Reduced margin between boxes */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .decision-box:hover {
+        transform: scale(1.02);
+        background-color: #e2e6ea;
+    }
+
+    .decision-box h3 {
+        margin-top: 0;
+        color: #333333;
+    }
+
+    .decision-box p {
+        color: #555555;
+        margin: 5px 0; /* Reduced margin between paragraphs */
+    }
+
+    /* Highlight Active Link */
+    .sidebar .college-link.active {
+        background: #d1ecf1;
+        border-left: 4px solid #0c5460;
+        animation: bluePulse 2s infinite;
+    }
+
+    /* Blue Pulse Animation */
+    @keyframes bluePulse {
+        0% {
+            box-shadow: 0 0 5px #0c5460;
+        }
+        50% {
+            box-shadow: 0 0 20px #0c5460;
+        }
+        100% {
+            box-shadow: 0 0 5px #0c5460;
+        }
+    }
+
+    /* Available Status Update Styling */
+    .sidebar .college-link.available {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    /* Already Opened Status Update Styling */
+    .sidebar .college-link.opened {
+        font-weight: normal;
+        color: #333333; /* Changed from #000000 to distinguish from 'available' */
+        background-color: #e2e6ea; /* Light gray background to indicate opened */
+        border-left: none; /* Remove border for opened */
+    }
+
+    /* Disabled Link Styling */
+    .sidebar .college-link.disabled {
+        opacity: 0.6;
+        pointer-events: none;
+        background-color: #f8f9fa; /* Maintain background color for consistency */
+    }
+
+    /* Buttons Styling */
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 20px;
+        margin-top: 30px;
+        /* Removed absolute positioning to place buttons naturally */
+    }
+
+    .buttons a, .buttons button {
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px; /* Updated padding */
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .back-button {
+        background: #555555;
+        color: #ffffff;
+    }
+
+    .back-button:hover {
+        background: #333333;
+        transform: scale(1.05);
+    }
+
+    .continue-button {
+        background: linear-gradient(45deg, #ff7f50, #ff6f91);
+        background-size: 600% 600%;
+        color: #ffffff;
+        animation: gradientAnimation 8s ease infinite;
+    }
+
+    .continue-button:hover {
+        transform: scale(1.05);
+    }
+
+    /* Gradient Animation */
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
     /* Responsive Design */
@@ -141,16 +283,44 @@
         <ul>
             {% for decision in decisions_queue %}
                 <li>
-                    <a href="{{ url_for('adv_ustatus', college=decision.short_name) }}" 
-                       class="college-link" 
-                       target="_blank">
-                        <span>
-                            {{ decision.display_name }} {{ decision.app_type }} Status Update
-                        </span>
-                        <span class="badge {{ decision.app_type | lower }}">
-                            {{ decision.app_type }}
-                        </span>
-                    </a>
+                    {% set is_opened = decision.unique_id in opened_colleges %}
+                    {% set is_available = decision.unique_id == selected_college %}
+                    
+                    {% if is_available %}
+                        <a href="#" 
+                           class="college-link available {% if decision.unique_id == selected_college %}active{% endif %}"
+                           onclick="handleClick('{{ decision.unique_id }}'); return false;">
+                            <span>
+                                {{ decision.display_name }} {{ decision.app_type }} Status Update
+                                <span class="release-date">({{ decision.formatted_release_date }})</span>
+                            </span>
+                            <span class="badge {{ decision.app_type | lower }}">
+                                {{ decision.app_type }}
+                            </span>
+                        </a>
+                    {% elif is_opened %}
+                        <a href="#" 
+                           class="college-link opened"
+                           onclick="handleClick('{{ decision.unique_id }}'); return false;">
+                            <span>
+                                {{ decision.display_name }} {{ decision.app_type }} Status Update
+                                <span class="release-date">({{ decision.formatted_release_date }})</span>
+                            </span>
+                            <span class="badge {{ decision.app_type | lower }}">
+                                {{ decision.app_type }}
+                            </span>
+                        </a>
+                    {% else %}
+                        <a href="#" class="college-link disabled">
+                            <span>
+                                {{ decision.display_name }} {{ decision.app_type }} Status Update
+                                <span class="release-date">({{ decision.formatted_release_date }})</span>
+                            </span>
+                            <span class="badge {{ decision.app_type | lower }}">
+                                {{ decision.app_type }}
+                            </span>
+                        </a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -159,10 +329,56 @@
     <!-- Main Content -->
     <div class="main-content">
         <h1>Admission Decisions</h1>
-        <div class="placeholder-message">
-            <p>Please click on a status update in the sidebar to view your admission decision for each college.</p>
+        {% if opened_decisions %}
+    {% for decision in opened_decisions %}
+        <div class="decision-box">
+            <h3>{{ decision.display_name }} - {{ decision.app_type }}</h3>
+            <p>
+                <strong>Decision:</strong> 
+                <span class="badge {{ decision.badge_class }}">
+                    {{ decision.decision }}
+                </span>
+            </p>
+            <p><strong>Release Date:</strong> {{ decision.release_date }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+        {% if not opened_decisions %}
+            <div class="placeholder-message">
+                <p>Please click on a status update in the sidebar to view your admission decision.</p>
+            </div>
+        {% endif %}
+
+        <!-- Buttons Section -->
+        <div class="buttons">
+            <a href="{{ url_for('chances') }}" class="back-button">Back to Chances</a>
+            <a href="{{ url_for('advancedsim') }}" class="continue-button">New Simulation</a>
+            <a href="{{ url_for('dashboard') }}" class="continue-button">Home</a>
         </div>
     </div>
 </div>
+
+<script>
+    function handleClick(uniqueId) {
+        // Extract short_name and app_type from uniqueId
+        const [shortName, appType] = uniqueId.split('_');
+
+        // Construct the adv_login URL with 'college' and 'next' parameters
+        const advLoginUrlTemplate = "{{ url_for('adv_login', college='COLLEGE', next=url_for('results', selected_college='UNIQUEID')) }}";
+        const advLoginUrl = advLoginUrlTemplate
+                                .replace('COLLEGE', shortName)
+                                .replace('UNIQUEID', uniqueId);
+        
+        // Open adv_login in a new tab
+        window.open(advLoginUrl, '_blank');
+
+        // Redirect current window to results with 'selected_college' parameter
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('selected_college', uniqueId);
+        window.location.href = currentUrl.toString();
+    }
+</script>
 
 {% endblock %}

@@ -13,7 +13,6 @@ app.secret_key = 'Tuvalu23'
 # init db
 init_db()
 
-
 # List of universities
 university_list = [
     {
@@ -187,6 +186,8 @@ college_list = [
     ["bing", "0.65", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
     ["buffalo", "0.87", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
+
+college_list_lower = [c[0].lower() for c in college_list]
 
 def login_required(f):
     @wraps(f)
@@ -1026,10 +1027,12 @@ def prepare_rd_schools():
 
     return rd_schools_prepared
 
+# summary route
+# summary route
 @app.route('/advancedsim/summary')
 @login_required
 def summary():
-    # Retrieve User Profile Data from session['quicksim_data']
+    # Retrieve User Profile Data from session['advancedsim_data']
     user_data = session.get('advancedsim_data', {})
     user_profile = {
         "Name": user_data.get("name", "N/A"),
@@ -1059,8 +1062,8 @@ def summary():
         university_info = next((uni for uni in university_list if uni["name"].lower() == ed_school.lower()), None)
         if college_entry and university_info:
             applied_colleges.append({
-                "app_type": "ED",  # Changed from "type" to "app_type"
-                "short_name": college_entry[0].lower(),  # Added "short_name"
+                "app_type": "ED",
+                "short_name": college_entry[0].lower(),
                 "display_name": university_info["display_name"],
                 "logo_url": university_info["logo"],
                 "public": "Public" if college_entry[4].upper() in ["PUB", "P"] else "Private"
@@ -1117,7 +1120,76 @@ def summary():
 
     print("Summary Route - Applied Colleges:", applied_colleges)  # Debugging
 
-    return render_template('summary.html', user_profile=user_profile, applied_colleges=applied_colleges)
+    # Build decisions_queue with necessary information
+    decisions_queue = []
+    for college in applied_colleges:
+        short_name = college.get('short_name', '').lower()
+        display_name = college.get('display_name', 'Unknown')
+        app_type = college.get('app_type', 'Unknown')
+        logo_url = college.get('logo_url', 'static/logos/default-logo.jpg')
+
+        # Fetch release_date based on app_type from college_list
+        c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
+        if not c_entry:
+            continue
+        
+        # Determine release date based on application type
+        if app_type == "ED":
+            release_date_str = c_entry[5] if c_entry[5] != "N"  else "2099-01-01"
+        elif app_type == "REA":
+            release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
+        elif app_type == "EA":
+            release_date_str = c_entry[6] if c_entry[6] != "N" else "2099-01-01"
+        else:  # RD or Deferred
+            release_date_str = c_entry[7] if c_entry[7] != "N" else "2099-01-01"
+
+        # Append to decisions_queue
+        decisions_queue.append({
+            "short_name": short_name,
+            "display_name": display_name,
+            "app_type": app_type,
+            "release_date": release_date_str,
+            "logo_url": logo_url
+        })
+
+    # Sort decisions_queue by release_date
+    try:
+        decisions_queue_sorted = sorted(
+            decisions_queue,
+            key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d')
+        )
+    except ValueError as e:
+        print(f"Error sorting decisions: {e}")
+        decisions_queue_sorted = decisions_queue  # Fallback to unsorted if error
+
+    print("Decisions Queue Sorted:", decisions_queue_sorted)  # Debugging
+
+    # Update final_results with release_date
+    final_results = session.get('final_results', {})
+    for decision in decisions_queue_sorted:
+        short_name = decision['short_name'].lower()
+        if short_name not in final_results:
+            final_results[short_name] = {}
+        final_results[short_name]['release_date'] = decision['release_date']
+    session['final_results'] = final_results
+
+    # Format release dates for better readability
+    for decision in decisions_queue_sorted:
+        try:
+            date_obj = datetime.strptime(decision['release_date'], '%Y-%m-%d')
+            decision['formatted_release_date'] = date_obj.strftime('%B %d, %Y')  # e.g., December 19, 2024
+        except ValueError:
+            decision['formatted_release_date'] = "Unknown Date"
+
+    print("Decisions Queue Sorted with Formatted Dates:", decisions_queue_sorted)  # Debugging
+
+    # Pass to template
+    return render_template(
+        'summary.html',
+        user_profile=user_profile,
+        applied_colleges=applied_colleges,
+        decisions_queue=decisions_queue_sorted
+    )
 
 # helper functions for chancing
 def sim10():
@@ -1189,7 +1261,7 @@ def classify(student_num):
         return 10
     
 def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurriculars, ap_courses, essayStrength, gpa, interviewStrength, app_type):
-    baseChance = float(collegeList[i][1])  # Acceptance rate as percentage (0-100)
+    baseChance = float(collegeList[i][1]) * 100  # Acceptance rate as percentage (0-100)
     interviewScore = interviewStrength
 
     student_num = 0.0
@@ -1330,7 +1402,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
     tier = classify(student_num)
     chances = 0
 
-    if baseChance < 0.05:  # <5%
+    if baseChance < 5:  # <5%
         if tier == 1:
             chances = 34 + random.uniform(-3, 2)  # 36 + (random *8 -4 -2)
         elif tier == 2:
@@ -1353,7 +1425,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 0.1
         else:
             chances = 0.05
-    elif baseChance < 0.1:  # <10%
+    elif baseChance < 10:  # <10%
         if tier == 1:
             chances = 44 + random.uniform(-6, 2)  # 46 + (random *8 -4 -2)
         elif tier == 2:
@@ -1376,7 +1448,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 0.1
         else:
             chances = 0.05
-    elif baseChance < 0.16:  # <16%
+    elif baseChance < 16:  # <16%
         if tier == 1:
             chances = 54 + random.uniform(-6, 2)
         elif tier == 2:
@@ -1399,7 +1471,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 1 + random.uniform(-0.1, 0.1)
         else:
             chances = 0.5 + random.uniform(-0.05, 0.05)
-    elif baseChance < 0.25:  # <25%
+    elif baseChance < 25:  # <25%
         if tier == 1:
             chances = 63 + random.uniform(-5, 5)
         elif tier == 2:
@@ -1422,7 +1494,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 2 + random.uniform(-0.1, 0.1)
         else:
             chances = 0.7 + random.uniform(-0.05, 0.05)
-    elif baseChance < 0.35:  # <35%
+    elif baseChance < 35:  # <35%
         if tier == 1:
             chances = 71 + random.uniform(-5, 5)
         elif tier == 2:
@@ -1445,7 +1517,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 7 + random.uniform(-4, 2)
         else:
             chances = 3 + random.uniform(-1, 1) - 2
-    elif baseChance < 0.45:  # <45%
+    elif baseChance < 45:  # <45%
         if tier == 1:
             chances = 75 + random.uniform(-5, 5)
         elif tier == 2:
@@ -1468,7 +1540,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 12 + random.uniform(-4, 2)
         else:
             chances = 4 + random.uniform(-0.1, 0.1) - 2
-    elif baseChance < 0.6:  # <60%
+    elif baseChance < 60:  # <60%
         if tier == 1:
             chances = 81 + random.uniform(-6, 2)
         elif tier == 2:
@@ -1491,7 +1563,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 7 + random.uniform(-3, 2)
         else:
             chances = 3 + random.uniform(-1, 1) - 2
-    elif baseChance < 0.8:  # <80%
+    elif baseChance < 80:  # <80%
         if tier == 1:
             chances = 86 + random.uniform(-6, 2)
         elif tier == 2:
@@ -1588,7 +1660,9 @@ def chances():
     session.pop('simulation_started', None)
     session.pop('final_results', None)
     session.pop('deferred_decisions', None)  # If you have deferred decisions
-    
+    session.pop('opened_colleges', None)     # Clear opened_colleges as well
+    session.pop('decisions_queue_sorted', None)  # Clear decisions_queue_sorted
+
     if request.method == 'POST':
         # After reviewing chances, proceed to results page
         flash("Chances reviewed successfully!", "success")
@@ -1596,8 +1670,68 @@ def chances():
         user_data = session.get('advancedsim_data', {})
         applied_colleges = session.get('applied_colleges', [])
         interview_chances = session.get('interview_chances', {})
-    
-        final_results = {}
+        
+        final_results = session.get('final_results', {})  # Get existing final_results
+        decisions_queue_sorted = session.get('decisions_queue_sorted', [])
+
+        # Build decisions_queue_sorted if not already
+        if not decisions_queue_sorted:
+            # Build decisions_queue_sorted similar to /results route
+            decisions_queue_sorted = []
+            for college in applied_colleges:
+                short_name = college.get('short_name', '').lower()
+                display_name = college.get('display_name', 'Unknown')
+                app_type = college.get('app_type', 'Unknown')
+                logo_url = college.get('logo_url', 'static/logos/default-logo.jpg')  # Default logo if missing
+
+                # Fetch release_date based on app_type from college_list
+                c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
+                if not c_entry:
+                    print(f"College '{short_name}' not found in college_list. Skipping.")
+                    continue
+
+                # Determine release date based on application type
+                if app_type == "ED":
+                    # Early Decision release date (assuming column[5] is ED release date)
+                    release_date_str = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
+                elif app_type == "REA":
+                    # Restrictive Early Action release date (assuming column[5] is REA release date)
+                    release_date_str = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
+                elif app_type == "EA":
+                    # Early Action release date (assuming column[6] is EA release date)
+                    release_date_str = c_entry[6] if len(c_entry) > 6 and c_entry[6] != "N" else "2099-01-01"
+                else:  # RD
+                    # Regular Decision release date (assuming column[7] is RD release date)
+                    release_date_str = c_entry[7] if len(c_entry) > 7 and c_entry[7] != "N" else "2099-01-01"
+
+                # Append to decisions_queue_sorted
+                decisions_queue_sorted.append({
+                    "short_name": short_name,
+                    "display_name": display_name,
+                    "app_type": app_type,
+                    "release_date": release_date_str,
+                    "formatted_release_date": format_date(release_date_str),
+                    "logo_url": logo_url
+                })
+
+                # Update final_results with release_date if not already present
+                if short_name not in final_results:
+                    final_results[short_name.lower()] = {
+                        'decision_code': 'R',  # Default to Rejected
+                        'app_type': app_type,
+                        'release_date': release_date_str
+                    }
+
+            # Sort decisions_queue_sorted by release_date
+            try:
+                decisions_queue_sorted = sorted(
+                    decisions_queue_sorted,
+                    key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d')
+                )
+            except ValueError as e:
+                print(f"Error sorting decisions: {e}")
+                # Fallback to unsorted
+
         for short_name, data in interview_chances.items():
             college_entry = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
             if not college_entry:
@@ -1606,18 +1740,19 @@ def chances():
             app_type = data['app_type']
             idx = college_list.index(college_entry)
             # Get final decision
-            decision_code = admissionsDecision(chances_val, app_type, idx, college_list)
-            final_results[short_name.lower()] = {
-                "decision_code": decision_code,
-                "display_name": data['display_name'],
-                "app_type": app_type,
-                "logo_url": data['logo_url'],
-                "public": data['public'],
-                "chances": data['chances']
-            }
-    
-        session['final_results'] = final_results
-    
+            decision_code = admissionsDecision(chances_val, app_type, idx, college_list, decisions_queue_sorted)
+            # Update final_results without overwriting
+            if short_name.lower() not in final_results:
+                final_results[short_name.lower()] = {}
+            final_results[short_name.lower()]['decision_code'] = decision_code
+            final_results[short_name.lower()]['app_type'] = app_type  # Ensure app_type is stored
+            final_results[short_name.lower()]['release_date'] = college_entry[7] if len(college_entry) > 7 else '2099-01-01'
+            # Add other relevant data if necessary
+
+        session['final_results'] = final_results  # Update the session with merged data
+        session['decisions_queue_sorted'] = decisions_queue_sorted  # Save sorted queue to session
+        session.pop('opened_colleges', None)      # Ensure opened_colleges is cleared
+
         return redirect(url_for('results'))
     
     # Handle GET request
@@ -1700,9 +1835,9 @@ def chances():
     return render_template('chances.html', interview_chances=interview_chances)
 
 # see if u get accepted or no
-def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
+def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sorted):
     yourFate = min(random.random() * 100, random.random() * 100) + random.random() * 30
-    collegeName = collegesApplied[collegeIndex][0]
+    collegeName = college_list[idx][0].lower()
 
     print(f"Admissions Decision for {collegeName}:")
     print(f"App Type: {appType}, Chances: {chances}, Fate: {yourFate}")
@@ -1711,7 +1846,6 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         if yourFate < chances:
             decision = "A"    # Admitted
         elif yourFate < chances + random.random() * 30:
-            schedule_deferred_decision(collegeName)
             decision = "D"    # Deferred
         else:
             decision = "R"    # Rejected
@@ -1719,7 +1853,6 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         if yourFate < chances:
             decision = "A"
         elif yourFate < chances + random.random() * 25:
-            schedule_deferred_decision(collegeName)
             decision = "D"
         else:
             decision = "R"
@@ -1727,7 +1860,6 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         if yourFate < chances:
             decision = "A"
         elif yourFate < chances + random.random() * 40:
-            schedule_deferred_decision(collegeName)
             decision = "D"
         else:
             decision = "R"
@@ -1747,49 +1879,28 @@ def admissionsDecision(chances, appType, collegeIndex, collegesApplied):
         decision = "NO"
         print(f"Unknown application type: {appType}")
 
+    # Create unique_id
+    unique_id = f"{collegeName.lower()}_{appType}".lower()
+
+    if 'final_results' not in session:
+        session['final_results'] = {}
+    session['final_results'][unique_id] = {
+        'decision_code': decision,
+        'app_type': appType,
+        'release_date': college_list[idx][7] if len(college_list[idx]) > 7 else '2099-01-01'
+    }
+
     print(f"Decision: {decision}")
+
+    if decision == "D":
+        # Schedule deferred decision by passing decisions_queue_sorted
+        schedule_deferred_decision(collegeName, decisions_queue_sorted)
+
     return decision
-
-def schedule_deferred_decision(college_name):
-    """
-    Schedules a deferred decision by storing it in the session.
-
-    Args:
-        college_name (str): The short name of the college.
-    """
-    # Retrieve the RD date from college_list
-    college_entry = next((c for c in college_list if c[0].lower() == college_name.lower()), None)
-    if college_entry and len(college_entry) > 7 and college_entry[7] != "N":
-        rd_date_str = college_entry[7]
-        try:
-            rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
-        except ValueError:
-            rd_date_str = "2099-01-01"  # Fallback date
-            rd_date = datetime.strptime(rd_date_str, "%Y-%m-%d")
-
-        # Store the deferred decision with the RD date
-        if 'deferred_decisions' not in session:
-            session['deferred_decisions'] = {}
-        session['deferred_decisions'][college_name.lower()] = {
-            "rd_date": rd_date_str,
-            "status": "deferred"
-        }
-        session.modified = True
-
-        print(f"Deferred Decision Scheduled for {college_name} on {rd_date_str}")
         
-def generate_final_decision(college_name):
-    """
-    Generates the final admission decision for a deferred application.
-
-    Args:
-        college_name (str): The short name of the college.
-
-    Returns:
-        str: The final decision code ('A', 'D', 'R', etc.).
-    """
-    chances_val = get_final_chances(college_name)
-    college_index = get_college_index(college_name)
+def generate_final_decision(college_unique_id):
+    chances_val = get_final_chances(college_unique_id)
+    college_index = get_college_index(college_unique_id)
     
     if college_index == -1:
         # College not found, default to Rejected
@@ -1799,58 +1910,39 @@ def generate_final_decision(college_name):
         chances=chances_val,
         appType="RD",
         collegeIndex=college_index,
-        collegesApplied=college_list
+        collegesApplied=college_list,
+        decisions_queue_sorted=session.get('decisions_queue_sorted', [])
     )
     
     return final_decision
 
-def get_final_chances(college_name):
-    """
-    Retrieves the chances value for a given college.
-
-    Args:
-        college_name (str): The short name of the college.
-
-    Returns:
-        float: The chances value (0-100).
-    """
+def get_final_chances(college_unique_id):
     interview_chances = session.get('interview_chances', {})
-    if college_name.lower() in interview_chances:
-        return interview_chances[college_name.lower()].get('chances', 50.0)
+    if college_unique_id.lower() in interview_chances:
+        return interview_chances[college_unique_id.lower()].get('chances', 50.0)
     return 50.0  # Default chance if not found
 
-def get_college_index(college_name):
-    """
-    Retrieves the index of a college in the college_list.
-
-    Args:
-        college_name (str): The short name of the college.
-
-    Returns:
-        int: The index of the college in college_list, or -1 if not found.
-    """
+def get_college_index(college_unique_id):
     for index, college in enumerate(college_list):
-        if college[0].lower() == college_name.lower():
+        unique_id = f"{college[0].lower()}_{college[4].lower()}"  # Assuming app_type is at index 4
+        if unique_id == college_unique_id.lower():
             return index
     return -1  # Not found
 
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
-    # Initialize simulation date if not present (Not needed for advancedsim)
-    # Removed 'current_sim_date' since it's irrelevant for advancedsim
-
-    # Retrieve user profile data from 'advancedsim_data'
+    # Retrieve user profile data from session
     user_data = session.get('advancedsim_data', {"name": "User"})
     name = user_data.get("name", "User")
 
-    # Retrieve applied colleges and results from session
+    # Retrieve applied colleges and final results from session
     applied_colleges = session.get('applied_colleges', [])
     final_results = session.get('final_results', {})
     read_emails = session.get('read_emails', {})
 
-    print("Applied Colleges:", applied_colleges)  # Debugging
-    print("Final Results:", final_results)        # Debugging
+    # Retrieve opened_colleges from session or initialize
+    opened_colleges = session.get('opened_colleges', [])
 
     # Build decisions_queue with necessary information
     decisions_queue = []
@@ -1867,29 +1959,40 @@ def results():
             continue
 
         # Determine release date based on application type
-        if app_type in ["ED", "REA"]:
-            release_date_str = c_entry[4] if c_entry[4] != "N" else "2099-01-01"  # ED or REA
-            if app_type == "REA":
-                release_date_str = c_entry[5] if c_entry[5] != "N" else "2099-01-01"
+        if app_type == "ED":
+            # Early Decision release date (assuming column[5] is ED release date)
+            release_date_str = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
+        elif app_type == "REA":
+            # Restrictive Early Action release date (assuming column[5] is REA release date)
+            release_date_str = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
         elif app_type == "EA":
-            release_date_str = c_entry[6] if c_entry[6] != "N" else "2099-01-01"
-        else:  # RD or Deferred
-            release_date_str = c_entry[7] if c_entry[7] != "N" else "2099-01-01"
+            # Early Action release date (assuming column[6] is EA release date)
+            release_date_str = c_entry[6] if len(c_entry) > 6 and c_entry[6] != "N" else "2099-01-01"
+        else:  # RD
+            # Regular Decision release date (assuming column[7] is RD release date)
+            release_date_str = c_entry[7] if len(c_entry) > 7 and c_entry[7] != "N" else "2099-01-01"
+
+        # Create unique_id
+        unique_id = f"{short_name}_{app_type}".lower()
 
         # Append to decisions_queue
         decisions_queue.append({
             "short_name": short_name,
+            "unique_id": unique_id,  # Ensure unique_id is set
             "display_name": display_name,
             "app_type": app_type,
             "release_date": release_date_str,
+            "formatted_release_date": format_date(release_date_str),
             "logo_url": logo_url
         })
 
-        # Update final_results with release_date
-        if short_name in final_results:
-            final_results[short_name]['release_date'] = release_date_str
-        else:
-            final_results[short_name] = {'decision_code': 'R', 'release_date': release_date_str}  # Default decision_code if not present
+        # Update final_results with release_date if not already present
+        if unique_id not in final_results:
+            final_results[unique_id] = {
+                'decision_code': 'R',  # Default to Rejected
+                'app_type': app_type,
+                'release_date': release_date_str
+            }
 
     # Sort decisions_queue by release_date
     try:
@@ -1905,40 +2008,215 @@ def results():
 
     # Update session with updated final_results
     session['final_results'] = final_results
+    session['decisions_queue_sorted'] = decisions_queue_sorted  # Save sorted queue to session
 
-    # Format release dates for better readability
+    # Determine the first unopened status update
+    first_unopened = None
     for decision in decisions_queue_sorted:
+        if decision['unique_id'] not in opened_colleges:
+            first_unopened = decision['unique_id']
+            break
+
+    # Handle 'selected_college' query parameter
+    selected_college_unique_id = request.args.get('selected_college', None)
+    if selected_college_unique_id:
+        # Split unique_id into short_name and app_type
         try:
-            date_obj = datetime.strptime(decision['release_date'], '%Y-%m-%d')
-            decision['formatted_release_date'] = date_obj.strftime('%B %d, %Y')  # e.g., December 19, 2024
+            selected_short_name, selected_app_type = selected_college_unique_id.split('_', 1)
         except ValueError:
-            decision['formatted_release_date'] = "Unknown Date"
+            selected_short_name = selected_college_unique_id
+            selected_app_type = 'Unknown'
 
-    print("Decisions Queue Sorted with Formatted Dates:", decisions_queue_sorted)  # Debugging
+        selected_unique_id = selected_college_unique_id.lower()
 
-    # Pass to template
+        # Check if unique_id is already in opened_colleges
+        if selected_unique_id not in opened_colleges:
+            # Add to opened_colleges
+            opened_colleges.append(selected_unique_id)
+            session['opened_colleges'] = opened_colleges
+
+            # Get the decision_code to determine if deferred
+            decision_info = final_results.get(selected_unique_id, {})
+            decision_code = decision_info.get('decision_code', 'R')
+
+            if decision_code == "D":
+                # Schedule deferred decision by adding a new status update
+                schedule_deferred_decision(selected_short_name.lower(), decisions_queue_sorted)
+
+            # After opening, automatically set the next status update as active
+            remaining_decisions = [
+                d['unique_id'] for d in decisions_queue_sorted if d['unique_id'] not in opened_colleges
+            ]
+            if remaining_decisions:
+                next_selected_unique_id = remaining_decisions[0]
+                selected_college_unique_id = next_selected_unique_id
+                # Do not add to opened_colleges yet; wait until clicked
+            else:
+                selected_college_unique_id = None
+    else:
+        # If no selected_college is provided, set it to the first unopened decision
+        selected_college_unique_id = first_unopened
+
+    # Collect all opened decisions to display in main content
+    opened_decisions = []
+    for unique_id in opened_colleges:
+        # Split unique_id to get short_name and app_type
+        try:
+            short_name, app_type = unique_id.split('_', 1)
+        except ValueError:
+            short_name = unique_id
+            app_type = 'Unknown'
+
+        decision_info = final_results.get(unique_id, {})
+        decision_code = decision_info.get('decision_code', 'R')  # Default to 'R' (Rejected)
+        app_type = decision_info.get('app_type', 'Unknown')
+        release_date_str = decision_info.get('release_date', 'Unknown Date')
+
+        # Format release date
+        formatted_release_date = format_date(release_date_str)
+
+        # Map decision_code to display info and badge class
+        if decision_code == "A":
+            display_decision = "Acceptance"
+            badge_class = "acceptance"
+        elif decision_code == "E":
+            display_decision = "Early Decision Acceptance"
+            badge_class = "acceptance"
+        elif decision_code == "D":
+            display_decision = "Deferred"
+            badge_class = "deferred"
+        elif decision_code == "W":
+            display_decision = "Waitlisted"
+            badge_class = "waitlist"
+        else:
+            display_decision = "Rejection"
+            badge_class = "rejection"
+
+        # Get display name
+        display_name = next(
+            (uni["display_name"] for uni in university_list if uni["name"].lower() == short_name),
+            short_name.capitalize()
+        )
+
+        decision_entry = {
+            "short_name": short_name,
+            "display_name": display_name,
+            "app_type": app_type,
+            "decision": display_decision,
+            "badge_class": badge_class,
+            "release_date": formatted_release_date,
+            "logo_url": next(
+                (uni["logo"] for uni in university_list if uni["name"].lower() == short_name),
+                "static/logos/default-logo.jpg"
+            )
+        }
+
+        opened_decisions.append(decision_entry)
+
+    # Pass data to the template
     return render_template(
         'results.html',
         simulation_started=session.get('simulation_started', False),
         decisions_queue=decisions_queue_sorted,  # Pass sorted decisions
         final_results=final_results,
         read_emails=read_emails,
-        name=name
+        name=name,
+        app_type=app_type,
+        opened_decisions=opened_decisions,  # List of opened decisions
+        total_decisions=len(opened_decisions),
+        first_unopened=first_unopened,  # Pass first_unopened
+        selected_college=selected_college_unique_id  # Pass selected_college for active link highlighting
     )
+
+def format_date(date_str):
+    """
+    Formats a date string from YYYY-MM-DD to 'Month DD, YYYY'.
+    """
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        return date_obj.strftime('%B %d, %Y')  # e.g., December 19, 2024
+    except ValueError:
+        return "Unknown Date"
+
+def schedule_deferred_decision(college_short_name, decisions_queue_sorted):
+    """
+    Adds a deferred decision as a new status update with the RD release date.
+    """
+    # Find the college entry
+    college_entry = next((c for c in college_list if c[0].lower() == college_short_name.lower()), None)
+    if not college_entry:
+        print(f"College '{college_short_name}' not found in college_list.")
+        return
+
+    # Get the RD release date
+    rd_release_date = college_entry[7] if len(college_entry) > 7 else "2099-01-01"
+    formatted_rd_release_date = format_date(rd_release_date)
+
+    # Create unique_id for RD
+    unique_id = f"{college_short_name}_rd".lower()
+
+    # Check if RD release date is already in the decisions_queue_sorted
+    rd_exists = any(
+        d.get('unique_id') == unique_id and d.get('release_date') == rd_release_date
+        for d in decisions_queue_sorted
+    )
+    if not rd_exists:
+        # Append the deferred RD status update
+        new_status_update = {
+            "short_name": college_short_name,
+            "unique_id": unique_id,
+            "display_name": next(
+                (uni["display_name"] for uni in university_list if uni["name"].lower() == college_short_name),
+                college_short_name.capitalize()
+            ),
+            "app_type": "RD",  # Regular Decision
+            "release_date": rd_release_date,
+            "formatted_release_date": formatted_rd_release_date,
+            "logo_url": next(
+                (uni["logo"] for uni in university_list if uni["name"].lower() == college_short_name),
+                "static/logos/default-logo.jpg"
+            )
+        }
+        decisions_queue_sorted.append(new_status_update)
+        # Re-sort the decisions_queue_sorted
+        try:
+            decisions_queue_sorted.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
+        except ValueError as e:
+            print(f"Error sorting decisions after adding deferred decision: {e}")
+            # If sorting fails, do not sort
+
+        print(f"Deferred RD status update added for {college_short_name} with release date {rd_release_date}")
+
+        # Update the session['final_results'] with the RD decision
+        if 'final_results' in session:
+            session['final_results'][unique_id] = {
+                'decision_code': 'D',
+                'app_type': 'RD',
+                'release_date': rd_release_date
+            }
 
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
 def adv_login(college):
     user_data = session.get('advancedsim_data', {"name": "User"})
+    
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        if not email or not password:
-            return render_template(f"adv/{college}/login.html", error="Please fill out all fields.", college=college)
         
-        return redirect(url_for("adv_ustatus", college=college))
+        # Validate inputs
+        if not email or not password:
+            flash("Please fill out all fields.", "danger")
+            return render_template(f"adv/{college}/login.html", error="Please fill out all fields.", college=college, date=user_data.get("date", "N/A"))
+        
+        success = True  # Replace this with actual authentication logic
+        
+        if success:
+            return redirect(url_for('adv_ustatus', college=college))
+        else:
+            return render_template(f"adv/{college}/login.html", error="Invalid credentials.", college=college, date=user_data.get("date", "N/A"))
     
-    return render_template(f"adv/{college}/login.html", name=user_data.get("name"), college=college)
-
+    # GET request; render the login template
+    return render_template(f"adv/{college}/login.html", name=user_data.get("name"), college=college, date=user_data.get("date", "N/A"))
 
 # Advanced Simulation Ustatus Route
 @app.route("/advancedsim/<college>/ustatus", methods=["GET", "POST"])
@@ -1960,7 +2238,7 @@ def adv_ustatus(college):
         session['read_emails'][college.lower()] = True
         session.modified = True
 
-        # Redirect to final decision page based on decision code
+        # Redirect to final decision page based on decision_code
         if decision_code == "A":
             return redirect(url_for("adv_acceptance", college=college))
         elif decision_code == "E":
@@ -1971,20 +2249,25 @@ def adv_ustatus(college):
             return redirect(url_for("adv_waitlist", college=college))
         else:
             return redirect(url_for("adv_rejection", college=college))
-
+    
     # Safely retrieve 'name' from user_data
     name = user_data.get("name", "User")
-    date = release_date_str  # Use release_date_str from decision_info
-
+    
+    # Format the release date
+    try:
+        date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = date_obj.strftime('%B %d, %Y')  # e.g., December 19, 2024
+    except ValueError:
+        formatted_date = "Unknown Date"
+    
     return render_template(
         f"adv/{college}/ustatus.html",
         name=name,
-        date=date,  # Pass the release date to the template
+        date=formatted_date,  # Pass the formatted date
         college=college,
         decision_code=decision_code  # Pass decision_code for template use
     )
 
-# Add this new route to handle marking emails as read
 @app.route('/advancedsim/results/mark_as_read', methods=["POST"])
 @login_required
 def mark_as_read():
@@ -2169,11 +2452,6 @@ def advancedsim_acceptance_files_static(college, filename):
 @app.route('/advancedsim/<college>/rejection_files/<path:filename>')
 def advancedsim_rejection_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'rejection_files'), filename)
-
-@app.route('/advancedsim/<college>/ball_images/<path:filename>')
-def advancedsim_ball_files_static(college, filename):
-    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'ball_images'), filename)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
