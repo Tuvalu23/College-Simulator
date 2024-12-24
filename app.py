@@ -16,150 +16,380 @@ init_db()
 # List of universities
 university_list = [
     {
-    "name": "bing",
-    "display_name": "Binghamton University",
-    "logo": "static/logos/bing-logo.png",
-    "description": "Binghamton University, part of the State University of New York (SUNY) system, is a premier public institution known for its academic excellence and research opportunities. Located in Vestal, New York, Binghamton offers a diverse and vibrant campus community, rigorous academic programs, and a strong emphasis on affordability and student success."
+        "name": "bing",
+        "display_name": "Binghamton University",
+        "logo": "static/logos/bing-logo.png",
+        "description": "Binghamton University, located in Vestal, NY, is a top public institution known for its strong research programs, affordability, and vibrant campus life. It offers a diverse range of undergraduate and graduate programs that prepare students for successful careers and leadership roles.",
+        "badges": [
+            {"label": "Public", "color": "green"},
+            {"label": "Suburban", "color": "blue"},
+            {"label": "Research", "color": "purple"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Affordable", "color": "green"},
+            {"label": "Diverse", "color": "teal"}
+        ]
     },
     {
         "name": "brown",
         "display_name": "Brown University",
         "logo": "static/logos/brown-logo.jpg",
-        "description": "Brown University, founded in 1764 and located in Providence, Rhode Island, is an Ivy League institution known for its innovative Open Curriculum. Ranked consistently among the top 20 universities in the United States, Brown emphasizes interdisciplinary scholarship, undergraduate teaching, and a vibrant campus culture."
+        "description": "Brown University in Providence, RI, is an esteemed Ivy League institution celebrated for its Open Curriculum, fostering academic freedom and interdisciplinary studies. It boasts a vibrant community committed to research, creativity, and global engagement.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "Liberal Arts", "color": "purple"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Innovative", "color": "pink"},
+            {"label": "Creative", "color": "orange"}
+        ]
     },
     {
-    "name": "buffalo",
-    "display_name": "University at Buffalo",
-    "logo": "static/logos/buffalo-logo.jpg",
-    "description": "The University at Buffalo, part of the State University of New York (SUNY) system, is a leading public research university located in Buffalo, New York. Known for its diverse academic programs, robust research opportunities, and vibrant campus life, UB offers students an affordable yet world-class education. With a strong focus on innovation and community engagement, UB prepares students for success in a global society."
+        "name": "buffalo",
+        "display_name": "University at Buffalo",
+        "logo": "static/logos/buffalo-logo.jpg",
+        "description": "The University at Buffalo, part of the SUNY system, is a large public research university in Buffalo, NY. It is recognized for its robust academic programs, cutting-edge research initiatives, and commitment to community engagement.",
+        "badges": [
+            {"label": "Public", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Diverse", "color": "teal"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Innovation", "color": "pink"}
+        ]
     },
     {
         "name": "caltech",
         "display_name": "California Institute of Technology",
         "logo": "static/logos/caltech-logo.jpg",
-        "description": "The California Institute of Technology (Caltech), established in 1891 in Pasadena, California, is a small but prestigious science and engineering powerhouse. Frequently ranked among the world’s top 10 universities, Caltech is renowned for cutting-edge research in physics, astronomy, engineering, and the natural sciences."
+        "description": "Caltech in Pasadena, CA, is a world-renowned private institution specializing in science and engineering. It fosters a collaborative environment that encourages innovation and scientific discovery with a highly selective student body.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Innovative", "color": "pink"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Engineering", "color": "green"}
+        ]
     },
     {
         "name": "cmu",
         "display_name": "Carnegie Mellon University",
         "logo": "static/logos/cmu-logo.jpg",
-        "description": "Carnegie Mellon University (CMU), founded in 1900 in Pittsburgh, Pennsylvania, is a global research university notable for top-ranked programs in computer science, fine arts, and engineering. CMU consistently ranks among the top 30 U.S. universities and is known for fostering a culture of innovation, entrepreneurship, and interdisciplinary exploration."
+        "description": "Carnegie Mellon University in Pittsburgh, PA, is a leading global research institution known for its exceptional programs in computer science, engineering, and the arts. It promotes interdisciplinary research and creative innovation within a collaborative academic environment.",
+        "badges": [
+            {"label": "T-20", "color": "silver"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Innovative", "color": "pink"},
+            {"label": "Computer Science", "color": "green"},
+            {"label": "Arts", "color": "teal"}
+        ]
     },
     {
         "name": "columbia",
         "display_name": "Columbia University",
         "logo": "static/logos/columbia-logo.jpg",
-        "description": "Columbia University, established in 1754 in the heart of New York City, is an Ivy League institution with a diverse range of undergraduate and graduate programs. Regularly ranked in the top 10 nationally, Columbia emphasizes a robust Core Curriculum, cutting-edge research, and close engagement with the cultural and professional opportunities of NYC."
+        "description": "Columbia University in New York City is an esteemed Ivy League institution known for its rigorous Core Curriculum and commitment to academic excellence. Located in the heart of NYC, it offers a dynamic environment that blends tradition with innovation.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Diverse", "color": "teal"},
+            {"label": "Global", "color": "orange"},
+            {"label": "Liberal Arts", "color": "pink"}
+        ]
     },
     {
         "name": "cornell",
         "display_name": "Cornell University",
         "logo": "static/logos/cornell-logo.jpg",
-        "description": "Cornell University, founded in 1865 in Ithaca, New York, is both an Ivy League and land-grant institution. It offers a wide array of programs across its undergraduate colleges and professional schools. Routinely ranked among the top 20 universities, Cornell is celebrated for its commitment to public engagement, interdisciplinary research, and inclusive community."
+        "description": "Cornell University in Ithaca, NY, is a distinguished Ivy League and land-grant institution known for its comprehensive academic programs and strong research initiatives. It fosters innovation and excellence across multiple disciplines.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Rural", "color": "blue"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Engineering", "color": "orange"},
+            {"label": "Land-Grant", "color": "teal"},
+            {"label": "Agriculture", "color": "green"}
+        ]
     },
     {
         "name": "dartmouth",
         "display_name": "Dartmouth College",
         "logo": "static/logos/dartmouth-logo.png",
-        "description": "Dartmouth College, established in 1769 in Hanover, New Hampshire, is an Ivy League institution emphasizing a liberal arts undergraduate education. Regularly placed in the top 15 U.S. colleges, Dartmouth provides a close-knit community, small class sizes, and a distinctive focus on experiential learning and undergraduate research."
+        "description": "Dartmouth College in Hanover, NH, is a prestigious Ivy League institution focusing on liberal arts education and undergraduate teaching. It offers a close-knit community that encourages academic rigor and personal growth.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Rural", "color": "blue"},
+            {"label": "Liberal Arts", "color": "purple"},
+            {"label": "Undergraduate", "color": "pink"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Tradition", "color": "orange"}
+        ]
     },
     {
         "name": "duke",
         "display_name": "Duke University",
         "logo": "static/logos/duke-logo.jpg",
-        "description": "Duke University, founded in 1838 in Durham, North Carolina, is a private research university known for strong programs in medicine, engineering, public policy, and the liberal arts. Often ranked in the top 10-15 nationally, Duke combines rigorous academics with a spirited athletic culture and a global outlook."
+        "description": "Duke University in Durham, NC, is a prestigious private research institution renowned for its strong programs in research, health sciences, and athletics. It blends academic excellence with a vibrant campus life.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Suburban", "color": "green"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Health Sciences", "color": "teal"},
+            {"label": "Athletics", "color": "orange"},
+            {"label": "Leadership", "color": "gold"}
+        ]
+    },
+    {
+        "name": "emory",
+        "display_name": "Emory University",
+        "logo": "static/logos/emory-logo.jpg",
+        "description": "Emory University in Atlanta, GA, is a distinguished private institution known for its strong programs in liberal arts and health sciences. It offers a collaborative environment that fosters academic excellence and community engagement.",
+        "badges": [
+            {"label": "T-30", "color": "gray"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "Research", "color": "green"},
+            {"label": "Health Sciences", "color": "teal"},
+            {"label": "Liberal Arts", "color": "pink"},
+            {"label": "Community", "color": "green"}
+        ]
     },
     {
         "name": "gtech",
         "display_name": "Georgia Tech",
         "logo": "static/logos/gtech-logo.jpg",
-        "description": "The Georgia Institute of Technology, founded in 1885 in Atlanta, Georgia, is a leading public research university. Known for top-tier engineering, computing, and business programs, Georgia Tech ranks among the top 10 public universities in the U.S. and fosters a culture of innovation and applied research."
+        "description": "Georgia Institute of Technology in Atlanta, GA, is a premier public research university renowned for its exceptional engineering and technology programs. It fosters innovation and excellence through cutting-edge research and collaborative initiatives.",
+        "badges": [
+            {"label": "T-30", "color": "gray"},
+            {"label": "Public", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Innovative", "color": "pink"},
+            {"label": "Engineering", "color": "purple"},
+            {"label": "Technology", "color": "teal"}
+        ]
     },
     {
         "name": "harvard",
         "display_name": "Harvard University",
         "logo": "static/logos/harvard-logo.jpg",
-        "description": "Harvard University, established in 1636 in Cambridge, Massachusetts, is the oldest institution of higher learning in the U.S. Consistently ranked #1 or #2 globally, Harvard offers unparalleled resources, a vast network of alumni, and a broad range of top-ranked programs in the arts, sciences, medicine, law, and business."
+        "description": "Harvard University in Cambridge, MA, is the oldest higher education institution in the U.S., consistently ranked among the world's top universities. It is renowned for its extensive research programs, diverse academic offerings, and influential alumni network.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "Liberal Arts", "color": "purple"},
+            {"label": "Research", "color": "green"},
+            {"label": "Global", "color": "orange"},
+            {"label": "Leadership", "color": "teal"}
+        ]
     },
     {
         "name": "jhu",
         "display_name": "Johns Hopkins University",
         "logo": "static/logos/jhu-logo.jpg",
-        "description": "Johns Hopkins University, founded in 1876 in Baltimore, Maryland, pioneered the modern research university model in the U.S. Renowned for its medical school, public health, international studies, and biomedical engineering programs, JHU consistently ranks in the top 15 nationally and is a global leader in groundbreaking research."
+        "description": "Johns Hopkins University in Baltimore, MD, is a world-leading research institution renowned for its contributions to medicine, public health, and scientific disciplines. It offers a collaborative academic environment with state-of-the-art facilities.",
+        "badges": [
+            {"label": "T-20", "color": "silver"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "Research", "color": "green"},
+            {"label": "Health Sciences", "color": "teal"},
+            {"label": "Medicine", "color": "orange"},
+            {"label": "Public Health", "color": "green"}
+        ]
     },
     {
         "name": "mit",
         "display_name": "Massachusetts Institute of Technology",
         "logo": "static/logos/mit-logo.jpg",
-        "description": "The Massachusetts Institute of Technology (MIT), established in 1861 in Cambridge, Massachusetts, is a world leader in science, technology, and engineering education. Perennially ranked among the top 5 universities worldwide, MIT is known for a culture of invention, interdisciplinary collaboration, and hands-on problem-solving."
+        "description": "MIT in Cambridge, MA, is a global leader in STEM education, research, and innovation. Known for its cutting-edge engineering and technology programs, MIT fosters a collaborative and entrepreneurial environment.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Innovative", "color": "pink"},
+            {"label": "Engineering", "color": "green"},
+            {"label": "Technology", "color": "teal"}
+        ]
     },
     {
         "name": "northwestern",
         "display_name": "Northwestern University",
         "logo": "static/logos/northwestern-logo.jpg",
-        "description": "Northwestern University, founded in 1851 in Evanston, Illinois (just north of Chicago), is a top-10 U.S. research university. Renowned for its journalism, business (Kellogg), law, and performing arts programs, Northwestern champions interdisciplinary collaborations and provides students with rich academic and cultural opportunities."
+        "description": "Northwestern University in Evanston, IL, near Chicago, is a premier private research institution known for its interdisciplinary studies and vibrant campus life. It excels in fields like performing arts, communication, engineering, and business.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Suburban", "color": "green"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Performing Arts", "color": "teal"},
+            {"label": "Innovation", "color": "orange"},
+            {"label": "Media", "color": "pink"}
+        ]
     },
     {
         "name": "nyu",
         "display_name": "New York University",
         "logo": "static/logos/nyu-logo.jpg",
-        "description": "New York University (NYU), established in 1831, is located in the heart of Manhattan. With global campuses and a wide array of programs, NYU is recognized for its business, film, performing arts, and social science disciplines. Routinely ranked in the top 30 U.S. universities, NYU offers unparalleled internship and cultural experiences."
+        "description": "NYU in Manhattan, NY, is a leading private institution known for its global presence and diverse academic offerings. It provides unique opportunities for international study and excels in arts, business, law, and social sciences.",
+        "badges": [
+            {"label": "T-30", "color": "gray"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "Liberal Arts", "color": "green"},
+            {"label": "Global", "color": "teal"},
+            {"label": "Arts", "color": "pink"},
+            {"label": "International", "color": "orange"}
+        ]
     },
     {
         "name": "princeton",
         "display_name": "Princeton University",
         "logo": "static/logos/princeton-logo.jpg",
-        "description": "Princeton University, founded in 1746 in Princeton, New Jersey, is one of the world’s foremost Ivy League institutions. Consistently ranked #1 or #2 among U.S. universities, Princeton is celebrated for its rigorous undergraduate focus, generous financial aid, and research excellence across the humanities, sciences, and engineering."
+        "description": "Princeton University in Princeton, NJ, is a prestigious Ivy League institution known for its strong undergraduate focus and commitment to academic excellence. It offers diverse programs across the humanities, sciences, and engineering.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Suburban", "color": "blue"},
+            {"label": "Liberal Arts", "color": "purple"},
+            {"label": "Research", "color": "green"},
+            {"label": "Undergraduate", "color": "teal"},
+            {"label": "Leadership", "color": "orange"}
+        ]
     },
     {
-    "name": "rice",
-    "display_name": "Rice University",
-    "logo": "static/logos/rice-logo.jpg",
-    "description": "Founded in 1912 in Houston, Texas, Rice University is a leading research institution known for its distinctive residential college system, close-knit campus community, and interdisciplinary approach to education. Consistently ranked among the nation’s top universities, Rice boasts a strong emphasis on undergraduate teaching, world-class STEM programs, and a tradition of fostering collaboration, innovation, and scholarly excellence."
+        "name": "rice",
+        "display_name": "Rice University",
+        "logo": "static/logos/rice-logo.jpg",
+        "description": "Rice University in Houston, TX, is a top private research institution known for its emphasis on STEM fields and a close-knit residential community. It offers comprehensive programs in engineering, sciences, humanities, and business.",
+        "badges": [
+            {"label": "T-15", "color": "silver"}, 
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Residential", "color": "teal"},
+            {"label": "Research", "color": "green"},
+            {"label": "Business", "color": "pink"}
+        ]
     },
     {
         "name": "stanford",
         "display_name": "Stanford University",
         "logo": "static/logos/stanford-logo.jpg",
-        "description": "Stanford University, established in 1885 near Palo Alto, California, is a top-tier private research institution known for its entrepreneurial spirit and proximity to Silicon Valley. Frequently ranked among the world’s top 5 universities, Stanford excels in engineering, business, computer science, the humanities, and the sciences."
+        "description": "Stanford University near Silicon Valley, CA, is a leading private institution renowned for its entrepreneurial spirit and cutting-edge innovations. It offers diverse programs in engineering, business, humanities, and sciences.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Suburban", "color": "green"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Entrepreneurial", "color": "pink"},
+            {"label": "Innovation", "color": "orange"},
+            {"label": "Leadership", "color": "teal"}
+        ]
     },
     {
         "name": "berkeley",
         "display_name": "University of California, Berkeley",
         "logo": "static/logos/berkeley-logo.png",
-        "description": "The University of California, Berkeley, founded in 1868 in the San Francisco Bay Area, is the flagship campus of the UC system. Consistently ranked the #1 public university in the U.S., Berkeley leads in sciences, engineering, social sciences, and the humanities, with a renowned tradition of public service and political activism."
+        "description": "UC Berkeley in Berkeley, CA, is the flagship campus of the UC system and a top public university in the U.S. Renowned for its distinguished faculty and groundbreaking research, it offers a wide range of programs in arts, sciences, engineering, and business.",
+        "badges": [
+            {"label": "T-15", "color": "silver"},
+            {"label": "Public", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "Research", "color": "purple"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Innovation", "color": "pink"},
+            {"label": "Diversity", "color": "teal"}
+        ]
     },
     {
         "name": "umich",
         "display_name": "University of Michigan",
         "logo": "static/logos/umich-logo.png",
-        "description": "The University of Michigan, established in 1817 in Ann Arbor, is a top public research university noted for its outstanding faculty, diverse academic programs, and passionate athletic community. Consistently ranked in the top 25, UMich excels across disciplines, from engineering and medicine to business, arts, and the social sciences."
+        "description": "The University of Michigan in Ann Arbor, MI, is a leading public research university known for its vibrant academic environment and outstanding athletic programs. It offers a diverse array of programs across humanities, sciences, engineering, and business.",
+        "badges": [
+            {"label": "T-20", "color": "bronze"},
+            {"label": "Public", "color": "green"},
+            {"label": "Suburban", "color": "blue"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Athletics", "color": "teal"},
+            {"label": "STEM", "color": "orange"},
+            {"label": "Diversity", "color": "pink"}
+        ]
     },
     {
         "name": "uchicago",
         "display_name": "University of Chicago",
         "logo": "static/logos/uchicago-logo.jpg",
-        "description": "The University of Chicago, founded in 1890 on the South Side of Chicago, is world-renowned for its rigorous intellectual environment, the Core Curriculum, and strengths in economics, law, and the social sciences. Regularly in the top 10, UChicago’s culture of inquiry fosters transformative research and critical debate."
+        "description": "The University of Chicago in Chicago, IL, is renowned for its rigorous intellectual environment and influential Core Curriculum. As a prestigious private research university, it excels in economics, sociology, and various other disciplines.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "Liberal Arts", "color": "green"},
+            {"label": "Economics", "color": "orange"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Intellectual", "color": "teal"}
+        ]
     },
     {
         "name": "upenn",
         "display_name": "University of Pennsylvania",
         "logo": "static/logos/upenn-logo.jpg",
-        "description": "The University of Pennsylvania (Penn), established in 1740 in Philadelphia, is an Ivy League university that blends liberal arts and professional education. Consistently ranked in the top 10, Penn is celebrated for the Wharton School of Business, as well as top programs in law, medicine, and the social sciences."
+        "description": "The University of Pennsylvania in Philadelphia, PA, is an esteemed Ivy League institution known for its prestigious Wharton School of Business and interdisciplinary education. It offers diverse programs in arts, sciences, engineering, and business within a dynamic urban setting.",
+        "badges": [
+            {"label": "T-10", "color": "silver"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "Research", "color": "purple"},
+            {"label": "Business", "color": "orange"},
+            {"label": "Wharton", "color": "teal"},
+            {"label": "Leadership", "color": "pink"}
+        ]
     },
     {
         "name": "usc",
         "display_name": "University of Southern California",
         "logo": "static/logos/usc-logo.png",
-        "description": "The University of Southern California (USC), founded in 1880 in Los Angeles, is a leading private research institution. Known for its world-class film school, strong engineering, business, and communication programs, USC offers a vibrant campus life, global outreach, and deep connections to the industries of Southern California."
+        "description": "USC in Los Angeles, CA, is a prestigious private research university known for its strong programs in film, business, and the arts. It offers a vibrant urban campus with ample opportunities for internships, networking, and creative expression.",
+        "badges": [
+            {"label": "T-30", "color": "gray"},
+            {"label": "Private", "color": "blue"},
+            {"label": "Urban", "color": "purple"},
+            {"label": "Liberal Arts", "color": "green"},
+            {"label": "Film", "color": "pink"},
+            {"label": "Business", "color": "orange"},
+            {"label": "Innovation", "color": "teal"}
+        ]
     },
     {
         "name": "yale",
         "display_name": "Yale University",
         "logo": "static/logos/yale-logo.jpg",
-        "description": "Yale University, established in 1701 in New Haven, Connecticut, is an Ivy League institution renowned for its stellar liberal arts education, top-ranked law school, and vibrant arts programs. Consistently placed among the top 3-5 U.S. universities, Yale’s residential college system, world-class faculty, and global network ensure a transformative academic experience."
+        "description": "Yale University in New Haven, CT, is a prestigious Ivy League institution renowned for its outstanding programs in law, liberal arts, and the sciences. It offers a rich academic environment with a focus on research, intellectual growth, and leadership development.",
+        "badges": [
+            {"label": "T-5", "color": "gold"},
+            {"label": "Ivy", "color": "green"},
+            {"label": "Urban", "color": "blue"},
+            {"label": "Liberal Arts", "color": "purple"},
+            {"label": "Law", "color": "orange"},
+            {"label": "Research", "color": "teal"},
+            {"label": "Leadership", "color": "pink"}
+        ]
     }
 ]
+
 
 college_list = [
     ["columbia", "0.02", "1.9", "N", "P", "2024-12-18", "N", "2025-03-28"],
@@ -180,6 +410,7 @@ college_list = [
     ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],
     ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-28"],
     ["berkeley", "0.15", "N", "N", "PUB", "N", "N", "2025-03-27"],
+    ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-26"],
     ["usc", "0.17", "N", "1.3", "P", "N", "2025-1-17", "2025-03-16"],
     ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-1-27", "2025-03-10"],
     ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-04-01"],
@@ -343,7 +574,8 @@ def statistics():
             'total_simulations': total,
             'acceptances': acceptances,
             'rejections': rejections,
-            'success_rate': round(success_rate, 2)
+            'success_rate': round(success_rate, 2),
+            'badges': uni['badges']  # **Include badges here**
         }
 
     # Sort by acceptances and rejections
@@ -356,7 +588,7 @@ def statistics():
         rejections_stats=sorted_by_rejections,
         sorted_stats=sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
     )
-
+    
 # quick sim
 @app.route("/quicksim", methods=["GET", "POST"])
 @login_required

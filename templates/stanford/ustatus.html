@@ -152,11 +152,25 @@
 	  <h3>Status Update</h3>
 	  New updates to your application were posted {{ date }}<br><br>
 	  
-	  <form action="{{ url_for('ustatus', college=college) }}" method="POST">
-		<button type="submit" class="status-header__logout" style="outline-style:none; padding: 8px 16px; background-color: #ffffc9; border: none; cursor: pointer; font-weight: bold; font-size: 14px;">
-		  View Decision
+	  <form action="{{ url_for('adv_ustatus', college=college) }}" method="POST">
+		<button type="submit" 
+				class="status-header__logout" 
+				style="
+					outline-style: none; 
+					padding: 0px 21px; 
+					background-color: #ffffc9; 
+					border: none; 
+					cursor: pointer; 
+					font-weight: bold; 
+					font-size: 16px; 
+					text-decoration: underline; 
+					color: #000; 
+					margin-left: -20px;"
+				onmouseover="this.style.color='#8C1515';"
+				onmouseout="this.style.color='#000';">
+			View Updates >>
 		</button>
-	  </form>
+	</form>
 	</div>
   </div>
   

@@ -423,7 +423,7 @@
                     <div class="c_content-wrapper c_wow cr" style="visibility: visible;">
                       <div id="global">
                         <ul>
-                          <li>{{ name }}<a href="{{ url_for('login', college='princeton')}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a></li>
+                          <li>{{ name }}<a href="{{ url_for('adv_login', college='princeton')}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a></li>
                         </ul>
                       </div>
                       <div id="content">
@@ -478,7 +478,7 @@
 
                                             New updates to your application were posted {{ date }}<br>
                                           <strong>
-                                            <form action="{{ url_for('ustatus', college=college)}}" method="POST" style="display: inline;">
+                                            <form action="{{ url_for('adv_ustatus', college=college)}}" method="POST" style="display: inline;">
                                               <button type="submit" style="background: none; color: inherit; border: none; padding: 0; font: inherit; cursor: pointer; font-weight: bolder; text-decoration: underline;">
                                                 View Updates >>
                                               </button>
@@ -503,7 +503,7 @@
 
                                   <div class="part">
                                     <div style="text-align: center;"><br><strong>Account Tools:</strong>&nbsp;&nbsp; &nbsp;<a href="javscript:void(0);">Change
-                                        Password</a>&nbsp; &nbsp;&nbsp;<a href="url_for('login', college=college)">Logout</a></div>
+                                        Password</a>&nbsp; &nbsp;&nbsp;<a href="url_for('adv_login', college=college)">Logout</a></div>
                                   </div>
                                 </div>
                               </td>

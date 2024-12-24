@@ -7,6 +7,19 @@
 {% endblock %}
 
 {% block content %}
+{% set color_classes = {
+    'gold': 'bg-yellow-500',
+    'silver': 'bg-gray-400',
+    'bronze': 'bg-yellow-700',
+    'green': 'bg-green-600',
+    'blue': 'bg-blue-600',
+    'purple': 'bg-purple-600',
+    'orange': 'bg-orange-500',
+    'pink': 'bg-pink-500',
+    'teal': 'bg-teal-500',
+    'default': 'bg-gray-500'
+} %}
+
 <div class="container mx-auto py-10 relative z-10">
     <h1 class="text-4xl font-extrabold text-center text-white drop-shadow-lg mb-10 animate-subtle-bounce">Your Statistics</h1>
 
@@ -16,7 +29,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 auto-rows-fr">
             {% for stat in sorted_stats %}
             {% set rank = loop.index %}
-        
+
             <!-- Determine gradient based on rank -->
             {% if rank == 1 %}
                 {% set gradient_classes = "from-yellow-400 via-yellow-500 to-yellow-600" %}
@@ -27,37 +40,52 @@
             {% else %}
                 {% set gradient_classes = "from-indigo-700 via-purple-700 to-indigo-700" %}
             {% endif %}
-        
+
             <!-- Card -->
             <div class="transform hover:scale-105 transition duration-500 hover:shadow-2xl flex flex-col h-full">
-                <div class="card-container min-h-[450px]">
-                    <!-- Front of the card -->
-                    <div class="front card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-between items-center h-full">
-                        <div class="flex flex-col items-center mb-4">
-                            <img src="{{ url_for('static', filename=stat.logo.split('static/')[-1]) }}" alt="{{ stat.display_name }} Logo"
-                                 class="w-48 h-48 object-contain mb-2">
+                <!-- Apply perspective to the card-container's parent for proper 3D effect -->
+                <div class="card-container min-h-[450px] relative" style="perspective: 1000px;">
+                    <!-- Card Inner with transform-style -->
+                    <div class="inner-card relative w-full h-full transform transition-transform duration-600 preserve-3d">
+                        <!-- Front of the card -->
+                        <div class="front card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-between items-center h-full backface-hidden absolute top-0 left-0 w-full h-full">
+                            <div class="flex flex-col items-center mb-4">
+                                <img src="{{ url_for('static', filename=stat.logo.split('static/')[-1]) }}" alt="{{ stat.display_name }} Logo"
+                                     class="w-48 h-48 object-contain mb-2">
+                                <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
+                                    data-side="front">
+                                    #{{ rank }} {{ stat.display_name }}
+                                </h3>
+                            </div>
+                            <div class="text-white text-center mt-auto">
+                                <p>Total Simulations: {{ stat.total_simulations }}</p>
+                                <p>Acceptances: {{ stat.acceptances }}</p>
+                                <p>Rejections: {{ stat.rejections }}</p>
+                                <p>Success Rate: {{ stat.success_rate }}%</p>
+                            </div>
+                        </div>
+
+                        <!-- Back of the card -->
+                        <div class="back card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-start items-center h-full backface-hidden absolute top-0 left-0 w-full h-full rotateY-180">
                             <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
-                                data-side="front">
+                                data-side="back">
                                 #{{ rank }} {{ stat.display_name }}
                             </h3>
+                            <p class="text-white text-center px-2 mt-4">
+                                {{ stat.description }}
+                            </p>
+                            
+                            <!-- Badges Section -->
+                            <div class="flex flex-wrap justify-center mt-4 gap-2">
+                                {% for badge in stat.badges %}
+                                    <span 
+                                        class="badge px-2 py-1 rounded-full text-sm font-semibold text-white {{ color_classes.get(badge.color, color_classes['default']) }} hover:scale-125 transition-transform duration-300"
+                                    >
+                                        {{ badge.label }}
+                                    </span>
+                                {% endfor %}
+                            </div>
                         </div>
-                        <div class="text-white text-center mt-auto">
-                            <p>Total Simulations: {{ stat.total_simulations }}</p>
-                            <p>Acceptances: {{ stat.acceptances }}</p>
-                            <p>Rejections: {{ stat.rejections }}</p>
-                            <p>Success Rate: {{ stat.success_rate }}%</p>
-                        </div>
-                    </div>
-        
-                    <!-- Back of the card -->
-                    <div class="back card-face rounded-lg shadow-lg bg-gradient-to-r {{ gradient_classes }} p-6 flex flex-col justify-between items-center h-full">
-                        <h3 class="text-2xl font-bold text-center text-white cursor-pointer college-title hover:text-yellow-300 transition-colors duration-500"
-                            data-side="back">
-                            #{{ rank }} {{ stat.display_name }}
-                        </h3>
-                        <p class="text-white text-center px-2 flex-grow mt-4">
-                            {{ stat.description }}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -126,69 +154,73 @@
             </ul>
         </div>
     </div>
-    
-    <!-- Animations -->
-    <style>
-        .leaderboard-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-    
-        .leaderboard-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
-        }
-    
-        .leaderboard-item:hover span {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-    
-        ul {
-            animation: fadeIn 1.5s ease-in-out;
-        }
-    
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-    
-        
-    <!-- Advanced Features Section -->
-    <div class="mt-12">
-        <h2 class="text-3xl font-bold text-center text-white drop-shadow-lg mb-4">Advanced College Simulator</h2>
-        <div class="text-white text-center py-8 rounded-lg shadow-lg transform hover:scale-105 transition duration-500 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500">
-            <p class="text-lg font-semibold animate-pulse">Coming Soon!</p>
-        </div>
-    </div>
 
-    <!-- Back to Dashboard Button -->
-    <div class="mt-10 text-center">
-        <a href="{{ url_for('dashboard') }}"
-           class="bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
-            Back to Dashboard
-        </a>
+</div>
+
+<!-- Animations -->
+<style>
+    .leaderboard-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .leaderboard-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.05);
+    }
+
+    .leaderboard-item:hover span {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    ul {
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+    
+<!-- Advanced Features Section -->
+<div class="mt-12">
+    <h2 class="text-3xl font-bold text-center text-white drop-shadow-lg mb-4">Advanced College Simulator</h2>
+    <div class="text-white text-center py-8 rounded-lg shadow-lg transform hover:scale-105 transition duration-500 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500">
+        <p class="text-lg font-semibold animate-pulse">Coming Soon!</p>
     </div>
 </div>
 
+<!-- Back to Dashboard Button -->
+<div class="mt-10 text-center">
+    <a href="{{ url_for('dashboard') }}"
+       class="bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
+        Back to Dashboard
+    </a>
+</div>
+</div>
+
+<!-- JavaScript for Card Flip -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const collegeTitles = document.querySelectorAll('.college-title');
         collegeTitles.forEach(titleElem => {
             titleElem.addEventListener('click', () => {
-                const cardContainer = titleElem.closest('.card-container');
-                cardContainer.classList.toggle('flipped');
+                const innerCard = titleElem.closest('.card-container').querySelector('.inner-card');
+                innerCard.classList.toggle('flipped');
             });
         });
     });
 </script>
 
+<!-- Updated CSS Styles -->
 <style>
     .background-overlay {
         position: fixed;
@@ -203,54 +235,85 @@
         opacity: 0.6;
     }
 
-    .perspective {
+    /* Remove perspective from .perspective class if not used elsewhere */
+    /* .perspective {
         perspective: 1000px;
-    }
+    } */
 
+    /* Card Flip Styles */
     .card-container {
-        width: 100%;
-        height: 400px;
+        /* Perspective is now applied inline in the HTML for better control */
+    }
+
+    .inner-card {
         position: relative;
+        width: 100%;
+        height: 100%;
         transform-style: preserve-3d;
-        transition: transform 0.6s ease, box-shadow 0.6s ease;
     }
 
-    .card-container:hover {
-        animation: glow 2s infinite;
-    }
-
-    .card-container.flipped {
-        transform: rotateY(180deg);
-    }
-
-    .card-face {
-        position: absolute;
-        inset: 0;
+    .backface-hidden {
         backface-visibility: hidden;
     }
 
     .front {
         transform: rotateY(0deg);
+        z-index: 2;
     }
 
     .back {
         transform: rotateY(180deg);
+        z-index: 1;
     }
 
-    .hover-card:hover {
-        transform: scale(1.1) rotate(2deg);
+    /* Flipped State */
+    .inner-card.flipped {
+        transform: rotateY(180deg);
     }
 
-    @keyframes glow {
-        0% {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-        50% {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-        100% {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
+    /* Transition for Smooth Flip */
+    .inner-card {
+        transition: transform 0.6s ease;
     }
+
+    /* Hover Glow Effect */
+    .card-container:hover .inner-card {
+        /* Optional: Add glow or other hover effects */
+    }
+
+    /* Badge Hover Effect */
+    .badge:hover {
+        transform: scale(1.2);
+        transition: transform 0.3s ease;
+    }
+
+    /* Additional Styles for Consistency */
+    .badge {
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Optional: Enhance badge appearance */
+    /* .badge {
+        /* Already defined in the HTML with Tailwind classes */
+    } */
+
+    /* Ensure the card faces cover the entire container */
+    .card-face {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    /* Remove visibility manipulation to prevent conflicts */
+    /* .back.card-face {
+        visibility: hidden;
+    }
+
+    .card-container.flipped .back.card-face {
+        visibility: visible;
+    } */
 </style>
+
 {% endblock %}

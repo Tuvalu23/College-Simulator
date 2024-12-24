@@ -6,12 +6,12 @@
 
 
   <link rel="shortcut icon" href="https://apply-college-brown-edu.cdn.technolutions.net/favicon.ico">
-    <link href="./rejection_files/base.css" rel="stylesheet">
-  <link href="./rejection_files/base(1).css" rel="stylesheet">
-  <link href="./rejection_files/build-fonts.css" rel="stylesheet">
-  <link href="./rejection_files/build-mobile-global.css" rel="stylesheet">
-  <link href="./rejection_files/build.css" rel="stylesheet">
-  <link href="./rejection_files/render.css" rel="stylesheet">
+    <link href="./acceptance_files/base.css" rel="stylesheet">
+  <link href="./acceptance_files/base(1).css" rel="stylesheet">
+  <link href="./acceptance_files/build-fonts.css" rel="stylesheet">
+  <link href="./acceptance_files/build-mobile-global.css" rel="stylesheet">
+  <link href="./acceptance_files/build.css" rel="stylesheet">
+  <link href="./acceptance_files/render.css" rel="stylesheet">
 
   <style>
     /*<![CDATA[*/
@@ -67,10 +67,10 @@
 
 </head>
 
-<body xmlns:slate="http://technolutions.com/slate" data-gr-c-s-loaded="true"><noscript>
-    <div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable
-        JavaScript</a> in your browser and then reload this website.</div>
-  </noscript>
+<body xmlns:slate="http://technolutions.com/slate" data-gr-c-s-loaded="true">
+  <script src="./acceptance_files/confetti.js" type="text/javascript"></script>
+  <script type="text/javascript">/*<![CDATA[*/confetti({ colors: [ [ '#005A43', '#00884b' ], [ '#169B62', '#A7DA92' ] ], timeout: 15 });/*]]>*/</script>
+
   <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center;">This website uses resources that are being blocked by your network. Contact your network
     administrator for more information.</div>
 
@@ -112,16 +112,18 @@
                   </style>
                   <p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">{{ date }}</p>
                   <title></title>
-                  <span style="font-size:14px;"><span style="font-family:Lucida Sans Unicode,Lucida Grande,sans-serif;"><span style="color:#000000;">{{ date }}<br><br>
-                
-
-                        Dear {{ name}},</span><br><br><span style="color:#000000;">The Board of Admission has completed its evaluation of more than 44,000 applications for the Class of 2029, and it is with great regret that I inform you that we are unable to offer you a place in the incoming class at Brown University.<br><br>
-                          This decision is not a reflection of your talents and accomplishments, but rather an indication of the extraordinary competition for admission. With only 1,665 spots available in our first-year class, we find ourselves in the challenging position of being unable to admit many exceptional students we would love to have at Brown.<br><br>
-                          The members of the Board are acutely aware of the disappointment this decision may bring. Please know that your application was reviewed with the utmost care, and your efforts and achievements are deeply appreciated. We are confident that you will excel in your educational journey and make significant contributions to the community you join.<br><br>
-                        We know that you will have a successful college career and we wish you the best as you pursue your college plans. On behalf of the Board of Admission, I want to thank you for taking the time to prepare your application, and
-                        for your interest in Brown.</span><br><br><span style="color:#000000;">Yours sincerely,</span><br><img alt="" src="./rejection_files/Logan Powell_blue.jpg" style="width: 125px; height: 103px;"><br><span style="color:#000000;">Logan Powell<br>
+                  <div style="text-align: center;"><img alt="" src="./acceptance_files/welcome.jpg" style="height: 175px; width: 325px;"></div><span style="font-size:14px;"><span style="font-family:Lucida Sans Unicode,Lucida Grande,sans-serif;"><span style="color:#000000;">{{ date }}<br><br>
+                        
+                        Dear {{ name }},</span><br><br><span style="color:#000000;">Congratulations! I am delighted to inform you that the Board of Admission has voted to admit you to Brown University’s Class of 2029. After carefully reviewing over 44,000 applicants, we have selected individuals who, as members of the Class of 2029, will bring an extraordinary range of talents, perspectives, and passions to our communityCongratulations! I am delighted to inform you that the Board of Admission has voted to admit you to Brown University’s Class of 2029 under our binding Early Decision program. This decision reflects our confidence in your ability to contribute to and thrive in our vibrant academic community..<br><br>
+                            After carefully reviewing over 44,000 applicants, we have selected individuals who will bring an extraordinary range of talents, perspectives, and passions to our campus. You and your Early Decision classmates have shown us a level of commitment and enthusiasm that resonates deeply with Brown’s values and spirit.<br><br>
+                          You were chosen not only for what we believe you will contribute to our community, but also for what you will gain from the unparalleled opportunities available here. Brown’s unique Open Curriculum, collaborative atmosphere, and commitment to innovation will help you craft a deeply personalized educational experience.<br><br>
+                          At Brown, you will join an inclusive environment defined by intellectual curiosity, collaborative learning, and a centuries-old tradition of excellence. With the Open Curriculum at your fingertips, you will have the freedom to design a personalized educational path, exploring your passions while forging meaningful connections with faculty and peers.<br><br>
+                          To celebrate your admission, the Office of College Admission and Brown undergraduates have planned [ADOCH (A Day on College Hill)], an event that will offer you a glimpse of life at Brown. We hope you can join us in experiencing the unique culture and energy of our community.<br><br>
+                          As part of the Early Decision program, your acceptance confirms your commitment to enroll at Brown. Please review and confirm your enrollment through your applicant portal. If you are a candidate for financial aid, information about your award is also available there. For any questions, please contact the Office of Financial Aid at (401) 863-2721.<br><br>
+                          On behalf of the entire Brown community, welcome to the family! We are thrilled to have you as part of our Class of 2029 and cannot wait to see the incredible impact you will make here.
+                        </span><br><br><span style="color:#000000;">Yours sincerely,</span><br><img alt="" src="./acceptance_files/Logan Powell_blue.jpg" style="width: 125px; height: 103px;"><br><span style="color:#000000;">Logan Powell<br>
                         Dean of Admission</span></span></span>
-                  <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('adv_ustatus', college=brown)}}">Return to Application Status</a></p>
+                  <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('adv_ustatus', college=college)}}">Return to Application Status</a></p>
                   <div style="clear: both;"></div>
                 </div>
               </section>
@@ -162,7 +164,6 @@
 
 
   <div class="progress_box" style="visibility: hidden;"></div>
-
 
 
 </body></html>

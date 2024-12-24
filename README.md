@@ -33,10 +33,15 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] U of C
 - [X] MIT
 - [X] Harvard
-- [ ] Princeton
-- [ ] Brown
-- [ ] Cornell
-- [ ] Stanford
+- [X] Princeton
+- [X] Brown
+- [X] Cornell
+- [X] Stanford
+- [ ] Dartmouth
+- [ ] Duke
+- [ ] Georgia Tech
+- [ ] JHU
+- [ ] Upenn
 
 ## TO GET ADVANCED RIBBONS
 Add this above style:

@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="container mx-auto py-10">
-    <h1 class="text-4xl font-extrabold text-center text-white mb-5  animate-subtle-bounce">
+    <h1 class="text-4xl font-extrabold text-center text-white mb-5 animate-subtle-bounce">
         Welcome, {{ name }}! Choose a University
     </h1>
     <p class="text-center text-white mb-10">
@@ -17,19 +17,104 @@
     </p>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {% for uni in university_list %}
-        <div class="p-6 rounded-lg shadow-lg flex flex-col bg-white transform hover:scale-105 transition-transform duration-200 hover:shadow-xl">
-            <div class="flex justify-center mb-4">
-                <img src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" alt="{{ uni.display_name }} Logo"
-                    class="w-48 h-48 object-contain">
+        <div 
+            class="card-hover relative p-6 rounded-lg shadow-lg flex flex-col bg-white transform transition-transform duration-500 ease-in-out animate-fade-slide-up"
+            style="animation-delay: {{ loop.index0 * 0.1 }}s;"
+        >
+            <!-- Sheen Overlay -->
+            <div class="sheen-overlay"></div>
+            
+            <!-- Card Content -->
+            <div class="flex justify-center mb-4 relative z-10">
+                <img 
+                    src="{{ url_for('static', filename=uni.logo.split('static/')[-1]) }}" 
+                    alt="{{ uni.display_name }} Logo"
+                    class="w-48 h-48 object-contain"
+                >
             </div>
-            <a href="{{ url_for('login', college=uni.name) }}" target="_blank"
-                class="block text-2xl font-bold text-center text-black hover:text-yellow-450 transition-colors duration-200 specific-link">
+            <a 
+                href="{{ url_for('login', college=uni.name) }}" 
+                target="_blank"
+                class="university-link block text-2xl font-bold text-center text-black transition-transform duration-300 relative z-10"
+            >
                 {{ uni.display_name }}
             </a>
-
-
-        </div>        
+            
+            <!-- Icon Reveal on Hover -->
+            
+        </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Inline CSS for Animations -->
+<style>
+
+    /* ------------------------------------------
+       2. Subtle Bouncing Animation for Title
+    ------------------------------------------- */
+    .animate-subtle-bounce {
+        animation: subtleBounce 5s infinite;
+    }
+    @keyframes subtleBounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+
+    /* ------------------------------------------
+       3. Enhanced Sheen Overlay Effect
+    ------------------------------------------- */
+    .card-hover {
+        position: relative;
+        overflow: hidden; /* Ensure the sheen doesn't overflow the card */
+        background-color: #ffffff;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .card-hover:hover {
+        transform: scale(1.05); /* Enlarge card on hover */
+    }
+    .sheen-overlay {
+        position: absolute;
+        top: -50%;
+        left: -150%;
+        width: 300%;
+        height: 300%;
+        background: linear-gradient(
+            120deg, 
+            rgba(6, 197, 255, 0) 0%, 
+            rgba(0, 150, 255, 0.4) 50%, 
+            rgba(68, 210, 217, 0) 100%
+        );
+        transform: rotate(25deg);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .card-hover:hover .sheen-overlay {
+        opacity: 2;
+        animation: sheenMove 2s forwards;
+    }
+    @keyframes sheenMove {
+        0% {
+            transform: translate(-100%, -100%) rotate(25deg);
+        }
+        100% {
+            transform: translate(100%, 100%) rotate(25deg);
+        }
+    }
+
+    .university-link {
+        transition: transform 0.3s ease;
+    }
+    .university-link:hover {
+        transform: scale(1.1); /* Enlarge link on hover */
+    }
+</style>
 {% endblock %}
+
+
+
+

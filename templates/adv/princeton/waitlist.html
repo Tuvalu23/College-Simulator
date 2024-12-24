@@ -4,12 +4,12 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <link rel="shortcut icon" href="https://apply-princeton-edu.cdn.technolutions.net/favicon.ico">
-  <link href="./acceptance_files/base.css" rel="stylesheet">
-  <link href="./acceptance_files/base(1).css" rel="stylesheet">
-  <link href="./acceptance_files/build-fonts.css" rel="stylesheet">
-  <link href="./acceptance_files/build-mobile-global.css" rel="stylesheet">
-  <link href="./acceptance_files/build.css" rel="stylesheet">
-  <link href="./acceptance_files/render.css" rel="stylesheet">
+  <link href="./rejection_files/base.css" rel="stylesheet">
+  <link href="./rejection_files/base(1).css" rel="stylesheet">
+  <link href="./rejection_files/build-fonts.css" rel="stylesheet">
+  <link href="./rejection_files/build-mobile-global.css" rel="stylesheet">
+  <link href="./rejection_files/build.css" rel="stylesheet">
+  <link href="./rejection_files/render.css" rel="stylesheet">
 
   <style type="text/css">
     .tk-benton-sans {
@@ -471,8 +471,7 @@
 
                                       </div>
 
-                                  <div><img style="display: block; margin-left: auto; margin-right: auto; width: 700px;" src="./acceptance_files/logo.png">
-                                  </div>
+                                  <div><img style="display: block; margin-left: auto; margin-right: auto; max-width:50%;" src="./rejection_files/logo.png"></div>
                                   <br>
                                 </div>
 
@@ -485,19 +484,21 @@
 
                                       Dear {{ name }}, <br><br>
 
-                                      Congratulations! I am delighted to offer you admission to Princeton University’s Class of 2029. Earlier today, we mailed you a detailed letter of admission and an information packet. If you applied for financial aid, a message from the Financial Aid Office is included below. You will find more extensive details about your financial aid award in the mailing you will receive.<br><br>
+                                      Thank you for your application to Princeton University. After a thoughtful review of your application, we regret that we are unable to offer you admission at this time. However, we are pleased to place you on our waitlist for the Class of 2029.<br><br>
 
-                                      Included in this mailing is an invitation for you and your parents or guardians to participate in one of two Princeton Preview programs in April. These events will be held on campus to showcase the academic, residential, and social aspects of Princeton.<br><br>
-                                      We encourage you to explore the website we have created for admitted students: https://admitted.princeton.edu. To access this site, you will need the same username and password you used to view this online decision. The admitted students website will allow you to register online for one of the Princeton Preview programs.<br><br>
+                                      This year’s applicant pool was among the largest and most accomplished in Princeton’s history, with over 35,000 applications from talented students around the world. Your application demonstrated exceptional academic and personal qualities, and we greatly appreciate the time and effort you put into presenting your accomplishments and aspirations.<br><br>
+                                      Being placed on the waitlist means we are unable to make a final decision at this moment. If you wish to remain on the waitlist, please confirm your interest through your Princeton applicant portal by April 15, 2025. You are also welcome to provide updates on significant academic or extracurricular achievements since your original application.<br><br>
 
-                                      Once again, congratulations on your remarkable achievement. We look forward to welcoming you to the Princeton community this fall.<br><br>
+                                      We cannot predict how many applicants will be admitted from the waitlist, as it depends on the responses we receive from admitted students. Should space become available, we will contact waitlisted students as soon as possible, with final decisions expected by the end of June.<br><br>
+                                      We understand this news may feel uncertain, and we encourage you to focus on the opportunities that lie ahead, wherever they may be. We are confident that your talents and dedication will bring you success in college and beyond.<br><br>
+                                      Thank you again for your interest in Princeton University and for sharing your story with us.<br><br>
 
 
                                     <div>
                                         <div style="float:right; margin-right:100px">
                                                     Sincerely, <br>
 
-                                                    <img src="./acceptance_files/sig.png" style="max-width:80%;">
+                                                    <img src="./rejection_files/sig.png" style="max-width:80%;">
                                                   <br>
                                                   Janet Lavin Rapelye<br>
                                                   Dean of Admission<br>
@@ -522,7 +523,7 @@
                                   <div style="text-align: center;">
                                           <br><br><br><br><br>
                                           <br><br>
-                                          <a href="{{ url_for('adv_ustatus', college=college)}}">Return to Application Status</a>
+                                          <a href="{{ url_for('adv_ustatus', college=college) }}">Return to Application Status</a>
                                           <br><br>
 
                                   </div>
