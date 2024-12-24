@@ -5,7 +5,7 @@
         <!-- Top Right Corner -->
         <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;">
             <span style="font-size: 1.11rem; font-weight: 400; color: #444; margin-right: 5px;">{{ name }}</span>
-            <a href="{{ url_for('login', college=college) }}" style="font-size: 0.8rem; color: #444; text-decoration: none; cursor: pointer;">Logout</a>
+            <a href="{{ url_for('adv_login', college=college) }}" style="font-size: 0.8rem; color: #444; text-decoration: none; cursor: pointer;">Logout</a>
         </div>
     
         <!-- Welcome Section -->
@@ -18,7 +18,7 @@
         <div style="background-color: #ffffcc; border: 1px solid #eeee99; border-radius: 3px; padding: 1px; margin-bottom: 20px; text-align: left;">
             <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Status Update</h2>
             <p style="margin: 10px 0; color: #333;">New updates to your application were posted {{ date }}.</p>
-            <form action="{{ url_for('ustatus', college=college) }}" method="post" style="margin: 0; margin-left: -10px;">
+            <form action="{{ url_for('adv_ustatus', college=college) }}" method="post" style="margin: 0; margin-left: -10px;">
                 <button type="submit" style="background: none; border: none; color: black; font-size: 1rem; text-decoration: underline; cursor: pointer;"><strong>View Update &gt;&gt;</strong></button>
             </form>            
         </div>

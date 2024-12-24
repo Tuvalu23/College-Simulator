@@ -31,7 +31,8 @@ A Flask-based web application that simulates the admissions process for multiple
 
 ## ADVSIM To-Do
 - [X] U of C
-- [ ] Harvard
+- [X] MIT
+- [X] Harvard
 - [ ] Princeton
 - [ ] Brown
 - [ ] Cornell

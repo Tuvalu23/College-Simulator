@@ -2483,9 +2483,9 @@ def ustatus_files_static(college, filename):
 def acceptance_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'acceptance_files'), filename)
 
-@app.route('/quicksim/<college>/ball_images/<path:filename>')
-def ball_files_static(college, filename):
-    return send_from_directory(os.path.join(app.root_path, 'templates', college, 'ball_images'), filename)
+@app.route('/quicksim/<college>/deferred_files/<path:filename>')
+def deferred_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', college, 'deferred_files'), filename)
 
 @app.route('/quicksim/<college>/rejection_files/<path:filename>')
 def rejection_files_static(college, filename):
@@ -2512,6 +2512,10 @@ def advancedsim_acceptance_files_static(college, filename):
 @app.route('/advancedsim/<college>/rejection_files/<path:filename>')
 def advancedsim_rejection_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'rejection_files'), filename)
+
+@app.route('/advancedsim/<college>/deferred_files/<path:filename>')
+def advancedsim_deferred_files_static(college, filename):
+    return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'deferred_files'), filename)
 
 if __name__ == "__main__":
     app.run(debug=True)
