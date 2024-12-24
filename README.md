@@ -29,6 +29,14 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Buffalo
 - [ ] Emory
 
+## ADVSIM To-Do
+- [X] U of C
+- [ ] Harvard
+- [ ] Princeton
+- [ ] Brown
+- [ ] Cornell
+- [ ] Stanford
+
 ## TO GET ADVANCED RIBBONS
 Add this above style:
 ```

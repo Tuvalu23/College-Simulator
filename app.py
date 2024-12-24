@@ -1742,7 +1742,6 @@ def chances():
             )
 
             # Overwrite final_results
-            # e.g. for ED, we might store date in c_entry[5]
             final_results[unique_id] = {
                 'decision_code': decision_code,
                 'app_type': uppercase_app_type,
@@ -1796,14 +1795,18 @@ def chances():
             app_type=app_type
         )
 
-        # Include logo_url here to avoid "no attribute logo_url"
+        # **Add this step: call 'rate' for the interview score so you can display it in a badge**
+        interview_rate_label, interview_rate_class = rate(interview_score)
+
         unique_id = generate_unique_id(short_name, app_type)
         interview_chances[unique_id] = {
             "display_name": college['display_name'],
             "chances": chances_val,
             "app_type": app_type,
             "logo_url": college.get("logo_url", "static/logos/default-logo.jpg"),
-            "interview_score": interview_score
+            "interview_score": interview_score,
+            "interview_rate_label": interview_rate_label,   # <== store the label
+            "interview_rate_class": interview_rate_class,   # <== store the CSS class
         }
 
     session['interview_chances'] = interview_chances
@@ -1824,7 +1827,7 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
     if appType == "ED":
         release_date_str = college_list[idx][5]
         if yourFate < chances:
-            decision = "A"    # Admitted
+            decision = "ED"    # Admitted
         elif yourFate < chances + random.random() * 30:
             decision = "D"    # Deferred
         else:
@@ -2243,7 +2246,7 @@ def adv_ustatus(college):
         # Redirect based on decision_code
         if decision_code == "A":
             return redirect(url_for("adv_acceptance", college=college))
-        elif decision_code == "E":
+        elif decision_code == "ED":
             return redirect(url_for("adv_edacceptance", college=college))
         elif decision_code.startswith("D/") or decision_code == "D":
             return redirect(url_for("adv_deferred", college=college))
@@ -2336,7 +2339,7 @@ def adv_edacceptance(college):
         formatted_date = "Unknown Date"
 
     if user_id:
-        User.log_simulation(user_id, college, 'ed_acceptance')
+        User.log_simulation(user_id, college, 'edacceptance')
 
     return render_template(
         f"adv/{college}/edacceptance.html",
@@ -2393,15 +2396,23 @@ def adv_deferred(college):
     from datetime import datetime
     user_id = session.get('user_id')
     final_results = session.get('final_results', {})
+    decisions_queue_sorted = session.get('decisions_queue_sorted', [])
 
-    # If your code always uses RD for deferred, do:
-    unique_id = generate_unique_id(college.lower(), "rd")
-    # Or if you specifically have "d" for deferred:
-    # unique_id = generate_unique_id(college.lower(), "d")
+    # find the correct app_type in decisions_queue_sorted
+    college_decision = next(
+        (dec for dec in decisions_queue_sorted 
+         if dec['short_name'] == college.lower() and dec['app_type'] in ["ED", "EA", "REA", "RD"]),
+        None
+    )
 
+    if not college_decision:
+        flash("College decision not found.", "danger")
+        return redirect(url_for('results'))
+
+    app_type = college_decision['app_type']
+    unique_id = generate_unique_id(college.lower(), app_type)
     info = final_results.get(unique_id, {})
     release_date_str = info.get('release_date', 'Unknown Date')
-    decision_code = info.get('decision_code', 'D')
 
     try:
         date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
@@ -2426,13 +2437,23 @@ def adv_waitlist(college):
     from datetime import datetime
     user_id = session.get('user_id')
     final_results = session.get('final_results', {})
+    decisions_queue_sorted = session.get('decisions_queue_sorted', [])
 
-    # If you specifically want "w" for waitlist:
-    unique_id = generate_unique_id(college.lower(), "w")
+    # find the correct app_type in decisions_queue_sorted
+    college_decision = next(
+        (dec for dec in decisions_queue_sorted 
+         if dec['short_name'] == college.lower() and dec['app_type'] in ["ED", "EA", "REA", "RD"]),
+        None
+    )
 
+    if not college_decision:
+        flash("College decision not found.", "danger")
+        return redirect(url_for('results'))
+
+    app_type = college_decision['app_type']
+    unique_id = generate_unique_id(college.lower(), app_type)
     info = final_results.get(unique_id, {})
     release_date_str = info.get('release_date', 'Unknown Date')
-    decision_code = info.get('decision_code', 'W')
 
     try:
         date_obj = datetime.strptime(release_date_str, '%Y-%m-%d')
