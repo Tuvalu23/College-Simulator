@@ -23,7 +23,7 @@
         background-color: #e74c3c; /* Red */
     }
 
-    .badge.rea {
+    .badge.rea { /* Corrected from .badge.rae to .badge.rea */
         background-color: #f1c40f; /* Yellow */
     }
 
@@ -36,6 +36,31 @@
     }
 
     /* Chance Category Badges */
+    .badge.outstanding {
+        background-color: #8e44ad; /* Purple */
+    }
+
+    .badge.strong {
+        background-color: #2980b9; /* Blue */
+    }
+
+    .badge.moderate {
+        background-color: #27ae60; /* Green */
+    }
+
+    .badge.fair {
+        background-color: #f39c12; /* Orange */
+    }
+
+    .badge.weak {
+        background-color: #d35400; /* Dark Orange */
+    }
+
+    .badge.terrible {
+        background-color: #c0392b; /* Red */
+    }
+
+    /* Classification Badges */
     .badge.highly-likely {
         background-color: #2ecc71; /* Green */
     }
@@ -72,31 +97,6 @@
         background-color: #7f8c8d; /* Gray */
     }
 
-    /* Rate Badges */
-    .badge.outstanding {
-        background-color: #8e44ad; /* Purple */
-    }
-
-    .badge.strong {
-        background-color: #2980b9; /* Blue */
-    }
-
-    .badge.moderate {
-        background-color: #27ae60; /* Green */
-    }
-
-    .badge.fair {
-        background-color: #f39c12; /* Orange */
-    }
-
-    .badge.weak {
-        background-color: #d35400; /* Dark Orange */
-    }
-
-    .badge.terrible {
-        background-color: #c0392b; /* Red */
-    }
-
     body {
         margin: 0;
         font-family: 'Poppins', sans-serif;
@@ -115,6 +115,7 @@
         background-size: cover;
         filter: blur(4px);
         z-index: -2;
+        opacity: 1;
     }
 
     @keyframes fadeInUp {
@@ -185,7 +186,7 @@
         border-left: 5px solid #e74c3c; /* Red */
     }
 
-    .college-card.rae {
+    .college-card.rea {
         border-left: 5px solid #f1c40f; /* Yellow */
     }
 
@@ -215,7 +216,7 @@
         transform: scale(1.05);
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         z-index: 10;
-        background-color:rgb(211, 223, 235);
+        background-color: rgb(211, 223, 235);
     }
 
     .college-logo img {
@@ -333,7 +334,7 @@
     /* On hover, entire row enlarges and highlights */
     .interview-table tbody tr:hover {
         transform: scale(1.03);
-        background-color:rgb(229, 220, 190);
+        background-color: rgb(229, 220, 190);
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         position: relative;
         z-index: 2;
@@ -353,29 +354,7 @@
     }
 
     /* Rate Badges - Additional Styling if Needed */
-    .badge.outstanding {
-        background-color: #8e44ad; /* Purple */
-    }
-
-    .badge.strong {
-        background-color: #2980b9; /* Blue */
-    }
-
-    .badge.moderate {
-        background-color: #27ae60; /* Green */
-    }
-
-    .badge.fair {
-        background-color: #f39c12; /* Orange */
-    }
-
-    .badge.weak {
-        background-color: #d35400; /* Dark Orange */
-    }
-
-    .badge.terrible {
-        background-color: #c0392b; /* Red */
-    }
+    /* Already defined above */
 
     .buttons {
         display: flex;
@@ -437,7 +416,7 @@
             <tbody>
                 <!-- ED first, then REA, then EA, then RD -->
                 {% for type_order in ['ED', 'REA', 'EA', 'RD'] %}
-                    {% for short_name, data in interview_chances.items() if data.app_type == type_order %}
+                    {% for unique_id, data in interview_chances.items() if data.app_type == type_order %}
                         <tr>
                             <td>
                                 <div style="display: flex; align-items: center;">
@@ -450,9 +429,9 @@
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span>{{ data.interview_score }}</span>
-                                    {% if data.interview_rate_label %}
-                                        <span class="badge {{ data.interview_rate_class }}" style="margin-left: 10px;">
-                                            {{ data.interview_rate_label }}
+                                    {% if data.chance_category %}
+                                        <span class="badge {{ data.chance_class }}" style="margin-left: 10px;">
+                                            {{ data.chance_category }}
                                         </span>
                                     {% endif %}
                                 </div>
@@ -473,7 +452,7 @@
         <div class="colleges-list">
             <!-- ED first, then REA, then EA, then RD -->
             {% for type_order in ['ED', 'REA', 'EA', 'RD'] %}
-                {% for short_name, data in interview_chances.items() if data.app_type == type_order %}
+                {% for unique_id, data in interview_chances.items() if data.app_type == type_order %}
                     <div class="college-card {{ data.app_type | lower }}">
                         <div class="college-logo">
                             <img src="{{ url_for('static', filename=data.logo_url.split('static/')[1]) }}" alt="{{ data.display_name }} Logo" />
@@ -481,10 +460,10 @@
                         <div class="college-info">
                             <h3>{{ data.display_name }}</h3>
                             <p><strong>Chance of Acceptance:</strong> {{ data.chances }}%</p>
-                            <p><strong>Category:</strong> 
-                                <span class="badge {{ data.chance_class }}">{{ data.chance_category }}</span>
+                            <p><strong>Classification:</strong> 
+                                <span class="badge {{ data.chance_type_class }}">{{ data.chance_type_label }}</span>
                             </p>
-                            <p><strong>School Type:</strong> {{ data.public }}</p>
+                            <p><strong>School Type:</strong> {{ data.school_type }}</p>
                         </div>
                         <div class="application-type">
                             <span class="badge {{ data.app_type | lower }}">{{ data.app_type }}</span>

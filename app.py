@@ -21,12 +21,12 @@ university_list = [
         "logo": "static/logos/bing-logo.png",
         "description": "Binghamton University, located in Vestal, NY, is a top public institution known for its strong research programs, affordability, and vibrant campus life. It offers a diverse range of undergraduate and graduate programs that prepare students for successful careers and leadership roles.",
         "badges": [
-            {"label": "Public", "color": "green"},
-            {"label": "Suburban", "color": "blue"},
-            {"label": "Research", "color": "purple"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Affordable", "color": "green"},
-            {"label": "Diverse", "color": "teal"}
+            {"label": "Public", "color": "Public"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Affordable", "color": "Affordable"},
+            {"label": "Diverse", "color": "Diverse"}
         ]
     },
     {
@@ -35,13 +35,13 @@ university_list = [
         "logo": "static/logos/brown-logo.jpg",
         "description": "Brown University in Providence, RI, is an esteemed Ivy League institution celebrated for its Open Curriculum, fostering academic freedom and interdisciplinary studies. It boasts a vibrant community committed to research, creativity, and global engagement.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "Liberal Arts", "color": "purple"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Innovative", "color": "pink"},
-            {"label": "Creative", "color": "orange"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Innovative", "color": "Innovative"},
+            {"label": "Creative", "color": "Creative"}
         ]
     },
     {
@@ -50,12 +50,12 @@ university_list = [
         "logo": "static/logos/buffalo-logo.jpg",
         "description": "The University at Buffalo, part of the SUNY system, is a large public research university in Buffalo, NY. It is recognized for its robust academic programs, cutting-edge research initiatives, and commitment to community engagement.",
         "badges": [
-            {"label": "Public", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Diverse", "color": "teal"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Innovation", "color": "pink"}
+            {"label": "Public", "color": "Public"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Diverse", "color": "Diverse"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Innovation", "color": "Innovation"}
         ]
     },
     {
@@ -64,13 +64,13 @@ university_list = [
         "logo": "static/logos/caltech-logo.jpg",
         "description": "Caltech in Pasadena, CA, is a world-renowned private institution specializing in science and engineering. It fosters a collaborative environment that encourages innovation and scientific discovery with a highly selective student body.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Innovative", "color": "pink"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Engineering", "color": "green"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Innovative", "color": "Innovative"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Engineering", "color": "Engineering"}
         ]
     },
     {
@@ -79,13 +79,13 @@ university_list = [
         "logo": "static/logos/cmu-logo.jpg",
         "description": "Carnegie Mellon University in Pittsburgh, PA, is a leading global research institution known for its exceptional programs in computer science, engineering, and the arts. It promotes interdisciplinary research and creative innovation within a collaborative academic environment.",
         "badges": [
-            {"label": "T-20", "color": "silver"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Innovative", "color": "pink"},
-            {"label": "Computer Science", "color": "green"},
-            {"label": "Arts", "color": "teal"}
+            {"label": "T-20", "color": "T-20"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Innovative", "color": "Innovative"},
+            {"label": "Computer Science", "color": "Computer Science"},
+            {"label": "Arts", "color": "Arts"}
         ]
     },
     {
@@ -94,13 +94,13 @@ university_list = [
         "logo": "static/logos/columbia-logo.jpg",
         "description": "Columbia University in New York City is an esteemed Ivy League institution known for its rigorous Core Curriculum and commitment to academic excellence. Located in the heart of NYC, it offers a dynamic environment that blends tradition with innovation.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Diverse", "color": "teal"},
-            {"label": "Global", "color": "orange"},
-            {"label": "Liberal Arts", "color": "pink"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Diverse", "color": "Diverse"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"}
         ]
     },
     {
@@ -109,13 +109,13 @@ university_list = [
         "logo": "static/logos/cornell-logo.jpg",
         "description": "Cornell University in Ithaca, NY, is a distinguished Ivy League and land-grant institution known for its comprehensive academic programs and strong research initiatives. It fosters innovation and excellence across multiple disciplines.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Rural", "color": "blue"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Engineering", "color": "orange"},
-            {"label": "Land-Grant", "color": "teal"},
-            {"label": "Agriculture", "color": "green"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Rural", "color": "Rural"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Engineering", "color": "Engineering"},
+            {"label": "Land-Grant", "color": "Land-Grant"},
+            {"label": "Agriculture", "color": "Agriculture"}
         ]
     },
     {
@@ -124,13 +124,13 @@ university_list = [
         "logo": "static/logos/dartmouth-logo.png",
         "description": "Dartmouth College in Hanover, NH, is a prestigious Ivy League institution focusing on liberal arts education and undergraduate teaching. It offers a close-knit community that encourages academic rigor and personal growth.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Rural", "color": "blue"},
-            {"label": "Liberal Arts", "color": "purple"},
-            {"label": "Undergraduate", "color": "pink"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Tradition", "color": "orange"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Rural", "color": "Rural"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Undergraduate", "color": "Undergraduate"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Tradition", "color": "Tradition"}
         ]
     },
     {
@@ -139,13 +139,13 @@ university_list = [
         "logo": "static/logos/duke-logo.jpg",
         "description": "Duke University in Durham, NC, is a prestigious private research institution renowned for its strong programs in research, health sciences, and athletics. It blends academic excellence with a vibrant campus life.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Suburban", "color": "green"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Health Sciences", "color": "teal"},
-            {"label": "Athletics", "color": "orange"},
-            {"label": "Leadership", "color": "gold"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Health Sciences", "color": "Health Sciences"},
+            {"label": "Athletics", "color": "Athletics"},
+            {"label": "Leadership", "color": "Leadership"}
         ]
     },
     {
@@ -154,13 +154,13 @@ university_list = [
         "logo": "static/logos/emory-logo.jpg",
         "description": "Emory University in Atlanta, GA, is a distinguished private institution known for its strong programs in liberal arts and health sciences. It offers a collaborative environment that fosters academic excellence and community engagement.",
         "badges": [
-            {"label": "T-30", "color": "gray"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "Research", "color": "green"},
-            {"label": "Health Sciences", "color": "teal"},
-            {"label": "Liberal Arts", "color": "pink"},
-            {"label": "Community", "color": "green"}
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Health Sciences", "color": "Health Sciences"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Community", "color": "Community"}
         ]
     },
     {
@@ -169,13 +169,13 @@ university_list = [
         "logo": "static/logos/gtech-logo.jpg",
         "description": "Georgia Institute of Technology in Atlanta, GA, is a premier public research university renowned for its exceptional engineering and technology programs. It fosters innovation and excellence through cutting-edge research and collaborative initiatives.",
         "badges": [
-            {"label": "T-30", "color": "gray"},
-            {"label": "Public", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Innovative", "color": "pink"},
-            {"label": "Engineering", "color": "purple"},
-            {"label": "Technology", "color": "teal"}
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Public", "color": "Public"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Innovative", "color": "Innovative"},
+            {"label": "Engineering", "color": "Engineering"},
+            {"label": "Technology", "color": "Technology"}
         ]
     },
     {
@@ -184,13 +184,13 @@ university_list = [
         "logo": "static/logos/harvard-logo.jpg",
         "description": "Harvard University in Cambridge, MA, is the oldest higher education institution in the U.S., consistently ranked among the world's top universities. It is renowned for its extensive research programs, diverse academic offerings, and influential alumni network.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "Liberal Arts", "color": "purple"},
-            {"label": "Research", "color": "green"},
-            {"label": "Global", "color": "orange"},
-            {"label": "Leadership", "color": "teal"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Leadership", "color": "Leadership"}
         ]
     },
     {
@@ -199,13 +199,13 @@ university_list = [
         "logo": "static/logos/jhu-logo.jpg",
         "description": "Johns Hopkins University in Baltimore, MD, is a world-leading research institution renowned for its contributions to medicine, public health, and scientific disciplines. It offers a collaborative academic environment with state-of-the-art facilities.",
         "badges": [
-            {"label": "T-20", "color": "silver"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "Research", "color": "green"},
-            {"label": "Health Sciences", "color": "teal"},
-            {"label": "Medicine", "color": "orange"},
-            {"label": "Public Health", "color": "green"}
+            {"label": "T-20", "color": "T-20"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Health Sciences", "color": "Health Sciences"},
+            {"label": "Medicine", "color": "Medicine"},
+            {"label": "Public Health", "color": "Public Health"}
         ]
     },
     {
@@ -214,13 +214,13 @@ university_list = [
         "logo": "static/logos/mit-logo.jpg",
         "description": "MIT in Cambridge, MA, is a global leader in STEM education, research, and innovation. Known for its cutting-edge engineering and technology programs, MIT fosters a collaborative and entrepreneurial environment.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Innovative", "color": "pink"},
-            {"label": "Engineering", "color": "green"},
-            {"label": "Technology", "color": "teal"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Innovative", "color": "Innovative"},
+            {"label": "Engineering", "color": "Engineering"},
+            {"label": "Technology", "color": "Technology"}
         ]
     },
     {
@@ -229,13 +229,13 @@ university_list = [
         "logo": "static/logos/northwestern-logo.jpg",
         "description": "Northwestern University in Evanston, IL, near Chicago, is a premier private research institution known for its interdisciplinary studies and vibrant campus life. It excels in fields like performing arts, communication, engineering, and business.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Suburban", "color": "green"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Performing Arts", "color": "teal"},
-            {"label": "Innovation", "color": "orange"},
-            {"label": "Media", "color": "pink"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Performing Arts", "color": "Performing Arts"},
+            {"label": "Innovation", "color": "Innovation"},
+            {"label": "Media", "color": "Media"}
         ]
     },
     {
@@ -244,13 +244,13 @@ university_list = [
         "logo": "static/logos/nyu-logo.jpg",
         "description": "NYU in Manhattan, NY, is a leading private institution known for its global presence and diverse academic offerings. It provides unique opportunities for international study and excels in arts, business, law, and social sciences.",
         "badges": [
-            {"label": "T-30", "color": "gray"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "Liberal Arts", "color": "green"},
-            {"label": "Global", "color": "teal"},
-            {"label": "Arts", "color": "pink"},
-            {"label": "International", "color": "orange"}
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Arts", "color": "Arts"},
+            {"label": "International", "color": "International"}
         ]
     },
     {
@@ -259,13 +259,13 @@ university_list = [
         "logo": "static/logos/princeton-logo.jpg",
         "description": "Princeton University in Princeton, NJ, is a prestigious Ivy League institution known for its strong undergraduate focus and commitment to academic excellence. It offers diverse programs across the humanities, sciences, and engineering.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Suburban", "color": "blue"},
-            {"label": "Liberal Arts", "color": "purple"},
-            {"label": "Research", "color": "green"},
-            {"label": "Undergraduate", "color": "teal"},
-            {"label": "Leadership", "color": "orange"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Undergraduate", "color": "Undergraduate"},
+            {"label": "Leadership", "color": "Leadership"}
         ]
     },
     {
@@ -274,13 +274,13 @@ university_list = [
         "logo": "static/logos/rice-logo.jpg",
         "description": "Rice University in Houston, TX, is a top private research institution known for its emphasis on STEM fields and a close-knit residential community. It offers comprehensive programs in engineering, sciences, humanities, and business.",
         "badges": [
-            {"label": "T-15", "color": "silver"}, 
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Residential", "color": "teal"},
-            {"label": "Research", "color": "green"},
-            {"label": "Business", "color": "pink"}
+            {"label": "T-15", "color": "T-15"}, 
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Residential", "color": "Residential"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Business", "color": "Business"}
         ]
     },
     {
@@ -289,13 +289,13 @@ university_list = [
         "logo": "static/logos/stanford-logo.jpg",
         "description": "Stanford University near Silicon Valley, CA, is a leading private institution renowned for its entrepreneurial spirit and cutting-edge innovations. It offers diverse programs in engineering, business, humanities, and sciences.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Suburban", "color": "green"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Entrepreneurial", "color": "pink"},
-            {"label": "Innovation", "color": "orange"},
-            {"label": "Leadership", "color": "teal"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Entrepreneurial", "color": "Entrepreneurial"},
+            {"label": "Innovation", "color": "Innovation"},
+            {"label": "Leadership", "color": "Leadership"}
         ]
     },
     {
@@ -304,13 +304,13 @@ university_list = [
         "logo": "static/logos/berkeley-logo.png",
         "description": "UC Berkeley in Berkeley, CA, is the flagship campus of the UC system and a top public university in the U.S. Renowned for its distinguished faculty and groundbreaking research, it offers a wide range of programs in arts, sciences, engineering, and business.",
         "badges": [
-            {"label": "T-15", "color": "silver"},
-            {"label": "Public", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "Research", "color": "purple"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Innovation", "color": "pink"},
-            {"label": "Diversity", "color": "teal"}
+            {"label": "T-15", "color": "T-15"},
+            {"label": "Public", "color": "Public"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Innovation", "color": "Innovation"},
+            {"label": "Diversity", "color": "Diversity"}
         ]
     },
     {
@@ -319,13 +319,13 @@ university_list = [
         "logo": "static/logos/umich-logo.png",
         "description": "The University of Michigan in Ann Arbor, MI, is a leading public research university known for its vibrant academic environment and outstanding athletic programs. It offers a diverse array of programs across humanities, sciences, engineering, and business.",
         "badges": [
-            {"label": "T-20", "color": "bronze"},
-            {"label": "Public", "color": "green"},
-            {"label": "Suburban", "color": "blue"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Athletics", "color": "teal"},
-            {"label": "STEM", "color": "orange"},
-            {"label": "Diversity", "color": "pink"}
+            {"label": "T-20", "color": "T-20"},
+            {"label": "Public", "color": "Public"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Athletics", "color": "Athletics"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Diversity", "color": "Diversity"}
         ]
     },
     {
@@ -334,13 +334,13 @@ university_list = [
         "logo": "static/logos/uchicago-logo.jpg",
         "description": "The University of Chicago in Chicago, IL, is renowned for its rigorous intellectual environment and influential Core Curriculum. As a prestigious private research university, it excels in economics, sociology, and various other disciplines.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "Liberal Arts", "color": "green"},
-            {"label": "Economics", "color": "orange"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Intellectual", "color": "teal"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Economics", "color": "Economics"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Intellectual", "color": "Intellectual"}
         ]
     },
     {
@@ -349,13 +349,13 @@ university_list = [
         "logo": "static/logos/upenn-logo.jpg",
         "description": "The University of Pennsylvania in Philadelphia, PA, is an esteemed Ivy League institution known for its prestigious Wharton School of Business and interdisciplinary education. It offers diverse programs in arts, sciences, engineering, and business within a dynamic urban setting.",
         "badges": [
-            {"label": "T-10", "color": "silver"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "Research", "color": "purple"},
-            {"label": "Business", "color": "orange"},
-            {"label": "Wharton", "color": "teal"},
-            {"label": "Leadership", "color": "pink"}
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Business", "color": "Business"},
+            {"label": "Wharton", "color": "Wharton"},
+            {"label": "Leadership", "color": "Leadership"}
         ]
     },
     {
@@ -364,13 +364,13 @@ university_list = [
         "logo": "static/logos/usc-logo.png",
         "description": "USC in Los Angeles, CA, is a prestigious private research university known for its strong programs in film, business, and the arts. It offers a vibrant urban campus with ample opportunities for internships, networking, and creative expression.",
         "badges": [
-            {"label": "T-30", "color": "gray"},
-            {"label": "Private", "color": "blue"},
-            {"label": "Urban", "color": "purple"},
-            {"label": "Liberal Arts", "color": "green"},
-            {"label": "Film", "color": "pink"},
-            {"label": "Business", "color": "orange"},
-            {"label": "Innovation", "color": "teal"}
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Film", "color": "Film"},
+            {"label": "Business", "color": "Business"},
+            {"label": "Innovation", "color": "Innovation"}
         ]
     },
     {
@@ -379,17 +379,16 @@ university_list = [
         "logo": "static/logos/yale-logo.jpg",
         "description": "Yale University in New Haven, CT, is a prestigious Ivy League institution renowned for its outstanding programs in law, liberal arts, and the sciences. It offers a rich academic environment with a focus on research, intellectual growth, and leadership development.",
         "badges": [
-            {"label": "T-5", "color": "gold"},
-            {"label": "Ivy", "color": "green"},
-            {"label": "Urban", "color": "blue"},
-            {"label": "Liberal Arts", "color": "purple"},
-            {"label": "Law", "color": "orange"},
-            {"label": "Research", "color": "teal"},
-            {"label": "Leadership", "color": "pink"}
+            {"label": "T-5", "color": "T-5"},
+            {"label": "Ivy", "color": "Ivy"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Law", "color": "Law"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Leadership", "color": "Leadership"}
         ]
     }
 ]
-
 
 college_list = [
     ["columbia", "0.02", "1.9", "N", "P", "2024-12-18", "N", "2025-03-28"],
@@ -1865,6 +1864,8 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
     if chances >= 97:
         chances -= random.uniform(0, 6)
 
+    if (chances <= 20):
+        chances *= random.uniform(1, 1.7)
     chances = max(0.0, min(chances, 100.0))
     return round(chances, 2)
 
@@ -1884,12 +1885,9 @@ def rate(score):
     else:
         return "N/A", "na"
 
-# Chances Route
 @app.route('/advancedsim/chances', methods=["GET", "POST"])
 @login_required
 def chances():
-    from datetime import datetime
-
     # Clear previous simulation state
     session.pop('read_emails', None)
     session.pop('current_sim_date', None)
@@ -1914,26 +1912,38 @@ def chances():
             for college in applied_colleges:
                 short_name = college['short_name']
                 app_type = college['app_type'].upper()
-                c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
-                if not c_entry:
+
+                # Retrieve simulation data from college_list
+                c_entry_sim = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
+                if not c_entry_sim:
                     continue
 
-                # Decide which date column to pick
+                # Retrieve display data from university_list
+                c_entry_display = next((c for c in university_list if c["name"].lower() == short_name.lower()), None)
+                if not c_entry_display:
+                    continue
+
+                # Determine school_type using the provided logic
+                # "Public" if c_entry[4].upper() in ["PUB", "P"] else "Private"
+                school_type = "Public" if c_entry_sim[4].upper() in ["PUB", "P"] else "Private"
+
+                # Decide which date column to pick based on app_type
                 if app_type in ["ED", "REA"]:
-                    rdate = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
+                    rdate = c_entry_sim[5] if len(c_entry_sim) > 5 and c_entry_sim[5] != "N" else "2099-01-01"
                 elif app_type == "EA":
-                    rdate = c_entry[6] if len(c_entry) > 6 and c_entry[6] != "N" else "2099-01-01"
+                    rdate = c_entry_sim[6] if len(c_entry_sim) > 6 and c_entry_sim[6] != "N" else "2099-01-01"
                 else:  # RD
-                    rdate = c_entry[7] if len(c_entry) > 7 and c_entry[7] != "N" else "2099-01-01"
+                    rdate = c_entry_sim[7] if len(c_entry_sim) > 7 and c_entry_sim[7] != "N" else "2099-01-01"
 
                 unique_id = generate_unique_id(short_name, app_type)
                 new_queue.append({
-                    "short_name": short_name,
+                    "short_name": short_name.lower(),
                     "unique_id": unique_id,
-                    "display_name": college['display_name'],
+                    "display_name": c_entry_display["display_name"],
                     "app_type": app_type,
                     "release_date": rdate,
-                    "logo_url": college.get("logo_url", "static/logos/default-logo.jpg")
+                    "logo_url": c_entry_display.get("logo", "static/logos/default-logo.jpg"),
+                    "school_type": school_type
                 })
 
                 if unique_id not in final_results:
@@ -1954,12 +1964,20 @@ def chances():
 
         # Now finalize decisions (simulate or use your admissionsDecision)
         for unique_id, data in interview_chances.items():
-            # example: unique_id = 'rice_ed'
+            # example: unique_id = 'duke_ed'
             college_short_name, unique_app_type = unique_id.rsplit('_', 1)
-            college_entry = next((c for c in college_list if c[0].lower() == college_short_name), None)
-            if not college_entry:
+            
+            # Retrieve simulation data
+            c_entry_sim = next((c for c in college_list if c[0].lower() == college_short_name.lower()), None)
+            if not c_entry_sim:
                 continue
-            idx = college_list.index(college_entry)
+
+            # Retrieve display data
+            c_entry_display = next((c for c in university_list if c["name"].lower() == college_short_name.lower()), None)
+            if not c_entry_display:
+                continue
+
+            idx = college_list.index(c_entry_sim)
             # Convert to uppercase
             uppercase_app_type = unique_app_type.upper()
             chances_val = data.get('chances', 50.0)
@@ -1974,12 +1992,17 @@ def chances():
             )
 
             # Overwrite final_results
+            if uppercase_app_type == "RD":
+                release_date = c_entry_sim[7] if len(c_entry_sim) > 7 else "2099-01-01"
+            elif uppercase_app_type == "EA":
+                release_date = c_entry_sim[6] if len(c_entry_sim) > 6 else "2099-01-01"
+            else:  # ED or REA
+                release_date = c_entry_sim[5] if len(c_entry_sim) > 5 else "2099-01-01"
+
             final_results[unique_id] = {
                 'decision_code': decision_code,
                 'app_type': uppercase_app_type,
-                'release_date': college_entry[7] if uppercase_app_type == "RD"
-                                else college_entry[6] if uppercase_app_type == "EA"
-                                else college_entry[5]
+                'release_date': release_date
             }
 
         session['final_results'] = final_results
@@ -2006,13 +2029,25 @@ def chances():
     for college in applied_colleges:
         short_name = college['short_name']
         app_type = college['app_type'].upper()
-        c_entry = next((c for c in college_list if c[0].lower() == short_name), None)
-        if not c_entry:
+
+        # Retrieve simulation data from college_list
+        c_entry_sim = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
+        if not c_entry_sim:
             continue
-        idx = college_list.index(c_entry)
+
+        # Retrieve display data from university_list
+        c_entry_display = next((c for c in university_list if c["name"].lower() == short_name.lower()), None)
+        if not c_entry_display:
+            continue
+
+        # Determine school_type using the provided logic
+        # "Public" if c_entry[4].upper() in ["PUB", "P"] else "Private"
+        school_type = "Public" if c_entry_sim[4].upper() in ["PUB", "P"] else "Private"
+
+        idx = college_list.index(c_entry_sim)
 
         interview_score = sim10()  # random from your function
-        chances_val = chanceCollege(
+        base_chances_val = chanceCollege(
             collegeList=college_list,
             i=idx,
             demScore=demScore,
@@ -2027,18 +2062,28 @@ def chances():
             app_type=app_type
         )
 
-        # **Add this step: call 'rate' for the interview score so you can display it in a badge**
-        interview_rate_label, interview_rate_class = rate(interview_score)
+        # Improve chances by multiplying with a random factor between 1 and 1.6
+        improvement_factor = random.uniform(1, 1.6)
+        chances_val = min(round(base_chances_val * improvement_factor, 2), 100)  # Cap at 100
+
+        # Call 'rate' for the interview score to display it in a badge
+        chance_category, chance_class = rate(interview_score)
+
+        # Call 'getType' for the classification based on chances_val
+        chance_type_label, chance_type_class = getType(chances_val)
 
         unique_id = generate_unique_id(short_name, app_type)
         interview_chances[unique_id] = {
-            "display_name": college['display_name'],
+            "display_name": c_entry_display["display_name"],
             "chances": chances_val,
             "app_type": app_type,
-            "logo_url": college.get("logo_url", "static/logos/default-logo.jpg"),
+            "logo_url": c_entry_display.get("logo", "static/logos/default-logo.jpg"),
             "interview_score": interview_score,
-            "interview_rate_label": interview_rate_label,   # <== store the label
-            "interview_rate_class": interview_rate_class,   # <== store the CSS class
+            "chance_category": chance_category,          # From rate(score)
+            "chance_class": chance_class,                # From rate(score)
+            "chance_type_label": chance_type_label,      # From getType(chance)
+            "chance_type_class": chance_type_class,      # From getType(chance)
+            "school_type": school_type                   # Public or Private
         }
 
     session['interview_chances'] = interview_chances
@@ -2207,8 +2252,6 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
-    from datetime import datetime
-
     user_data = session.get('advancedsim_data', {"name": "User"})
     name = user_data.get("name", "User")
 
@@ -2231,7 +2274,7 @@ def results():
                 continue
 
             # Decide correct release date
-            if app_type == "ED" or app_type == "REA":
+            if app_type in ["ED", "REA"]:
                 rdate = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
             elif app_type == "EA":
                 rdate = c_entry[6] if len(c_entry) > 6 and c_entry[6] != "N" else "2099-01-01"
@@ -2258,7 +2301,7 @@ def results():
             else:
                 final_results[unique_id]['release_date'] = rdate
 
-        # sort by date
+        # Sort by date
         try:
             new_queue.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
         except ValueError:
@@ -2316,9 +2359,9 @@ def results():
         if dcode == "A":
             display_decision = "Acceptance"
             badge_class = "acceptance"
-        elif dcode == "E":
-            display_decision = "Early Decision Acceptance"
-            badge_class = "acceptance"
+        elif dcode == "ED":
+            display_decision = "ED Acceptance"
+            badge_class = "ed-acceptance"  # Specific class for ED Acceptance
         elif dcode.startswith("D/"):
             sub = dcode.split('/')[1]
             if sub == "A":

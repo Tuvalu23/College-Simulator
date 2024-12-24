@@ -7,17 +7,45 @@
 {% endblock %}
 
 {% block content %}
-{% set color_classes = {
-    'gold': 'bg-yellow-500',
-    'silver': 'bg-gray-400',
-    'bronze': 'bg-yellow-700',
-    'green': 'bg-green-600',
-    'blue': 'bg-blue-600',
-    'purple': 'bg-purple-600',
-    'orange': 'bg-orange-500',
-    'pink': 'bg-pink-500',
-    'teal': 'bg-teal-500',
-    'default': 'bg-gray-500'
+{% set badge_color_classes = {
+    'Public': 'bg-cyan-500',
+    'Suburban': 'bg-lime-500',
+    'Research': 'bg-blue-600',
+    'STEM': 'bg-orange-500',
+    'Affordable': 'bg-green-500',
+    'Diverse': 'bg-pink-500',
+    'T-10': 'bg-gray-400',
+    'Ivy': 'bg-teal-500',
+    'Urban': 'bg-purple-600',
+    'Liberal Arts': 'bg-indigo-500',
+    'Innovative': 'bg-yellow-500',
+    'Creative': 'bg-orange-600',
+    'Innovation': 'bg-yellow-600',
+    'Private': 'bg-indigo-600',
+    'Engineering': 'bg-red-500',
+    'Computer Science': 'bg-blue-500',
+    'Arts': 'bg-pink-600',
+    'Global': 'bg-green-600',
+    'T-5': 'bg-yellow-500',
+    'Rural': 'bg-blue-400',
+    'Land-Grant': 'bg-green-700',
+    'Agriculture': 'bg-green-800',
+    'Undergraduate': 'bg-purple-500',
+    'Tradition': 'bg-red-600',
+    'Health Sciences': 'bg-teal-600',
+    'Athletics': 'bg-red-700',
+    'Leadership': 'bg-orange-700',
+    'T-30': 'bg-gray-600',
+    'Technology': 'bg-blue-700',
+    'Performing Arts': 'bg-pink-700',
+    'Media': 'bg-purple-700',
+    'Business': 'bg-blue-800',
+    'Residential': 'bg-yellow-700',
+    'Law': 'bg-indigo-700',
+    'Intellectual': 'bg-gray-700',
+    'Wharton': 'bg-green-800',
+    'Film': 'bg-pink-800',
+    'International': 'bg-red-800'
 } %}
 
 <div class="container mx-auto py-10 relative z-10">
@@ -58,10 +86,10 @@
                                 </h3>
                             </div>
                             <div class="text-white text-center mt-auto">
-                                <p>Total Simulations: {{ stat.total_simulations }}</p>
-                                <p>Acceptances: {{ stat.acceptances }}</p>
-                                <p>Rejections: {{ stat.rejections }}</p>
-                                <p>Success Rate: {{ stat.success_rate }}%</p>
+                                <p class="text-base">Total Simulations: {{ stat.total_simulations }}</p>
+                                <p class="text-base">Acceptances: {{ stat.acceptances }}</p>
+                                <p class="text-base">Rejections: {{ stat.rejections }}</p>
+                                <p class="text-base">Success Rate: {{ stat.success_rate }}%</p>
                             </div>
                         </div>
 
@@ -71,7 +99,7 @@
                                 data-side="back">
                                 #{{ rank }} {{ stat.display_name }}
                             </h3>
-                            <p class="text-white text-center px-2 mt-4">
+                            <p class="text-sm text-white text-center px-1.5 mt-4">
                                 {{ stat.description }}
                             </p>
                             
@@ -79,7 +107,7 @@
                             <div class="flex flex-wrap justify-center mt-4 gap-2">
                                 {% for badge in stat.badges %}
                                     <span 
-                                        class="badge px-2 py-1 rounded-full text-sm font-semibold text-white {{ color_classes.get(badge.color, color_classes['default']) }} hover:scale-125 transition-transform duration-300"
+                                        class="badge px-4 py-2 rounded-full text-base font-semibold text-white {{ badge_color_classes.get(badge.color, 'bg-gray-500') }} hover:scale-125 transition-transform duration-300"
                                     >
                                         {{ badge.label }}
                                     </span>
@@ -188,7 +216,6 @@
         }
     }
 </style>
-
     
 <!-- Advanced Features Section -->
 <div class="mt-12">
@@ -234,11 +261,6 @@
         z-index: -1;
         opacity: 0.6;
     }
-
-    /* Remove perspective from .perspective class if not used elsewhere */
-    /* .perspective {
-        perspective: 1000px;
-    } */
 
     /* Card Flip Styles */
     .card-container {
@@ -292,11 +314,6 @@
         text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
-    /* Optional: Enhance badge appearance */
-    /* .badge {
-        /* Already defined in the HTML with Tailwind classes */
-    } */
-
     /* Ensure the card faces cover the entire container */
     .card-face {
         width: 100%;
@@ -305,15 +322,6 @@
         top: 0;
         left: 0;
     }
-
-    /* Remove visibility manipulation to prevent conflicts */
-    /* .back.card-face {
-        visibility: hidden;
-    }
-
-    .card-container.flipped .back.card-face {
-        visibility: visible;
-    } */
 </style>
 
 {% endblock %}

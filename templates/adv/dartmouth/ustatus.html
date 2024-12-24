@@ -239,7 +239,7 @@
                   <div class="c_columns c_small-12 c_medium-12 cr">
                     <div id="global">
                       <ul>
-                        <li>{{ name }}<a href="{{ url_for('login', college=college)}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a></li>
+                        <li>{{ name }}<a href="{{ url_for('adv_login', college=college)}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a></li>
                       </ul>
                     </div>
                     <div id="content">
@@ -369,8 +369,8 @@
       New updates to your application were posted {{ date }}<br><br>
 
       <div style="text-align: left;">
-        <form action="{{ url_for('ustatus', college='dartmouth') }}" method="post" style="display: inline;">
-            <button type="submit" style="background: none; border: none; color: green; text-decoration: underline; cursor: pointer;">View your admission decision letter. 
+        <form action="{{ url_for('adv_ustatus', college='dartmouth') }}" method="post" style="display: inline;">
+            <button type="submit" style="margin-left: -15px; background: none; border: none; color: green; text-decoration: underline; cursor: pointer;">View your admission decision. 
             </button>
         </form>
     </div>

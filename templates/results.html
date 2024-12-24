@@ -69,6 +69,15 @@
     text-transform: uppercase; 
     padding: 5px 10px; 
   }
+  .badge.ed-acceptance { 
+    background-color: violet; /* Violet color for ED Acceptance */
+    color: #fff; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    padding: 5px 10px; 
+  }
   .badge.rejection { 
     background-color: #dc3545; 
     color: #fff; 
@@ -193,10 +202,10 @@
     padding: 5px 10px; border-radius: 12px; color: #fff;
     font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
   }
-  .app-type-badge.ED { background-color: #dc3545; }
-  .app-type-badge.EA { background-color: #007bff; }
-  .app-type-badge.REA { background-color: #ffc107; color: #000; }
-  .app-type-badge.RD { background-color: #28a745; }
+  .app-type-badge.ED { background-color: #dc3545; } /* Red */
+  .app-type-badge.EA { background-color: #007bff; } /* Blue */
+  .app-type-badge.REA { background-color: #ffc107; color: #000; } /* Yellow */
+  .app-type-badge.RD { background-color: #28a745; } /* Green */
 
   .buttons {
     display: flex; justify-content: flex-end; gap: 20px; margin-top: 30px;
@@ -310,9 +319,19 @@
             <h3>{{ dec.display_name }}</h3>
             <p>
               <strong>Decision:</strong>
-              <span class="badge {{ dec.badge_class }}">
-                {{ dec.decision }}
-              </span>
+              {% if dec.badge_class == "acceptance" %}
+                <span class="badge acceptance">Acceptance</span>
+              {% elif dec.badge_class == "ed-acceptance" %}
+                <span class="badge ed-acceptance">ED Acceptance</span>
+              {% elif dec.badge_class == "waitlist" %}
+                <span class="badge waitlist">Waitlisted</span>
+              {% elif dec.badge_class == "rejection" %}
+                <span class="badge rejection">Rejection</span>
+              {% elif dec.badge_class == "deferred" %}
+                <span class="badge deferred">Deferred</span>
+              {% else %}
+                <span class="badge unknown">Unknown</span>
+              {% endif %}
             </p>
             <p class="release-date"><strong>Release Date:</strong> {{ dec.release_date }}</p>
           </div>
