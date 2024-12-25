@@ -32,33 +32,6 @@ A Flask-based web application that simulates the admissions process for multiple
 - [ ] Tufts
 - [ ] Northeastern
 
-## ADVSIM To-Do
-- [X] U of C
-- [X] MIT
-- [X] Harvard
-- [X] Princeton
-- [X] Brown
-- [X] Cornell
-- [X] Stanford
-- [X] Dartmouth
-- [X] Duke
-- [X] Georgia Tech
-- [X] JHU
-- [X] Upenn
-- [X] Emory
-- [X] USC
-- [X] Berkeley
-- [X] CMU
-- [X] Columbia
-- [X] Northwestern
-- [ ] Caltech
-- [ ] NYU
-- [ ] Mich
-- [ ] Bing
-- [ ] Rice
-- [ ] Yale
-- [ ] Buffalo
-
 ## TO GET ADVANCED RIBBONS
 Add this above style:
 ```

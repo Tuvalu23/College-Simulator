@@ -233,7 +233,7 @@
 
                     <div id="global" style="margin-right: 40px">
                         <ul>
-                            <li>{{ name }}<a style="font-size: 10px; ; text-decoration: none;" href="{{ url_for('login', college='yale')}}"> Logout</a>
+                            <li>{{ name }}<a style="font-size: 10px; ; text-decoration: none;" href="{{ url_for('adv_login', college='yale')}}"> Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -300,7 +300,7 @@
   <div style="margin:20px 10px; border-left:5px solid #ffff00; background:#ffffc9; padding:15px; font-family: 'Lora', serif;">
     <div style="font-size:18px; margin-bottom:8px; color:#000;"><strong>Status Update</strong></div>
     <div style="font-size:16px; margin-bottom:13px;">New updates to your application were posted {{ date }}</div>
-    <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display:inline;">
+    <form action="{{ url_for('adv_ustatus', college=college) }}" method="POST" style="display:inline;">
         <button type="submit" 
                 style="font-family: 'Lora', serif; font-size:18px; font-weight:normal; color:#003399; background:none; border:none; cursor:pointer; text-decoration:underline; padding:0;" 
                 onmouseover="this.style.color='#0b6aa0'" 
