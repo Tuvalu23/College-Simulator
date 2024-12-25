@@ -2935,7 +2935,7 @@
 														
 														<!-- Application Information -->
 														<p style="font-size: 1.2em; font-weight: bold; margin-top: 20px;">
-															Application: 2024 First-Year Regular Decision - Columbia College<br>
+															Application: 2024 First-Year - Columbia College<br>
 															Columbia ID: C39434800
 														</p>
 														
@@ -2943,7 +2943,7 @@
 														<div style="border-top: 1px solid lightgray; margin: 20px 0;"></div>
 														
 														<!-- Admissions Decisions -->
-														<p style="font-size: 1.2em; font-family: Georgia, serif;"><strong>Admissions decisions for Regular Decision applicants will be available online on {{ date }}, at 7:00 p.m. (Eastern). </strong>In preparation for decision release, functionality on this page has been limited.</p>
+														<p style="font-size: 1.2em; font-family: Georgia, serif;"><strong>Admissions decisions for applicants will be available online on {{ date }}, at 7:00 p.m. (Eastern). </strong>In preparation for decision release, functionality on this page has been limited.</p>
 														
 														<!-- Horizontal Line -->
 														<div style="border-top: 1px solid lightgray; margin: 20px 0;"></div>
@@ -2952,7 +2952,7 @@
 														<div style="background-color: #ffffc8; padding: 0px; font-family: Roboto, sans-serif; border: 1px dotted #e0e0e0;">
 															<p style="font-size: 1.1em; font-weight: bold;">Status Update</p>
 															<p style="font-size: 1em;">New updates to your application were posted {{ date }}.</p>
-															<form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
+															<form action="{{ url_for('adv_ustatus', college=college) }}" method="post" style="display: inline;">
 																<input type="hidden" name="university" value="columbia">
 																<button type="submit" style="background: none; color: blue; text-decoration: underline; border: none; cursor: pointer; padding: 0; font: inherit;">
 																	<strong>View Updates &gt;&gt;</strong>
