@@ -408,7 +408,7 @@ university_list = [
 college_list = [
     ["columbia", "0.02", "1.9", "N", "P", "2024-12-18", "N", "2025-03-28"],
     ["stanford", "0.03", "N", "1.3", "REA", "2024-12-13", "N", "2025-03-29"],
-    ["upenn", "0.03", "2.3", "N", "P", "2024-12-18", "N", "2025-03-28"],
+    ["upenn", "0.03", "2", "N", "P", "2024-12-18", "N", "2025-03-28"],
     ["caltech", "0.03", "N", "1.1", "REA", "2024-12-12", "N", "2025-03-25"],
     ["jhu", "0.05", "1.7", "N", "P", "2024-12-13", "N", "2025-03-21"],
     ["dartmouth", "0.05", "2.3", "N", "P", "2024-12-13", "N", "2025-03-28"],
@@ -416,8 +416,8 @@ college_list = [
     ["mit", "0.06", "N", "1.2", "P", "N", "2024-12-17", "2025-03-14"],
     ["yale", "0.07", "N", "1.3", "REA", "2024-12-17", "N", "2025-03-28"],
     ["harvard", "0.07", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
-    ["brown", "0.08", "2.0", "N", "P", "2024-12-13", "N", "2025-03-28"],
-    ["uchicago", "0.09", "2.5", "1.3", "P", "2024-12-20", "2024-12-20", "2025-03-25"],
+    ["brown", "0.07", "2.0", "N", "P", "2024-12-13", "N", "2025-03-28"],
+    ["uchicago", "0.09", "2.5", "1.1", "P", "2024-12-20", "2024-12-20", "2025-03-25"],
     ["northwestern", "0.09", "2.2", "N", "P", "2024-12-17", "N", "2025-03-24"],
     ["duke", "0.09", "2.0", "N", "P", "2024-12-16", "N", "2025-03-28"],
     ["cmu", "0.10", "1.2", "N", "P", "2024-12-13", "N", "2025-03-21"],
@@ -873,6 +873,7 @@ def advancedsim():
                 score += 1.5
             # No adjustment for undefined races
 
+            score += random.uniform(-2, 2)
             # Clamp the score between 0 and 10
             score = max(0.0, min(score, 10.0))
             return round(score, 2)
@@ -1482,9 +1483,9 @@ def sim10():
 
 def getType(chance):
     if chance > 80:
-        return "Highly Likely", "highly-likely"
-    elif chance > 65:
         return "Safety", "safety"
+    elif chance > 65:
+        return "Highly Likely", "highly-likely"
     elif chance > 45:
         return "Target", "target"
     elif chance > 30:
@@ -1501,23 +1502,23 @@ def getType(chance):
 def classify(student_num):
     # Define classification based on student_num
     # Assuming student_num ranges from 0 to 100, map to tier 1-10
-    if student_num >= 96:
+    if student_num >= 92:
         return 1
-    elif student_num >= 91:
+    elif student_num >= 84:
         return 2
-    elif student_num >= 83:
+    elif student_num >= 77:
         return 3
-    elif student_num >= 75:
+    elif student_num >= 68:
         return 4
-    elif student_num >= 70:
+    elif student_num >= 61:
         return 5
-    elif student_num >= 67:
+    elif student_num >= 54:
         return 6
-    elif student_num >= 58:
+    elif student_num >= 48:
         return 7
-    elif student_num >= 51:
-        return 8
     elif student_num >= 40:
+        return 8
+    elif student_num >= 29:
         return 9
     else:
         return 10
@@ -1781,27 +1782,27 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances = 3 + random.uniform(-1, 1) - 2
     elif baseChance < 45:  # <45%
         if tier == 1:
-            chances = 75 + random.uniform(-5, 5)
+            chances = 79 + random.uniform(-5, 5)
         elif tier == 2:
-            chances = 67 + random.uniform(-4, 2)
+            chances = 70 + random.uniform(-4, 2)
         elif tier == 3:
-            chances = 62 + random.uniform(-4, 2)
+            chances = 64 + random.uniform(-4, 2)
         elif tier == 4:
-            chances = 55 + random.uniform(-4, 2)
+            chances = 58 + random.uniform(-4, 2)
         elif tier == 5:
-            chances = 44 + random.uniform(-4, 2)
+            chances = 47 + random.uniform(-4, 2)
         elif tier == 6:
-            chances = 37 + random.uniform(-4, 2)
+            chances = 40 + random.uniform(-4, 2)
         elif tier == 7:
-            chances = 33 + random.uniform(-4, 2)
+            chances = 34 + random.uniform(-4, 2)
         elif tier == 8:
-            chances = 25 + random.uniform(-4, 2)
+            chances = 27 + random.uniform(-4, 2)
         elif tier == 9:
-            chances = 18 + random.uniform(-4, 2)
+            chances = 20 + random.uniform(-4, 2)
         elif tier == 10:
-            chances = 12 + random.uniform(-4, 2)
+            chances = 13 + random.uniform(-4, 2)
         else:
-            chances = 4 + random.uniform(-0.1, 0.1) - 2
+            chances = 5 + random.uniform(-0.1, 0.1) - 2
     elif baseChance < 60:  # <60%
         if tier == 1:
             chances = 81 + random.uniform(-6, 2)
@@ -1878,8 +1879,15 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         chances *= float(collegeList[i][2])
     if app_type in ["EA", "REA"] and collegeList[i][3] != "N":
         chances *= float(collegeList[i][3])
+        
+    # georgetown needs 95+
+    if collegeList[i][0] == "georgetown":
+        if gpa < 93:
+            chances /= random.uniform(1.2, 2.4)
+        if gpa > 96.5:
+            chances *= random.uniform(1.2, 2.4)
 
-    chances -= random.uniform(-1, 3)  # Simulating chances -= Math.random()*4 -1
+    chances += random.uniform(-2, 2)  # Simulating chances -= Math.random()*4 -1
 
     if interviewScore < 2:
         chances -= random.uniform(0, 7)
@@ -1894,8 +1902,11 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
     if chances >= 97:
         chances -= random.uniform(0, 6)
 
-    if (chances <= 20):
-        chances *= random.uniform(1, 1.7)
+    # if (chances <= 10):
+    #    chances *= random.uniform(1, 1.7)
+    if chances > 95:
+        chances -= random.uniform(0, 8)
+    chances -= random.uniform(0, 10)
     chances = max(0.0, min(chances, 100.0))
     return round(chances, 2)
 
@@ -2077,7 +2088,7 @@ def chances():
         idx = college_list.index(c_entry_sim)
 
         interview_score = sim10()  # random from your function
-        base_chances_val = chanceCollege(
+        chances_val = chanceCollege(
             collegeList=college_list,
             i=idx,
             demScore=demScore,
@@ -2093,8 +2104,6 @@ def chances():
         )
 
         # Improve chances by multiplying with a random factor between 1 and 1.6
-        improvement_factor = random.uniform(1, 1.6)
-        chances_val = min(round(base_chances_val * improvement_factor, 2), 100)  # Cap at 100
 
         # Call 'rate' for the interview score to display it in a badge
         chance_category, chance_class = rate(interview_score)
@@ -2143,7 +2152,7 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
         release_date_str = college_list[idx][5]
         if yourFate < chances:
             decision = "A"
-        elif yourFate < chances + random.random() * 25:
+        elif yourFate < chances + random.random() * 40:
             decision = "D"
         else:
             decision = "R"
@@ -2151,7 +2160,7 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
         release_date_str = college_list[idx][6]
         if yourFate < chances:
             decision = "A"
-        elif yourFate < chances + random.random() * 40:
+        elif yourFate < chances + random.random() * 45:
             decision = "D"
         else:
             decision = "R"
@@ -2162,7 +2171,7 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
         else:
             if yourFate < chances:
                 decision = "A"  # Admitted
-            elif yourFate < chances + random.random() * 15:
+            elif yourFate < chances + random.random() * 20:
                 decision = "W"  # Waitlisted
             else:
                 decision = "R"  # Rejected
