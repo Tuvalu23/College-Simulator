@@ -8,44 +8,46 @@
 
 {% block content %}
 {% set badge_color_classes = {
-    'Public': 'bg-cyan-500',
-    'Suburban': 'bg-lime-500',
-    'Research': 'bg-blue-600',
+    'Economics': 'bg-yellow-300',
+    'Public': 'bg-blue-500',
+    'Suburban': 'bg-green-400',
+    'Research': 'bg-teal-600',
     'STEM': 'bg-orange-500',
-    'Affordable': 'bg-green-500',
-    'Diverse': 'bg-pink-500',
-    'T-10': 'bg-gray-400',
-    'Ivy': 'bg-teal-500',
-    'Urban': 'bg-purple-600',
-    'Liberal Arts': 'bg-indigo-500',
-    'Innovative': 'bg-yellow-500',
+    'Affordable': 'bg-emerald-500',
+    'Diverse': 'bg-purple-500',
+    'T-10': 'bg-yellow-500',
+    'Ivy': 'bg-indigo-400',
+    'Urban': 'bg-pink-600',
+    'Liberal Arts': 'bg-violet-600',
+    'Innovative': 'bg-red-400',
     'Creative': 'bg-orange-600',
-    'Innovation': 'bg-yellow-600',
-    'Private': 'bg-indigo-600',
+    'Innovation': 'bg-amber-600',
+    'Private': 'bg-cyan-600',
     'Engineering': 'bg-red-500',
-    'Computer Science': 'bg-blue-500',
-    'Arts': 'bg-pink-600',
+    'Computer Science': 'bg-blue-700',
+    'Arts': 'bg-rose-600',
     'Global': 'bg-green-600',
-    'T-5': 'bg-yellow-500',
-    'Rural': 'bg-blue-400',
-    'Land-Grant': 'bg-green-700',
-    'Agriculture': 'bg-green-800',
-    'Undergraduate': 'bg-purple-500',
-    'Tradition': 'bg-red-600',
-    'Health Sciences': 'bg-teal-600',
-    'Athletics': 'bg-red-700',
+    'T-5': 'bg-yellow-500',       
+    'Rural': 'bg-sky-500',
+    'Land-Grant': 'bg-lime-700',
+    'Agriculture': 'bg-green-900',  
+    'Undergraduate': 'bg-purple-400',
+    'Tradition': 'bg-rose-600',      
+    'Health Sciences': 'bg-cyan-700',
+    'Athletics': 'bg-red-600',    
     'Leadership': 'bg-orange-700',
-    'T-30': 'bg-gray-600',
-    'Technology': 'bg-blue-700',
-    'Performing Arts': 'bg-pink-700',
-    'Media': 'bg-purple-700',
-    'Business': 'bg-blue-800',
-    'Residential': 'bg-yellow-700',
-    'Law': 'bg-indigo-700',
-    'Intellectual': 'bg-gray-700',
-    'Wharton': 'bg-green-800',
-    'Film': 'bg-pink-800',
-    'International': 'bg-red-800'
+    'T-30': 'bg-gray-700',
+    'Technology': 'bg-indigo-600',     
+    'Performing Arts': 'bg-rose-700',
+    'Media': 'bg-purple-700',     
+    'Business': 'bg-slate-700',
+    'Residential': 'bg-amber-700',   
+    'Law': 'bg-blue-700',   
+    'Intellectual': 'bg-slate-700',
+    'Wharton': 'bg-emerald-700',    
+    'Film': 'bg-fuchsia-700',    
+    'International': 'bg-red-700',  
+    'Prestigious': 'bg-red-700',  
 } %}
 
 <div class="container mx-auto py-10 relative z-10">
@@ -284,7 +286,7 @@
 </style>
 
 <!-- Back to Dashboard Button -->
-<div class="mt-10 text-center">
+<div class="mt-10 text-center transform hover:scale-105 transition duration-500">
     <a href="{{ url_for('dashboard') }}"
        class="bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-transform transform hover:scale-105">
         Back to Dashboard

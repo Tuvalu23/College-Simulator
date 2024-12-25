@@ -28,8 +28,10 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Rice
 - [X] Buffalo
 - [X] Emory
-- [ ] Georgetown
+- [X] Georgetown
+- [ ] UVA
 - [ ] Tufts
+- [ ] Wash U
 - [ ] Northeastern
 
 ## TO GET ADVANCED RIBBONS

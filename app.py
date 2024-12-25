@@ -164,6 +164,21 @@ university_list = [
         ]
     },
     {
+    "name": "georgetown",
+    "display_name": "Georgetown University",
+    "logo": "static/logos/georgetown-logo.jpg",
+    "description": "Georgetown University, located in Washington, D.C., is a prestigious private institution renowned for its strong liberal arts and professional programs, historic campus, and commitment to fostering global leaders.",
+    "badges": [
+        {"label": "Private", "color": "Private"},
+        {"label": "Urban", "color": "Urban"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Liberal Arts", "color": "Liberal Arts"},
+        {"label": "Prestigious", "color": "Prestigious"},
+        {"label": "Global", "color": "Global"},
+        {"label": "Law", "color": "Law"}
+    ]
+},
+    {
         "name": "gtech",
         "display_name": "Georgia Tech",
         "logo": "static/logos/gtech-logo.jpg",
@@ -227,7 +242,7 @@ university_list = [
         "name": "northwestern",
         "display_name": "Northwestern University",
         "logo": "static/logos/northwestern-logo.jpg",
-        "description": "Northwestern University in Evanston, IL, near Chicago, is a premier private research institution known for its interdisciplinary studies and vibrant campus life. It excels in fields like performing arts, communication, engineering, and business.",
+        "description": "Northwestern University in Evanston, IL, near Chicago, is a premier private research institution known for its interdisciplinary studies and vibrant campus life.",
         "badges": [
             {"label": "T-10", "color": "T-10"},
             {"label": "Private", "color": "Private"},
@@ -317,7 +332,7 @@ university_list = [
         "name": "umich",
         "display_name": "University of Michigan",
         "logo": "static/logos/umich-logo.png",
-        "description": "The University of Michigan in Ann Arbor, MI, is a leading public research university known for its vibrant academic environment and outstanding athletic programs. It offers a diverse array of programs across humanities, sciences, engineering, and business.",
+        "description": "The University of Michigan in Ann Arbor, MI, is a leading public research university known for its vibrant academic environment and outstanding athletic programs. It offers an array of programs across humanities, engineering, and business.",
         "badges": [
             {"label": "T-20", "color": "T-20"},
             {"label": "Public", "color": "Public"},
@@ -414,6 +429,7 @@ college_list = [
     ["usc", "0.17", "N", "1.3", "P", "N", "2025-1-17", "2025-03-16"],
     ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-1-27", "2025-03-10"],
     ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-04-01"],
+    ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-04-01"],
     ["bing", "0.65", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
     ["buffalo", "0.87", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
