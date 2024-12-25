@@ -1,0 +1,67 @@
+/**
+ *  subnav.css
+ * 
+ *  This file contains the styles for the sub-navigation menu layout.
+ */
+
+/*~~~~~~~~~~~~~~~~~~ TO Target sub-menu in SLATE ~~~~~~~~~~~~~~~~~~*/
+
+aside, nav {
+  display: block;
+}
+
+div.part_rows_container aside {
+  float: right;
+  width: 250px;
+}
+.sidebar-nav {
+  background-color: transparent !important;
+  max-width: 100%;
+}
+#subnav {
+  background-color: #012169;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-family: "Barlow Condensed",sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  line-height: 1.1;
+  list-style: none;
+  margin: 0 20px;
+  padding-left: 0;
+}
+#subnav li {
+  border-bottom: solid 1px #41b6e6;
+  padding-left: 0;
+} 
+#subnav > li:first-child {
+  font-size: 1.5rem;
+  border-bottom: 3px solid #f2a900;
+}
+#subnav li.current > a {
+  color: #012169;
+  background-color: #c8eaf8;
+}
+#subnav a {
+  color: #ffffff;
+  display: block;
+  outline: transparent solid 2px;
+  padding: .75rem 1rem;
+  text-decoration: none;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,outline-color .15s ease-in-out;
+}
+#subnav a:hover {
+    background-color: #006fa6;
+}
+
+@media only screen and (max-width: 768px) {
+  div.part_rows_container aside {
+    float: none;
+    width: 100%;
+  }
+}

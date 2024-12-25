@@ -1,0 +1,209 @@
+/**
+ *  main.css
+ * 
+ *  This file contains the styles for the site main layout.
+ */
+
+main.layout-pane {
+    min-height: 400px;
+    position: relative;
+}
+main.layout-pane h1 {
+	color: 		#121169;
+	font-family: 'Spectral', serif;
+    font-size: 48px;
+	font-weight: 700;
+	line-height: 1.5;
+}
+main.layout-pane form > h1 {
+    font-size: 2.5em;
+    line-height: 1;
+}
+main.layout-pane h2 {
+	color: 		#121169;
+	font-family:	'Barlow Condensed', sans-serif;
+	font-size:	32px;
+    font-weight: 	600;
+	line-height:	1.5;
+	text-transform:	uppercase;
+}
+main.layout-pane h2 > span {
+    text-transform: none !important;
+}
+main.layout-pane h3 {
+	color: 		#121169;
+	font-family:	'Barlow Condensed', sans-serif;
+	font-size:	24px;
+    font-weight: 	600;
+	line-height:	1.5;
+	text-transform:	uppercase;
+}
+main.layout-pane h4 {
+	color: 		#121169;
+	font-family:	'Barlow Condensed', sans-serif;
+	font-size:	20px;
+    font-weight: 	600;
+    letter-spacing:	1px;
+	line-height:	1.25;
+	text-transform:	uppercase;
+}
+main.layout-pane p {
+    line-height: 1.5 !important;
+}
+
+#register_date { color: #007dba; }
+
+/*~~~~~~~~~~~~~~~~~~ HERO IMAGES ~~~~~~~~~~~~~~~~~~*/
+
+section.hero-image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  width: 100%;  
+  z-index: -5;
+}
+section.hero-image-bottom {
+  max-height: 500px;
+}
+section.hero-image-top {
+  max-height: 600px;
+}
+/*
+section.hero-image-top > img {
+  max-height: 550px;
+}
+*/
+
+/*~~~~~~~~~~~~~~~~~~ THESE STYLES ONLY SHOW ON emoryadmission.com/develop_apply ~~~~~~~~~~~~~~~~~~*/
+
+#hero-image-bottom-xtras {
+  background-image: url(https://apply.emory.edu/_includes/images/sections/index/home-footer-hat.jpg);
+  position: relative;
+}
+#hero-image-bottom-xtras::before,
+#hero-image-bottom-xtras::after {
+  position: absolute;
+  width: 30%;
+  z-index: 5;
+}
+#hero-image-bottom-xtras::before {
+  content: url(https://apply.emory.edu/_includes/images/sections/front-end/footer-grid-l.svg);
+  left: 0;
+  top: 0;
+}
+#hero-image-bottom-xtras::after {
+  content: url(https://apply.emory.edu/_includes/images/sections/front-end/footer-grid-r.svg);
+  bottom: 0;
+  right: 0;
+}
+#hero-image-top-xtras {
+  background-image: url(https://apply.emory.edu/_includes/images/sections/index/home-hero.jpg);
+}
+
+/*~~~~~~~~~~~~~~~~~~ PAGE CONTENT ~~~~~~~~~~~~~~~~~~*/
+
+/*
+section.layout-pane-content {
+  background-color: #ffffff;
+  box-sizing: border-box;
+  line-height: 1.25;
+  margin: 0 auto 0;
+  max-width: 1140px;
+  overflow: auto;
+  padding: 25px 15px;
+  position: relative;
+  width: 100%;
+  z-index: 5;
+}
+*/
+
+section.layout-pane-content {
+  background-color: #ffffff;
+  box-sizing: border-box;
+  line-height: 1.25;
+	padding: 0 25px;
+  position: relative;
+  width: 100%;
+  z-index: 5;
+}
+section.layout-pane-content > article {
+  margin: 0 auto 0;
+  max-width: 1140px;
+  overflow: auto;
+  padding: 15px 0;  
+}
+
+
+@media only screen and (max-width: 1200px) {
+
+  /*~~~~~~~~~~~~~~~~~~ PAGE CONTENT less than 1200px ~~~~~~~~~~~~~~~~~~*/
+  
+/*
+  section.layout-pane-content {
+    max-width: 960px;
+  }
+*/
+}
+
+@media only screen and (max-width: 991px) {
+  
+  main.layout-pane {
+/*    top: 55px;*/
+  }
+  main.layout-pane h1 {
+    font-size: 48px;
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~ PAGE CONTENT less than 991px ~~~~~~~~~~~~~~~~~~*/
+  
+/*
+  section.layout-pane-content {
+    max-width: 720px;
+  }
+*/
+}
+
+@media only screen and (max-width: 768px) {
+    
+    main.layout-pane {
+/*        top: 162px;*/
+    }
+  
+  /*~~~~~~~~~~~~~~~~~~ PAGE CONTENT less than 768px ~~~~~~~~~~~~~~~~~~*/
+  
+/*
+  section.layout-pane-content {
+    max-width: 540px;
+  }
+*/
+	
+	.two_equal_column_with_header > tbody > tr:nth-child(2) > td {
+		display: block;
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 575px) {
+  
+  main.layout-pane h1 {
+    font-size: 36px;
+  }
+  main.layout-pane h2 {
+    font-size: 24px;
+  }
+  main.layout-pane h3 {
+    font-size: 20px;
+  }
+  main.layout-pane h4 {
+    font-size: 18px;
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~ PAGE CONTENT less than 576px ~~~~~~~~~~~~~~~~~~*/
+  
+  section.layout-pane-content {
+    width: 100%;
+  }
+}
+
+table.plain { display: block; }

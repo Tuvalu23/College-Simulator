@@ -1,0 +1,514 @@
+/**
+ *  header.css
+ *
+ *  This file contains the styles for the site header.
+ */
+
+header {
+    background-color: #ffffff;
+    color: #101820;
+    display: flex;
+    width: 100%;
+}
+
+#header-pane {
+    position: fixed;
+    z-index: 10;
+}
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE ALERT (Gold Banner) ~~~~~~~~~~~~~~~~~~*/
+
+header > section.alert {
+    background-color: #f2a900;
+    box-sizing: border-box;
+    color: #ffffff;
+    /* font-size: 20.8px; */
+    line-height: 1.5;
+    padding: 5px 10px;
+    width: 100% !important;
+}
+header > section.alert > a {
+    background-color: transparent;
+    color: #006fa6 !important;
+    text-decoration: underline;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE COMPACT AFFECT ~~~~~~~~~~~~~~~~~~*/
+
+header.scroll-top {
+    -webkit-animation: menu-slide-in 0.35s forwards;
+    animation: menu-slide-in 0.35s forwards; 
+}
+
+header.scroll-down {
+    background-color: #f2f2f0;
+}
+
+/*~~~~~ HEADER PANE LOGO COMPACT AFFECT ~~~~~*/
+
+header.scroll-down > section.logo > a {
+    height: 55px;
+    width: 55px;
+}
+header.scroll-down > section.logo > a > img {
+    height: 55px;
+    padding: 12px 13px 9px;
+    width: 55px;
+}
+
+/*~~~~~ HEADER PANE TITLE COMPACT AFFECT ~~~~~*/
+
+header.scroll-down > section.title > svg {
+    display: none;
+}
+
+/*~~~~~ HEADER PANE MENU COMPACT AFFECT ~~~~~*/
+
+header.scroll-down > section.menu > .menu-aux {
+    display: none;
+}
+header.scroll-down > section.menu > .menu-main {
+    align-items: center;
+    height: 100%;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE ICON (Menu Toggle) ~~~~~~~~~~~~~~~~~~*/
+
+header > button {
+    background-color: transparent;
+    border: none;
+    display: none !important;
+    float: right;
+    height: 46px;
+    margin: .25rem;
+    padding: 2px 7px;
+    width: 50px;
+}
+header > button > span {
+    color: #012169;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+header > button > span::before {
+    color: #007dba;
+    content: "\f057";
+    display: inline-block;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+header > button.collapsed > span::before {
+    content: "\f0c9" !important;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE LOGO (Emory Shield) ~~~~~~~~~~~~~~~~~~*/
+
+header > section.logo > a {
+    background-color: #012169;
+    display: block;
+    height: 80px;
+    width: 80px;
+}
+header > section.logo > a > img {
+    box-sizing: border-box;
+    height: 80px;
+    padding: calc(30px/2) calc(30px/2) 12px;
+    transition: all 0.35s;
+    transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    width: 80px;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU (Navigation) ~~~~~~~~~~~~~~~~~~*/
+
+header > section.menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: auto;
+    width: auto;
+}
+header > section.menu.collapsed {
+    display: none;
+}
+header > section.menu > .menu-aux,
+header > section.menu > .menu-main {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 .5rem;
+}
+header > section.menu > .menu-aux > li,
+header > section.menu > .menu-main > li {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: .05em;
+    position: relative;
+    text-transform: uppercase;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, outline-color 0.15s ease-in-out;
+}
+header > section.menu a:hover {
+    color: #0073ab;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU AUX ~~~~~~~~~~~~~~~~~~*/
+
+header .menu-aux > li {
+    border: 1px solid #d9d9d6;
+    border-top: 0;
+    font-size: 1rem;
+    padding: calc(30px / 4);
+}
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU MAIN ~~~~~~~~~~~~~~~~~~*/
+
+header .menu-main {
+    margin-top: 3px;    
+}
+header .menu-main > li {
+    display: flex;
+}
+header .menu-main > li > .nav-link {
+    font-size: 1.175rem;  
+}
+header .menu-main > li.dropdown {
+    flex-direction: column;
+}
+header .menu-main > li.dropdown > a {
+    padding: 0.5rem;
+}
+header .menu-main > li.dropdown > a.active {
+    outline: 2px solid #007dba;     
+}
+header .menu-main > li.dropdown > a:hover {
+    color: #0073ab;
+    outline: 2px solid #007dba;
+}
+header .menu-main > li.dropdown > a::after {  
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #007dba;
+    content: "";
+    display: inline-block;
+    margin: 0 4px 2px;
+    transition: transform .2s ease-in-out, webkit-transform .2s ease-in-out;
+}
+header .menu-main > li.dropdown > a.active::after {  
+    transform: rotate(180deg);
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU MAIN SUB-MENU ~~~~~~~~~~~~~~~~~~*/
+
+header .menu-main .sub-menu {
+    background-color: #ffffff;
+    border: 1px solid #d0d0ce;
+    display: none;
+    font-size: 1rem;
+    height: auto;
+    margin: 2.35rem 0 0;
+    min-width: 12rem;
+    padding: 0.5rem 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+header  .menu-main .sub-menu > li {
+    color: #101820;
+    cursor: pointer;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: .5px;
+    line-height: 1.225;
+    padding: 8px 16px;
+    text-align: left;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+header .menu-main .sub-menu > li:hover {
+    background-color: #f2f2f0;
+    outline: 2px solid #007dba;  
+}
+header .menu-main .sub-menu > li.current,
+header .menu-main .sub-menu > li.current:hover {
+    background-color: #0033a0;
+    color: #ffffff;
+}
+header .menu-main .sub-menu > li > a {
+  	color: inherit;
+	display: block;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE SEARCH (Search Form and Icon) ~~~~~~~~~~~~~~~~~~*/
+
+header .menu-main > li.search > .search-form {
+    display: none;    
+}
+header .menu-main > li.search > .search-form.slide-out {
+    display: flex;   
+}
+header .menu-main > li.search > .search-form > input[type="text"] {
+    background-color: #ffffff;
+    border: 1px solid #d9d9d6;
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.1;
+    padding: 0.375rem 0.75rem;
+    width: 1%;
+}
+header .menu-main > li.search > .search-form > input[type="submit"] {
+    background-image: url(https://apply.emory.edu/_includes/images/sections/front-end/btn-arrow.svg);
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: 28px 16px;
+    background-color: #007dba;
+    border: 1px solid #007dba;
+    color: #ffffff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.1;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    text-transform: uppercase;
+}
+
+header .menu-main > li.search > .search-toggle {
+    background-color: #012169;
+    background-image: none;
+    border: 1px solid #012169;
+    height: 37px;
+    width: 30px;
+}
+header .menu-main > li.search > .search-toggle:hover {
+    background-color: #006596;
+    border-color: #006596;
+    outline: 2px solid #41b6e6;
+}
+header .menu-main > li.search > .search-toggle::before {
+    align-items: center;
+    color: #ffffff;
+    content: "\f00d";
+    display: flex;
+    font-family: "Font Awesome 5 Free";
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 600;
+    justify-content: center;
+    text-rendering: auto;
+}
+header .menu-main > li.search > .search-toggle.collapsed::before {
+    content: "\f002";
+}
+
+
+/*~~~~~~~~~~~~~~~~~~ HEADER PANE TITLES (Emory and OUA Titles) ~~~~~~~~~~~~~~~~~~*/
+
+header > section.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 .5rem;
+}
+header > section.title > h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+header > section.title > h1 > a {
+    color: #101820;
+}
+header > section.title > svg {
+    height: 15px;
+    margin-top: 5px;
+    width: 175px;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU AUX less than 1200px ~~~~~~~~~~~~~~~~~~*/
+
+    header .menu-aux > li {
+        font-size: .85rem;
+    }
+
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU MAIN less than 1200px ~~~~~~~~~~~~~~~~~~*/
+
+    header .menu-main > li.dropdown {
+        font-size: 1rem;  
+    }
+    header .menu-main > li.dropdown > a {
+        padding: 0.5rem 0.2rem;
+    }
+    
+  
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE TITLES less than 1200px ~~~~~~~~~~~~~~~~~~*/
+  
+    header > section.title > h1 {
+        font-size: 1.5rem;
+    }
+}
+
+
+@media only screen and (max-width: 991px) {    
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE ICON less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header > button {
+        display: block !important;
+    }
+    
+
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE LOGO less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.logo > a {
+        height: 100%;
+        width: 55px;
+    }
+    header > section.logo > a > img {
+        height: 100%;
+        padding: 12px 13px 9px;
+        width: 55px;
+    }
+
+
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.menu {
+        background-color: #f2f2f0;
+        border-top: 2px solid #d9d9d6;
+        box-sizing: border-box;
+        padding: calc(30px / 2);
+        position: absolute;
+        top: 54px;
+        width: 100% !important;
+    }
+    header > section.menu > .menu-aux,
+    header > section.menu > .menu-main {
+        display: block;
+        padding: 0.5rem 0;
+    }
+    
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU AUX less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header .menu-aux > li {
+        border: none;
+        font-size: 1rem;
+    }
+    
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU MAIN less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header .menu-main > li.dropdown > a {
+        padding: 0.5rem calc(30px / 4);
+    }
+    header .menu-main > li.dropdown > a::after {  
+        display: none;
+    }
+    
+    header .menu-main > li.search {
+        margin-top: 0.5rem;
+    }
+    
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU MAIN SUB-MENU less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header .menu-main .sub-menu {
+        margin: 0.15rem 0;
+        position: static;
+        left: 0;
+    }
+    
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU SEARCH (Search Icon) ~~~~~~~~~~~~~~~~~~*/
+
+/*
+    header .menu-main > li.search > .search-form  {
+        display: flex;
+        width: 100%;
+    }
+    header .menu-main > li.search > .search-form > input[type="text"] {
+        background-color: #d9d9d6;
+        border: none;
+    }
+    
+    header .menu-main > li.search > .search-toggle {
+        display: none;
+    }
+*/
+    
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE TITLES less than 992px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.title {
+        margin-right: auto;
+    }
+    header > section.title > svg {
+        margin: 0 0 2px;
+    }
+    header > section.title > h1 {
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    
+     /*~~~~~~~~~~~~~~~~~~ HEADER PANE TITLES less 769than px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.title > h1 {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE MENU less than 575px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.menu > ul > li {
+        float: none;
+        text-align: left;
+    }
+    header > section.menu div.sub-nav {
+        position: static;
+        width: 100%;
+    }
+    header > section.menu > ul > li:hover {
+        outline: none;
+    }
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE TITLES less than 575px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.title > svg {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 399px) {
+    
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE ICON less than 400px ~~~~~~~~~~~~~~~~~~*/
+
+    header > button {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    /*~~~~~~~~~~~~~~~~~~ HEADER PANE TITLES less than 400px ~~~~~~~~~~~~~~~~~~*/
+
+    header > section.title > h1 {
+        font-size: 16px;
+    }
+}

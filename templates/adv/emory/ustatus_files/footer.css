@@ -1,0 +1,364 @@
+/**
+ *  footer.css
+ * 
+ *  This file contains the styles for the site footer.
+ */
+
+#footer-pane {
+    background-color: #012169;
+    border-top: 5px solid #f2a900;
+    color: #ffffff;
+    display: block;
+    height: auto;
+    position: relative;
+    /*  top: 121px;*/
+    width: 100%;
+    z-index: 5;
+}
+
+/*~~~~~~~~~~~~~~~~~~ FOOTER LOGO amd RIBBONS ~~~~~~~~~~~~~~~~~~*/
+
+#footer-pane-ribbons {
+  position: relative;
+  width: inherit;
+}
+#footer-pane-ribbons-blue {
+  background-color: #007dba;
+  height: 6px;
+}
+#footer-pane-ribbons-gold {
+  background-color: #f2a900;
+  height: 16px;
+}
+#footer-pane-ribbons-overlay {
+  background-color: #007dba;
+  height: 30px;
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  -moz-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+#footer-pane-ribbons-overlay > span {
+  background-color: #f2a900;
+  color: #ffffff;
+  display: block;
+  height: 20px;
+  margin: 0 -.25em;
+  width: 130px;
+}
+#footer-pane-ribbons-overlay > span:after,
+#footer-pane-ribbons-overlay > span:before {
+  background-color: #f2a900;
+  border: 5px solid transparent;
+  content: '';
+  display: block;
+  height: 0;
+  position: absolute;
+  bottom: 0;
+  width: 0;  
+}
+#footer-pane-ribbons-overlay > span:after {
+  border-top-color: #593e00;
+  border-left-color: #593e00;
+  right: -.25em;  
+}
+#footer-pane-ribbons-overlay > span:before {
+  border-top-color: #593e00;
+  border-right-color: #593e00;
+  left: -.25em;
+}
+#footer-pane-ribbons-logo {
+  position: absolute;
+  left: 50%;
+  top: -50px;
+  -moz-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+#footer-pane-ribbons-logo-img {
+  background-image: url(https://template.emory.edu/sites/standard-BS4-template/public/_includes/images/eu-logo-footer.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 167px 170px;
+  float: left;
+  height: 170px;
+  width: 167px;
+}
+
+/*~~~~~~~~~~~~~~~~~~ FOOTER CONTENT ~~~~~~~~~~~~~~~~~~*/
+
+#footer-pane-content {
+/*  padding: 162px 0 24px;*/
+    padding: 75px 0 1.5rem;
+      width: inherit;
+}
+#footer-pane-content > div {
+  box-sizing: border-box;
+  margin: 0 auto 0;
+  max-width: 1140px;
+  overflow: auto;
+  padding: 0 15px;
+  width: 100%;
+}
+#footer-pane-content > div > figure {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+#footer-pane-content > div > figure .logo-vt {
+    display: none;
+}
+#footer-pane-content > div > article {
+  display: inline-block;
+  float: right;
+  margin-bottom: 24px;
+}
+#footer-pane-content > div > h1 {
+  color: #ffffff;
+  font-family: "Spectral", serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 48px;
+  text-align: center;
+}
+#footer-pane-content > div > h1 > a:hover {
+  border-bottom: 2px solid #41b6e6;
+}
+#footer-pane-content-left {
+  line-height: 1.5;
+  max-width: 41.66667%;
+  min-width: 400px;
+  position: relative;
+  width: 40%;
+}
+#footer-pane-content-left > a {
+  color: #ffffff;
+  cursor: text;
+  font-size: 14px;
+}
+#footer-pane-content-left > a:last-of-type {
+  color: #e7a614;
+  cursor: pointer;
+}
+#footer-pane-content-left > a:last-of-type:hover {
+  color: #ffffff;
+}
+#footer-pane-content-left span.fas {
+  color: #41b6e6;
+}
+#footer-pane-content-middle {
+  box-sizing: border-box;
+  line-height: 2;
+  padding: 0 15px;
+  width: 30%;  
+}
+#footer-pane-content-middle > a {
+  color: #e7a614;
+}
+#footer-pane-content-middle > a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+#footer-pane-content-right {
+  width: 30%;
+}
+
+/*~~~~~~~~~~~~~~~~~~ SOCIAL MEDIA ICONS ~~~~~~~~~~~~~~~~~~*/
+
+#footer-pane-content-right > a {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 4px 8px;
+  padding: 2px 0;
+}
+#footer-pane-content-right > a:hover {
+  border-bottom: 2px solid #41b6e6;
+  color: #f2a900;
+}
+/*
+#footer-pane-content-right > a > span {
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, outline-color .15s ease-in-out;
+}
+*/
+
+/*~~~~~~~~~~~~~~~~~~ SOCIAL MEDIA TOOLTIP ~~~~~~~~~~~~~~~~~~*/
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: #f2a900;
+  color: #012169;
+  font-size: 14px;
+  padding: 7px;
+  position: absolute;
+  left: 50%;
+  top: 45px;
+  text-align: center;
+  white-space: nowrap;
+  z-index: 1;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip .tooltiptext::after {
+  border-color: transparent transparent #f2a900 transparent;
+  border-style: solid;
+  border-width: 5px;
+  content: " ";
+  margin-left: -5px;
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%; 
+}
+#tip-facebook { margin-left: -36px; }
+#tip-twitter { margin-left: -30px; }
+#tip-youtube { margin-left: -35px; }
+#tip-instagram { margin-left: -41px; }
+#tip-rssfeed { margin-left: -36px; }
+#tip-vimeo { margin-left: -27px; }
+
+/*~~~~~~~~~~~~~~~~~~ FOOTER NAVIGATION ~~~~~~~~~~~~~~~~~~*/
+
+#footer-pane-nav {
+  background-color: #011646;
+  border-top: 1px solid #41b6e6;
+  color: #a7a8aa;
+  width: inherit;
+}
+#footer-pane-nav > nav {
+  margin: 0 auto 0;
+  max-width: 1140px;
+  overflow: auto;
+  padding: 7px 15px;
+  width: auto;
+}
+#footer-pane-nav > nav > ul > li {
+  float: left;
+  font-size: 14px;
+  line-height: 2;
+  text-align: center;
+  width: 32%;
+}
+#footer-pane-nav > nav > ul > li > a {
+  color: #41b6e6;
+  text-decoration: underline;
+}
+#footer-pane-nav > nav > ul > li > a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+#footer-pane-nav > nav > ul > li > span.fas {
+  color: #41b6e6;  
+}
+
+@media only screen and (max-width: 1200px) {
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER CONTENT less than 1200px ~~~~~~~~~~~~~~~~~~*/
+
+  #footer-pane-content > div {
+    max-width: 960px;
+  }
+  
+  #footer-pane-content-middle {
+    width: 28%;
+  }
+  #footer-pane-content-right {
+    width: 28%;
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER NAVIGATION less then 1200px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-nav > nav {
+    max-width: 960px;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  
+  #footer-pane {
+/*    top: 55px;*/
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER CONTENT less than 992px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-content > div {
+    max-width: 720px;
+  }
+  #footer-pane-content > div > article {
+    float: left;
+  }
+  
+  #footer-pane-content-left {
+    min-width: 100%;
+    width: 100%;
+  }
+  #footer-pane-content-middle {
+    width: 48%;
+  }
+  #footer-pane-content-right {
+    width: 48%;
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER NAVIGATION less then 992px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-nav > nav {
+    max-width: 720px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER CONTENT less than 768px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-content > div {
+    max-width: 540px;
+  }
+    
+    #footer-pane-content > div > figure .logo-hz {
+        display: none;
+    }
+    #footer-pane-content > div > figure .logo-vt {
+        display: block;
+    }
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER NAVIGATION less then 768px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-nav > nav {
+    max-width: 540px;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER CONTENT less than 575px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-content > div > article {
+    float: none;
+    width: 100%;
+  }
+  
+  #footer-pane-content-middle {
+    padding: 0;
+  }
+  
+  /*~~~~~~~~~~~~~~~~~~ FOOTER NAVIGATION less then 575px ~~~~~~~~~~~~~~~~~~*/
+  
+  #footer-pane-nav > nav > ul > li {
+    width: 100%;
+  }
+}
+

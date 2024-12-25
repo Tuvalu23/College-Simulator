@@ -27,7 +27,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Bing
 - [X] Rice
 - [X] Buffalo
-- [ ] Emory
+- [X] Emory
 
 ## ADVSIM To-Do
 - [X] U of C
@@ -42,6 +42,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Georgia Tech
 - [X] JHU
 - [X] Upenn
+- [X] Emory
 - [ ] USC
 - [ ] Berkeley
 - [ ] CMU

@@ -563,29 +563,42 @@ def statistics():
         uni_name = uni['name']
         uni_simulations = [sim for sim in simulations if sim['university_name'] == uni_name]
         total = len(uni_simulations)
-        acceptances = len([sim for sim in uni_simulations if sim['result'] == 'acceptance'])
+        acceptances = len([sim for sim in uni_simulations if sim['result'] == 'acceptance']) \
+                      + len([sim for sim in uni_simulations if sim['result'] == 'edacceptance'])
         rejections = len([sim for sim in uni_simulations if sim['result'] == 'rejection'])
-        success_rate = (acceptances / total) * 100 if total > 0 else 0
+        waitlists = len([sim for sim in uni_simulations if sim['result'] == 'waitlist'])
+        deferrals = len([sim for sim in uni_simulations if sim['result'] == 'deferred'])
+
+        success_rate = (acceptances / total * 100) if total > 0 else 0
+
         stats[uni_name] = {
             'display_name': uni['display_name'],
             'logo': uni['logo'],
-            'description': uni['description'],  # Pass description directly
+            'description': uni['description'],
             'total_simulations': total,
             'acceptances': acceptances,
             'rejections': rejections,
+            'waitlists': waitlists,
+            'deferrals': deferrals,
             'success_rate': round(success_rate, 2),
-            'badges': uni['badges']  # **Include badges here**
+            'badges': uni['badges']
         }
 
-    # Sort by acceptances and rejections
+    # Sort stats for each leaderboard
     sorted_by_acceptances = sorted(stats.values(), key=lambda x: x['acceptances'], reverse=True)[:5]
     sorted_by_rejections = sorted(stats.values(), key=lambda x: x['rejections'], reverse=True)[:5]
+    sorted_by_deferrals  = sorted(stats.values(), key=lambda x: x['deferrals'],  reverse=True)[:5]
+    sorted_by_waitlists  = sorted(stats.values(), key=lambda x: x['waitlists'],  reverse=True)[:5]
 
+    # Pass them all into the template
     return render_template(
         'statistics.html',
         acceptances_stats=sorted_by_acceptances,
         rejections_stats=sorted_by_rejections,
-        sorted_stats=sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True)
+        deferrals_stats=sorted_by_deferrals,
+        waitlists_stats=sorted_by_waitlists,
+        # You also have sorted_stats for the Quick College Simulator
+        sorted_stats=sorted(stats.values(), key=lambda x: x['total_simulations'], reverse=True),
     )
     
 # quick sim
