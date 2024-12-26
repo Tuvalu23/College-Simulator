@@ -369,7 +369,7 @@
       New updates to your application were posted {{ date }}<br><br>
 
       <div style="text-align: left;">
-        <form action="{{ url_for('adv_ustatus', college='dartmouth') }}" method="post" style="display: inline;">
+        <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="post" style="display: inline;">
             <button type="submit" style="margin-left: -15px; background: none; border: none; color: green; text-decoration: underline; cursor: pointer;">View your admission decision. 
             </button>
         </form>

@@ -21,7 +21,7 @@
           <p style="color: #333; margin: 10px 0 0 0; font-size: 1rem;">
             New updates to your application were posted {{ date }}.
           </p>
-          <form method="POST" action="ustatus" style="margin-top: 10px;">
+          <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="POST" style="margin-top: 10px;">
             <input type="hidden" name="college" value="college">
             <button type="submit"
               style="margin-left: -395px; background: none; border: none; padding: 10px 0; font-size: 1rem; color: #dca200; cursor: pointer; text-decoration: none; font-weight: 600; width: 100%;"

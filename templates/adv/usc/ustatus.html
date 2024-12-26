@@ -43,7 +43,7 @@
             <p style="margin: 0; font-size: 16px; line-height: 1.5;">
               An update to your application was posted on {{ date }}.
             </p>
-            <form method="post" action="{{ url_for('adv_ustatus', college=college) }}" style="margin-top: 10px;">
+            <form method="post" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="margin-top: 10px;">
               <button type="submit" style="
                 border: none; 
                 background: none; 

@@ -2158,18 +2158,24 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
     print(f"Admissions Decision for {collegeName}:")
     print(f"App Type: {appType}, Chances: {chances}, Fate: {yourFate}")
 
-    # Read the correct release date from the college_list row
+    # Identify the correct release date from the college_list
+    if appType == "ED" or appType == "REA":
+        release_date_str = college_list[idx][5] if len(college_list[idx]) > 5 else "2099-01-01"
+    elif appType == "EA":
+        release_date_str = college_list[idx][6] if len(college_list[idx]) > 6 else "2099-01-01"
+    else:  # RD
+        release_date_str = college_list[idx][7] if len(college_list[idx]) > 7 else "2099-01-01"
+
+    # Now decide
     if appType == "ED":
-        release_date_str = college_list[idx][5]  # e.g. col[5]
         if yourFate < chances:
-            decision = "ED"       # ED Acceptance
+            decision = "ED"  # ED Acceptance
         elif yourFate < chances + random.random() * 30:
-            decision = "D"        # Deferred to RD
+            decision = "D"   # Deferred to RD
         else:
             decision = "R"
 
     elif appType == "REA":
-        release_date_str = college_list[idx][5]
         if yourFate < chances:
             decision = "A"
         elif yourFate < chances + random.random() * 40:
@@ -2178,7 +2184,6 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
             decision = "R"
 
     elif appType == "EA":
-        release_date_str = college_list[idx][6]
         if yourFate < chances:
             decision = "A"
         elif yourFate < chances + random.random() * 45:
@@ -2187,15 +2192,14 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
             decision = "R"
 
     elif appType == "RD":
-        release_date_str = college_list[idx][7]
         if is_deferred:
-            # This is the final outcome after a deferral
+            # This is the final outcome after a deferral from ED/EA/REA
             if yourFate < chances:
-                decision = "D/A"   # "Deferred Acceptance"
+                decision = "D/A"  # "Deferred -> Accepted"
             elif yourFate < chances + random.random() * 25:
-                decision = "D/W"   # "Deferred Waitlist"
+                decision = "D/W"  # "Deferred -> Waitlist"
             else:
-                decision = "D/R"   # "Deferred Rejected"
+                decision = "D/R"  # "Deferred -> Rejected"
         else:
             # Normal RD
             if yourFate < chances:
@@ -2205,26 +2209,23 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
             else:
                 decision = "R"
     else:
-        # Unknown application type
         decision = "NO"
-        release_date_str = "2099-01-01"
         print(f"Unknown application type: {appType}")
 
     unique_id = generate_unique_id(collegeName, appType)
 
-    # Store the decision in session['final_results']
+    # Store the primary outcome in final_results
     session['final_results'][unique_id] = {
         'decision_code': decision,
         'app_type': appType,
         'release_date': release_date_str
     }
 
-    # If early round decision == "D" (deferred) and not is_deferred,
-    # schedule a new RD record in decisions_queue_sorted
-    if decision == "D" and not is_deferred and appType in ["ED", "EA", "REA"]:
+    # If early round => user is "D" => schedule new RD record
+    if decision == "D" and appType in ["ED", "EA", "REA"] and not is_deferred:
         schedule_deferred_decision(collegeName, appType, college_list, decisions_queue_sorted)
 
-    print(f"Decision: {decision}")
+    print(f"Decision: {decision} with date {release_date_str}")
     return decision
 
 def generate_final_decision(college_unique_id):
@@ -2260,16 +2261,15 @@ def get_college_index(college_unique_id):
 
 def schedule_deferred_decision(college_short_name, early_app_type, college_list, decisions_queue_sorted):
     """
-    Creates a new RD unique_id and sets its decision_code to 'D/R' by default.
-    The user will later re-run admissionsDecision(...) with is_deferred=True
-    to produce D/A, D/W, or D/R for that RD record.
+    Creates a new RD unique_id with 'D/R' as the initial placeholder code (meaning "Deferred Rejected").
+    The user will later get a final outcome (D/A, D/W, or D/R) after calling admissionsDecision(...) again with is_deferred=True.
     """
     college_entry = next((c for c in college_list if c[0].lower() == college_short_name.lower()), None)
     if not college_entry:
         print(f"College '{college_short_name}' not found in college_list.")
         return
 
-    # If the row has an RD date in column 7
+    # The RD date is in column 7
     rd_release_date = "2099-01-01"
     if len(college_entry) > 7 and college_entry[7] != "N":
         rd_release_date = college_entry[7]
@@ -2279,14 +2279,15 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 
     if 'locked_until_opened' not in session:
         session['locked_until_opened'] = {}
+    # Lock the RD record behind the early record
     session['locked_until_opened'][rd_unique_id] = early_uid
 
     final_results = session.setdefault('final_results', {})
 
-    # Create a new RD entry w/ "D/R" as the default
+    # If not already created, create the new RD entry with a placeholder code
     if rd_unique_id not in final_results:
         final_results[rd_unique_id] = {
-            'decision_code': 'D/R',   # or "RD" if you want an initial placeholder
+            'decision_code': 'D/R',  # default guess
             'app_type': 'RD',
             'release_date': rd_release_date
         }
@@ -2302,13 +2303,14 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
         "app_type": "RD",
         "release_date": rd_release_date,
         "formatted_release_date": format_date(rd_release_date),
-        "logo_url": next((uni["logo"] for uni in university_list
-                          if uni["name"].lower() == college_short_name.lower()), 
-                         "static/logos/default-logo.jpg")
+        "logo_url": next(
+            (uni["logo"] for uni in university_list if uni["name"].lower() == college_short_name.lower()),
+            "static/logos/default-logo.jpg"
+        )
     }
     decisions_queue_sorted.append(rd_item)
 
-    # Sort the queue by date
+    # Resort by date
     try:
         from datetime import datetime
         decisions_queue_sorted.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
@@ -2319,7 +2321,7 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
     session['decisions_queue_sorted'] = decisions_queue_sorted
     session.modified = True
 
-    print(f"Scheduled RD status update for {college_short_name.upper()} on {rd_release_date} locked behind {early_uid}")
+    print(f"Scheduled new RD record for {college_short_name.upper()} with code 'D/R' and date {rd_release_date}")
 
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
@@ -2508,108 +2510,279 @@ def format_date(date_str):
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
 def adv_login(college):
     user_data = session.get('advancedsim_data', {"name": "User"})
+    unique_id = request.args.get('unique_id')  # e.g. uchicago_ea
+    if not unique_id:
+        flash("No unique_id provided.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    decision_info = final_results.get(unique_id, {})
+    release_date_str = decision_info.get('release_date', 'Unknown Date')
+    name = user_data.get("name", "User")
 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-
-        # Validate inputs
+        # Fake check
         if not email or not password:
-            flash("Please fill out all fields.", "danger")
             return render_template(
                 f"adv/{college}/login.html",
                 error="Please fill out all fields.",
                 college=college,
-                date=user_data.get("date", "N/A"),
-                release_date=session.get('release_date', 'Unknown Date')  # Pass release_date if available
+                name=name,
+                release_date=release_date_str
             )
+        # If login success:
+        return redirect(url_for('adv_ustatus', college=college, unique_id=unique_id))
 
-        # Placeholder for actual authentication logic
-        success = True
-
-        if success:
-            return redirect(url_for('adv_ustatus', college=college))
-        else:
-            return render_template(
-                f"adv/{college}/login.html",
-                error="Invalid credentials.",
-                college=college,
-                date=user_data.get("date", "N/A"),
-                release_date=session.get('release_date', 'Unknown Date')
-            )
-
-    # Handle GET requests — render the login template
-    # Retrieve release_date from final_results
-    applied_colleges = session.get('applied_colleges', [])
-    unique_id = None
-    for college_entry in applied_colleges:
-        if college_entry['short_name'] == college.lower():
-            unique_id = generate_unique_id(college_entry['short_name'], college_entry['app_type'])
-            break
-
-    decision_info = session.get('final_results', {}).get(unique_id, {})
-    release_date_str = decision_info.get('release_date', 'Unknown Date')
-    formatted_release_date = format_date(release_date_str)
-
-    print(f"adv_login Route - Release Date for {college}: {release_date_str}")  # Debugging
-
+    # GET
     return render_template(
         f"adv/{college}/login.html",
-        name=user_data.get("name"),
+        name=name,
         college=college,
-        date=user_data.get("date", "N/A"),
-        release_date=formatted_release_date  # Pass release_date to template
+        release_date=release_date_str
     )
 
-# Advanced Simulation Ustatus Route
 @app.route("/advancedsim/<college>/ustatus", methods=["GET", "POST"])
 @login_required
 def adv_ustatus(college):
     from datetime import datetime
     user_data = session.get('advancedsim_data', {"name": "User", "date": "N/A"})
+    final_results = session.get('final_results', {})
 
-    # Use the helper to find the final unique_id
-    final_uid = find_final_unique_id(college)
-    if not final_uid:
-        flash("College or application type not found.", "danger")
+    # Retrieve unique_id from query parameters or form data
+    unique_id = request.args.get('unique_id') or request.form.get('unique_id')
+    if not unique_id:
+        flash("Error: No unique_id provided.", "danger")
         return redirect(url_for('results'))
 
-    final_results = session.get('final_results', {})
-    decision_info = final_results.get(final_uid, {})
-    decision_code = decision_info.get('decision_code', 'R')
-    release_date_str = decision_info.get('release_date', 'Unknown Date')
+    info = final_results.get(unique_id)
+    if not info:
+        flash(f"No record found for {unique_id}.", "danger")
+        return redirect(url_for('results'))
 
+    decision_code = info.get('decision_code', 'R')
+    release_date_str = info.get('release_date', 'Unknown Date')
+
+    # Format the date
     try:
         dt = datetime.strptime(release_date_str, '%Y-%m-%d')
         formatted_date = dt.strftime('%B %d, %Y')
     except ValueError:
         formatted_date = "Unknown Date"
 
+    name = user_data.get("name", "User")
+
     if request.method == "POST":
-        # Mark email read or handle "View Decision"
+        # Mark the college as opened
         if 'read_emails' not in session:
             session['read_emails'] = {}
         session['read_emails'][college.lower()] = True
         session.modified = True
 
-        # Now route to acceptance, rejection, deferred, etc.
+        # Updated redirect logic
         if decision_code == "A":
-            return redirect(url_for("adv_acceptance", college=college))
+            return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
         elif decision_code == "ED":
-            return redirect(url_for("adv_edacceptance", college=college))
-        elif decision_code.startswith("D/") or decision_code == "D":
-            return redirect(url_for("adv_deferred", college=college))
+            return redirect(url_for("adv_edacceptance", college=college, unique_id=unique_id))
+        elif decision_code == "D":
+            return redirect(url_for("adv_deferred", college=college, unique_id=unique_id))
+        elif decision_code == "D/A":
+            return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
+        elif decision_code == "D/R":
+            return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+        elif decision_code == "D/W":
+            return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
         elif decision_code == "W":
-            return redirect(url_for("adv_waitlist", college=college))
+            return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
         else:
-            return redirect(url_for("adv_rejection", college=college))
+            return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
 
+    # GET request: render status page
     return render_template(
         f"adv/{college}/ustatus.html",
-        name=user_data.get("name", "User"),
+        name=name,
+        college=college,
+        date=formatted_date,
+        decision_code=decision_code,
+        unique_id=unique_id  # Ensure unique_id is passed to the template
+    )
+
+@app.route("/advancedsim/<college>/acceptance")
+@login_required
+def adv_acceptance(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for acceptance letter.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("Acceptance record not found.", "danger")
+        return redirect(url_for('results'))
+
+    from datetime import datetime
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    user_id = session.get('user_id')
+    if user_id:
+        User.log_simulation(user_id, college, 'acceptance')
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/acceptance.html",
+        name=name,
+        date=formatted_date,
+        college=college
+    )
+
+@app.route("/advancedsim/<college>/edacceptance")
+@login_required
+def adv_edacceptance(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for ED acceptance letter.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("ED acceptance record not found.", "danger")
+        return redirect(url_for('results'))
+
+    from datetime import datetime
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    user_id = session.get('user_id')
+    if user_id:
+        User.log_simulation(user_id, college, 'edacceptance')
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/edacceptance.html",
+        name=name,
+        date=formatted_date,
+        college=college
+    )
+
+@app.route("/advancedsim/<college>/rejection")
+@login_required
+def adv_rejection(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for rejection letter.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("Rejection record not found.", "danger")
+        return redirect(url_for('results'))
+
+    from datetime import datetime
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    user_id = session.get('user_id')
+    if user_id:
+        User.log_simulation(user_id, college, 'rejection')
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/rejection.html",
+        name=name,
+        date=formatted_date,
+        college=college
+    )
+
+@app.route("/advancedsim/<college>/deferred")
+@login_required
+def adv_deferred(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for deferred letter.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("Deferred record not found.", "danger")
+        return redirect(url_for('results'))
+
+    decision_code = info.get('decision_code', 'R')
+    from datetime import datetime
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    user_id = session.get('user_id')
+    if user_id:
+        # Only map 'D' to 'deferred'
+        if decision_code == "D":
+            User.log_simulation(user_id, college, 'deferred')
+        else:
+            # This route should not handle post-deferral outcomes
+            User.log_simulation(user_id, college, 'deferred')  # Or handle differently
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/deferred.html",
+        name=name,
         date=formatted_date,
         college=college,
         decision_code=decision_code
+    )
+
+@app.route("/advancedsim/<college>/waitlist")
+@login_required
+def adv_waitlist(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for waitlist letter.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("Waitlist record not found.", "danger")
+        return redirect(url_for('results'))
+
+    from datetime import datetime
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    user_id = session.get('user_id')
+    if user_id:
+        User.log_simulation(user_id, college, 'waitlist')
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/waitlist.html",
+        name=name,
+        date=formatted_date,
+        college=college
     )
 
 @app.route('/advancedsim/results/mark_as_read', methods=["POST"])
@@ -2623,170 +2796,6 @@ def mark_as_read():
     session['read_emails'][short_name.lower()] = True
     session.modified = True
     return {'status': 'success'}
-
-# Acceptance Route
-@app.route("/advancedsim/<college>/acceptance")
-@login_required
-def adv_acceptance(college):
-    from datetime import datetime
-    user_id = session.get('user_id')
-    final_results = session.get('final_results', {})
-
-    # 1) Find the "final" unique_id for this college (e.g. after deferral -> RD)
-    final_uid = find_final_unique_id(college)
-    if not final_uid or final_uid not in final_results:
-        flash("College acceptance record not found.", "danger")
-        return redirect(url_for('results'))
-
-    # 2) Retrieve the data from final_results
-    info = final_results[final_uid]
-    release_date_str = info.get('release_date', 'Unknown Date')
-
-    # 3) Format the date
-    try:
-        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
-        formatted_date = dt.strftime('%B %d, %Y')
-    except ValueError:
-        formatted_date = "Unknown Date"
-
-    # Optionally track user simulation logs
-    if user_id:
-        User.log_simulation(user_id, college, 'acceptance')
-
-    # 4) Render using the final date
-    return render_template(
-        f"adv/{college}/acceptance.html",
-        name=session.get("advancedsim_data", {}).get("name", "User"),
-        date=formatted_date,
-        college=college
-    )
-
-@app.route("/advancedsim/<college>/edacceptance", methods=["GET", "POST"])
-@login_required
-def adv_edacceptance(college):
-    from datetime import datetime
-    user_id = session.get('user_id')
-    final_results = session.get('final_results', {})
-
-    final_uid = find_final_unique_id(college)
-    if not final_uid or final_uid not in final_results:
-        flash("ED acceptance record not found.", "danger")
-        return redirect(url_for('results'))
-
-    info = final_results[final_uid]
-    release_date_str = info.get('release_date', 'Unknown Date')
-
-    try:
-        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
-        formatted_date = dt.strftime('%B %d, %Y')
-    except ValueError:
-        formatted_date = "Unknown Date"
-
-    if user_id:
-        User.log_simulation(user_id, college, 'edacceptance')
-
-    return render_template(
-        f"adv/{college}/edacceptance.html",
-        name=session.get("advancedsim_data", {}).get("name", "User"),
-        date=formatted_date,
-        college=college
-    )
-
-# Rejection Route
-@app.route("/advancedsim/<college>/rejection")
-@login_required
-def adv_rejection(college):
-    from datetime import datetime
-    user_id = session.get('user_id')
-    final_results = session.get('final_results', {})
-
-    final_uid = find_final_unique_id(college)
-    if not final_uid or final_uid not in final_results:
-        flash("College rejection record not found.", "danger")
-        return redirect(url_for('results'))
-
-    info = final_results[final_uid]
-    release_date_str = info.get('release_date', 'Unknown Date')
-
-    try:
-        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
-        formatted_date = dt.strftime('%B %d, %Y')
-    except ValueError:
-        formatted_date = "Unknown Date"
-
-    if user_id:
-        User.log_simulation(user_id, college, 'rejection')
-
-    return render_template(
-        f"adv/{college}/rejection.html",
-        name=session.get("advancedsim_data", {}).get("name", "User"),
-        date=formatted_date,
-        college=college
-    )
-
-# Deferred Route
-@app.route("/advancedsim/<college>/deferred")
-@login_required
-def adv_deferred(college):
-    from datetime import datetime
-    user_id = session.get('user_id')
-    final_results = session.get('final_results', {})
-
-    final_uid = find_final_unique_id(college)
-    if not final_uid or final_uid not in final_results:
-        flash("College deferral record not found.", "danger")
-        return redirect(url_for('results'))
-
-    info = final_results[final_uid]
-    release_date_str = info.get('release_date', 'Unknown Date')
-
-    try:
-        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
-        formatted_date = dt.strftime('%B %d, %Y')
-    except ValueError:
-        formatted_date = "Unknown Date"
-
-    if user_id:
-        User.log_simulation(user_id, college, 'deferred')
-
-    return render_template(
-        f"adv/{college}/deferred.html",
-        name=session.get("advancedsim_data", {}).get("name", "User"),
-        date=formatted_date,
-        college=college
-    )
-
-# Waitlist Route
-@app.route("/advancedsim/<college>/waitlist")
-@login_required
-def adv_waitlist(college):
-    from datetime import datetime
-    user_id = session.get('user_id')
-    final_results = session.get('final_results', {})
-
-    final_uid = find_final_unique_id(college)
-    if not final_uid or final_uid not in final_results:
-        flash("College waitlist record not found.", "danger")
-        return redirect(url_for('results'))
-
-    info = final_results[final_uid]
-    release_date_str = info.get('release_date', 'Unknown Date')
-
-    try:
-        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
-        formatted_date = dt.strftime('%B %d, %Y')
-    except ValueError:
-        formatted_date = "Unknown Date"
-
-    if user_id:
-        User.log_simulation(user_id, college, 'waitlist')
-
-    return render_template(
-        f"adv/{college}/waitlist.html",
-        name=session.get("advancedsim_data", {}).get("name", "User"),
-        date=formatted_date,
-        college=college
-    )
 
 @app.route('/quicksim/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):

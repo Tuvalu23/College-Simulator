@@ -187,7 +187,7 @@ Welcome, {{ name }}</span><br><br>
 	<div>
 		<h3>Status Update</h3>
 		<p>An update to your application was last posted {{ date }}.</p>
-		<form method="POST" action="{{ url_for('adv_ustatus', college=college) }}">
+		<form method="POST" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}">
             <button type="submit" 
                 style="color: #800000; font-weight: bold; background: none; border: none; font-family: inherit; cursor: pointer; text-decoration: none; margin-left: -15px; font-size: 16px;" 
                 onmouseover="this.style.textDecoration='underline'" 

@@ -308,7 +308,7 @@ Search</button></form></div></div></header></div>
 
     
     <!-- Yellow Status Update Box with form -->
-<form action="{{ url_for('adv_ustatus', college=college) }}" method="post" style="margin-bottom:20px;">
+<form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="post" style="margin-bottom:20px;">
     <div style="background-color:#fef9c3; margin:0; font-family:Arial, sans-serif; font-size:16px; line-height:1.5;">
         <!-- Black bold "Status Update" in the top-left corner -->
         <div style="font-weight:bold; color:black; font-size:18px;">

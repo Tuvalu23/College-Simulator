@@ -478,7 +478,7 @@
 
                                             New updates to your application were posted {{ date }}<br>
                                           <strong>
-                                            <form action="{{ url_for('adv_ustatus', college=college)}}" method="POST" style="display: inline;">
+                                            <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="POST" style="display: inline;">
                                               <button type="submit" style="background: none; color: inherit; border: none; padding: 0; font: inherit; cursor: pointer; font-weight: bolder; text-decoration: underline;">
                                                 View Updates >>
                                               </button>

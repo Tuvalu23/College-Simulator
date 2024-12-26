@@ -23,7 +23,7 @@
 <div style="padding: 0rem; background-color: #FFF8DC;">
     <h3 style="color: #232D4B; font-weight: bold; margin: 0;">Status Update</h3>
     <p style="margin: 0.8rem 0 0; font-size: 1rem;">New updates to your application were posted {{ date }}</p>
-    <form method="POST" action="{{ url_for('adv_ustatus', college=college) }}" style="margin-top: 0.8rem;">
+    <form method="POST" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="margin-top: 0.8rem;">
         <button type="submit" style="
             color: #ff7300; 
             background: none; 

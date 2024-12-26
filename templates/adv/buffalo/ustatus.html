@@ -873,7 +873,7 @@ function swapperfour_edge(){
        style="width: 35px; height: 35px; margin-right: 7px;">
 
   <!-- Form with POST request -->
-  <form action="ustatus" method="POST" style="margin: 0;">
+  <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="POST" style="margin: 0;">
     <input type="hidden" name="college" value="college">
     <button type="submit" style="
       background-color: #0256bb; 

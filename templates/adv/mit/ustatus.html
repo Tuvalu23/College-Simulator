@@ -18,7 +18,7 @@
         <div style="background-color: #ffffcc; border: 1px solid #eeee99; border-radius: 3px; padding: 1px; margin-bottom: 20px; text-align: left;">
             <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0;">Status Update</h2>
             <p style="margin: 10px 0; color: #333;">New updates to your application were posted {{ date }}.</p>
-            <form action="{{ url_for('adv_ustatus', college=college) }}" method="post" style="margin: 0; margin-left: -10px;">
+            <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="post" style="margin: 0; margin-left: -10px;">
                 <button type="submit" style="background: none; border: none; color: black; font-size: 1rem; text-decoration: underline; cursor: pointer;"><strong>View Update &gt;&gt;</strong></button>
             </form>            
         </div>

@@ -483,7 +483,7 @@ Menu-->
                                                   <svg style="outline-style:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 11" width="16" height="11">
                                                     <polygon style="outline-style:none;outline: 0;" points="13.293,4.735 9.265,0.707 9.972,0 15.21,5.238 9.966,10.395 9.265,9.682 13.278,5.735 0,5.735 0,4.735"></polygon></svg>
                                                 </span>
-                                                <form action="{{ url_for('adv_ustatus', college=college) }}" method="POST">
+                                                <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="POST">
                                                   <button type="submit" class="status-header__logout" style="outline-style:none;">
                                                       View Decision
                                                   </button>
@@ -515,7 +515,7 @@ Menu-->
                                               <p>
 
 
-                                                <form action="{{ url_for('adv_ustatus', college=college) }}" method="POST" style="display: inline;">
+                                                <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="POST" style="display: inline;">
                                                   <button type="submit" style="font-weight: bold; outline-style: none; background: none; border: none; color: blue; text-decoration: underline; cursor: pointer;">
                                                       View Status Update
                                                   </button>
@@ -537,7 +537,7 @@ Menu-->
     <p style="margin: 0 0 30px 55px; font-size: 16px; line-height: 1.5; font-weight: 400;  color: #dddddd; ">
       You have a new status update for your application.
     </p>
-    <form id="statusForm" method="post" action="{{ url_for('adv_ustatus', college=college) }}">
+    <form id="statusForm" method="post" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}">
       <button id="viewUpdate" style="background-color: #bc3e44; color: #dddddd; border: 2px solid transparent; width: 80%; padding: 15px; font-size: 16px; cursor: pointer; display: block; margin: 0 auto; text-align: center; font-family: 'Inter', Arial, sans-serif; transition: border-color 0.3s;">
         View Status Update
       </button>

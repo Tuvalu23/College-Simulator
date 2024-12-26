@@ -1,66 +1,80 @@
-<!-- templates/results.html -->
 {% extends "base.html" %}
-
 {% block content %}
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
   body {
-    margin: 0;
+    margin: 0; 
     font-family: 'Poppins', sans-serif;
   }
   body::before {
     content: "";
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
-    background-size: cover; filter: blur(4px); z-index: -2;
+    background-size: cover; 
+    filter: blur(4px); 
+    z-index: -2;
   }
-
   .results-container {
-    display: flex; min-height: 80vh;
-    margin: 40px auto; width: 90%; max-width: 1200px;
-    background: #fff; border-radius: 12px;
+    display: flex; 
+    min-height: 80vh;
+    margin: 40px auto; 
+    width: 90%; 
+    max-width: 1200px;
+    background: #fff; 
+    border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    overflow: hidden; position: relative;
+    overflow: hidden; 
+    position: relative;
   }
-
   .sidebar {
-    width: 35%; background-color: #f8f9fa; padding: 20px;
-    box-sizing: border-box; border-right: 1px solid #ddd;
+    width: 35%; 
+    background-color: #f8f9fa; 
+    padding: 20px;
+    box-sizing: border-box; 
+    border-right: 1px solid #ddd;
   }
   .sidebar h2 {
-    font-size: 1.8rem; margin-bottom: 20px; color: #333;
-    border-bottom: 2px solid #f1f1f1; padding-bottom: 10px;
+    font-size: 1.8rem; 
+    margin-bottom: 20px; 
+    color: #333;
+    border-bottom: 2px solid #f1f1f1; 
+    padding-bottom: 10px;
     display: inline-block;
   }
   .sidebar ul {
-    list-style: none; padding: 0; margin: 0;
+    list-style: none; 
+    padding: 0; 
+    margin: 0;
   }
-  /* Increased spacing to 35px */
   .sidebar li {
     margin-bottom: 35px;
   }
-
-  /* Base link style */
   .college-link {
-    display: flex; justify-content: space-between; align-items: center;
-    text-decoration: none; background: #fff; padding: 10px 15px;
-    border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    text-decoration: none; 
+    background: #fff; 
+    padding: 10px 15px;
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     transition: background 0.3s, transform 0.3s;
-    cursor: pointer; position: relative; overflow: hidden;
+    cursor: pointer; 
+    position: relative; 
+    overflow: hidden;
   }
   .college-link:hover {
-    background: #e9ecef; transform: translateY(-2px);
+    background: #e9ecef; 
+    transform: translateY(-2px);
   }
+  .badge.ed    { background-color: #dc3545; color: #fff; border-radius: 12px; }
+  .badge.ea    { background-color: #007bff; color: #fff; border-radius: 12px; }
+  .badge.rea   { background-color: #ffc107; color: #000; border-radius: 12px; }
+  .badge.rd    { background-color: #28a745; color: #fff; border-radius: 12px; }
 
-  /* Application Type Badges with Desired Colors */
-  .badge.ed { background-color: #dc3545; color: #fff; border-radius: 12px; }
-  .badge.ea { background-color: #007bff; color: #fff; border-radius: 12px; }
-  .badge.rea { background-color: #ffc107; color: #000; border-radius: 12px; }
-  .badge.rd { background-color: #28a745; color: #fff; border-radius: 12px; }
-
-  /* Decision Badges with the Same Styling as App Type Badges */
-  .badge.acceptance { 
+  .badge.acceptance {
     background-color: #28a745; 
     color: #fff; 
     border-radius: 12px; 
@@ -69,8 +83,8 @@
     text-transform: uppercase; 
     padding: 5px 10px; 
   }
-  .badge.ed-acceptance { 
-    background-color: violet; /* Violet color for ED Acceptance */
+  .badge.ed-acceptance {
+    background-color: violet; 
     color: #fff; 
     border-radius: 12px; 
     font-weight: 600; 
@@ -78,7 +92,7 @@
     text-transform: uppercase; 
     padding: 5px 10px; 
   }
-  .badge.rejection { 
+  .badge.rejection {
     background-color: #dc3545; 
     color: #fff; 
     border-radius: 12px; 
@@ -87,7 +101,7 @@
     text-transform: uppercase; 
     padding: 5px 10px; 
   }
-  .badge.waitlist { 
+  .badge.waitlist {
     background-color: #ffc107; 
     color: #000; 
     border-radius: 12px; 
@@ -96,7 +110,7 @@
     text-transform: uppercase; 
     padding: 5px 10px; 
   }
-  .badge.deferred { 
+  .badge.deferred {
     background-color: #17a2b8; 
     color: #fff; 
     border-radius: 12px; 
@@ -105,64 +119,51 @@
     text-transform: uppercase; 
     padding: 5px 10px; 
   }
-  .badge.unknown { 
+  .badge.deferred-acceptance {
+    background-color: #9c27b0; 
+    color: #fff; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    padding: 5px 10px;
+  }
+  .badge.deferred-rejection {
+    background-color: #ff5722; 
+    color: #fff; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    padding: 5px 10px;
+  }
+  .badge.deferred-waitlist {
+    background-color: #ff9800; 
+    color: #000; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase; 
+    padding: 5px 10px;
+  }
+  .badge.unknown {
     background-color: #6c757d; 
     color: #fff; 
     border-radius: 12px; 
     font-weight: 600; 
     font-size: 0.8rem; 
     text-transform: uppercase; 
-    padding: 5px 10px; 
-  }
-
-  .badge.deferred-acceptance {
-    background-color: #9c27b0; /* Purple or anything */
-    color: #fff;
-    font-weight: 600; 
-    border-radius: 12px; 
-    font-size: 0.8rem; 
-    text-transform: uppercase; 
-    padding: 5px 10px;
-  }
-  
-  .badge.deferred-rejection {
-    background-color: #ff5722; /* Orange-Red */
-    color: #fff;
-    font-weight: 600; 
-    border-radius: 12px; 
-    font-size: 0.8rem; 
-    text-transform: uppercase; 
-    padding: 5px 10px;
-  }
-  
-  .badge.deferred-waitlist {
-    background-color: #ff9800; /* Deep Orange */
-    color: #000;
-    font-weight: 600; 
-    border-radius: 12px; 
-    font-size: 0.8rem; 
-    text-transform: uppercase; 
-    padding: 5px 10px;
-  }
-  
-  .badge.deferred-unknown {
-    background-color: #607d8b; 
-    color: #fff;
-    font-weight: 600; 
-    border-radius: 12px; 
-    font-size: 0.8rem; 
-    text-transform: uppercase; 
     padding: 5px 10px;
   }
 
-  /* Sidebar Badges - Make Them Thicker */
   .sidebar .badge {
-    padding: 5px 10px; /* Increased padding */
-    font-size: 0.8rem;  /* Increased font size */
+    padding: 5px 10px; 
+    font-size: 0.8rem; 
   }
 
   .college-link.available {
-    font-weight: bold; color: #000;
+    font-weight: bold; 
+    color: #000;
     border-left: 6px solid #007bff;
     animation: pulseBlue 1.5s infinite alternate;
   }
@@ -170,130 +171,129 @@
     from { box-shadow: 0 0 8px rgba(0,123,255,0.3); }
     to   { box-shadow: 0 0 20px rgba(0,123,255,0.6); }
   }
-  .college-link.available::after {
-    content: "";
-    position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(120deg, rgba(0,123,255,0.2), rgba(0,123,255,0.5), rgba(0,123,255,0.2));
-    transform: skewX(-20deg); transition: left 0.7s ease;
-  }
-  .college-link.available:hover::after {
-    left: 100%;
-  }
-
   .college-link.opened {
-    font-weight: normal; color: #333;
-    background-color: #e2e6ea; border-left: none;
-    animation: none; box-shadow: none;
+    font-weight: normal; 
+    color: #333;
+    background-color: #e2e6ea; 
+    border-left: none;
+    animation: none; 
+    box-shadow: none;
   }
   .college-link.disabled {
-    opacity: 0.6; pointer-events: none;
+    opacity: 0.6; 
+    pointer-events: none;
     background-color: #f8f9fa;
   }
-
   .main-content {
     display: flex; 
     flex-direction: column;
-    justify-content: flex-start; /* Changed from space-between to flex-start */
+    justify-content: flex-start; 
     width: 65%;
-    padding: 30px; box-sizing: border-box;
+    padding: 30px; 
+    box-sizing: border-box;
   }
   .main-content h1 {
-    font-size: 2.5rem; margin-bottom: 10px;
-    color: #333; text-align: center;
+    font-size: 2.5rem; 
+    margin-bottom: 10px;
+    color: #333; 
+    text-align: center;
   }
   .placeholder-message {
-    text-align: center; font-size: 1.2rem;
-    color: #555; margin-top: 10px;
+    text-align: center; 
+    font-size: 1.2rem;
+    color: #555; 
+    margin-top: 10px;
   }
   .decision-box {
-    background-color: #f1f1f1; padding: 20px;
-    border-radius: 8px; margin-bottom: 15px;
+    background-color: #f1f1f1; 
+    padding: 20px;
+    border-radius: 8px; 
+    margin-bottom: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.3s, background-color 0.3s;
-    position: relative; /* to place the top-right app_type badge */
+    position: relative;
   }
   .decision-box:hover {
-    transform: scale(1.02); background-color: #e2e6ea;
+    transform: scale(1.02); 
+    background-color: #e2e6ea;
   }
   .decision-box h3 {
-    margin-top: 0; color: #333;
+    margin-top: 0; 
+    color: #333;
   }
-  .decision-box p { 
+  .decision-box p {
     color: #555; 
     margin: 5px 0; 
   }
-
-  /* Release Date Styling */
-  .decision-box {
-    font-size: 0.9rem;
-    color: #777;
-    margin-top: 5px;
-  }
-
   .release-date {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #555;
     margin-top: 5px;
   }
-
-  /* Top-right corner badge for ED/EA/REA/RD */
   .app-type-badge {
-    position: absolute; top: 15px; right: 15px;
-    padding: 5px 10px; border-radius: 12px; color: #fff;
-    font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+    position: absolute; 
+    top: 15px; 
+    right: 15px;
+    padding: 5px 10px; 
+    border-radius: 12px; 
+    color: #fff;
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase;
   }
-  .app-type-badge.ED { background-color: #dc3545; } /* Red */
-  .app-type-badge.EA { background-color: #007bff; } /* Blue */
-  .app-type-badge.REA { background-color: #ffc107; color: #000; } /* Yellow */
-  .app-type-badge.RD { background-color: #28a745; } /* Green */
+  .app-type-badge.ED  { background-color: #dc3545; }
+  .app-type-badge.EA  { background-color: #007bff; }
+  .app-type-badge.REA { background-color: #ffc107; color: #000; }
+  .app-type-badge.RD  { background-color: #28a745; }
 
   .buttons {
-    display: flex; justify-content: flex-end; gap: 20px; margin-top: 30px;
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 20px; 
+    margin-top: 30px;
   }
   .buttons a {
-    border: none; border-radius: 25px; padding: 10px 20px;
-    cursor: pointer; font-size: 16px; font-weight: 600;
-    position: relative; overflow: hidden; transition: all 0.3s ease;
-    text-decoration: none; display: inline-block;
+    border: none; 
+    border-radius: 25px; 
+    padding: 10px 20px;
+    cursor: pointer; 
+    font-size: 16px; 
+    font-weight: 600;
+    position: relative; 
+    overflow: hidden; 
+    transition: all 0.3s ease;
+    text-decoration: none; 
+    display: inline-block;
   }
   .back-button {
-    background: #555; color: #fff;
+    background: #555; 
+    color: #fff;
   }
   .back-button:hover {
-    background: #333; transform: scale(1.05);
+    background: #333; 
+    transform: scale(1.05);
   }
   .continue-button {
     background: linear-gradient(45deg, #007bff, #28a745);
-    background-size: 600% 600%; color: #fff;
+    background-size: 600% 600%; 
+    color: #fff;
     animation: gradientAnimation 8s ease infinite;
   }
-  .continue-button:hover { transform: scale(1.05); }
+  .continue-button:hover {
+    transform: scale(1.05);
+  }
   @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
-
-  /* New Home Button Styling */
   .home-button {
-    background: linear-gradient(45deg, #ff7f50, #ff6f91); /* Reddish gradient */
+    background: linear-gradient(45deg, #ff7f50, #ff6f91);
     color: #fff;
-    animation: none; /* Remove gradient animation */
+    animation: none; 
   }
   .home-button:hover {
     transform: scale(1.05);
-  }
-
-  @media (max-width: 768px) {
-    .results-container {
-      flex-direction: column;
-    }
-    .sidebar, .main-content {
-      width: 100%;
-    }
-    .sidebar {
-      border-right: none; border-bottom: 1px solid #ddd;
-    }
   }
 </style>
 
@@ -310,25 +310,23 @@
 
         <li>
           {% if is_available %}
-            <a href="#"
+            <a href="#" 
                class="college-link available"
                onclick="handleClick('{{ uid }}'); return false;">
               <span>
                 {{ decision.display_name }} Status Update
                 <span class="release-date">({{ decision.release_date }})</span>
               </span>
-              <!-- App Type Badge -->
               <span class="badge {{ app_lower }}">{{ decision.app_type }}</span>
             </a>
           {% elif is_opened %}
-            <a href="#"
+            <a href="#" 
                class="college-link opened"
                onclick="handleClick('{{ uid }}'); return false;">
               <span>
                 {{ decision.display_name }} Status Update
                 <span class="release-date">({{ decision.formatted_release_date }})</span>
               </span>
-              <!-- App Type Badge -->
               <span class="badge {{ app_lower }}">{{ decision.app_type }}</span>
             </a>
           {% else %}
@@ -337,7 +335,6 @@
                 {{ decision.display_name }} Status Update
                 <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
               </span>
-              <!-- App Type Badge -->
               <span class="badge {{ app_lower }}">{{ decision.app_type }}</span>
             </a>
           {% endif %}
@@ -354,21 +351,27 @@
       {% if opened_decisions %}
         {% for dec in opened_decisions %}
           <div class="decision-box">
-            <!-- Show top-right badge for ED/EA/REA/RD -->
             <div class="app-type-badge {{ dec.app_type }}">{{ dec.app_type }}</div>
             <h3>{{ dec.display_name }}</h3>
             <p>
               <strong>Decision:</strong>
-              {% if dec.badge_class == "acceptance" %}
-                <span class="badge acceptance">Acceptance</span>
-              {% elif dec.badge_class == "ed-acceptance" %}
+              {# Our “badge_class” is how we know the final result #}
+              {% if dec.badge_class == "ed-acceptance" %}
                 <span class="badge ed-acceptance">ED Acceptance</span>
-              {% elif dec.badge_class == "waitlist" %}
-                <span class="badge waitlist">Waitlisted</span>
+              {% elif dec.badge_class == "acceptance" %}
+                <span class="badge acceptance">Acceptance</span>
               {% elif dec.badge_class == "rejection" %}
                 <span class="badge rejection">Rejection</span>
+              {% elif dec.badge_class == "waitlist" %}
+                <span class="badge waitlist">Waitlisted</span>
               {% elif dec.badge_class == "deferred" %}
                 <span class="badge deferred">Deferred</span>
+              {% elif dec.badge_class == "deferred-acceptance" %}
+                <span class="badge deferred-acceptance">Deferred Acceptance</span>
+              {% elif dec.badge_class == "deferred-rejection" %}
+                <span class="badge deferred-rejection">Deferred Rejection</span>
+              {% elif dec.badge_class == "deferred-waitlist" %}
+                <span class="badge deferred-waitlist">Deferred Waitlist</span>
               {% else %}
                 <span class="badge unknown">Unknown</span>
               {% endif %}
@@ -393,20 +396,20 @@
 
 <script>
   function handleClick(uniqueId) {
-    // 1) open adv_login in new tab
     const [shortName, appType] = uniqueId.split('_');
-    const advLoginUrlTemplate = "{{ url_for('adv_login', college='COLLEGE') }}?next={{ url_for('results') }}&unique_id=UNIQUEID";
-    const advLoginUrl = advLoginUrlTemplate
-      .replace('COLLEGE', shortName)
-      .replace('UNIQUEID', uniqueId);
-  
-    window.open(advLoginUrl, '_blank');
-  
-    // 2) also navigate THIS window to ?selected_college=uniqueId
+
+    // Create URL for adv_login with unique_id
+    let loginUrl = "{{ url_for('adv_login', college='COLLEGE') }}" + "?unique_id=" + uniqueId;
+    loginUrl = loginUrl.replace('COLLEGE', shortName);
+
+    // Open the login page in a new tab
+    window.open(loginUrl, "_blank");
+
+    // Navigate the current window to mark the selected_college
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('selected_college', uniqueId);
     window.location.href = currentUrl.toString();
   }
-  
 </script>
+
 {% endblock %}

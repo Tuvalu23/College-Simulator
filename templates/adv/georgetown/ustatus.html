@@ -58,7 +58,7 @@ text-decoration: none;
 </p>
 
 <!-- Form with "View Update >>" Button -->
-<form method="POST" action="{{ url_for('adv_ustatus', college=college) }}">
+<form method="POST" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}">
     <button 
         type="submit" 
         style="
