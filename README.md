@@ -29,7 +29,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Buffalo
 - [X] Emory
 - [X] Georgetown
-- [ ] UVA
+- [X] UVA
 - [ ] Tufts
 - [ ] Wash U
 - [ ] Northeastern

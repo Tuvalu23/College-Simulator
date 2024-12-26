@@ -325,7 +325,7 @@ university_list = [
             {"label": "Research", "color": "Research"},
             {"label": "STEM", "color": "STEM"},
             {"label": "Innovation", "color": "Innovation"},
-            {"label": "Diversity", "color": "Diversity"}
+            {"label": "Diverse", "color": "Diverse"}
         ]
     },
     {
@@ -340,7 +340,7 @@ university_list = [
             {"label": "Research", "color": "Research"},
             {"label": "Athletics", "color": "Athletics"},
             {"label": "STEM", "color": "STEM"},
-            {"label": "Diversity", "color": "Diversity"}
+            {"label": "Diverse", "color": "Diverse"}
         ]
     },
     {
@@ -389,6 +389,20 @@ university_list = [
         ]
     },
     {
+    "name": "uva",
+    "display_name": "University of Virginia",
+    "logo": "static/logos/uva-logo.jpg",
+    "description": "The University of Virginia, located in Charlottesville, VA, is a prestigious public university known for its historic campus, academic excellence, and strong emphasis on student leadership and community engagement.",
+    "badges": [
+        {"label": "Public", "color": "Public"},
+        {"label": "Suburban", "color": "Suburban"},
+        {"label": "Historic", "color": "Historic"},
+        {"label": "Leadership", "color": "Leadership"},
+        {"label": "STEM", "color": "STEM"},
+        {"label": "Community", "color": "Community"}
+    ]
+},
+    {
         "name": "yale",
         "display_name": "Yale University",
         "logo": "static/logos/yale-logo.jpg",
@@ -417,6 +431,7 @@ college_list = [
     ["yale", "0.07", "N", "1.3", "REA", "2024-12-17", "N", "2025-03-28"],
     ["harvard", "0.07", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
     ["brown", "0.07", "2.0", "N", "P", "2024-12-13", "N", "2025-03-28"],
+    ["uva", "0.07", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-3-21"],
     ["uchicago", "0.09", "2.5", "1.1", "P", "2024-12-20", "2024-12-20", "2025-03-25"],
     ["northwestern", "0.09", "2.2", "N", "P", "2024-12-17", "N", "2025-03-24"],
     ["duke", "0.09", "2.0", "N", "P", "2024-12-16", "N", "2025-03-28"],
