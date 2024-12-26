@@ -438,7 +438,7 @@ college_list = [
     ["rice", "0.12", "2", "N", "P", "2024-12-14", "N", "2025-03-21"],
     ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],
     ["uva", "0.15", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-3-21"],
-    ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-28"],
+    ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-22"],
     ["berkeley", "0.15", "N", "N", "PUB", "N", "N", "2025-03-27"],
     ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-26"],
     ["usc", "0.17", "N", "1.3", "P", "N", "2025-1-17", "2025-03-16"],
@@ -1958,12 +1958,12 @@ def chances():
         applied_colleges = session.get('applied_colleges', [])
         interview_chances = session.get('interview_chances', {})
 
-        # Build or retrieve final_results & decisions_queue_sorted
+        # Retrieve or initialize final_results & decisions_queue_sorted
         final_results = session.get('final_results', {})
         decisions_queue_sorted = session.get('decisions_queue_sorted', [])
 
         if not decisions_queue_sorted:
-            # Similar logic to summary or results route
+            # Build decisions_queue_sorted and initialize final_results
             new_queue = []
             for college in applied_colleges:
                 short_name = college['short_name']
@@ -1979,8 +1979,7 @@ def chances():
                 if not c_entry_display:
                     continue
 
-                # Determine school_type using the provided logic
-                # "Public" if c_entry[4].upper() in ["PUB", "P"] else "Private"
+                # Determine school_type
                 school_type = "Public" if c_entry_sim[4].upper() in ["PUB", "P"] else "Private"
 
                 # Decide which date column to pick based on app_type
@@ -2009,6 +2008,7 @@ def chances():
                         'release_date': rdate
                     }
 
+            # Sort by date if possible
             try:
                 new_queue.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
             except ValueError:
@@ -2018,11 +2018,17 @@ def chances():
             decisions_queue_sorted = new_queue
             session['final_results'] = final_results
 
-        # Now finalize decisions (simulate or use your admissionsDecision)
+        #
+        # 1) Generate *early-round* decisions via admissionsDecision
+        #
         for unique_id, data in interview_chances.items():
-            # example: unique_id = 'duke_ed'
-            college_short_name, unique_app_type = unique_id.rsplit('_', 1)
-            
+            # e.g., unique_id = 'duke_ed'
+            try:
+                college_short_name, unique_app_type = unique_id.rsplit('_', 1)
+            except ValueError:
+                print(f"Invalid unique_id format: {unique_id}")
+                continue
+
             # Retrieve simulation data
             c_entry_sim = next((c for c in college_list if c[0].lower() == college_short_name.lower()), None)
             if not c_entry_sim:
@@ -2034,20 +2040,19 @@ def chances():
                 continue
 
             idx = college_list.index(c_entry_sim)
-            # Convert to uppercase
             uppercase_app_type = unique_app_type.upper()
             chances_val = data.get('chances', 50.0)
 
-            # admissionsDecision
+            # admissionsDecision for ED/EA/REA (or RD if user applied RD initially)
             decision_code = admissionsDecision(
-                chances_val,
-                uppercase_app_type,
-                idx,
-                college_list,
-                decisions_queue_sorted
+                chances=chances_val,
+                appType=uppercase_app_type,
+                idx=idx,
+                college_list=college_list,
+                decisions_queue_sorted=decisions_queue_sorted
             )
 
-            # Overwrite final_results
+            # Overwrite final_results with new code
             if uppercase_app_type == "RD":
                 release_date = c_entry_sim[7] if len(c_entry_sim) > 7 else "2099-01-01"
             elif uppercase_app_type == "EA":
@@ -2061,10 +2066,84 @@ def chances():
                 'release_date': release_date
             }
 
+        #
+        # 2) Now handle newly created RD placeholders from deferral
+        #    (They were scheduled with 'decision_code' == 'PENDING'.)
+        #
+        locked_until_opened = session.get('locked_until_opened', {})
+        for uid, info in list(final_results.items()):
+            if info.get('decision_code') == "PENDING" and info.get('app_type') == "RD":
+                # This is the RD "placeholder" created due to deferral.
+                # Let's recompute chances using RD parameters and the original interview strength.
+                try:
+                    college_short_name, _ = uid.rsplit('_', 1)  # e.g., "duke_rd"
+                except ValueError:
+                    print(f"Invalid unique_id format for RD: {uid}")
+                    continue
+
+                c_entry_sim = next((c for c in college_list if c[0].lower() == college_short_name.lower()), None)
+                if not c_entry_sim:
+                    continue
+                idx = college_list.index(c_entry_sim)
+
+                # Get the initial unique_id that this RD is locked behind
+                initial_uid = locked_until_opened.get(uid)
+                if not initial_uid:
+                    print(f"No initial unique_id found for RD unique_id: {uid}")
+                    continue
+
+                # Get the interview_strength from the initial unique_id's interview_chances
+                interview_strength = interview_chances.get(initial_uid, {}).get('interview_score', sim10())
+
+                # Retrieve user data to recompute chances
+                user_data = session.get('advancedsim_data', {})
+                demScore = user_data.get('dem_score', 0.0)
+                testOption = user_data.get('test_option', 'rd').lower()
+                testOptional = (testOption == 'optional')
+                sat = user_data.get('sat_score', -1) or -1
+                act = user_data.get('act_score', -1) or -1
+                extracurriculars = user_data.get('extracurriculars', 0)
+                ap_courses = user_data.get('ap_courses', 0)
+                essayStrength = user_data.get('essays', 0)
+                gpa = user_data.get('gpa', 0.0)
+
+                # Recompute chances_val_rd using 'app_type'='RD' and reused interview_strength
+                chances_val_rd = chanceCollege(
+                    collegeList=college_list,
+                    i=idx,
+                    demScore=demScore,
+                    testOptional=testOptional,
+                    sat=int(sat),
+                    act=int(act),
+                    extracurriculars=int(extracurriculars),
+                    ap_courses=int(ap_courses),
+                    essayStrength=int(essayStrength),
+                    gpa=float(gpa),
+                    interviewStrength=interview_strength,  # Reuse the initial interview strength
+                    app_type="RD"
+                )
+
+                # Call admissionsDecision with is_deferred=True to get D/A, D/W, or D/R
+                new_code = admissionsDecision(
+                    chances=chances_val_rd,
+                    appType="RD",
+                    idx=idx,
+                    college_list=college_list,
+                    decisions_queue_sorted=decisions_queue_sorted,
+                    is_deferred=True
+                )
+
+                # Update final_results with the new decision code
+                final_results[uid]['decision_code'] = new_code
+
+        # Update the session with final_results
         session['final_results'] = final_results
+
         return redirect(url_for('results'))
 
+    #
     # GET: show the chances page
+    #
     user_data = session.get('advancedsim_data', {})
     applied_colleges = session.get('applied_colleges', [])
     if not applied_colleges:
@@ -2081,28 +2160,24 @@ def chances():
     essayStrength = user_data.get('essays', 0)
     gpa = user_data.get('gpa', 0.0)
 
+    # Build interview_chances
     interview_chances = {}
     for college in applied_colleges:
         short_name = college['short_name']
         app_type = college['app_type'].upper()
 
-        # Retrieve simulation data from college_list
         c_entry_sim = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
         if not c_entry_sim:
             continue
 
-        # Retrieve display data from university_list
         c_entry_display = next((c for c in university_list if c["name"].lower() == short_name.lower()), None)
         if not c_entry_display:
             continue
 
-        # Determine school_type using the provided logic
-        # "Public" if c_entry[4].upper() in ["PUB", "P"] else "Private"
         school_type = "Public" if c_entry_sim[4].upper() in ["PUB", "P"] else "Private"
-
         idx = college_list.index(c_entry_sim)
 
-        interview_score = sim10()  # random from your function
+        interview_score = sim10()  # Generate interview strength
         chances_val = chanceCollege(
             collegeList=college_list,
             i=idx,
@@ -2118,12 +2193,9 @@ def chances():
             app_type=app_type
         )
 
-        # Improve chances by multiplying with a random factor between 1 and 1.6
-
-        # Call 'rate' for the interview score to display it in a badge
+        # Determine interview score category
         chance_category, chance_class = rate(interview_score)
-
-        # Call 'getType' for the classification based on chances_val
+        # Determine overall chances category
         chance_type_label, chance_type_class = getType(chances_val)
 
         unique_id = generate_unique_id(short_name, app_type)
@@ -2133,11 +2205,11 @@ def chances():
             "app_type": app_type,
             "logo_url": c_entry_display.get("logo", "static/logos/default-logo.jpg"),
             "interview_score": interview_score,
-            "chance_category": chance_category,          # From rate(score)
-            "chance_class": chance_class,                # From rate(score)
-            "chance_type_label": chance_type_label,      # From getType(chance)
-            "chance_type_class": chance_type_class,      # From getType(chance)
-            "school_type": school_type                   # Public or Private
+            "chance_category": chance_category,
+            "chance_class": chance_class,
+            "chance_type_label": chance_type_label,
+            "chance_type_class": chance_type_class,
+            "school_type": school_type
         }
 
     session['interview_chances'] = interview_chances
@@ -2287,7 +2359,7 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
     # If not already created, create the new RD entry with a placeholder code
     if rd_unique_id not in final_results:
         final_results[rd_unique_id] = {
-            'decision_code': 'D/R',  # default guess
+            'decision_code': 'PENDING',  # default guess
             'app_type': 'RD',
             'release_date': rd_release_date
         }
@@ -2553,7 +2625,7 @@ def adv_ustatus(college):
     # Retrieve unique_id from query parameters or form data
     unique_id = request.args.get('unique_id') or request.form.get('unique_id')
     if not unique_id:
-        flash("Error: No unique_id provided.", "danger")
+        flash("Welcome back to your results page!", "info")
         return redirect(url_for('results'))
 
     info = final_results.get(unique_id)

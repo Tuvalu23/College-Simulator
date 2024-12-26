@@ -6,9 +6,26 @@
     
     
     
-    <p class="success">To log in, please enter your email address and password.</p><table class="fixed"><colgroup><col><col style="width: 215px;"></colgroup><tbody><tr><td><table class="plain"><colgroup><col style="width: 150px;"><col></colgroup><tbody><tr><th><label for="email">Email Address</label></th><td><input id="email" maxlength="64" name="email" size="48" style="width: 200px;" value="ggg" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="maxlength_enabled"></td></tr><tr><th><label for="password">Password</label></th><td><input id="password" maxlength="64" name="password" size="48" style="width: 200px;" type="password" value="password" autocomplete="off" autocapitalize="off" spellcheck="false"><a style="margin-left: 15px;" href="javascript:void(0);">Forgot Your Password?</a></td></tr></tbody></table><div class="action"><form action="{{ url_for('adv_ustatus', college=college) }}">
-    <button type="submit" class="default">Login</button>
-</form>
+    <p class="success">To log in, please enter your email address and password.</p><table class="fixed"><colgroup><col><col style="width: 215px;"></colgroup><tbody><tr><td>
+        <form 
+  method="post" 
+  onsubmit="return false;" 
+  novalidate="novalidate" 
+  data-fw-form="1" 
+  autocomplete="off"
+>
+        <table class="plain"><colgroup><col style="width: 150px;"><col></colgroup><tbody><tr><th><label for="email">Email Address</label></th><td><input id="email" maxlength="64" name="email" size="48" style="width: 200px;" value="ggg" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="maxlength_enabled"></td></tr><tr><th><label for="password">Password</label></th><td><input id="password" maxlength="64" name="password" size="48" style="width: 200px;" type="password" value="password" autocomplete="off" autocapitalize="off" spellcheck="false"><a style="margin-left: 15px;" href="javascript:void(0);">Forgot Your Password?</a></td></tr></tbody></table><div class="action">
+        <!-- login.html -->
+        <div class="action">
+            <button 
+              class="default" 
+              onclick="if (FW.Validate(this)) FW.Postback(this); return false;" 
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
+        </form>
 
 
 </div></td><td></td></tr></tbody></table><div style="margin-top: 50px;"></div><script>/*<![CDATA[*/$('#email').focus().select();/*]]>*/</script></form></div><div class="c_page-flipper c_open-0 cr"></div><footer class="c_site-footer-bottom c_container-fluid cr"><div class="c_row cr"><div class="c_col-6 c_col-xl-3 cr">© DUKE.EDU 2024</div><div class="c_col-6 c_d-none c_d-xl-block c_links-container cr"><div class="c_menu-footer-menu-container cr"><ul id="c_menu-footer-menu-2" class="c_menu cr"><li class="c_menu-item c_menu-item-type-post_type c_menu-item-object-page c_menu-item-2047 cr"><a href="https://admissions.duke.edu/counselors/" class="cr">For Counselors</a></li><li class="c_menu-item c_menu-item-type-post_type c_menu-item-object-page c_menu-item-2048 cr"><a href="https://admissions.duke.edu/parents/" class="cr">For Parents</a></li><li class="c_menu-item c_menu-item-type-post_type c_menu-item-object-page c_menu-item-2050 cr"><a href="https://admissions.duke.edu/resources-tools/" class="cr">Resources + Tools</a></li><li class="c_menu-item c_menu-item-type-post_type c_menu-item-object-page c_menu-item-2049 cr"><a href="https://admissions.duke.edu/faqs/" class="cr">FAQs</a></li><li class="c_menu-item c_menu-item-type-post_type c_menu-item-object-page c_menu-item-2110 cr"><a href="https://admissions.duke.edu/contact/" class="cr">Contact Us</a></li></ul></div></div><div class="c_col-6 c_col-xl-3 c_social-container cr"><a href="https://twitter.com/discoverduke" target="_blank" class="cr"><img src="./login_files/twitter.svg" alt="Twitter" class="cr"></a><a href="https://www.facebook.com/DiscoverDuke" target="_blank" class="cr"><img src="./login_files/facebook.svg" alt="Facebook" class="cr"></a><a href="https://www.instagram.com/discoverduke" target="_blank" class="cr"><img src="./login_files/insta.svg" alt="Instagram" class="cr"></a><a href="https://www.youtube.com/channel/UCtXRIIGnq4rU8REt1vAuttw" target="_blank" class="cr"><img src="./login_files/youtube.svg" alt="YouTube" class="cr"></a></div></div></footer><div class="c_progress_box cr" style="visibility: hidden;"></div></div></div><div class="progress_box" style="visibility: hidden;"></div></body></html>
