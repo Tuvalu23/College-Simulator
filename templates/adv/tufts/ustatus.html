@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- saved from url=(0111)https://students.apps.tufts.edu/account/login?r=https%3a%2f%2fstudents.apps.tufts.edu%2fapply%2fstatus&cookie=1 -->
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" class="no-touch"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="shortcut icon" href="https://students-apps-tufts-edu.cdn.technolutions.net/favicon.ico"><link href="./login_files/base.css" rel="stylesheet"><link href="./login_files/base(1).css" rel="stylesheet"><link href="./login_files/build.css" rel="stylesheet"><script src="./login_files/base.js.download"></script><script>/*<![CDATA[*/FW.Config['Citizenship.Default.Country'] = 'US'; FW.Config['Citizenship.PR'] = 'Permanent Resident'; FW.Config['CDN'] = '//slate-technolutions-net.cdn.technolutions.net'; /*]]>*/</script><script src="./login_files/password.js.download"></script><script async="async" id="session_expires" src="./login_files/session.js.download" data-now="1735253531" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="0"></script><style>/*<![CDATA[*/html > body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; }/*]]>*/</style><title>Application Status</title></head>
+
+
+
+<body><noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div></noscript>
+    <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses resources that are being blocked by your network. Contact your network administrator for more information.</div>
+    
+    <div id="page"><div id="c_c_header" class="c_cr cr"><div class="c_c_wrap c_cr cr"><div id="c_c_brand" class="c_cr cr">
+        <a class="c_cr cr" href="http://www.tufts.edu/"><img alt="Tufts University" class="c_cr cr" src="./login_files/Tufts_univ_white.jpg"></a></div></div></div>
+        
+        <div id="content" style="padding: 15px; font-family: 'Times New Roman', serif;">
+            <!-- Top Right Corner: Name + Logout -->
+            <div style="text-align: right; margin-left: -20px;">
+                <span style="color: black; font-size: 1.2rem;">{{ name }}</span>
+                <span style="margin-left: 5px; color: #2c6bac; font-size: smaller;">
+                    <a href="{{ url_for('login', college=college) }}" style="text-decoration: none; color: #2c6bac;">Logout</a>
+                </span>
+            </div>
+        
+            <!-- Main Content Split into Main Bar (60%) and Sidebar (30%) -->
+            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+        
+                <!-- Main Bar (60%) -->
+                <div style="width: 65%;">
+        
+                    <!-- Application Status Portal Title + Banner -->
+                    <div style="font-weight: bold; font-size: 1.2em; text-align: center; margin-bottom: 10px;">
+                        Application Status Portal
+                    </div>
+                    <img src="./login_files/banner.png" alt="Banner" style="width: 100%; display: block; margin-bottom: 15px;">
+        
+                    <!-- Tufts Blue Thick Line -->
+                    <div style="background-color: #2c6bac; height: 16px; width: 100%; margin-bottom: 15px;"></div>
+        
+                    <!-- Hi {{ name }} Section -->
+                    <div style="margin-bottom: 15px;">
+                        <p style="margin: 0;">Hi {{ name }},</p>
+                        <br>
+                        <p style="margin: 0;">Thank you for submitting your application to the School of Arts & Sciences! Your application portal is where you will see the status of your application and all required materials, as well as any new offers or admission decisions when it is available. 
+                        This portal is monitored by the Office of Undergraduate Admissions. When decisions are available, you will be notified by email.</p>
+                        <br>
+                        <p>We wish you well with your college search!</p>
+                        <p style="margin-top: 10px;"><strong>Have questions with your application?</strong> Contact us at <a>admissions@tufts.edu</a> or (617) 627-3170.</p>
+                    </div>
+        
+                    <!-- Status Update Box -->
+                    <div style="background-color: #fff8cc; margin-bottom: 15px; margin-top: 20px;">
+                        <div style="font-weight: bold; font-size: 1.3em; margin-bottom: 8px;">Status Update</div>
+                        <div style="font-size: 1.1em;">New updates to your application were posted {{ date }}.</div>
+                        <form action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" method="POST" style="margin-top: 8px;">
+                            <button type="submit" 
+                                    style="color: #2c6bac; background: none; border: none; padding: 0; cursor: pointer; font-size: 1.1em;"
+                                    onmouseover="this.style.textDecoration='underline'" 
+                                    onmouseout="this.style.textDecoration='none'">
+                                <span style="font-family: 'Times New Roman', serif"><strong>View Update >></strong></span>
+                            </button>
+                        </form>
+                    </div>
+        
+                    <!-- Two White Buttons Above Checklist -->
+                    <div style="margin-bottom: 15px; display: flex; gap: 10px;">
+                        <button style="font-family: 'Times New Roman', serif; background-color: white; border: 1px solid #D3D3D3; padding: 5px 10px; font-weight: bold; font-size: 0.9em; cursor: pointer;"><span style="font-family: 'Times New Roman', serif;">Application</button>
+                        <button style="font-family: 'Times New Roman', serif; background-color: white; border: 1px solid #D3D3D3; padding: 5px 10px; font-weight: bold; font-size: 0.9em; cursor: pointer;"><span style="font-family: 'Times New Roman', serif;">Financial Aid</span></button>
+                    </div>
+        
+                    <!-- Detailed Application Checklist -->
+                    <div style="margin-bottom: 15px; text-align: left;">
+                        <div style="font-weight: bold; font-size: 1.3em; margin-bottom: 10px;">Application Checklist</div>
+                        <table border="1" style="width: 100%; border-collapse: collapse; font-size: 1em; text-align: left;">
+                            <thead>
+                                <tr>
+                                    <th style="padding: 5px;">Status</th>
+                                    <th style="padding: 5px;">Details</th>
+                                    <th style="padding: 5px;">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 5px; text-align: left;"><span style="color: green"><strong>&#10003;</strong></span>  Recieved</td>
+                                    <td style="padding: 5px;">Application</td>
+                                    <td style="padding: 5px;">10/20/20242</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; text-align: left;"><span style="color: green"><strong>&#10003;</strong></span>  Recieved</td>
+                                    <td style="padding: 5px;">Secondary School Report</td>
+                                    <td style="padding: 5px;">10/20/2024</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; text-align: left;"><span style="color: green"><strong>&#10003;</strong></span>  Recieved</td>
+                                    <td style="padding: 5px;">School Counselor Recommendation</td>
+                                    <td style="padding: 5px;">10/20/2024</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; text-align: left;"><span style="color: green"><strong>&#10003;</strong></span>  Recieved</td>
+                                    <td style="padding: 5px;">Official High School Transcript</td>
+                                    <td style="padding: 5px;">10/21/2024</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; text-align: left;"><span style="color: green"><strong>&#10003;</strong></span>  Recieved</td>
+                                    <td style="padding: 5px;">Teacher Recommendation</td>
+                                    <td style="padding: 5px;">12/03/2024</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; text-align: left;"><span style="color: red"><strong>✘</strong></span>  Awaiting</td>
+                                    <td style="padding: 5px;">Final Academic Report & Transcript</td>
+                                    <td style="padding: 5px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        
+                <!-- Sidebar (30%) -->
+                <div style="width: 30%; margin-left: 50px;">
+        
+                    <!-- Blue Horizontal Line -->
+                    <div style="background-color: #2c6bac; height: 9px; width: 100%; margin-bottom: 15px;"></div>
+        
+                    <!-- Application Details Box -->
+                    <div style="background-color: white; padding: 10px; margin-bottom: 15px; font-size: 1.1em; line-height: 1.6;">
+                        <div style="font-weight: bold; margin-bottom: 10px; font-size: 1.5em;">Application Details</div>
+                        <p style="margin: 0;">Application ID: 123456</p>
+                        <p style="margin: 0;">Major: Undecided</p>
+                    </div>
+                    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+                    <!-- Another Blue Horizontal Line -->
+                    <div style="background-color: #2c6bac; height: 9px; width: 100%; margin-bottom: 15px;"></div>
+        
+                    <!-- Self-Reported Test Scores Box -->
+                    <div style="background-color: white; padding: 10px; margin-bottom: 15px; text-align: center; line-height: 1.6;">
+                        <p style="margin: 0; font-size: 1.1em; text-align: center; margin-bottom: 10px;">
+                            Add your test scores to complete your application review process. You may submit ACT scores, SAT scores, or both.
+                        </p>
+                        <button style="font-family: 'Lora', serif; background-color: #2c6bac; color: white; border-radius: 5px; border: none; padding: 12px 16px; cursor: pointer; font-size: 1.4em;">
+                            <span style="line-height: 1.2; font-family: 'Lora', serif;">Add Self-Reported<br>Test Scores</span>
+                        </button>
+                    </div>
+        
+                    <div style="background-color: #2c6bac; height: 9px; width: 100%; margin-bottom: 7px;"></div>
+
+                    <!-- Update SSN Box -->
+                    <div style="background-color: white; padding: 10px; margin-bottom: 15px; text-align: center; line-height: 1.6;">
+                        <div style="font-weight: bold; margin-bottom: 10px; font-size: 1.2em;">Update Social Security Number</div>
+                        <p style="margin: 0; font-size: 1.1em; margin-bottom: 10px;">Your Social Security Number (SSN) is required for financial aid processing. Please enter/update your Social Security Number below if you have not already done so.</p>
+                        <button style="font-family: 'Lora', serif; background-color: #2c6bac; color: white; border-radius: 5px; border: none; padding: 12px 16px; cursor: pointer; font-size: 1.4em;">
+                            <span style="line-height: 1.2; font-family: 'Lora', serif;">Add/Update SSN</span>
+                        </button>
+                    </div>
+        
+                    <!-- Follow us on Instagram -->
+                    <div style="text-align: center;">
+                        <div style="background-color: #2c6bac; height: 9px; width: 100%; margin-bottom: 15px;"></div>
+                        <div style="font-weight: bold; margin-bottom: 10px; font-size: 1.2em;">Follow us on Instagram?</div>
+                        <img src="./login_files/insta-pic.png" alt="Instagram" style="width: 90%; height: auto;">
+                    </div>
+                </div>
+        
+            </div>
+        </div>        
+        
+
+<div id="c_c_wrapper" class="c_cr cr"><div id="c_c_footer" class="c_cr cr"><div class="c_c_footer.content c_cr cr"><h2 class="c_cr cr">Tufts University</h2><p class="c_cr cr">
+                  Career Center - Dowling Hall, 740 - 
+                  <a class="c_cr cr" href="mailto:careercenter@tufts.edu" style="color: #FFF;">careercenter@tufts.edu</a> - (617) 627-3299
+                  
+                </p><p class="c_cr cr">Health Professions Advising - Dowling Hall, 710 - <a class="c_cr cr" href="mailto:prehealth@tufts.edu" style="color: #FFF;">prehealth@tufts.edu</a> - (617) 627-2321</p><p class="c_cr cr">
+                  Tufts Financial Aid  - <a class="c_cr cr" href="mailto:studentservices@tufts.edu" style="color: #FFF;">studentservices@tufts.edu</a> - (617) 627-2000
+                </p><p class="c_cr cr">
+                  Tufts Student Services  - <a class="c_cr cr" href="mailto:studentservices@tufts.edu" style="color: #FFF;">studentservices@tufts.edu</a> - (617) 627-2000
+                </p></div></div></div><div class="c_progress_box cr" style="visibility: hidden;"></div></div><div class="progress_box" style="visibility: hidden;"></div></body></html>

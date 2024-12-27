@@ -314,6 +314,20 @@ university_list = [
         ]
     },
     {
+    "name": "tufts",
+    "display_name": "Tufts University",
+    "logo": "static/logos/tufts-logo.jpg",
+    "description": "Tufts University, located in Medford and Somerville, MA, is a renowned institution recognized for its commitment to global leadership and civic engagement. It offers a vibrant mix of liberal arts, sciences, and professional schools within a collaborative and inclusive community.",
+    "badges": [
+        {"label": "T-30", "color": "T-30"},
+        {"label": "Liberal Arts", "color": "Liberal Arts"},
+        {"label": "Global", "color": "Global"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Civic Engagement", "color": "Civic Engagement"},
+        {"label": "Inclusive", "color": "Inclusive"}
+    ]
+},
+    {
         "name": "berkeley",
         "display_name": "University of California, Berkeley",
         "logo": "static/logos/berkeley-logo.png",
@@ -436,6 +450,7 @@ college_list = [
     ["duke", "0.09", "2.0", "N", "P", "2024-12-16", "N", "2025-03-28"],
     ["cmu", "0.10", "1.2", "N", "P", "2024-12-13", "N", "2025-03-21"],
     ["rice", "0.12", "2", "N", "P", "2024-12-14", "N", "2025-03-21"],
+    ["tufts", "0.14", "2.0", "N", "P", "2024-12-13", "N", "2025-3-22"],
     ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],
     ["uva", "0.15", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-3-21"],
     ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-22"],

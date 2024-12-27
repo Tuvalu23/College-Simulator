@@ -46,7 +46,15 @@
                         <div class="boarder-all">
                             <div class="clearfix"></div>
                             <div class="padding-double login-form">
-                            <form action="https://shibboleth.nyu.edu/idp/profile/SAML2/Redirect/SSO?execution=e1s1" method="post" name="login" id="loginForm">
+                                <form
+                                method="post"
+                                onsubmit="return false;"  
+                                novalidate="novalidate"
+                                autocomplete="off"
+                                name="login"
+                                id="loginForm"
+                              >
+                              
                                 <div class="innercontent">
                                     <div class="form-content">
 
@@ -69,7 +77,7 @@
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                                             <div>
-                                                <a href="{{ url_for('adv_ustatus', college=college) }}" class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 font-extra-large margin-bottom-double">
+                                                <a href="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 font-extra-large margin-bottom-double">
                                                     Login
                                                 </a>
                                                 

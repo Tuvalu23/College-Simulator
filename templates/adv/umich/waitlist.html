@@ -13,7 +13,7 @@
         <!-- Top section -->
         <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 40px; margin-top: 40px;">
             <span style="font-size: 1.11rem; font-weight: 400; color: #444; margin-right: 8px;">{{ name }}</span>
-            <a href="{{ url_for('adv_login', college=college) }}" style="font-size: 0.7rem; color: #0056b3; text-decoration: none; cursor: pointer;">Logout</a>
+            <a href="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="font-size: 0.7rem; color: #0056b3; text-decoration: none; cursor: pointer;">Logout</a>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">

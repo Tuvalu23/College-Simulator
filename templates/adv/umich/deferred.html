@@ -50,7 +50,7 @@
 
         <!-- Call-to-action -->
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{{ url_for('adv_ustatus', college=college)}}" style="color: #0056b3; font-weight: bold; text-decoration: none;">Return to Application Status</a>
+            <a href="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="color: #0056b3; font-weight: bold; text-decoration: none;">Return to Application Status</a>
         </div>
     </div>
 
