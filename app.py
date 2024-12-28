@@ -6,6 +6,7 @@ from flask import Flask, render_template, redirect, request, url_for, send_from_
 from functools import wraps
 from models import init_db, User
 from werkzeug.security import generate_password_hash, check_password_hash
+import time
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = 'Tuvalu23'
@@ -2533,8 +2534,17 @@ def results():
 
     # Step 2: Define a Helper Function to Check if a Decision is Locked
     def is_locked(uid):
-        locking_college = locked_until_opened.get(uid, None)
-        return bool(locking_college and locking_college not in opened_colleges)
+        locking_uid = locked_until_opened.get(uid)
+        if not locking_uid:
+            # No lock entry => not locked
+            return False
+
+        if locking_uid not in final_results:
+            # The early unique_id is not even in final_results => ignore the lock
+            return False
+        
+        # Finally, if we do have a valid locking_uid and it’s not opened, then we’re locked.
+        return locking_uid not in opened_colleges
 
     # Step 3: Identify Available Decisions (Only the Earliest Unopened and Unlocked Decision)
     available_decisions = []
@@ -2770,8 +2780,6 @@ def adv_login(college):
 @app.route("/advancedsim/<college>/ustatus", methods=["GET", "POST"])
 @login_required
 def adv_ustatus(college):
-    from datetime import datetime
-
     user_data = session.get("advancedsim_data", {"name": "User", "date": "N/A"})
     final_results = session.get("final_results", {})
     
@@ -2822,9 +2830,15 @@ def adv_ustatus(college):
         else:
             return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
 
-    # Render status page for GET request
+    # Determine which template to render
+    if college.lower() == "umich" and decision_code == "D":
+        template_name = f"adv/{college}/d_ustatus.html"
+    else:
+        template_name = f"adv/{college}/ustatus.html"
+
+    # Render the appropriate status page for GET request
     return render_template(
-        f"adv/{college}/ustatus.html",
+        template_name,
         name=name,
         college=college,
         date=formatted_date,
@@ -3069,4 +3083,3 @@ def advancedsim_deferred_files_static(college, filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
