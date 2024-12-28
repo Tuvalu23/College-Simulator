@@ -167,10 +167,26 @@
     border-left: 6px solid #007bff;
     animation: pulseBlue 1.5s infinite alternate;
   }
-  @keyframes pulseBlue {
-    from { box-shadow: 0 0 8px rgba(0,123,255,0.3); }
-    to   { box-shadow: 0 0 20px rgba(0,123,255,0.6); }
+
+  .college-link.available:hover {
+    background-color: rgb(211, 223, 235);
   }
+
+  @keyframes pulseBlue {
+    0% { 
+      box-shadow: 0 0 8px rgba(0,123,255,0.3); 
+      transform: scale(1); 
+    }
+    50% { 
+      box-shadow: 0 0 20px rgba(0,123,255,0.6); 
+      transform: scale(1.05); 
+    }
+    100% { 
+      box-shadow: 0 0 8px rgba(0,123,255,0.3); 
+      transform: scale(1); 
+    }
+  }
+  
   .college-link.opened {
     font-weight: normal; 
     color: #333;
@@ -299,49 +315,39 @@
 
 <div class="results-container">
   <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>Status Updates</h2>
-    <ul>
-      {% for decision in decisions_queue %}
-        {% set uid = decision.unique_id %}
-        {% set is_opened = uid in opened_colleges %}
-        {% set is_available = uid in available_decisions %}
-        {% set app_lower = decision.app_type|lower %}
+  <!-- Sidebar -->
+<div class="sidebar">
+  <h2>Status Updates</h2>
+  <ul>
+    {% for decision in decisions_queue %}
+      {% set uid = decision.unique_id %}
+      {% set is_available = uid in available_decisions %}
 
-        <li>
-          {% if is_available %}
-            <a href="#" 
-               class="college-link available"
-               onclick="handleClick('{{ uid }}'); return false;">
-              <span>
-                {{ decision.display_name }} Status Update
-                <span class="release-date">({{ decision.release_date }})</span>
-              </span>
-              <span class="badge {{ app_lower }}">{{ decision.app_type }}</span>
-            </a>
-          {% elif is_opened %}
-            <a href="#" 
-               class="college-link opened"
-               onclick="handleClick('{{ uid }}'); return false;">
-              <span>
-                {{ decision.display_name }} Status Update
-                <span class="release-date">({{ decision.formatted_release_date }})</span>
-              </span>
-              <span class="badge {{ app_lower }}">{{ decision.app_type }}</span>
-            </a>
-          {% else %}
-            <a href="#" class="college-link disabled">
-              <span>
-                {{ decision.display_name }} Status Update
-                <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
-              </span>
-              <span class="badge {{ app_lower }}">{{ decision.app_type }}</span>
-            </a>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+      <li>
+        {% if is_available %}
+          <a href="#" 
+             class="college-link available"
+             onclick="handleClick('{{ uid }}'); return false;">
+            <span>
+              {{ decision.display_name }} Status Update
+              <span class="release-date">({{ decision.release_date }})</span>
+            </span>
+            <span class="badge {{ decision.app_type|lower }}">{{ decision.app_type }}</span>
+          </a>
+        {% else %}
+          <a href="#" class="college-link disabled">
+            <span>
+              {{ decision.display_name }} Status Update
+              <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
+            </span>
+            <span class="badge {{ decision.app_type|lower }}">{{ decision.app_type }}</span>
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
 
   <!-- Main Content -->
   <div class="main-content">

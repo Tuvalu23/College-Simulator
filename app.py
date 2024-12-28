@@ -2443,9 +2443,11 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 def results():
     from datetime import datetime
 
+    # Retrieve user data from session
     user_data = session.get('advancedsim_data', {"name": "User"})
     name = user_data.get("name", "User")
 
+    # Retrieve applied colleges and simulation results from session
     applied_colleges = session.get('applied_colleges', [])
     final_results = session.get('final_results', {})
     decisions_queue_sorted = session.get('decisions_queue_sorted', [])
@@ -2454,7 +2456,7 @@ def results():
 
     print("DEBUG: Currently opened colleges:", opened_colleges)
 
-    # If no queue, rebuild from applied_colleges
+    # Step 1: Build or Rebuild the Decisions Queue
     if not decisions_queue_sorted:
         new_queue = []
         for college in applied_colleges:
@@ -2464,7 +2466,7 @@ def results():
             if not c_entry:
                 continue
 
-            # Find the release date from the correct index
+            # Determine release date based on application type
             if app_type in ["ED", "REA"]:
                 rdate = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
             elif app_type == "EA":
@@ -2483,39 +2485,43 @@ def results():
                 "logo_url": college.get('logo_url', 'static/logos/default-logo.jpg')
             })
 
-            # If not in final_results, set a default
+            # Initialize final_results if not present
             if unique_id not in final_results:
                 final_results[unique_id] = {
-                    'decision_code': 'R',
+                    'decision_code': 'R',  # Default to Rejected
                     'app_type': app_type,
                     'release_date': rdate
                 }
             else:
+                # Update release_date if already present
                 final_results[unique_id]['release_date'] = rdate
 
-        # Sort by date
+        # Sort the queue by release date
         try:
             new_queue.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
         except ValueError:
+            print("DEBUG: Invalid date format encountered during sorting.")
             pass
 
+        # Update session variables
         session['decisions_queue_sorted'] = new_queue
         decisions_queue_sorted = new_queue
         session['final_results'] = final_results
     else:
-        # Potentially re-sort
+        # Re-sort the existing queue by release date in case of any changes
         try:
             decisions_queue_sorted.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
             session['decisions_queue_sorted'] = decisions_queue_sorted
         except ValueError:
+            print("DEBUG: Invalid date format encountered during re-sorting.")
             pass
 
-    # Helper to see if locked behind deferral
+    # Step 2: Define a Helper Function to Check if a Decision is Locked
     def is_locked(uid):
         locking_college = locked_until_opened.get(uid, None)
         return bool(locking_college and locking_college not in opened_colleges)
 
-    # Only reveal the earliest unopened item
+    # Step 3: Identify Available Decisions (Only the Earliest Unopened and Unlocked Decision)
     available_decisions = []
     for decision in decisions_queue_sorted:
         uid = decision['unique_id']
@@ -2524,8 +2530,10 @@ def results():
         if is_locked(uid):
             continue
         available_decisions.append(uid)
-        break
+        break  # Only the earliest available decision is clickable
+    # Note: If you want multiple available decisions, adjust the loop accordingly
 
+    # Step 4: Handle User Selecting a Decision to Open
     selected_college_id = request.args.get('selected_college')
     if selected_college_id and selected_college_id in available_decisions:
         if selected_college_id not in opened_colleges:
@@ -2533,6 +2541,7 @@ def results():
             session['opened_colleges'] = opened_colleges
         return redirect(url_for('results'))
 
+    # Step 5: Build the List of Opened Decisions for Display
     opened_decisions_list = []
     for uid in opened_colleges:
         dq_item = next((x for x in decisions_queue_sorted if x['unique_id'] == uid), None)
@@ -2543,39 +2552,23 @@ def results():
         display_name = dq_item['display_name']
         app_type = dq_item['app_type']
 
-        # Grab the code & date from final_results for *this* unique_id
+        # Retrieve decision details from final_results
         info = final_results.get(uid, {})
         dcode = info.get('decision_code', 'R')
         date_str = info.get('release_date', '2099-01-01')
 
-        # Map codes to display text & badge
-        if dcode == "ED":
-            display_decision = "ED Acceptance"
-            badge_class = "ed-acceptance"
-        elif dcode == "A":
-            display_decision = "Acceptance"
-            badge_class = "acceptance"
-        elif dcode == "R":
-            display_decision = "Rejection"
-            badge_class = "rejection"
-        elif dcode == "W":
-            display_decision = "Waitlisted"
-            badge_class = "waitlist"
-        elif dcode == "D":
-            display_decision = "Deferred"
-            badge_class = "deferred"
-        elif dcode == "D/R":
-            display_decision = "Deferred Rejected"
-            badge_class = "deferred-rejection"
-        elif dcode == "D/A":
-            display_decision = "Deferred Acceptance"
-            badge_class = "deferred-acceptance"
-        elif dcode == "D/W":
-            display_decision = "Deferred Waitlist"
-            badge_class = "deferred-waitlist"
-        else:
-            display_decision = "Unknown"
-            badge_class = "unknown"
+        # Map decision codes to display texts and badge classes
+        decision_mapping = {
+            "ED": ("ED Acceptance", "ed-acceptance"),
+            "A": ("Acceptance", "acceptance"),
+            "R": ("Rejection", "rejection"),
+            "W": ("Waitlisted", "waitlist"),
+            "D": ("Deferred", "deferred"),
+            "D/R": ("Deferred Rejected", "deferred-rejection"),
+            "D/A": ("Deferred Acceptance", "deferred-acceptance"),
+            "D/W": ("Deferred Waitlist", "deferred-waitlist"),
+        }
+        display_decision, badge_class = decision_mapping.get(dcode, ("Unknown", "unknown"))
 
         formatted_dt = format_date(date_str)
         opened_decisions_list.append({
@@ -2587,10 +2580,95 @@ def results():
             "release_date": formatted_dt
         })
 
+    # Step 6: Schedule RD Decisions for Deferred Early Decisions
+    for college in applied_colleges:
+        short_name = college['short_name']
+        app_type = college['app_type'].upper()
+        early_unique_id = generate_unique_id(short_name, app_type)
+
+        # Define deferred decision codes that warrant scheduling an RD
+        deferred_codes = ['D', 'D/A', 'D/W', 'D/R']
+
+        if final_results.get(early_unique_id, {}).get('decision_code') in deferred_codes:
+            # Generate RD unique_id
+            rd_unique_id = generate_unique_id(short_name, 'RD')
+
+            # Check if RD decision is already scheduled
+            rd_already_scheduled = (
+                rd_unique_id in final_results or 
+                any(d['unique_id'] == rd_unique_id for d in decisions_queue_sorted)
+            )
+            if not rd_already_scheduled:
+                # Retrieve college entry
+                c_entry_sim = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
+                if not c_entry_sim:
+                    continue
+                idx = college_list.index(c_entry_sim)
+
+                # Determine RD release date
+                if len(c_entry_sim) > 7 and c_entry_sim[7] != "N":
+                    rd_release_date = c_entry_sim[7]
+                else:
+                    rd_release_date = "2099-01-01"
+
+                # Retrieve university display info
+                uni_info = next((uni for uni in university_list if uni["name"].lower() == short_name.lower()), None)
+                if uni_info:
+                    display_name = uni_info["display_name"]
+                    logo_url = uni_info["logo"]
+                else:
+                    display_name = short_name.capitalize()
+                    logo_url = "static/logos/default-logo.jpg"
+
+                # Create RD decision entry
+                rd_decision = {
+                    "short_name": short_name.lower(),
+                    "unique_id": rd_unique_id,
+                    "display_name": display_name,
+                    "app_type": "RD",
+                    "release_date": rd_release_date,
+                    "formatted_release_date": format_date(rd_release_date),
+                    "logo_url": logo_url
+                }
+
+                # Append RD decision to the queue
+                decisions_queue_sorted.append(rd_decision)
+
+                # Initialize final_results for RD
+                final_results[rd_unique_id] = {
+                    'decision_code': 'PENDING',  # Placeholder status
+                    'app_type': 'RD',
+                    'release_date': rd_release_date
+                }
+
+                # Lock RD decision behind the early decision
+                session.setdefault('locked_until_opened', {})
+                session['locked_until_opened'][rd_unique_id] = early_unique_id
+
+                print(f"DEBUG: Scheduled RD decision '{rd_unique_id}' for deferred early decision '{early_unique_id}'.")
+
+    # Step 7: Update Session Variables After Scheduling RD Decisions
+    session['decisions_queue_sorted'] = decisions_queue_sorted
+    session['final_results'] = final_results
+
+    # Step 8: Rebuild Visible Decisions After Scheduling RD
+    visible_decisions = [
+        decision for decision in decisions_queue_sorted 
+        if decision['unique_id'] not in opened_colleges and not is_locked(decision['unique_id'])
+    ]
+
+    # Optional: Re-sort visible_decisions by release date
+    try:
+        visible_decisions.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
+    except ValueError:
+        print("DEBUG: Invalid date format encountered during final sorting of visible_decisions.")
+        pass
+
+    # Step 9: Render the Template with Updated Data
     return render_template(
         'results.html',
         name=name,
-        decisions_queue=decisions_queue_sorted,
+        decisions_queue=visible_decisions,  # Only visible (not opened or locked) decisions
         opened_decisions=opened_decisions_list,
         available_decisions=available_decisions,
         selected_college=selected_college_id
