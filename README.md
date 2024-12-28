@@ -31,8 +31,11 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Georgetown
 - [X] UVA
 - [X] Tufts
+- [X] Northeastern
+- [ ] Illinois
+- [ ] UNC
+- [ ] Notre Dame
 - [ ] Wash U
-- [ ] Northeastern
 
 ## TO GET ADVANCED RIBBONS
 Add this above style:

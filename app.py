@@ -169,6 +169,7 @@ university_list = [
     "logo": "static/logos/georgetown-logo.jpg",
     "description": "Georgetown University, located in Washington, D.C., is a prestigious private institution renowned for its strong liberal arts and professional programs, historic campus, and commitment to fostering global leaders.",
     "badges": [
+        {"label": "T-30", "color": "T-30"},
         {"label": "Private", "color": "Private"},
         {"label": "Urban", "color": "Urban"},
         {"label": "Research", "color": "Research"},
@@ -238,6 +239,20 @@ university_list = [
             {"label": "Technology", "color": "Technology"}
         ]
     },
+    {
+    "name": "northeastern",
+    "display_name": "Northeastern University",
+    "logo": "static/logos/northeastern-logo.jpg",
+    "description": "Northeastern University, located in Boston, MA, is renowned for its experiential learning model, including co-op programs that integrate classroom study with professional experience.",
+    "badges": [
+        {"label": "Private", "color": "Private"},
+        {"label": "Urban", "color": "Urban"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Global", "color": "Global"},
+        {"label": "Co-op", "color": "Co-op"},
+        {"label": "Innovation", "color": "Innovation"}
+    ]
+},
     {
         "name": "northwestern",
         "display_name": "Northwestern University",
@@ -451,6 +466,7 @@ college_list = [
     ["cmu", "0.10", "1.2", "N", "P", "2024-12-13", "N", "2025-03-21"],
     ["rice", "0.12", "2", "N", "P", "2024-12-14", "N", "2025-03-21"],
     ["tufts", "0.14", "2.0", "N", "P", "2024-12-13", "N", "2025-3-22"],
+    ["northeastern", "0.15", "2.7", "1.3", "P", "2024-12-11", "2025-1-31", "2025-3-17"],
     ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],
     ["uva", "0.15", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-3-21"],
     ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-22"],
@@ -726,7 +742,20 @@ def ustatus(college):
         if decision == "acceptance":
             return redirect(url_for("acceptance", college=college))
         return redirect(url_for("rejection", college=college))
-    return render_template(f"{college}/ustatus.html", name=user_data["name"], date=user_data["date"], college=college)
+    
+   # Check if the college is Northeastern
+    if college.lower() == "northeastern":
+        # Simulate decision directly
+        decision = random.choice(["acceptance", "rejection"])
+        if decision == "acceptance":
+            return redirect(url_for("acceptance", college=college))
+        else:
+            return redirect(url_for("rejection", college=college))
+    else:
+        # Redirect to ustatus for other colleges
+        return redirect(url_for("ustatus", college=college))
+    
+    return render_template(f"{college}/login.html", name=user_data["name"], college=college, date=user_data["date"])
 
 @app.route("/quicksim/<college>/acceptance")
 def acceptance(college):
@@ -1596,9 +1625,8 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             student_num += 2
         student_num += extracurriculars * 2
         student_num += ap_courses * 0.9
-        student_num += interviewScore * 1.5
+        student_num += interviewScore * 1.6
         student_num += essayStrength * 1.5
-        student_num -= 4
     else:
         # GPA = 35 pts, EC = 15 pts, Essay = 15 pts, AP = 10 pts, Interview = 10 pts, SAT/ACT = 15 pts
         if gpa > 99:
@@ -1637,7 +1665,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             student_num += 3
 
         student_num += extracurriculars * 1.5
-        student_num += ap_courses * 1
+        student_num += ap_courses * 0.9
         student_num += interviewScore * 1.25
         student_num += essayStrength * 1
 
@@ -2597,7 +2625,7 @@ def format_date(date_str):
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
 def adv_login(college):
     user_data = session.get('advancedsim_data', {"name": "User"})
-    unique_id = request.args.get('unique_id')  # e.g. uchicago_ea
+    unique_id = request.args.get('unique_id')  # e.g., 'northeastern_ed'
     if not unique_id:
         flash("No unique_id provided.", "danger")
         return redirect(url_for('results'))
@@ -2610,7 +2638,7 @@ def adv_login(college):
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        # Fake check
+        # Fake authentication check
         if not email or not password:
             return render_template(
                 f"adv/{college}/login.html",
@@ -2619,10 +2647,31 @@ def adv_login(college):
                 name=name,
                 release_date=release_date_str
             )
-        # If login success:
-        return redirect(url_for('adv_ustatus', college=college, unique_id=unique_id))
+        
+        # Check if the college is Northeastern
+        if college.lower() == "northeastern":
+            # Retrieve the decision_code from final_results
+            decision_code = decision_info.get('decision_code', 'R')  # Default to 'R' if not found
+            
+            # Redirect based on the decision_code
+            if decision_code in ["A", "ED", "D/A"]:
+                return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
+            elif decision_code in ["D", "D/R"]:
+                return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+            elif decision_code in ["D/W"]:
+                return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
+            elif decision_code == "W":
+                return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
+            elif decision_code == "D/A":
+                return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
+            else:
+                # For any other or unknown decision_code, default to rejection
+                return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+        else:
+            # For other colleges, proceed as usual to ustatus
+            return redirect(url_for('adv_ustatus', college=college, unique_id=unique_id))
 
-    # GET
+    # GET request: render the login page
     return render_template(
         f"adv/{college}/login.html",
         name=name,
