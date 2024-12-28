@@ -210,6 +210,20 @@ university_list = [
         ]
     },
     {
+    "name": "illini",
+    "display_name": "University of Illinois Urbana-Champaign",
+    "logo": "static/logos/illini-logo.png",
+    "description": "The University of Illinois Urbana-Champaign is a premier public research institution known for its pioneering work in engineering, computer science, and business. Located in the heart of Illinois, it offers a vibrant campus and college experience.",
+    "badges": [
+        {"label": "Public", "color": "Public"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Engineering", "color": "Engineering"},
+        {"label": "Innovation", "color": "Innovation"},
+        {"label": "Global", "color": "Global"},
+        {"label": "Inclusive", "color": "Inclusive"}
+    ]
+},
+    {
         "name": "jhu",
         "display_name": "Johns Hopkins University",
         "logo": "static/logos/jhu-logo.jpg",
@@ -476,6 +490,7 @@ college_list = [
     ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-1-27", "2025-03-10"],
     ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-04-01"],
     ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-04-01"],
+    ["illini", "0.24", "N", "1.2", "PUB", "N", "2025-1-31", "2025-2-28"],
     ["bing", "0.65", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
     ["buffalo", "0.87", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
@@ -737,13 +752,15 @@ def login(college):
 @app.route("/quicksim/<college>/ustatus", methods=["GET", "POST"])
 def ustatus(college):
     user_data = session.get('quicksim_data', {"name": "User", "date": "N/A"})
+    
     if request.method == "POST":
+        # Simulate decision upon form submission
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
             return redirect(url_for("acceptance", college=college))
-        return redirect(url_for("rejection", college=college))
+        else:
+            return redirect(url_for("rejection", college=college))
     
-   # Check if the college is Northeastern
     if college.lower() == "northeastern":
         # Simulate decision directly
         decision = random.choice(["acceptance", "rejection"])
@@ -752,10 +769,8 @@ def ustatus(college):
         else:
             return redirect(url_for("rejection", college=college))
     else:
-        # Redirect to ustatus for other colleges
-        return redirect(url_for("ustatus", college=college))
-    
-    return render_template(f"{college}/login.html", name=user_data["name"], college=college, date=user_data["date"])
+        # For other colleges, render the ustatus template
+        return render_template(f"{college}/ustatus.html", name=user_data["name"], college=college, date=user_data["date"])
 
 @app.route("/quicksim/<college>/acceptance")
 def acceptance(college):
@@ -2702,86 +2717,83 @@ def format_date(date_str):
 # Advanced Simulation Login Route
 @app.route("/advancedsim/<college>/login", methods=["GET", "POST"])
 def adv_login(college):
-    user_data = session.get('advancedsim_data', {"name": "User"})
-    unique_id = request.args.get('unique_id')  # e.g., 'northeastern_ed'
+    user_data = session.get("advancedsim_data", {"name": "User"})
+    unique_id = request.args.get("unique_id")  # Retrieve unique_id from query parameters
+    
     if not unique_id:
-        flash("No unique_id provided.", "danger")
-        return redirect(url_for('results'))
+        # Redirect to results if unique_id is missing
+        flash("No unique_id provided. Redirecting to the results page.", "warning")
+        return redirect(url_for("results"))
 
-    final_results = session.get('final_results', {})
+    final_results = session.get("final_results", {})
     decision_info = final_results.get(unique_id, {})
-    release_date_str = decision_info.get('release_date', 'Unknown Date')
+    release_date_str = decision_info.get("release_date", "Unknown Date")
     name = user_data.get("name", "User")
 
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        # Fake authentication check
+
+        # Simulate authentication (replace with actual logic as needed)
         if not email or not password:
             return render_template(
                 f"adv/{college}/login.html",
                 error="Please fill out all fields.",
                 college=college,
                 name=name,
-                release_date=release_date_str
+                release_date=release_date_str,
             )
-        
-        # Check if the college is Northeastern
+
+        # Redirect based on the decision code for Northeastern
         if college.lower() == "northeastern":
-            # Retrieve the decision_code from final_results
-            decision_code = decision_info.get('decision_code', 'R')  # Default to 'R' if not found
-            
-            # Redirect based on the decision_code
+            decision_code = decision_info.get("decision_code", "R")
             if decision_code in ["A", "ED", "D/A"]:
                 return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
             elif decision_code in ["D", "D/R"]:
                 return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
-            elif decision_code in ["D/W"]:
+            elif decision_code in ["D/W", "W"]:
                 return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
-            elif decision_code == "W":
-                return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
-            elif decision_code == "D/A":
-                return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
             else:
-                # For any other or unknown decision_code, default to rejection
                 return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
-        else:
-            # For other colleges, proceed as usual to ustatus
-            return redirect(url_for('adv_ustatus', college=college, unique_id=unique_id))
+        
+        # For other colleges, redirect to ustatus
+        return redirect(url_for("adv_ustatus", college=college, unique_id=unique_id))
 
-    # GET request: render the login page
+    # Render login page for GET request
     return render_template(
         f"adv/{college}/login.html",
         name=name,
         college=college,
-        release_date=release_date_str
+        release_date=release_date_str,
     )
 
 @app.route("/advancedsim/<college>/ustatus", methods=["GET", "POST"])
 @login_required
 def adv_ustatus(college):
     from datetime import datetime
-    user_data = session.get('advancedsim_data', {"name": "User", "date": "N/A"})
-    final_results = session.get('final_results', {})
 
+    user_data = session.get("advancedsim_data", {"name": "User", "date": "N/A"})
+    final_results = session.get("final_results", {})
+    
     # Retrieve unique_id from query parameters or form data
-    unique_id = request.args.get('unique_id') or request.form.get('unique_id')
+    unique_id = request.args.get("unique_id") or request.form.get("unique_id")
     if not unique_id:
         flash("Welcome back to your results page!", "info")
-        return redirect(url_for('results'))
+        return redirect(url_for("results"))
 
+    # Get information for the provided unique_id
     info = final_results.get(unique_id)
     if not info:
         flash(f"No record found for {unique_id}.", "danger")
-        return redirect(url_for('results'))
+        return redirect(url_for("results"))
 
-    decision_code = info.get('decision_code', 'R')
-    release_date_str = info.get('release_date', 'Unknown Date')
+    decision_code = info.get("decision_code", "R")
+    release_date_str = info.get("release_date", "Unknown Date")
 
-    # Format the date
+    # Format the release date
     try:
-        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
-        formatted_date = dt.strftime('%B %d, %Y')
+        dt = datetime.strptime(release_date_str, "%Y-%m-%d")
+        formatted_date = dt.strftime("%B %d, %Y")
     except ValueError:
         formatted_date = "Unknown Date"
 
@@ -2789,12 +2801,12 @@ def adv_ustatus(college):
 
     if request.method == "POST":
         # Mark the college as opened
-        if 'read_emails' not in session:
-            session['read_emails'] = {}
-        session['read_emails'][college.lower()] = True
+        if "read_emails" not in session:
+            session["read_emails"] = {}
+        session["read_emails"][college.lower()] = True
         session.modified = True
 
-        # Updated redirect logic
+        # Redirect based on the decision code
         if decision_code == "A":
             return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
         elif decision_code == "ED":
@@ -2805,21 +2817,19 @@ def adv_ustatus(college):
             return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
         elif decision_code == "D/R":
             return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
-        elif decision_code == "D/W":
-            return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
-        elif decision_code == "W":
+        elif decision_code in ["D/W", "W"]:
             return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
         else:
             return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
 
-    # GET request: render status page
+    # Render status page for GET request
     return render_template(
         f"adv/{college}/ustatus.html",
         name=name,
         college=college,
         date=formatted_date,
         decision_code=decision_code,
-        unique_id=unique_id  # Ensure unique_id is passed to the template
+        unique_id=unique_id,  # Ensure unique_id is passed to the template
     )
 
 @app.route("/advancedsim/<college>/acceptance")

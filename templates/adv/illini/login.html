@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)https://myillini.illinois.edu/IdentityManagement/Home/Login?ReturnUrl=%2FDashboard -->
+<html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--OneTrust Cookies Consent Notice (Production CDN, illinois.edu, en-GB) start -->
+    <script type="text/javascript" async="" src="./login_files/analytics.js.download"></script><script type="text/javascript" async="" src="./login_files/js"></script><script src="./login_files/fd31c61a-15d6-4769-9802-5eafcc1098ba.js.download" type="text/javascript" charset="UTF-8"></script><script type="text/javascript" src="./login_files/jquery.min.js.download"></script><link type="text/css" href="./login_files/optanon.css" rel="stylesheet"><style>#optanon ul#optanon-menu li { background-color:  !important }#optanon ul#optanon-menu li.menu-item-selected { background-color: #E8E8E8 !important }#optanon #optanon-popup-wrapper .optanon-white-button-middle { background-color: #13294B !important }.optanon-alert-box-wrapper .optanon-alert-box-button-middle { background-color: #13294B !important; border-color: #13294B !important; }#optanon #optanon-popup-wrapper .optanon-white-button-middle a { color: #ffffff !important }.optanon-alert-box-wrapper .optanon-alert-box-button-middle a { color: #ffffff !important }#optanon #optanon-popup-bottom { background-color: #A5A8AA !important }#optanon.modern #optanon-popup-top, #optanon.modern #optanon-popup-body-left-shading { background-color: #A5A8AA !important }.optanon-alert-box-wrapper { background-color:#484848 !important }.optanon-alert-box-wrapper .optanon-alert-box-bg p { color:#FFFFFF !important }.optanon-alert-box-wrapper {
+    background-color: rgba(0,0,0,0.8) !important;
+}
+.optanon-alert-box-wrapper .optanon-button-more .optanon-alert-box-button-middle a:before {
+    content: none;
+}
+.optanon-alert-box-wrapper .optanon-button-allow .optanon-alert-box-button-middle a:before {
+    content: none;
+}
+.optanon-alert-box-wrapper .optanon-alert-box-button-middle {
+    background-color: #57802D !important;
+}
+.optanon-alert-box-body a {
+    color: #FFF !important;
+    text-decoration: underline !important;
+    padding-left: 5px; 
+}
+@media only screen and (max-width: 752px) {
+    .optanon-alert-box-wrapper .optanon-alert-box-bg p {
+        font-size: 9pt;
+        line-height: 12pt;
+    }
+    .optanon-alert-box-bg .optanon-alert-box-button-container {
+        text-align: right; 
+        margin-left: 1em;
+    }
+}</style>
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>myIllini</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, width=device-width">
+
+    <!--Favicon-->
+    <link rel="shortcut icon" type="image/x-icon" href="https://admissions.illinois.edu/Content/images/favicon.ico">
+
+    <!--Fonts-->
+    <link href="./login_files/css" rel="stylesheet">
+    <link href="./login_files/css2" rel="stylesheet">
+
+    <script type="text/javascript" src="./login_files/frontEndScripts.js.download"></script>
+
+    <!-- Bootstrap & Popper JS -->
+    <script src="./login_files/popper.min.js.download" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="./login_files/bootstrap.min.js.download">
+    </script>
+<script>(window.jQuery && window.jQuery.fn && window.jQuery.fn.modal||document.write("\u003Cscript src=\u0022/js/bootstrap.min.js\u0022\u003E\u003C/script\u003E"));</script>
+
+
+    <link rel="stylesheet" type="text/css" href="./login_files/reset.min.css">
+    <link href="./login_files/cookie-styles.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./login_files/bootstrap.min.css">
+<meta name="x-stylesheet-fallback-test" content="" class="sr-only"><script>!function(a,b,c,d){var e,f=document,g=f.getElementsByTagName("SCRIPT"),h=g[g.length-1].previousElementSibling,i=f.defaultView&&f.defaultView.getComputedStyle?f.defaultView.getComputedStyle(h):h.currentStyle;if(i&&i[a]!==b)for(e=0;e<c.length;e++)f.write('<link href="'+c[e]+'" '+d+"/>")}("position","absolute",["/css/bootstrap.min.css"], "rel=\u0022stylesheet\u0022 ");</script>
+
+    <link rel="stylesheet" type="text/css" href="./login_files/imBundle.min.css">
+
+
+    <script type="text/javascript" charset="utf-8">
+
+        function showLoading() {
+            $("#loadingDiv").show();
+            $("#loadingDiv").expose({ closeOnEsc: false, closeOnClick: false });
+        }
+
+        function hideLoading() {
+            $("#loadingDiv").hide();
+            $.mask.close();
+        }
+
+        function showLocalLoading(divId) {
+            var loadingImg = "<img src='/images/ajax-loader.gif' alt='Loading....' id='" + divId + "_Loading' style='width: 30px; height: 30px; margin: 0 auto;' />";
+            $('#' + divId).append(loadingImg);
+        }
+
+        function hideLocalLoading(divId) {
+            $('#' + divId + '_Loading').remove();
+        }
+
+        function LoadActionResult(actionUrl, divToLoad, loadingSymbolElement, ajaxCallback) {
+
+            //$('#' + divToLoad).html("");
+            if (!loadingSymbolElement) {
+                loadingSymbolElement = divToLoad;
+            }
+            showLocalLoading(loadingSymbolElement);
+            $.ajax({
+                url: actionUrl,
+                cache: false,
+                success: function (html) {
+                    $('#' + divToLoad).html(html);
+
+                },
+                error: function () {
+                    hideLocalLoading(loadingSymbolElement);
+                    $("#" + loadingSymbolElement).find(".card-body").append("<p>There was a problem loading this content. Please check back later.</p>");
+                },
+                complete: function () {
+                    hideLocalLoading(loadingSymbolElement);
+                    if (ajaxCallback && typeof ajaxCallback === "function") {
+                        ajaxCallback();
+                    }
+                }
+
+            });
+
+        }
+
+        $(function () {
+            $(".zeroDefault").each(function () {
+                $("option[value='']", this).val("0");
+            });
+
+            $(".input-validation-error").addClass("is-invalid");
+            $(".field-validation-error-holder").addClass("invalid-feedback");
+
+        });
+
+
+
+        // trim on change of trimmable fields and disabling of initial fields classed as .ocem-disabled
+        $(function () {
+
+            $(document).on("change", ".ocem-trimmable", function () {
+                $(this).val(
+                    $.trim($(this).val())
+                );
+            });
+
+            $(".ocem-disabled").prop("disabled", true);
+
+        });
+
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="./login_files/js(1)"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-2713828-26');
+    </script>
+    
+    <link rel="stylesheet" type="text/css" href="./login_files/myillini-login.min.css">
+
+    
+
+<script async="" src="./login_files/ping"></script></head>
+
+<body style=""><div class="optanon-alert-box-wrapper  " role="alertdialog" aria-labelledby="alert-box-title" aria-describedby="alert-box-message" style="display:none"><div class="optanon-alert-box-bottom-top"><div class="optanon-alert-box-corner-close"><a class="optanon-alert-box-close banner-close-button" aria-label="Close" href="javascript:void(0);" title="Close" role="button" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Banner Close Button&#39;);" tabindex="4"></a></div></div><div class="optanon-alert-box-bg"><div class="optanon-alert-box-logo"> </div><div class="optanon-alert-box-body"><h1 class="optanon-alert-box-title legacy-banner-title" id="alert-box-title">Cookie Notice</h1><p class="banner-content" id="alert-box-message">We use Cookies on this site to enhance your experience and improve our marketing efforts. Click on “About Cookies” to learn more. By continuing to browse without changing your browser settings to block or delete Cookies, you agree to the storing of Cookies and related technologies on your device.<a href="https://www.vpaa.uillinois.edu/resources/web_privacy" class="banner-policy-link" tabindex="1" aria-label="University of Illinois Web Privacy Notice">University of Illinois Web Privacy Notice</a></p></div><div class="optanon-clearfix"></div><div class="optanon-alert-box-button-container"><div class="optanon-alert-box-button optanon-button-close"><div class="optanon-alert-box-button-middle"><a class="optanon-alert-box-close" aria-label="Close" href="javascript:void(0);">Close</a></div></div><div class="optanon-alert-box-button optanon-button-allow"><div class="optanon-alert-box-button-middle accept-cookie-container"><a class="optanon-allow-all accept-cookies-button" title="I Agree" aria-label="I Agree" role="button" href="javascript:void(0);" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Banner Accept Cookies&#39;);" tabindex="3">I Agree</a></div></div><div class="optanon-alert-box-button optanon-button-more"><div class="optanon-alert-box-button-middle"><a class="optanon-toggle-display cookie-settings-button" title="About Cookies" aria-label="About Cookies" href="javascript:void(0);" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Banner Open Preferences&#39;);" tabindex="2">About Cookies</a></div></div></div><div class="optanon-clearfix optanon-alert-box-bottom-padding"></div></div></div><div id="optanon" class="modern"><div id="optanon-popup-bg"></div><div id="optanon-popup-wrapper" role="dialog" aria-modal="true" tabindex="-1" lang="en-GB"><div id="optanon-popup-top"><a href="javascript:void(0);" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Preferences Close Button&#39;);" aria-label="Close" class="optanon-close-link optanon-close optanon-close-ui" title="Close"><div id="optanon-close" style="background: url(https://cdn.cookielaw.org/skins/3.6.25/default_flat_bottom_two_button_black/v2/images/optanon-pop-up-close.png);width:34px;height:34px;"></div></a></div><div id="optanon-popup-body"><div id="optanon-popup-body-left"><div id="optanon-popup-body-left-shading"></div><div id="optanon-branding-top-logo" style="background-image: url(https://cdn.cookielaw.org/logos/4427/4427:illinois.edu/apple-icon-72x72.png) !important;"></div><ul id="optanon-menu" aria-label="Navigation Menu"><li class="menu-item-on menu-item-about" title="What are Cookies?"><h2 class="preference-menu-item"><a href="javascript:void(0);">What are Cookies?</a></h2></li><li class="menu-item-necessary menu-item-on" title="Strictly Necessary Cookies"><h2 class="preference-menu-item"><a href="javascript:void(0);">Strictly Necessary Cookies</a></h2></li><li class="menu-item-on menu-item-performance" title="Performance Cookies"><h2 class="preference-menu-item"><a href="javascript:void(0);">Performance Cookies</a></h2></li><li class="menu-item-on menu-item-functional" title="Functional Cookies"><h2 class="preference-menu-item"><a href="javascript:void(0);">Functional Cookies</a></h2></li><li class="menu-item-on menu-item-advertising" title="Targeting Cookies"><h2 class="preference-menu-item"><a href="javascript:void(0);">Targeting Cookies</a></h2></li><li class="menu-item-moreinfo menu-item-off" title="More Information"><h2 class="preference-menu-item"><a target="_blank" href="https://www.vpaa.uillinois.edu/resources/cookies" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Preferences Cookie Policy&#39;);">More Information</a></h2></li></ul></div><div id="optanon-popup-body-right"><h1 class="legacy-preference-banner-title" aria-label="About Cookies">About Cookies</h1><div class="vendor-header-container"><h3></h3><div id="optanon-popup-more-info-bar"><div class="optanon-status"><div class="optanon-status-editable"><form><fieldset><p><input type="checkbox" aria-checked="false" value="check" id="chkMain" checked="" class="legacy-group-status optanon-status-checkbox"><label for="chkMain">Active</label></p></fieldset></form></div><div class="optanon-status-always-active optanon-status-on"><p>Always Active</p></div></div></div></div><div id="optanon-main-info-text"></div></div><div class="optanon-bottom-spacer"></div></div><div id="optanon-popup-bottom"> <a href="https://onetrust.com/poweredbyonetrust" target="_blank"><div id="optanon-popup-bottom-logo" style="background: url(https://cdn.cookielaw.org/skins/3.6.25/default_flat_bottom_two_button_black/v2/images/cookie-collective-top-bottom.png);width:155px;height:35px;" title="powered by OneTrust"></div></a><div class="optanon-button-wrapper optanon-save-settings-button optanon-close optanon-close-consent"><div class="optanon-white-button-left"></div><div class="optanon-white-button-middle"><a href="javascript:void(0);" title="I Agree" aria-label="I Agree" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Preferences Save Settings&#39;);">I Agree</a></div><div class="optanon-white-button-right"></div></div><div class="optanon-button-wrapper optanon-allow-all-button optanon-allow-all" style="display: none;"><div class="optanon-white-button-left"></div><div class="optanon-white-button-middle"><a href="javascript:void(0);" title="Allow All" aria-label="Allow All" onclick="Optanon.TriggerGoogleAnalyticsEvent(&#39;OneTrust Cookie Consent&#39;, &#39;Preferences Allow All&#39;);">Allow All</a></div><div class="optanon-white-button-right"></div></div></div></div></div>
+    <noscript>
+        <meta http-equiv="refresh" content="0; url=/IdentityManagement/Home/BadBrowser" />
+    </noscript>
+    <!--[if lte IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <![endif]-->
+    <div id="loadingDiv">
+        <table>
+            <tbody><tr>
+                <td><img src="./login_files/ajax-loader.gif" alt="Loading...."></td>
+            </tr>
+        </tbody></table>
+    </div>
+    <header id="masthead" role="banner">
+        <nav id="user-nav" class="navbar navbar-dark navbar-expand-md">
+            <div class="container-fluid">
+                <div class="navbar-brand">
+                    <a id="illinois-logo-link" href="http://illinois.edu/">
+                        <span id="illinois-logo-text" class="sr-only">University of Illinois Urbana-Champaign</span>
+                        <svg version="1.1" id="illinois-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 56.2 81" style="enable-background:new 0 0 56.2 81;" xml:space="preserve">
+                            <title id="illinois-logo-title">University of Illinois Urbana-Champaign logo</title>
+                            <desc id="illinois-logo-desc">The iconic orange block letter I</desc>
+                            <path class="illinois-logo-border" d="M55.3,22.8V1.7H1.2v21.1h12v36.1h-12V80h54.2V58.9h-12V22.8H55.3z M43.3,61.9h9v15H4.2v-15h9c1.7,0,3-1.3,3-3 V22.8c0-1.7-1.3-3-3-3h-9v-15h48.1v15h-9c-1.7,0-3,1.3-3,3v36.1C40.3,60.6,41.6,61.9,43.3,61.9z"></path>
+                            <path class="illinois-logo-body" d="M43.3,19.8h9v-15H4.2v15h9c1.7,0,3,1.3,3,3v36.1c0,1.7-1.3,3-3,3h-9v15h48.1v-15h-9c-1.7,0-3-1.3-3-3V22.8 C40.3,21.1,41.6,19.8,43.3,19.8z"></path>
+                        </svg>
+                    </a>
+                    <h1 class="site-id d-inline-block">
+                        <a href="https://myillini.illinois.edu/Dashboard">
+                            my<span class="site-id-bold">Illini</span>
+                        </a>
+                    </h1>
+                </div>
+                <button id="mobile-menu-button" class="navbar-toggler" type="button" data-toggle="collapse" data-target=".mobile-menu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle primary navigation">
+                    <span class="icon-user"></span>
+                </button>
+                <div id="user-nav-menu" class="collapse navbar-collapse justify-content-end mobile-menu" role="navigation" aria-labelledby="primary-nav-header">
+                    <h2 id="primary-nav-header" class="sr-only">Primary Menu</h2>
+                    <div class="profile-info navbar-text">
+                    </div>
+                    <ul class="navbar-nav nav-fill">
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+        <main>
+        <div class="container-fluid container-max">
+
+                <header role="pagetitle">
+                    <h1>Welcome to myIllini</h1>
+                </header>
+            
+
+
+
+                <form 
+                action="{{ url_for('adv_login', college=college, unique_id=request.args.get('unique_id')) }}" 
+                method="post">
+                <h1>Log In to myIllini</h1>
+                <div id="myillini-login" class="row">
+                    <section id="login" class="login section col-12 col-md-6">
+                        <h2>Future Students</h2>
+                        <p>Access your application, accept your offer of admission, and manage your next steps for enrollment.</p>
+                        <div class="form-group">
+                            <label class="Email label-heading" for="email" title="email">Email:</label>
+                            <input aria-required="true" class="control_characters_removed form-control" 
+                                   data-val="true" 
+                                   data-val-required="The email field is required." 
+                                   id="email" maxlength="50" name="email" type="text" value="">
+                        </div>
+                        <div class="form-group">
+                            <label class="Password label-heading" for="password" title="password">Password:</label>
+                            <input aria-required="true" class="form-control" 
+                                   data-val="true" 
+                                   data-val-required="The Password field is required." 
+                                   id="password" maxlength="50" name="password" type="password">
+                        </div>
+                        <input type="submit" value="Log In" class="btn btn-primary">
+                        <p class="forgot small mt-4">
+                            <a href="https://myillini.illinois.edu/IdentityManagement/Account/ResetRequest">
+                                Forgot your username or password?
+                            </a>
+                        </p>
+                        <p class="small mt-4">
+                            <a href="https://myillini.illinois.edu/IdentityManagement/Account/Create?ReturnUrl=%2FDashboard">
+                                Don't have an account?
+                            </a>
+                        </p>
+                    </section>
+                    
+                    <section id="other" class="other section col-12 col-md-6">
+                        <h2>Current Students</h2>
+                        <strong><a href="https://student.myillini.illinois.edu/">student.myillini.illinois.edu</a></strong>
+                        <p>Access your course schedule, grades, account balance, and more.</p>
+                        <a class="btn btn-primary" href="https://student.myillini.illinois.edu/">Log In</a>
+                    </section>
+                </div>
+            
+            </form>            
+
+        </div>
+    </main>
+
+    <footer>
+        <div id="footer-bottom">
+            <div class="container-fluid container-max">
+               
+                <p id="footer-help"><strong>Need Help?</strong> Email <a href="mailto:admissions@illinois.edu">admissions@illinois.edu</a> or call <span class="keep-together">217-333-0302.</span></p>
+                
+
+                <p id="copyright">© Copyright University of Illinois Board&nbsp;of&nbsp;Trustees</p>
+                <p id="privacy"><a href="https://www.vpaa.uillinois.edu/resources/web_privacy">Web Privacy Notice</a></p>
+                
+                <!--OneTrust Cookies Settings button start --><div class="optanon-show-settings-popup-wrapper"><div class="optanon-show-settings-button optanon-toggle-display"><div class="optanon-show-settings-left"></div><div class="optanon-show-settings-middle"><a class="optanon-show-settings" href="javascript:void(0);">Cookie Settings</a></div><div class="optanon-show-settings-right"></div></div></div><!--OneTrust Cookies Settings button end -->
+            </div>
+        </div>
+    </footer>
+
+
+    <a href="https://myillini.illinois.edu/IdentityManagement/Home/Login?ReturnUrl=%2FDashboard#0" class="cd-top">Top</a>
+
+    <script type="text/javascript">
+        
+        function showLoading() {
+            $("#loadingDiv").show();
+            $("#loadingDiv").expose({ closeOnEsc: false, closeOnClick: false });
+        }
+
+
+        function hideLoading() {
+            $("#loadingDiv").hide();
+            $.mask.close();
+        }
+    </script>
+
+
+    <script async="async" src="./login_files/ping(1)">/**/</script>
+    <script type="text/javascript">
+        function OptanonWrapper(){ }
+    </script>
+		<!--OneTrust Cookies Consent Notice (Production CDN, illinois.edu, en-GB) end -->
+
+
+</body></html>

@@ -1,0 +1,27 @@
+.optanon-alert-box-wrapper {
+    background-color: rgba(0,0,0,0.8) !important;
+}
+.optanon-alert-box-wrapper .optanon-button-more .optanon-alert-box-button-middle a:before {
+    content: none;
+}
+.optanon-alert-box-wrapper .optanon-button-allow .optanon-alert-box-button-middle a:before {
+    content: none;
+}
+.optanon-alert-box-wrapper .optanon-alert-box-button-middle {
+    background-color: #57802D !important;
+}
+.optanon-alert-box-body a {
+    color: #FFF !important;
+    text-decoration: underline !important;
+    padding-left: 5px; 
+}
+@media only screen and (max-width: 752px) {
+    .optanon-alert-box-wrapper .optanon-alert-box-bg p {
+        font-size: 9pt;
+        line-height: 12pt;
+    }
+    .optanon-alert-box-bg .optanon-alert-box-button-container {
+        text-align: right; 
+        margin-left: 1em;
+    }
+}
