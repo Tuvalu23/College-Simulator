@@ -42,7 +42,7 @@
         <div style="background-color: white; padding: 20px 10px; width: 48%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-left: -25px;">
             <span style="font-weight: bold; font-size: 1rem; display: block; margin-bottom: 10px; font-family: 'Trebuchet MS', sans-serif;">Status Update</span>
             <span style="font-size: 0.9rem; display: block; margin-bottom: 10px; font-family: 'Trebuchet MS', sans-serif;">New updates to your application were posted {{ date }}.</span>
-            <form method="POST" action="{{ url_for('ustatus', college=college) }}" style="margin: 0;">
+            <form method="POST" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="margin: 0;">
                 <button type="submit" style="background-color: transparent; color: rgb(20, 78, 119); font-weight: bold; border: none; cursor: pointer; padding: 0; font-size: 0.9rem; text-decoration: none;" 
                     onmouseover="this.style.textDecoration='underline';" 
                     onmouseout="this.style.textDecoration='none'; font-family: 'Trebuchet MS', sans-serif;">

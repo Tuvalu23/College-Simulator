@@ -29,38 +29,46 @@
         <a href="{{ url_for('login', college=college) }}" style="color: #003366; font-family: 'Trebuchet MS', sans-serif; font-weight: bold; text-decoration: none; font-size: 0.9rem;">Logout</a>
     </div>
 
-    <!-- Buttons Section -->
-    <div style="display: flex; gap: 10px; margin-bottom: 3px; margin-left: -600px;">
-        <a href="#" style="background-color: #021b41; color: white; padding: 10px 70px; text-decoration: none; border-radius: 0px; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; font-family: 'Trebuchet MS', sans-serif;">DECISIONS</a>
-        <a href="#" style="background-color: #021b41; color: white; padding: 10px 70px; text-decoration: none; border-radius: 0px; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; font-family: 'Trebuchet MS', sans-serif;">APPLICATION</a>
-    </div>
-
-    <!-- Content Section -->
-    <div style="display: flex; flex-direction: row; width: 100%; max-width: 1300px; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
-        
-        <!-- Status Update Section -->
-        <div style="background-color: white; padding: 20px 10px; width: 48%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-left: -25px;">
-            <span style="font-weight: bold; font-size: 1rem; display: block; margin-bottom: 10px; font-family: 'Trebuchet MS', sans-serif;">Status Update</span>
-            <span style="font-size: 0.9rem; display: block; margin-bottom: 10px; font-family: 'Trebuchet MS', sans-serif;">New updates to your application were posted {{ date }}.</span>
-            <form method="POST" action="{{ url_for('ustatus', college=college) }}" style="margin: 0;">
-                <button type="submit" style="background-color: transparent; color: rgb(20, 78, 119); font-weight: bold; border: none; cursor: pointer; padding: 0; font-size: 0.9rem; text-decoration: none;" 
-                    onmouseover="this.style.textDecoration='underline';" 
-                    onmouseout="this.style.textDecoration='none'; font-family: 'Trebuchet MS', sans-serif;">
-                    Click here to view your application update.
-                </button>
-            </form>
+     <!-- Letter Body -->
+     <div style="background-color: rgba(255, 255, 255, 0.9); padding: 0px; font-family: 'Trebuchet MS', sans-serif; width: 100%; max-width: 1300px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: -10px;">
+        <!-- Date and PDF Link -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <span style="font-weight: bold; font-size: 1rem; font-family: 'Trebuchet MS', sans-serif;">{{ date }}</span>
+            <a href="#" style="color:rgb(0, 34, 255); text-decoration: none; font-size: 0.9rem; font-family: 'Trebuchet MS', sans-serif;">Download PDF</a>
         </div>
 
-        <!-- Footer Section -->
-        <div style="background-color: white; padding: 20px 10px; width: 48%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center;">
-            <span style="font-weight: bold; font-size: 1rem; margin-bottom: 10px; font-family: 'Trebuchet MS', sans-serif;">@UNCAdmissions</span>
-            <img src="./login_files/logos.png" alt="Logos" style="width: 160px; height: auto; margin-bottom: 20px; margin-left: 10px;">
-            <button style="background-color: #7BAFD4; color: #021b41; border: none; border-radius: 15px; padding: 10px 30px; font-weight: bold; font-size: 0.9rem; cursor: pointer; font-family: 'Trebuchet MS', sans-serif;">
-                MY ACCOUNT
-            </button>
+        <!-- Letter Content -->
+        <div style="font-size: 1rem; line-height: 1.6; color: black; font-family: 'Trebuchet MS', sans-serif;">
+            <p style="font-family: 'Trebuchet MS', sans-serif;">Dear {{ name }},</p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                Congratulations! On behalf of all of us at the University of North Carolina at Chapel Hill, I’m delighted to offer you admission. We’re impressed by your achievements, talents, and potential, as well as your experiences and perspective. Not only are we confident you’ll thrive at Carolina, but we also believe you’ll contribute to the education of your classmates and to the life of our community. You have an exciting and important future ahead of you, and we’d be honored for you to choose Carolina as the next step in your journey.
+            </p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                <strong>To accept your offer of admission and become a Tar Heel, <a href="#" style="color: #003366; text-decoration: none; font-weight: bold;">click here</a>. Please reply as soon as possible and no later than May 15.</strong>
+            </p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                In the next few weeks, we’ll be creating opportunities for you to connect with Carolina’s community and get to know the students who will live and study alongside you and the professors who will challenge and encourage you. For details about enrolling and for making the most of your UNC experience, please see the resources on our <a href="#" style="color: #003366; text-decoration: none; font-weight: bold;">website</a>.
+            </p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                Because we want you to come to Carolina ready to thrive, your enrollment will depend upon your continuing to model good citizenship as outlined in the Honor Code and Community Standards of the application and your successful completion of the current academic year. We require that you graduate on time and continue to achieve at the level that enabled us to offer you admission.
+            </p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                Again, {{ name }}, congratulations on earning admission to the University of North Carolina at Chapel Hill. We’re excited to welcome you to Carolina, and we wish you every success in the months ahead. We hope you’ll take a moment today to reflect on your hard work, take pride in your accomplishments, and celebrate with those who have helped you along the way. We look forward to seeing the ways in which you’ll make the Carolina community even better.
+            </p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                If you have questions as you make your college decision, or if we may help you in any way, we’d welcome the chance to talk. Please don’t hesitate to call us at (919) 966-3621.
+            </p>
+            <p style="font-family: 'Trebuchet MS', sans-serif;">Sincerely,</p>
+            <div style="margin-top: -10px;">
+                <img src="./login_files/sig.png" alt="Signature" style="width: 120px; height: auto;">
+            </div>
+            <p style="margin-top: 10px; font-family: 'Trebuchet MS', sans-serif;">Jason McGrath<br>Associate Provost and Director of Undergraduate Admissions</p>
         </div>
     </div>
 
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{{url_for('ustatus', college=college)}}" style="font-family: 'Trebuchet MS', sans-serif;">Return to Application Status</a>
+    </div>
 </div>
 
                                 </main><footer class="c_container-fluid cr" id="c_content-footer"><div class="c_container cr"><div class="c_row cr"><div class="c_col-sm-6 cr"><p class="cr"></p></div><div class="c_col-sm-3 cr"><p class="cr"></p></div><div class="c_col-sm-3 cr"><p class="cr"></p></div></div></div><div id="c_copywrite" class="c_row cr"><div class="c_container cr"><div class="c_row cr"><small class="c_col-12 cr">2023 <i class="c_far c_fa-copyright cr"></i> The University of North Carolina at Chapel Hill</small></div></div></div></footer></div></div><div class="c_progress_box cr" style="visibility: hidden;"></div></div></div><div class="progress_box" style="visibility: hidden;"></div></body></html>
