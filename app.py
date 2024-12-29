@@ -373,6 +373,21 @@ university_list = [
         ]
     },
     {
+        "name": "uchicago",
+        "display_name": "University of Chicago",
+        "logo": "static/logos/uchicago-logo.jpg",
+        "description": "The University of Chicago in Chicago, IL, is renowned for its rigorous intellectual environment and influential Core Curriculum. As a prestigious private research university, it excels in economics, sociology, and various other disciplines.",
+        "badges": [
+            {"label": "T-10", "color": "T-10"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Economics", "color": "Economics"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Intellectual", "color": "Intellectual"}
+        ]
+    },
+    {
         "name": "umich",
         "display_name": "University of Michigan",
         "logo": "static/logos/umich-logo.png",
@@ -388,20 +403,19 @@ university_list = [
         ]
     },
     {
-        "name": "uchicago",
-        "display_name": "University of Chicago",
-        "logo": "static/logos/uchicago-logo.jpg",
-        "description": "The University of Chicago in Chicago, IL, is renowned for its rigorous intellectual environment and influential Core Curriculum. As a prestigious private research university, it excels in economics, sociology, and various other disciplines.",
-        "badges": [
-            {"label": "T-10", "color": "T-10"},
-            {"label": "Private", "color": "Private"},
-            {"label": "Urban", "color": "Urban"},
-            {"label": "Liberal Arts", "color": "Liberal Arts"},
-            {"label": "Economics", "color": "Economics"},
-            {"label": "Research", "color": "Research"},
-            {"label": "Intellectual", "color": "Intellectual"}
-        ]
-    },
+    "name": "unc",
+    "display_name": "University of North Carolina at Chapel Hill",
+    "logo": "static/logos/unc-logo.png",
+    "description": "The University of North Carolina at Chapel Hill, often referred to as UNC or Carolina, is renowned for its innovative research, strong public health programs, and spirited Tar Heel athletics.",
+    "badges": [
+        {"label": "T-30", "color": "T-30"},
+        {"label": "Public", "color": "Public"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Athletics", "color": "Athletics"},
+        {"label": "Health Sciences", "color": "Health Sciences"},
+        {"label": "Diverse", "color": "Diverse"}
+    ]
+},
     {
         "name": "upenn",
         "display_name": "University of Pennsylvania",
@@ -492,6 +506,7 @@ college_list = [
     ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-04-01"],
     ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-04-01"],
     ["illini", "0.24", "N", "1.2", "PUB", "N", "2025-1-31", "2025-2-28"],
+    ["unc", "0.24", "N", "1.3", "PUB", "N", "2025-1-26", "2025-3-06"],
     ["bing", "0.65", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
     ["buffalo", "0.87", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
