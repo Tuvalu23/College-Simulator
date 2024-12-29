@@ -2,7 +2,7 @@ import random
 from datetime import datetime, timedelta
 import os
 
-from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash
+from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash, jsonify
 from functools import wraps
 from models import init_db, User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -2472,8 +2472,6 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
-    from datetime import datetime
-
     # Retrieve user data from session
     user_data = session.get('advancedsim_data', {"name": "User"})
     name = user_data.get("name", "User")
@@ -2487,7 +2485,21 @@ def results():
 
     print("DEBUG: Currently opened colleges:", opened_colleges)
 
-    # Step 1: Build or Rebuild the Decisions Queue
+    # Simulation state defaults
+    if 'current_sim_date' not in session:
+        session['current_sim_date'] = "2024-11-01"  # default start date
+    if 'simulation_started' not in session:
+        session['simulation_started'] = False
+    if 'simulation_paused' not in session:
+        session['simulation_paused'] = True  # paused until user clicks "Start"
+
+    # Convert current_sim_date to datetime object
+    try:
+        sim_dt = datetime.strptime(session['current_sim_date'], "%Y-%m-%d")
+    except ValueError:
+        sim_dt = datetime(2024, 11, 1)  # fallback if parsing fails
+
+    # 1) Build or rebuild the decisions queue if not already done
     if not decisions_queue_sorted:
         new_queue = []
         for college in applied_colleges:
@@ -2499,21 +2511,22 @@ def results():
 
             # Determine release date based on application type
             if app_type in ["ED", "REA"]:
-                rdate = c_entry[5] if len(c_entry) > 5 and c_entry[5] != "N" else "2099-01-01"
+                rdate = c_entry[2] if (len(c_entry) > 2 and c_entry[2] != "N") else "2099-01-01"
             elif app_type == "EA":
-                rdate = c_entry[6] if len(c_entry) > 6 and c_entry[6] != "N" else "2099-01-01"
-            else:
-                rdate = c_entry[7] if len(c_entry) > 7 and c_entry[7] != "N" else "2099-01-01"
+                rdate = c_entry[3] if (len(c_entry) > 3 and c_entry[3] != "N") else "2099-01-01"
+            else:  # RD
+                rdate = c_entry[4] if (len(c_entry) > 4 and c_entry[4] != "N") else "2099-01-01"
 
             unique_id = generate_unique_id(short_name, app_type)
+
             new_queue.append({
                 "short_name": short_name,
                 "unique_id": unique_id,
-                "display_name": college['display_name'],
+                "display_name": next((u["display_name"] for u in university_list if u["name"].lower() == short_name.lower()), short_name.capitalize()),
                 "app_type": app_type,
                 "release_date": rdate,
                 "formatted_release_date": format_date(rdate),
-                "logo_url": college.get('logo_url', 'static/logos/default-logo.jpg')
+                "logo_url": next((u["logo"] for u in university_list if u["name"].lower() == short_name.lower()), 'static/logos/default-logo.jpg')
             })
 
             # Initialize final_results if not present
@@ -2524,10 +2537,10 @@ def results():
                     'release_date': rdate
                 }
             else:
-                # Update release_date if already present
+                # Ensure final_results has correct release date
                 final_results[unique_id]['release_date'] = rdate
 
-        # Sort the queue by release date
+        # Sort new_queue by release date
         try:
             new_queue.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
         except ValueError:
@@ -2539,7 +2552,7 @@ def results():
         decisions_queue_sorted = new_queue
         session['final_results'] = final_results
     else:
-        # Re-sort the existing queue by release date in case of any changes
+        # Re-sort if needed
         try:
             decisions_queue_sorted.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
             session['decisions_queue_sorted'] = decisions_queue_sorted
@@ -2547,41 +2560,38 @@ def results():
             print("DEBUG: Invalid date format encountered during re-sorting.")
             pass
 
-    # Step 2: Define a Helper Function to Check if a Decision is Locked
+    # 2) Helper function to check if a decision is locked behind another
     def is_locked(uid):
         locking_uid = locked_until_opened.get(uid)
         if not locking_uid:
-            # No lock entry => not locked
+            # No lock => not locked
             return False
-
+        # If the locking UID doesn't even exist in final_results => ignore
         if locking_uid not in final_results:
-            # The early unique_id is not even in final_results => ignore the lock
             return False
-        
-        # Finally, if we do have a valid locking_uid and it’s not opened, then we’re locked.
+        # If it's not in opened_colleges, then we're locked
         return locking_uid not in opened_colleges
 
-    # Step 3: Identify Available Decisions (Only the Earliest Unopened and Unlocked Decision)
-    available_decisions = []
+    # 3) Identify which decisions are "visible" (their release_date <= current_sim_date)
+    visible_ids = []
     for decision in decisions_queue_sorted:
         uid = decision['unique_id']
         if uid in opened_colleges:
-            continue
+            continue  # skip, already opened
         if is_locked(uid):
-            continue
-        available_decisions.append(uid)
-        break  # Only the earliest available decision is clickable
-    # Note: If you want multiple available decisions, adjust the loop accordingly
+            continue  # skip, locked
+        try:
+            rd = datetime.strptime(decision['release_date'], '%Y-%m-%d')
+        except ValueError:
+            rd = datetime(2099, 1, 1)
+        # If the release_date is <= sim_dt => it's "visible" to the user
+        if rd <= sim_dt:
+            visible_ids.append(uid)
 
-    # Step 4: Handle User Selecting a Decision to Open
-    selected_college_id = request.args.get('selected_college')
-    if selected_college_id and selected_college_id in available_decisions:
-        if selected_college_id not in opened_colleges:
-            opened_colleges.append(selected_college_id)
-            session['opened_colleges'] = opened_colleges
-        return redirect(url_for('results'))
+    # 4) Make all visible_ids available for clicking, no need to find the earliest_date
+    available_decisions = visible_ids.copy()
 
-    # Step 5: Build the List of Opened Decisions for Display
+    # 5) Build a list of opened decisions for display in the main content
     opened_decisions_list = []
     for uid in opened_colleges:
         dq_item = next((x for x in decisions_queue_sorted if x['unique_id'] == uid), None)
@@ -2592,26 +2602,32 @@ def results():
         display_name = dq_item['display_name']
         app_type = dq_item['app_type']
 
-        # Retrieve decision details from final_results
+        # Retrieve final decision details
         info = final_results.get(uid, {})
         dcode = info.get('decision_code', 'R')
         date_str = info.get('release_date', '2099-01-01')
 
-        # Map decision codes to display texts and badge classes
+        # Map decision codes -> (display_decision, badge_class)
         decision_mapping = {
-            "ED": ("ED Acceptance", "ed-acceptance"),
-            "A": ("Acceptance", "acceptance"),
-            "R": ("Rejection", "rejection"),
-            "W": ("Waitlisted", "waitlist"),
-            "D": ("Deferred", "deferred"),
-            "D/R": ("Deferred Rejected", "deferred-rejection"),
-            "D/A": ("Deferred Acceptance", "deferred-acceptance"),
-            "D/W": ("Deferred Waitlist", "deferred-waitlist"),
+            "ED":   ("ED Acceptance", "ed-acceptance"),
+            "A":    ("Acceptance",    "acceptance"),
+            "R":    ("Rejection",     "rejection"),
+            "W":    ("Waitlisted",    "waitlist"),
+            "D":    ("Deferred",      "deferred"),
+            "D/R":  ("Deferred Rejection",  "deferred-rejection"),
+            "D/A":  ("Deferred Acceptance", "deferred-acceptance"),
+            "D/W":  ("Deferred Waitlist",   "deferred-waitlist"),
         }
         display_decision, badge_class = decision_mapping.get(dcode, ("Unknown", "unknown"))
 
-        formatted_dt = format_date(date_str)
+        try:
+            dt_obj = datetime.strptime(date_str, '%Y-%m-%d')
+            formatted_dt = dt_obj.strftime('%B %d, %Y')
+        except ValueError:
+            formatted_dt = "Unknown Date"
+
         opened_decisions_list.append({
+            "unique_id": uid,
             "short_name": short_name,
             "display_name": display_name,
             "app_type": app_type,
@@ -2620,99 +2636,166 @@ def results():
             "release_date": formatted_dt
         })
 
-    # Step 6: Schedule RD Decisions for Deferred Early Decisions
-    for college in applied_colleges:
-        short_name = college['short_name']
-        app_type = college['app_type'].upper()
-        early_unique_id = generate_unique_id(short_name, app_type)
+    # 6) Schedule RD decisions for deferred apps
+    for c in applied_colleges:
+        short_name = c['short_name']
+        app_type = c['app_type'].upper()
+        early_uid = generate_unique_id(short_name, app_type)
 
-        # Define deferred decision codes that warrant scheduling an RD
-        deferred_codes = ['D', 'D/A', 'D/W', 'D/R']
-
-        if final_results.get(early_unique_id, {}).get('decision_code') in deferred_codes:
-            # Generate RD unique_id
-            rd_unique_id = generate_unique_id(short_name, 'RD')
-
-            # Check if RD decision is already scheduled
-            rd_already_scheduled = (
-                rd_unique_id in final_results or 
-                any(d['unique_id'] == rd_unique_id for d in decisions_queue_sorted)
+        # If ED/EA/REA decision_code is in one of these, we create an RD entry
+        if final_results.get(early_uid, {}).get('decision_code') in ['D','D/A','D/W','D/R']:
+            rd_uid = generate_unique_id(short_name, 'RD')
+            # Check if RD already scheduled
+            rd_scheduled = (
+                rd_uid in final_results or
+                any(dd['unique_id'] == rd_uid for dd in decisions_queue_sorted)
             )
-            if not rd_already_scheduled:
-                # Retrieve college entry
-                c_entry_sim = next((c for c in college_list if c[0].lower() == short_name.lower()), None)
-                if not c_entry_sim:
-                    continue
-                idx = college_list.index(c_entry_sim)
+            if not rd_scheduled:
+                # Find that college in your data
+                sim_c = next((xx for xx in college_list if xx[0].lower() == short_name.lower()), None)
+                if sim_c:
+                    # Suppose RD release date is sim_c[4]
+                    if len(sim_c) > 4 and sim_c[4] != "N":
+                        rd_release_date = sim_c[4]
+                    else:
+                        rd_release_date = "2099-01-01"
 
-                # Determine RD release date
-                if len(c_entry_sim) > 7 and c_entry_sim[7] != "N":
-                    rd_release_date = c_entry_sim[7]
-                else:
-                    rd_release_date = "2099-01-01"
+                    # Also find display info in university_list
+                    uni_info = next((u for u in university_list if u["name"].lower() == short_name.lower()), None)
+                    if uni_info:
+                        disp_name = uni_info["display_name"]
+                        logo_url = uni_info["logo"]
+                    else:
+                        disp_name = short_name.capitalize()
+                        logo_url = "static/logos/default-logo.jpg"
 
-                # Retrieve university display info
-                uni_info = next((uni for uni in university_list if uni["name"].lower() == short_name.lower()), None)
-                if uni_info:
-                    display_name = uni_info["display_name"]
-                    logo_url = uni_info["logo"]
-                else:
-                    display_name = short_name.capitalize()
-                    logo_url = "static/logos/default-logo.jpg"
+                    # Create RD decision entry
+                    new_rd_entry = {
+                        "short_name": short_name.lower(),
+                        "unique_id": rd_uid,
+                        "display_name": disp_name,
+                        "app_type": "RD",
+                        "release_date": rd_release_date,
+                        "formatted_release_date": format_date(rd_release_date),
+                        "logo_url": logo_url,
+                    }
+                    decisions_queue_sorted.append(new_rd_entry)
+                    final_results[rd_uid] = {
+                        'decision_code': 'PENDING',
+                        'app_type': 'RD',
+                        'release_date': rd_release_date
+                    }
+                    # Lock the RD behind the early app
+                    session.setdefault('locked_until_opened', {})
+                    session['locked_until_opened'][rd_uid] = early_uid
 
-                # Create RD decision entry
-                rd_decision = {
-                    "short_name": short_name.lower(),
-                    "unique_id": rd_unique_id,
-                    "display_name": display_name,
-                    "app_type": "RD",
-                    "release_date": rd_release_date,
-                    "formatted_release_date": format_date(rd_release_date),
-                    "logo_url": logo_url
-                }
+                    print(f"DEBUG: Scheduled RD decision '{rd_uid}' behind early '{early_uid}'")
 
-                # Append RD decision to the queue
-                decisions_queue_sorted.append(rd_decision)
-
-                # Initialize final_results for RD
-                final_results[rd_unique_id] = {
-                    'decision_code': 'PENDING',  # Placeholder status
-                    'app_type': 'RD',
-                    'release_date': rd_release_date
-                }
-
-                # Lock RD decision behind the early decision
-                session.setdefault('locked_until_opened', {})
-                session['locked_until_opened'][rd_unique_id] = early_unique_id
-
-                print(f"DEBUG: Scheduled RD decision '{rd_unique_id}' for deferred early decision '{early_unique_id}'.")
-
-    # Step 7: Update Session Variables After Scheduling RD Decisions
+    # 7) Update session with new queue / results if modified
     session['decisions_queue_sorted'] = decisions_queue_sorted
     session['final_results'] = final_results
 
-    # Step 8: Rebuild Visible Decisions After Scheduling RD
-    visible_decisions = [
-        decision for decision in decisions_queue_sorted 
-        if decision['unique_id'] not in opened_colleges and not is_locked(decision['unique_id'])
-    ]
-
-    # Optional: Re-sort visible_decisions by release date
-    try:
-        visible_decisions.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
-    except ValueError:
-        print("DEBUG: Invalid date format encountered during final sorting of visible_decisions.")
-        pass
-
-    # Step 9: Render the Template with Updated Data
+    # 8) Render final template
     return render_template(
         'results.html',
         name=name,
-        decisions_queue=visible_decisions,  # Only visible (not opened or locked) decisions
+        decisions_queue=decisions_queue_sorted,
         opened_decisions=opened_decisions_list,
-        available_decisions=available_decisions,
-        selected_college=selected_college_id
+        available_decisions=available_decisions,   # All visible IDs
+        current_sim_date=sim_dt.strftime("%B %d, %Y"),
+        simulation_started=session['simulation_started'],
+        simulation_paused=session['simulation_paused'],
     )
+
+@app.route('/advancedsim/results/advance', methods=['POST'])
+@login_required
+def advance_simulation():
+    from datetime import datetime, timedelta
+
+    # Ensure simulation has started
+    if 'simulation_started' not in session:
+        session['simulation_started'] = False
+    if not session['simulation_started']:
+        session['simulation_started'] = True
+
+    current_date_str = session.get('current_sim_date', '2024-11-01')
+    try:
+        current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
+    except ValueError:
+        current_date = datetime(2024, 11, 1)
+
+    decisions_queue_sorted = session.get('decisions_queue_sorted', [])
+    opened_colleges = session.get('opened_colleges', [])
+    locked_until_opened = session.get('locked_until_opened', {})
+
+    # Identify all future release dates among un-opened, unlocked colleges
+    future_dates = []
+    for d in decisions_queue_sorted:
+        uid = d['unique_id']
+        # Skip if already opened
+        if uid in opened_colleges:
+            continue
+        # Skip if locked
+        if locked_until_opened.get(uid) and locked_until_opened[uid] not in opened_colleges:
+            continue
+        # Parse the release date
+        try:
+            rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
+        except ValueError:
+            rd = datetime(2099, 1, 1)
+        # Consider only dates after the current date
+        if rd > current_date:
+            future_dates.append(rd)
+
+    # If no future release dates, simulation is done
+    if not future_dates:
+        session['current_sim_date'] = current_date.strftime("%Y-%m-%d")
+        session.modified = True
+        return jsonify({
+            "status": "done",
+            "message": "No more decisions left to release.",
+            "current_sim_date": session['current_sim_date'],
+            "current_sim_date_formatted": format_date(session['current_sim_date']),
+            "keep_going": False,
+            "is_release_date": False
+        })
+
+    # Determine the nearest future release date
+    next_release_date = min(future_dates)
+
+    # Advance the date by one day
+    new_date = current_date + timedelta(days=1)
+
+    # If the new date surpasses or meets the next release date, clamp it
+    reached_release = False
+    if new_date >= next_release_date:
+        new_date = next_release_date
+        reached_release = True
+
+    # Update the session with the new date
+    session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
+    session.modified = True
+
+    # Format the new date for display
+    formatted_date = new_date.strftime("%B %d, %Y")
+
+    # Determine if a release date was reached
+    is_release_date = False
+    if reached_release:
+        is_release_date = True
+
+    # Decide if the simulation should keep advancing
+    keep_going = not reached_release
+    session['simulation_paused'] = not keep_going
+
+    return jsonify({
+        "status": "ok",
+        "current_sim_date": session['current_sim_date'],
+        "current_sim_date_formatted": formatted_date,
+        "keep_going": keep_going,
+        "is_release_date": is_release_date,
+        "message": f"Advanced to {session['current_sim_date']}."
+    })
     
 def find_final_unique_id(college: str) -> str:
     final_results = session.get('final_results', {})
@@ -3041,12 +3124,19 @@ def adv_waitlist(college):
 @app.route('/advancedsim/results/mark_as_read', methods=["POST"])
 @login_required
 def mark_as_read():
-    short_name = request.form.get('short_name')
-    if not short_name:
-        return {'status': 'fail', 'message': 'No short_name provided'}, 400
-    if 'read_emails' not in session:
-        session['read_emails'] = {}
-    session['read_emails'][short_name.lower()] = True
+    """
+    Marks a decision as opened by adding its unique_id to the 'opened_colleges' list in the session.
+    Expects a JSON payload with the 'uid' key.
+    """
+    data = request.get_json()
+    uid = data.get('uid')
+    if not uid:
+        return {'status': 'fail', 'message': 'No unique_id provided'}, 400
+    if 'opened_colleges' not in session:
+        session['opened_colleges'] = []
+    if uid not in session['opened_colleges']:
+        session['opened_colleges'].append(uid)
+        print(f"Added opened college: {uid}")
     session.modified = True
     return {'status': 'success'}
 

@@ -5,7 +5,6 @@
 
 <style>
   body {
-    margin: 0; 
     font-family: 'Poppins', sans-serif;
   }
   body::before {
@@ -16,10 +15,67 @@
     filter: blur(4px); 
     z-index: -2;
   }
+
+  .simulation-header {
+    text-align: center;
+    margin: 30px auto 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 800px;
+  }
+
+  .simulation-header h1 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  .simulation-header .date-display {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+
+  .simulation-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(45deg, #ff7f50, #ff6f91);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
+  .simulation-button:hover {
+    transform: scale(1.05);
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px rgba(255,127,80,0.5); }
+    50% { box-shadow: 0 0 30px rgba(255,111,145,0.8); }
+    100% { box-shadow: 0 0 10px rgba(255,127,80,0.5); }
+  }
+
+  /* When simulation is running, show a different style */
+  .simulation-button.running {
+    animation: glow 1.5s infinite alternate;
+    background: linear-gradient(45deg, #007bff, #28a745);
+  }
+  @keyframes glow {
+    from { box-shadow: 0 0 10px rgba(0,123,255,0.6); }
+    to   { box-shadow: 0 0 20px rgba(40,167,69,0.8); }
+  }
+
+  /* Container for the whole results area */
   .results-container {
     display: flex; 
     min-height: 80vh;
-    margin: 40px auto; 
+    margin: 20px auto; 
     width: 90%; 
     max-width: 1200px;
     background: #fff; 
@@ -28,6 +84,8 @@
     overflow: hidden; 
     position: relative;
   }
+
+  /* Sidebar styles */
   .sidebar {
     width: 35%; 
     background-color: #f8f9fa; 
@@ -65,15 +123,113 @@
     position: relative; 
     overflow: hidden;
   }
+  
   .college-link:hover {
-    background: #e9ecef; 
+    background:rgb(217, 228, 239); 
     transform: translateY(-2px);
   }
-  .badge.ed    { background-color: #dc3545; color: #fff; border-radius: 12px; }
-  .badge.ea    { background-color: #007bff; color: #fff; border-radius: 12px; }
-  .badge.rea   { background-color: #ffc107; color: #000; border-radius: 12px; }
-  .badge.rd    { background-color: #28a745; color: #fff; border-radius: 12px; }
 
+  .college-link.disabled {
+    opacity: 0.6; 
+    pointer-events: none;
+    background-color: #f8f9fa;
+  }
+  .college-link.available {
+    font-weight: bold; 
+    color: #000;
+    border-left: 6px solid #007bff;
+    animation: pulseBlue 1.5s infinite alternate;
+  }
+  @keyframes pulseBlue {
+    0% { 
+      box-shadow: 0 0 8px rgba(0,123,255,0.3); 
+      transform: scale(1); 
+    }
+    50% { 
+      box-shadow: 0 0 20px rgba(0,123,255,0.6); 
+      transform: scale(1.05); 
+    }
+    100% { 
+      box-shadow: 0 0 8px rgba(0,123,255,0.3); 
+      transform: scale(1); 
+    }
+  }
+
+  .sidebar .badge {
+    padding: 5px 10px; 
+    font-size: 0.8rem; 
+    border-radius: 12px;
+    color: #fff;
+  }
+  .badge.ed    { background-color: #dc3545; }
+  .badge.ea    { background-color: #007bff; }
+  .badge.rea   { background-color: #ffc107; color: #000; }
+  .badge.rd    { background-color: #28a745; }
+
+  /* MAIN content styles */
+  .main-content {
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-start; 
+    width: 65%;
+    padding: 30px; 
+    box-sizing: border-box;
+  }
+  .main-content h1 {
+    font-size: 2.0rem; 
+    margin-bottom: 10px;
+    color: #333; 
+    text-align: center;
+  }
+  .placeholder-message {
+    text-align: center; 
+    font-size: 1.2rem;
+    color: #555; 
+    margin-top: 10px;
+  }
+  .decision-box {
+    background-color: #f1f1f1; 
+    padding: 20px;
+    border-radius: 8px; 
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s, background-color 0.3s;
+    position: relative;
+  }
+  .decision-box:hover {
+    transform: scale(1.02); 
+    background-color: #e2e6ea;
+  }
+  .decision-box h3 {
+    margin-top: 0; 
+    color: #333;
+  }
+  .decision-box p {
+    color: #555; 
+    margin: 5px 0; 
+  }
+  .release-date {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 5px;
+  }
+  .app-type-badge {
+    position: absolute; 
+    top: 15px; 
+    right: 15px;
+    padding: 5px 10px; 
+    border-radius: 12px; 
+    color: #fff;
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase;
+  }
+  .app-type-badge.ED  { background-color: #dc3545; }
+  .app-type-badge.EA  { background-color: #007bff; }
+  .app-type-badge.REA { background-color: #ffc107; color: #000; }
+  .app-type-badge.RD  { background-color: #28a745; }
+
+  /* Real Badge Styles */
   .badge.acceptance {
     background-color: #28a745; 
     color: #fff; 
@@ -156,112 +312,6 @@
     padding: 5px 10px;
   }
 
-  .sidebar .badge {
-    padding: 5px 10px; 
-    font-size: 0.8rem; 
-  }
-
-  .college-link.available {
-    font-weight: bold; 
-    color: #000;
-    border-left: 6px solid #007bff;
-    animation: pulseBlue 1.5s infinite alternate;
-  }
-
-  .college-link.available:hover {
-    background-color: rgb(211, 223, 235);
-  }
-
-  @keyframes pulseBlue {
-    0% { 
-      box-shadow: 0 0 8px rgba(0,123,255,0.3); 
-      transform: scale(1); 
-    }
-    50% { 
-      box-shadow: 0 0 20px rgba(0,123,255,0.6); 
-      transform: scale(1.05); 
-    }
-    100% { 
-      box-shadow: 0 0 8px rgba(0,123,255,0.3); 
-      transform: scale(1); 
-    }
-  }
-  
-  .college-link.opened {
-    font-weight: normal; 
-    color: #333;
-    background-color: #e2e6ea; 
-    border-left: none;
-    animation: none; 
-    box-shadow: none;
-  }
-  .college-link.disabled {
-    opacity: 0.6; 
-    pointer-events: none;
-    background-color: #f8f9fa;
-  }
-  .main-content {
-    display: flex; 
-    flex-direction: column;
-    justify-content: flex-start; 
-    width: 65%;
-    padding: 30px; 
-    box-sizing: border-box;
-  }
-  .main-content h1 {
-    font-size: 2.5rem; 
-    margin-bottom: 10px;
-    color: #333; 
-    text-align: center;
-  }
-  .placeholder-message {
-    text-align: center; 
-    font-size: 1.2rem;
-    color: #555; 
-    margin-top: 10px;
-  }
-  .decision-box {
-    background-color: #f1f1f1; 
-    padding: 20px;
-    border-radius: 8px; 
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.3s, background-color 0.3s;
-    position: relative;
-  }
-  .decision-box:hover {
-    transform: scale(1.02); 
-    background-color: #e2e6ea;
-  }
-  .decision-box h3 {
-    margin-top: 0; 
-    color: #333;
-  }
-  .decision-box p {
-    color: #555; 
-    margin: 5px 0; 
-  }
-  .release-date {
-    font-size: 0.8rem;
-    color: #555;
-    margin-top: 5px;
-  }
-  .app-type-badge {
-    position: absolute; 
-    top: 15px; 
-    right: 15px;
-    padding: 5px 10px; 
-    border-radius: 12px; 
-    color: #fff;
-    font-weight: 600; 
-    font-size: 0.8rem; 
-    text-transform: uppercase;
-  }
-  .app-type-badge.ED  { background-color: #dc3545; }
-  .app-type-badge.EA  { background-color: #007bff; }
-  .app-type-badge.REA { background-color: #ffc107; color: #000; }
-  .app-type-badge.RD  { background-color: #28a745; }
-
   .buttons {
     display: flex; 
     justify-content: flex-end; 
@@ -280,10 +330,10 @@
     transition: all 0.3s ease;
     text-decoration: none; 
     display: inline-block;
+    color: #fff;
   }
   .back-button {
     background: #555; 
-    color: #fff;
   }
   .back-button:hover {
     background: #333; 
@@ -291,8 +341,7 @@
   }
   .continue-button {
     background: linear-gradient(45deg, #007bff, #28a745);
-    background-size: 600% 600%; 
-    color: #fff;
+    background-size: 600% 600%;
     animation: gradientAnimation 8s ease infinite;
   }
   .continue-button:hover {
@@ -305,54 +354,80 @@
   }
   .home-button {
     background: linear-gradient(45deg, #ff7f50, #ff6f91);
-    color: #fff;
     animation: none; 
   }
   .home-button:hover {
     transform: scale(1.05);
   }
+
 </style>
+
+<div class="simulation-header">
+  <h1>College Admission Simulation</h1>
+  <div class="date-display">Current Date: <strong id="sim-date">{{ current_sim_date }}</strong></div>
+  {% if not simulation_started %}
+    <button id="simulation-btn" class="simulation-button" onclick="startSimulation()">
+      Start Simulation
+    </button>
+  {% else %}
+    {% if simulation_paused %}
+      <button id="simulation-btn" class="simulation-button" onclick="continueSimulation()">
+        Continue Simulation
+      </button>
+    {% else %}
+      <button id="simulation-btn" class="simulation-button running" disabled>
+        Simulation Running...
+      </button>
+    {% endif %}
+  {% endif %}
+</div>
 
 <div class="results-container">
   <!-- Sidebar -->
-  <!-- Sidebar -->
-<div class="sidebar">
-  <h2>Status Updates</h2>
-  <ul>
-    {% for decision in decisions_queue %}
-      {% set uid = decision.unique_id %}
-      {% set is_available = uid in available_decisions %}
+  <div class="sidebar">
+    <h2>Status Updates</h2>
+    <ul>
+      {% set opened_uids = opened_decisions | map(attribute='unique_id') | list %}
+      {% for decision in decisions_queue %}
+        {% set uid = decision.unique_id %}
+        {% set short_name = decision.short_name %}
+        {% set is_available = uid in available_decisions %}
+        {% set is_opened = uid in opened_uids %}
 
-      <li>
-        {% if is_available %}
-          <a href="#" 
-             class="college-link available"
-             onclick="handleClick('{{ uid }}'); return false;">
-            <span>
-              {{ decision.display_name }} Status Update
-              <span class="release-date">({{ decision.release_date }})</span>
-            </span>
-            <span class="badge {{ decision.app_type|lower }}">{{ decision.app_type }}</span>
-          </a>
-        {% else %}
-          <a href="#" class="college-link disabled">
-            <span>
-              {{ decision.display_name }} Status Update
-              <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
-            </span>
-            <span class="badge {{ decision.app_type|lower }}">{{ decision.app_type }}</span>
-          </a>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-</div>
-
+        <li>
+          {% if is_opened %}
+            <div style="margin-top: -50px;">
+            </div>
+          {% else %}
+            <!-- Not yet opened -->
+            {% if is_available %}
+              <a href="#"
+                 class="college-link available"
+                 onclick="handleClick('{{ uid }}','{{ short_name }}'); return false;">
+                 <span>
+                  {{ decision.display_name }} Status Update
+                  <span class="release-date">({{ decision.release_date }})</span>
+                </span>
+                <span class="badge {{ decision.app_type|lower }}">{{ decision.app_type }}</span>
+              </a>
+            {% else %}
+              <a href="#" class="college-link disabled">
+                <span>
+                  {{ decision.display_name }} Status Update
+                  <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
+                </span>
+                <span class="badge {{ decision.app_type|lower }}">{{ decision.app_type }}</span>
+              </a>
+            {% endif %}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 
   <!-- Main Content -->
   <div class="main-content">
     <h1>Admission Decisions</h1>
-
     <div class="decisions">
       {% if opened_decisions %}
         {% for dec in opened_decisions %}
@@ -361,33 +436,16 @@
             <h3>{{ dec.display_name }}</h3>
             <p>
               <strong>Decision:</strong>
-              {# Our “badge_class” is how we know the final result #}
-              {% if dec.badge_class == "ed-acceptance" %}
-                <span class="badge ed-acceptance">ED Acceptance</span>
-              {% elif dec.badge_class == "acceptance" %}
-                <span class="badge acceptance">Acceptance</span>
-              {% elif dec.badge_class == "rejection" %}
-                <span class="badge rejection">Rejection</span>
-              {% elif dec.badge_class == "waitlist" %}
-                <span class="badge waitlist">Waitlisted</span>
-              {% elif dec.badge_class == "deferred" %}
-                <span class="badge deferred">Deferred</span>
-              {% elif dec.badge_class == "deferred-acceptance" %}
-                <span class="badge deferred-acceptance">Deferred Acceptance</span>
-              {% elif dec.badge_class == "deferred-rejection" %}
-                <span class="badge deferred-rejection">Deferred Rejection</span>
-              {% elif dec.badge_class == "deferred-waitlist" %}
-                <span class="badge deferred-waitlist">Deferred Waitlist</span>
-              {% else %}
-                <span class="badge unknown">Unknown</span>
-              {% endif %}
+              <span class="badge {{ dec.badge_class }}">{{ dec.decision }}</span>
             </p>
-            <p class="release-date"><strong>Release Date:</strong> {{ dec.release_date }}</p>
+            <p class="release-date">
+              <strong>Release Date:</strong> {{ dec.release_date }}
+            </p>
           </div>
         {% endfor %}
       {% else %}
         <div class="placeholder-message">
-          <p>Please click on a status update in the sidebar to view your admission decision.</p>
+          <p>Please start the simulation or wait until your first release date arrives.</p>
         </div>
       {% endif %}
     </div>
@@ -401,21 +459,97 @@
 </div>
 
 <script>
-  function handleClick(uniqueId) {
-    const [shortName, appType] = uniqueId.split('_');
+ /**
+ * Opens the decision login page in a new tab and marks the decision as read.
+ * @param {string} uniqueId - The unique identifier of the decision.
+ * @param {string} shortName - The short name of the college.
+ */
+function handleClick(uniqueId, shortName) {
+  // Open the login page in a new tab
+  const loginUrl = `/advancedsim/${shortName}/login?unique_id=${uniqueId}`;
+  window.open(loginUrl, '_blank');
 
-    // Create URL for adv_login with unique_id
-    let loginUrl = "{{ url_for('adv_login', college='COLLEGE') }}" + "?unique_id=" + uniqueId;
-    loginUrl = loginUrl.replace('COLLEGE', shortName);
+  // Mark as read via AJAX
+  fetch("{{ url_for('mark_as_read') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ "uid": uniqueId })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.status === "success") {
+          // Reload the main page to reflect changes
+          location.reload();
+      } else {
+          alert("Failed to mark decision as read: " + data.message);
+      }
+  })
+  .catch(err => {
+      console.error(err);
+      alert("An error occurred while marking the decision as read.");
+  });
+}
 
-    // Open the login page in a new tab
-    window.open(loginUrl, "_blank");
+/**
+ * Single function that does the day-by-day simulation loop.
+ * It keeps calling /advancedsim/results/advance until the next release date is reached or the simulation is done.
+ */
+ function doDayByDayLoop() {
+  const simBtn = document.getElementById("simulation-btn");
+  simBtn.disabled = true;
+  simBtn.classList.add("running");
+  simBtn.innerText = "Simulation Running...";
 
-    // Navigate the current window to mark the selected_college
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('selected_college', uniqueId);
-    window.location.href = currentUrl.toString();
+  async function advanceLoop() {
+    try {
+      const resp = await fetch("{{ url_for('advance_simulation') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await resp.json();
+
+      // Update date display
+      document.getElementById("sim-date").innerText = data.current_sim_date;
+
+      if (data.status === "done") {
+        // No more decisions => simulation is complete
+        simBtn.innerText = "Simulation Completed";
+      } else if (data.keep_going) {
+        // Keep going day-by-day until next release date
+        setTimeout(advanceLoop, 100);
+      } else {
+        // We reached a release date => stop here so user can see new decisions
+        simBtn.disabled = false;
+        simBtn.classList.remove("running");
+        simBtn.innerText = "Continue Simulation";
+        // Reload so the newly available decisions are shown
+        location.reload();
+      }
+    } catch (err) {
+      console.error(err);
+      simBtn.innerText = "Error in Simulation";
+      alert("An error occurred during the simulation.");
+    }
   }
+
+  // Kick off the loop
+  advanceLoop();
+}
+
+/**
+ * Called when the user clicks "Start Simulation" the very first time.
+ */
+function startSimulation() {
+  doDayByDayLoop();
+}
+
+/**
+ * Called on subsequent clicks (i.e., “Continue Simulation”).
+ */
+function continueSimulation() {
+  doDayByDayLoop();
+}
+
 </script>
 
 {% endblock %}
