@@ -1031,25 +1031,31 @@ def advancedsim():
         wgpa = weighted_GPA(gpa_val, ap_val)
         dem_score = demScore(gender, race, first_gen)
         dem_category, dem_class = rate(dem_score)
+        essay_category, essay_class = rate(essays_val)          # Correct Order
+        extra_category, extra_class = rate(extracurriculars_val)
 
         # Add demographic score and category to submission_data
         submission_data = {
-            "name": name,
-            "gpa": gpa_val,
-            "test_option": test_option,
-            "sat_score": sat_val if test_option == 'sat' else None,
-            "act_score": act_val if test_option == 'act' else None,
-            "extracurriculars": extracurriculars_val,
-            "essays": essays_val,
-            "ap_courses": ap_val,
-            "race": race,       # Stored as integer code
-            "gender": gender,   # Stored as integer code
-            "first_gen": first_gen,
-            "dem_score": dem_score,          # Store Demographic Score
-            "dem_category": dem_category,    # Store Demographic Category
-            "dem_class": dem_class,          # Store CSS Class for Category
-            "wgpa": wgpa  
-        }
+    "name": name,
+    "gpa": gpa_val,
+    "test_option": test_option,
+    "sat_score": sat_val if test_option == 'sat' else None,
+    "act_score": act_val if test_option == 'act' else None,
+    "extracurriculars": extracurriculars_val,
+    "essays": essays_val,
+    "ap_courses": ap_val,
+    "race": race,       # Stored as integer code
+    "gender": gender,   # Stored as integer code
+    "first_gen": first_gen,
+    "dem_score": dem_score,          # Store Demographic Score
+    "dem_category": dem_category,    # Store Demographic Category
+    "dem_class": dem_class,          # Store CSS Class for Category
+    "essay_category": essay_category, # Corrected Order
+    "essay_class": essay_class,        # Corrected Order
+    "extra_category": extra_category,   # Corrected Key
+    "extra_class": extra_class,         # Corrected Key
+    "wgpa": wgpa  
+}
         submissions.append(submission_data)
         
         # Update session['advancedsim_data'] with submission_data
@@ -1437,6 +1443,10 @@ def summary():
         "Demographic Score": user_data.get("dem_score", "N/A"),
         "Demographic Category": user_data.get("dem_category", "N/A"),
         "Demographic Class": user_data.get("dem_class", "na"),
+        "Essay Category": user_data.get("essay_category", "N/A"),
+        "Essay Class": user_data.get("essay_class", "na"),
+        "Extra Category": user_data.get("extra_category", "N/A"),
+        "Extra Class": user_data.get("extra_class", "na"),
         "Weighted GPA": user_data.get("wgpa", "N/A")
     }
 

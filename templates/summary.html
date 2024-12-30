@@ -410,8 +410,37 @@
                 <h3>Personal Information</h3>
                 <ul>
                     <li><strong>Name:</strong> {{ user_profile["Name"] }}</li>
-                    <li><strong>Race/Ethnicity:</strong> {{ user_profile["Race/Ethnicity"] }}</li>
-                    <li><strong>Gender:</strong> {{ user_profile["Gender"] }}</li>
+
+                    {% if user_profile["Gender"] == 1 %}
+                        {% set gender = "Male" %}
+                    {% elif user_profile["Gender"] == 2 %}
+                        {% set gender = "Female" %}
+                    {% else %}
+                        {% set gender = "Other" %}
+                    {% endif %}
+
+                    {% if user_profile["Race/Ethnicity"] == 1 %}
+    {% set race = "Caucasian" %}
+{% elif user_profile["Race/Ethnicity"] == 2 %}
+    {% set race = "African-American" %}
+{% elif user_profile["Race/Ethnicity"] == 3 %}
+    {% set race = "Hispanic or Latino" %}
+{% elif user_profile["Race/Ethnicity"] == 4 %}
+    {% set race = "Asian" %}
+{% elif user_profile["Race/Ethnicity"] == 5 %}
+    {% set race = "Native American or Alaskan Native" %}
+{% elif user_profile["Race/Ethnicity"] == 6 %}
+    {% set race = "Pacific Islander" %}
+{% elif user_profile["Race/Ethnicity"] == 7 %}
+    {% set race = "Middle Eastern or North African" %}
+{% elif user_profile["Race/Ethnicity"] == 8 %}
+    {% set race = "Prefer not to say" %}
+{% else %}
+    {% set race = "Other" %}
+{% endif %}
+
+                    <li><strong>Race/Ethnicity:</strong> {{ race }}</li>
+                    <li><strong>Gender:</strong> {{ gender }}</li>
                     <li><strong>First Generation:</strong> {{ user_profile["First Generation"] }}</li>
                 </ul>
             </div>
@@ -431,8 +460,16 @@
             <div class="profile-card">
                 <h3>Additional Information</h3>
                 <ul>
-                    <li><strong>Extracurricular Activities:</strong> {{ user_profile["Extracurricular Activities"] }}</li>
-                    <li><strong>Essays Rating:</strong> {{ user_profile["Essays Rating"] }}</li>
+                    <li><strong>EC Activities:</strong> {{ user_profile["Extracurricular Activities"] }}
+                        <span class="badge {{ user_profile["Extra Class"] }}" style="margin-left: 20px;">
+                            {{ user_profile["Extra Category"] }}
+                        </span>
+                    </li>
+                    <li><strong>Essays Rating:</strong> {{ user_profile["Essays Rating"] }}
+                        <span class="badge {{ user_profile["Essay Class"] }}" style="margin-left: 20px;">
+                            {{ user_profile["Essay Category"] }}
+                        </span>
+                    </li>
                 </ul>
             </div>
             <!-- Demographic Score Card -->
