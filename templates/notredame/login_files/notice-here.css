@@ -1,0 +1,37 @@
+/*@font-face {font-family:Factoria; font-weight:700; font-style:normal; font-display:swap;*/
+/*  src:url('https://here.nd.edu/stylesheets/fonts/factoria_bold-webfont.woff2') format('woff2'),*/
+/*      url('https://here.nd.edu/stylesheets/fonts/factoria_bold-webfont.woff') format('woff'),*/
+/*      url('https://here.nd.edu/stylesheets/fonts/factoria_bold-webfont.ttf') format('truetype');*/
+/*}*/
+#network_notice {box-sizing:border-box; display:flex; align-items:center; position:fixed; bottom:0; width:100vw; z-index:1000; padding:2rem 1.4rem 1.2rem; color:#fff; font-size:16px; font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif; background:#009845 url('https://here.nd.edu/stylesheets/images/here-ptn.png') top left repeat-x;}
+#network_notice.hidden {display:none;}
+#network_notice h2 {margin:0; padding:0; color:#fff; font-size:1.1rem; font-weight:bold; font-family:/*"Factoria","Arial Narrow",*/"Libre Franklin", "Helvetica Neue",Helvetica,Arial,Verdana,sans-serif;}
+#network_notice p {font-family:inherit; font-size:inherit; line-height:inherit; max-width:none; }
+#network_notice a {color:#fff; font-weight:bold; text-decoration:none; border-bottom:2px solid #ae9142;}
+#network_notice .notice-mark {display:none; max-width:150px;}
+#network_notice .notice-global-true .notice-site {margin-bottom:1rem;}
+#network_notice .notice-text {flex:1 1 auto;}
+  #network_notice .notice-global p:last-child,
+  #network_notice .notice-site p:last-child{margin:0;}
+#network_notice .notice-close {text-align:right;}
+  #network_notice .notice-close-button {margin:0; border:none; background:transparent;}
+  #network_notice .notice-close-icon {fill:#fff; width:24px; height:24px;}
+@media only screen and (min-width:64em) {
+  #network_notice {display:flex; align-items:center; padding:2rem 3rem 1.4rem; font-size:18px;}
+  #network_notice h2 {font-size:1.3rem;}
+  #network_notice p {font-size:1rem;}
+  #network_notice .notice-text {flex:1 1 auto; margin:0 8rem; text-align:center;}
+  #network_notice .notice-global-true.notice-text {display:flex; align-items:center;}
+  #network_notice .notice-global-true.notice-text div {flex:1 1 auto; padding:0 2rem;}
+  #network_notice .notice-mark {display:block; width:20vw;}
+  #network_notice .notice-close {width:10vw;}
+  #network_notice .notice-global-true .notice-site {width:50%;}
+}
+@media only screen and (min-width:80em) {  
+  #network_notice .notice-site-true {text-align:left;}
+  #network_notice .notice-text p:last-child {margin:0;}
+  #network_notice .notice-global-true .notice-site {margin:0; border-right:2px solid #fff;}
+}
+@media print {
+  #network_notice {display:none;}
+}

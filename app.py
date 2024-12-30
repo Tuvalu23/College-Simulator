@@ -175,7 +175,7 @@ university_list = [
         {"label": "Urban", "color": "Urban"},
         {"label": "Research", "color": "Research"},
         {"label": "Liberal Arts", "color": "Liberal Arts"},
-        {"label": "Prestigious", "color": "Prestigious"},
+        {"label": "Faith-Based", "color": "Faith-Based"},
         {"label": "Global", "color": "Global"},
         {"label": "Law", "color": "Law"}
     ]
@@ -283,6 +283,22 @@ university_list = [
             {"label": "Media", "color": "Media"}
         ]
     },
+    {
+    "name": "notredame",
+    "display_name": "University of Notre Dame",
+    "logo": "static/logos/notredame-logo.png",
+    "description": "The University of Notre Dame, located in South Bend, IN, is a prestigious Catholic institution renowned for its commitment to academic excellence, community service, and faith-based education.",
+    "badges": [
+        {"label": "T-20", "color": "T-20"},
+        {"label": "Private", "color": "Private"},
+        {"label": "Suburban", "color": "Suburban"},
+        {"label": "Faith-Based", "color": "Faith-Based"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Tradition", "color": "Tradition"},
+        {"label": "Athletics", "color": "Athletics"},
+        {"label": "Community", "color": "Community"}
+    ]
+},
     {
         "name": "nyu",
         "display_name": "New York University",
@@ -461,6 +477,20 @@ university_list = [
     ]
 },
     {
+    "name": "washu",
+    "display_name": "Washington University in St. Louis",
+    "logo": "static/logos/washu-logo.jpg",
+    "description": "Washington University in St. Louis, located in St. Louis, MO, is a prestigious private research institution renowned for its interdisciplinary academic programs, close-knit campus community, and emphasis on innovation and collaboration.",
+    "badges": [
+        {"label": "T-30", "color": "T-30"},
+        {"label": "Private", "color": "Private"},
+        {"label": "Urban", "color": "Urban"},
+        {"label": "Collaborative", "color": "Collaborative"},
+        {"label": "Health Sciences", "color": "Health Sciences"},
+        {"label": "Community", "color": "Community"}
+    ]
+},
+    {
         "name": "yale",
         "display_name": "Yale University",
         "logo": "static/logos/yale-logo.jpg",
@@ -489,11 +519,13 @@ college_list = [
     ["yale", "0.07", "N", "1.3", "REA", "2024-12-17", "N", "2025-03-28"],
     ["harvard", "0.07", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
     ["brown", "0.07", "2.0", "N", "P", "2024-12-13", "N", "2025-03-28"],
+    ["notredame", "0.08", "N", "1.2", "REA", "2024-12-17", "N", "2025-3-15"],
     ["uchicago", "0.09", "2.5", "1.1", "P", "2024-12-20", "2024-12-20", "2025-03-25"],
     ["northwestern", "0.09", "2.2", "N", "P", "2024-12-17", "N", "2025-03-24"],
     ["duke", "0.09", "2.0", "N", "P", "2024-12-16", "N", "2025-03-28"],
     ["cmu", "0.10", "1.2", "N", "P", "2024-12-13", "N", "2025-03-21"],
     ["rice", "0.12", "2", "N", "P", "2024-12-14", "N", "2025-03-21"],
+    ["washu", "0.12", "1.6", "N", "P", "2024-12-12", "N", "2025-3-13"],
     ["tufts", "0.14", "2.0", "N", "P", "2024-12-13", "N", "2025-3-22"],
     ["northeastern", "0.15", "2.7", "1.3", "P", "2024-12-11", "2025-1-31", "2025-3-17"],
     ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],

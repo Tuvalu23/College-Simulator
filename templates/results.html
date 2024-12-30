@@ -388,6 +388,15 @@
     <h2>Status Updates</h2>
     <ul>
       {% set opened_uids = opened_decisions | map(attribute='unique_id') | list %}
+      {% set opened_count = opened_uids | length %}
+      {% set total_decisions = decisions_queue | length %}
+
+      {% if opened_count >= total_decisions %}
+      <p class="placeholder-message">
+        You've opened all your status updates, and it feels so empty here. <a href="{{ url_for('advancedsim') }}" class="action-link">Start a new simulation</a> or <a href="{{ url_for('dashboard') }}" class="action-link">go home</a>.
+      </p>                    
+      {% endif %}
+
       {% for decision in decisions_queue %}
         {% set uid = decision.unique_id %}
         {% set short_name = decision.short_name %}

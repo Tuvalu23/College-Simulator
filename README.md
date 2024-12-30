@@ -34,7 +34,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Northeastern
 - [X] Illinois
 - [X] UNC
-- [ ] Wash U
+- [X] Wash U
 - [ ] Notre Dame
 
 ## TO GET ADVANCED RIBBONS
