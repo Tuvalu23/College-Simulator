@@ -35,7 +35,8 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Illinois
 - [X] UNC
 - [X] Wash U
-- [ ] Notre Dame
+- [X] Notre Dame
+- [ ] Purdue
 
 ## TO GET ADVANCED RIBBONS
 Add this above style:
