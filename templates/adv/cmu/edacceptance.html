@@ -3,37 +3,6 @@
 <html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" class="no-touch"><head><script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="shortcut icon" href="https://admission-cmu-edu.cdn.technolutions.net/favicon.ico"><link href="./acceptance_files/base.css" rel="stylesheet"><link href="./acceptance_files/base(1).css" rel="stylesheet"><link href="./acceptance_files/build-fonts.css" rel="stylesheet"><link href="./acceptance_files/build-mobile-global.css" rel="stylesheet"><link href="./acceptance_files/build.css" rel="stylesheet"><script src="./acceptance_files/base.js.download"></script><script>/*<![CDATA[*/FW.Config['firstDay'] = 0; FW.Config['Citizenship.Default.Country'] = 'US'; FW.Config['Citizenship.PR'] = 'Permanent Resident'; FW.Config['CDN'] = '//slate-technolutions-net.cdn.technolutions.net'; /*]]>*/</script><script src="./acceptance_files/build-mobile-global.js.download"></script><script src="./acceptance_files/password.js.download"></script><script async="async" id="session_expires" src="./acceptance_files/session.js.download" data-now="1734056019" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="0"></script><style>/*<![CDATA[*/html > body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; }/*]]>*/</style><meta content="width=device-width, initial-scale=1.0" name="viewport" class="cr"><title>Where Am I in the Process?</title></head>
 
 <body>
-    <script>
-        // Function to launch minimal confetti
-        function launchMinimalConfetti() {
-          const duration = 15000; // Total duration of the animation (5 seconds)
-          const end = Date.now() + duration;
-    
-          // Start a single animation frame loop
-          (function frame() {
-            if (Math.random() < 0.09) {
-            confetti({
-              particleCount: 1, // Adjusted particle count per frame
-              spread: 1000,
-              startVelocity: 0,
-              gravity: 0.9, // Fall speed
-              origin: { x: Math.random(), y: 0}, // Random position on screen
-              colors: ['#f70104'], // Red, orange, green
-            });
-        }
-    
-            // Continue the animation until the duration ends
-            if (Date.now() < end) {
-              requestAnimationFrame(frame); // Launch again in the next animation frame
-            }
-          })();
-        }
-    
-        // Automatically launch confetti on page load
-        window.onload = () => {
-          launchMinimalConfetti();
-        };
-      </script>
 <div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses resources that are being blocked by your network. Contact your network administrator for more information.</div><script>/*<![CDATA[*/if (window['FW'] == null) document.getElementById('netblock').style['display'] = 'block';/*]]>*/</script><div id="page"><div data-template="home" class=" cr" style="margin-top: -1px;"><header data-search="false" class="c_scroll cr"><div class="c_header-bar cr">
    
     <a class="c_header-bar__logo c_full-logo cr" data-search="false" href="http://admission.enrollment.cmu.edu/" style="background-image: url(&#39;./login_files/cmu.png&#39;);
@@ -43,32 +12,32 @@
 "></a></div><div class="c_header-bar__navigation cr"><nav data-search="false" class="cr"><ul class="c_nav cr"><li class=" cr"><a target="" data-label="Who We Are" href="https://www.cmu.edu/admission/who-we-are" class="cr">Who We Are</a></li><li class=" cr"><a target="" data-label="Majors and Programs" href="https://www.cmu.edu/admission/majors-programs" class="cr">Majors &amp; Programs</a></li><li class=" cr"><a target="" data-label="Visit Opportunities" href="https://www.cmu.edu/admission/visit" class="cr">Visit Opportunities</a></li><li class=" cr"><a target="" data-label="Admission" href="https://www.cmu.edu/admission/admission" class="cr">Admission</a></li><li class=" cr"><a target="" data-label="Cost and Aid" href="https://www.cmu.edu/admission/costs-aid" class="cr">Cost &amp; Aid</a></li><li class=" cr"><a target="" data-label="Campus Experience" href="https://www.cmu.edu/admission/campus-experience" class="cr">Campus Experience</a></li></ul></nav></div></div></header>
 
 <main id="c_wrapper" class="cr">
-    
-  <div id="c_pagepiling" style="width: 70%; margin: 0 auto; font-family: Roboto, sans-serif; margin-top: 110px; padding: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); background-color: white;">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;600&display=swap" rel="stylesheet">
+  <div id="c_pagepiling" style="width: 70%; margin: 0 auto; font-family: 'Verdana', sans-serif; margin-top: 110px; padding: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); background-color: white;">
     <!-- Date and Download -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1em;">
-        <div style="font-weight: bold; color: black;">{{ date }}</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.9em;">
+        <div style="font-weight: bold;">{{ date }}</div>
         <a href="#" style="color: #0056b3; font-weight: bold; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Download PDF</a>
     </div>
 
     <!-- Office of Admission -->
-    <div style="text-align: left; font-size: 1em; line-height: 1.6; color: black; margin-bottom: 30px;">
+    <div style="text-align: left; font-size: 0.9em; line-height: 1.6; margin-bottom: 30px;">
         Carnegie Mellon University<br>
         5000 Forbes Avenue<br>
         Pittsburgh, Pennsylvania, 15213<br>
     </div>
     
         <!-- Letter Body -->
-        <div style="line-height: 1.6; font-size: 1em; color: black;">
-            <p>Dear {{ name }},</p> <p>Congratulations! It is with great pride that I invite you to join Carnegie Mellon University’s College of Computer Science for Fall 2025. Your admission reflects your exceptional academic achievements, talents, and character. As part of the College of Computer Science, you will have the opportunity to select from programs in Computer Science, Artificial Intelligence, Human-Computer Interaction, Robotics, or Computational Biology, as well as explore double major opportunities.</p> <p>Carnegie Mellon’s reputation as a leader in innovation and excellence is built on the caliber of students like you. After thoroughly reviewing all applicants, we are confident that your passion and abilities will thrive here, and that you will make significant contributions to our community in both academics and extracurriculars.</p> <p>As a student at CMU, you will benefit from a world-class education, unparalleled resources, and a collaborative environment that fosters creativity and innovation. This is an exciting next step in your academic journey, and we are honored to support your growth.</p> <p>To accept our offer of admission, please confirm your enrollment with an $800 deposit via VISA or MasterCard at <a href="https://s3.andrew.cmu.edu/aio" style="color: #C41230; text-decoration: underline;">https://s3.andrew.cmu.edu/aio</a> by February 15, 2025. As an Early Decision admit, this decision is binding, and we kindly ask that you withdraw applications from other institutions to join the Carnegie Mellon family.</p> <p>We look forward to welcoming you to our vibrant campus community. Your journey as a Tartan begins now, and we can’t wait to see the remarkable impact you’ll make at Carnegie Mellon and beyond.</p>
-            <p>Sincerely,</p>
+        <div style="line-height: 1.6; font-size: 0.9em;">
+          <p>Dear {{ name }},</p> <p>Congratulations! It is with great pride that I invite you to join Carnegie Mellon University’s College of Computer Science for Fall 2025. Your admission reflects your exceptional academic achievements, talents, and character. As part of the College of Computer Science, you will have the opportunity to select from programs in Computer Science, Artificial Intelligence, Human-Computer Interaction, Robotics, or Computational Biology, as well as explore double major opportunities.</p> <p>Carnegie Mellon’s reputation as a leader in innovation and excellence is built on the caliber of students like you. After thoroughly reviewing all applicants, we are confident that your passion and abilities will thrive here, and that you will make significant contributions to our community in both academics and extracurriculars.</p> <p>As a student at CMU, you will benefit from a world-class education, unparalleled resources, and a collaborative environment that fosters creativity and innovation. This is an exciting next step in your academic journey, and we are honored to support your growth.</p> <p>To accept our offer of admission, please confirm your enrollment with an $800 deposit via VISA or MasterCard at <a href="https://s3.andrew.cmu.edu/aio" style="color: #C41230; text-decoration: underline;">https://s3.andrew.cmu.edu/aio</a> by February 15, 2025. As an Early Decision admit, this decision is binding, and we kindly ask that you withdraw applications from other institutions to join the Carnegie Mellon family.</p> <p>We look forward to welcoming you to our vibrant campus community. Your journey as a Tartan begins now, and we can’t wait to see the remarkable impact you’ll make at Carnegie Mellon and beyond.</p>
+          <p>Sincerely,</p>
             <p style="margin-top: 20px;">John D. Smith<br>Senior Admission Officer</p>
         </div>
 
         <!-- Return to Application Status -->
     </div>
-    <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
-        <a href="{{ url_for('ustatus', college=college)}}">
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 30px; font-family: 'Verdana', sans-serif;">
+        <a href="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}">
             Return to Application Status
         </a>
     </div>
