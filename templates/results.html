@@ -400,7 +400,7 @@
       {% for decision in decisions_queue %}
         {% set uid = decision.unique_id %}
         {% set short_name = decision.short_name %}
-        {% set is_available = uid in available_decisions %}
+        {% set is_available = decision.is_available %}
         {% set is_opened = uid in opened_uids %}
 
         <li>

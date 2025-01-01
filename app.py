@@ -1,18 +1,24 @@
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
+import logging
 
 from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash, jsonify
 from functools import wraps
 from models import init_db, User
-from werkzeug.security import generate_password_hash, check_password_hash
-import time
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = 'Tuvalu23'
 
 # init db
 init_db()
+
+# max colleges u can apply to
+MAX_COLLEGES = 25
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # List of universities
 university_list = [
@@ -1072,24 +1078,38 @@ def advancedsim():
 
 # Helper Functions for Session Management
 def add_school(school):
+    """
+    Adds a school to the session's selected_schools if not already present and within the limit.
+    Returns True if added, False otherwise.
+    """
     if 'selected_schools' not in session:
         session['selected_schools'] = []
-    if school not in session['selected_schools']:
+
+    # Normalize school name to lowercase for consistency
+    school_lower = school.lower()
+
+    if school_lower not in [s.lower() for s in session['selected_schools']]:
+        if len(session['selected_schools']) >= MAX_COLLEGES:
+            print(f"Cannot add {school}: maximum of {MAX_COLLEGES} colleges reached.")
+            return False
         session['selected_schools'].append(school)
+        session.modified = True
         print(f"Added school: {school}")
     else:
         print(f"School already selected: {school}")
-    session.modified = True
-    print(f"Current selected_schools: {session['selected_schools']}")
+    return True
 
 def remove_school(school):
-    if 'selected_schools' in session and school in session['selected_schools']:
-        session['selected_schools'].remove(school)
+    """
+    Removes a school from the session's selected_schools if present.
+    """
+    if 'selected_schools' in session:
+        # Normalize school name to lowercase for consistency
+        session['selected_schools'] = [s for s in session['selected_schools'] if s.lower() != school.lower()]
+        session.modified = True
         print(f"Removed school: {school}")
     else:
-        print(f"School not found in selected_schools: {school}")
-    session.modified = True
-    print(f"Current selected_schools: {session.get('selected_schools', [])}")
+        print(f"No schools selected to remove.")
     
 def clear_all_schools():
     session.pop('selected_schools', None)
@@ -1125,8 +1145,13 @@ def earlydecision():
         if ed_choice == 'yes':  # User selects ED
             ed_school = request.form.get('ed_school')  # Get the selected ED school
             if ed_school:
+                success = add_school(ed_school)  # Attempt to add ED school to the list
+
+                if not success:
+                    flash(f"You can only apply to a maximum of {MAX_COLLEGES} colleges. Please remove a college before adding another.", "warning")
+                    return redirect(url_for('earlydecision'))
+
                 session['ed_school'] = ed_school
-                add_school(ed_school)  # Add ED school to the list
 
                 # **Clear REA Selection if Exists**
                 rea_school = session.get('rea_school')
@@ -1139,6 +1164,8 @@ def earlydecision():
                 return redirect(url_for('earlyaction'))  # Skip REA, go to EA
             else:
                 flash("Please select an Early Decision school.", "danger")
+                return redirect(url_for('earlydecision'))  # Return to ED selection
+
         else:  # User selects No for ED
             # If previously selected ED, remove it
             ed_school = session.get('ed_school')
@@ -1160,16 +1187,21 @@ def earlydecision():
                 flash("Early Decision school has been cleared as you navigated back.", "info")
             return redirect(url_for('earlydecision'))  # Redirect to Advanced Sim
 
-    # Filter ED schools: ED available if column[2] != "N"
+    # Determine if the user has reached the maximum limit
+    current_count = len(session.get('selected_schools', []))
+    limit_reached = current_count >= MAX_COLLEGES
+
+    # Filter ED schools: ED available if column[2] != "N" and not already selected
     ed_schools = [
         {
             "name": u[0],
-            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0]),
+            "disabled": limit_reached and u[0] not in session.get('selected_schools', [])
         }
-        for u in college_list if u[2] != "N"
+        for u in college_list if u[2] != "N" and u[0] not in session.get('selected_schools', [])
     ]
 
-    return render_template('earlydecision.html', ed_schools=ed_schools)
+    return render_template('earlydecision.html', ed_schools=ed_schools, limit_reached=limit_reached)
 
 # REA Route
 @app.route('/advancedsim/rea', methods=['GET', 'POST'])
@@ -1181,8 +1213,13 @@ def rea():
         if rea_choice == 'yes':
             rea_school = request.form.get('rea_school')  # User selects one REA school
             if rea_school:
+                success = add_school(rea_school)  # Attempt to add REA school to the list
+
+                if not success:
+                    flash(f"You can only apply to a maximum of {MAX_COLLEGES} colleges. Please remove a college before adding another.", "warning")
+                    return redirect(url_for('rea'))
+
                 session['rea_school'] = rea_school
-                add_school(rea_school)  # Add REA school to the list
 
                 # **Clear ED Selection if Exists**
                 ed_school = session.get('ed_school')
@@ -1216,16 +1253,21 @@ def rea():
                 flash("Restrictive Early Action school has been cleared as you navigated back.", "info")
             return redirect(url_for('rea'))  # Redirect to Early Decision
 
-    # Filter REA schools: column[4] == "REA" and u[3] != "N"
+    # Determine if the user has reached the maximum limit
+    current_count = len(session.get('selected_schools', []))
+    limit_reached = current_count >= MAX_COLLEGES
+
+    # Filter REA schools: column[4] == "REA" and u[3] != "N" and not already selected
     rea_schools = [
         {
             "name": u[0],
-            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0]),
+            "disabled": limit_reached and u[0] not in session.get('selected_schools', [])
         }
-        for u in college_list if u[4] == "REA" and u[3] != "N"
+        for u in college_list if u[4] == "REA" and u[3] != "N" and u[0] not in session.get('selected_schools', [])
     ]
 
-    return render_template('rea.html', rea_schools=rea_schools)
+    return render_template('rea.html', rea_schools=rea_schools, limit_reached=limit_reached)
 
 # Early Action Route
 @app.route('/advancedsim/earlyaction', methods=['GET', 'POST'])
@@ -1240,11 +1282,41 @@ def earlyaction():
 
             if not ea_schools_selected:
                 flash("Please select at least one Early Action school.", "danger")
-                return render_template('earlyaction.html', ea_schools=prepare_ea_schools())
+                remaining_slots = MAX_COLLEGES - get_already_applied_count()
+                ea_schools_prepared = prepare_ea_schools(remaining_slots)
+                ea_schools_lower = [s.lower() for s in session.get('ea_schools', [])]
+                return render_template(
+                    'earlyaction.html',
+                    ea_schools=ea_schools_prepared,
+                    limit_reached=(remaining_slots <= 0),
+                    already_selected_count=get_already_applied_count(),
+                    ea_schools_lower=ea_schools_lower,
+                    max_colleges=MAX_COLLEGES
+                )
 
-            # Prevent duplicates
+            # Calculate remaining slots
+            already_applied = get_already_applied_count()
+            remaining_slots = MAX_COLLEGES - already_applied
+
+            if len(ea_schools_selected) > remaining_slots:
+                flash(f"You can only apply to {remaining_slots} more college(s). Please remove some selections or choose fewer schools.", "warning")
+                ea_schools_prepared = prepare_ea_schools(remaining_slots)
+                ea_schools_lower = [s.lower() for s in session.get('ea_schools', [])]
+                return render_template(
+                    'earlyaction.html',
+                    ea_schools=ea_schools_prepared,
+                    limit_reached=(remaining_slots <= 0),
+                    already_selected_count=already_applied,
+                    ea_schools_lower=ea_schools_lower,
+                    max_colleges=MAX_COLLEGES
+                )
+
+            # Prevent duplicates and enforce limit
             for school in ea_schools_selected:
-                add_school(school)
+                success = add_school(school)
+                if not success:
+                    flash(f"Cannot add {school}: maximum of {MAX_COLLEGES} colleges reached.", "warning")
+                    break  # Stop adding more schools
 
             session['ea_schools'] = ea_schools_selected
             session.modified = True  # Mark session as modified
@@ -1270,8 +1342,36 @@ def earlyaction():
                 remove_school(school)
             session['ea_schools'] = []
             flash("Early Action schools have been cleared as you navigated back.", "info")
-            return redirect(url_for('earlyaction'))  # Redirect to REA
+            return redirect(url_for('earlyaction'))  # Adjust as per your flow
 
+    # GET request handling
+
+    already_applied = get_already_applied_count()
+    remaining_slots = MAX_COLLEGES - already_applied
+
+    # Prepare EA schools list based on remaining_slots
+    ea_schools_prepared = prepare_ea_schools(remaining_slots)
+
+    # Determine if the user has reached the maximum limit
+    limit_reached = remaining_slots <= 0
+
+    # Precompute 'ea_schools_lower' for template (for case-insensitive comparison)
+    ea_schools_lower = [s.lower() for s in session.get('ea_schools', [])]
+
+    return render_template(
+        'earlyaction.html',
+        ea_schools=ea_schools_prepared,
+        limit_reached=limit_reached,
+        already_selected_count=already_applied,
+        ea_schools_lower=ea_schools_lower,
+        max_colleges=MAX_COLLEGES
+    )
+
+# Helper Function to Prepare EA Schools
+def prepare_ea_schools(remaining_slots):
+    """
+    Prepares the list of Early Action schools with their disabled status based on remaining_slots.
+    """
     chosen_ed = session.get('ed_school')
     chosen_rea = session.get('rea_school')
     chosen_ea = session.get('ea_schools', [])
@@ -1283,77 +1383,92 @@ def earlyaction():
     if chosen_rea:
         filtered_colleges = [
             u for u in college_list 
-            if u[0] not in excluded_schools and u[4] == "PUB" and u[3] != "N"
+            if u[0].lower() not in [s.lower() for s in excluded_schools] and u[4] == "PUB" and u[3] != "N"
         ]
     else:
         # Show both private (P) and public (PUB) schools not chosen yet and u[3] != "N"
         filtered_colleges = [
             u for u in college_list 
-            if u[0] not in excluded_schools and u[4] in ["P", "PUB"] and u[3] != "N"
+            if u[0].lower() not in [s.lower() for s in excluded_schools] and u[4] in ["P", "PUB"] and u[3] != "N"
         ]
+
+    # Disable if no remaining slots
+    disabled = remaining_slots <= 0
 
     # Prepare EA schools as list of dictionaries
     ea_schools = [
         {
             "name": u[0],
             "display_name": next(
-                (uni["display_name"] for uni in university_list if uni["name"] == u[0]), 
+                (uni["display_name"] for uni in university_list if uni["name"].lower() == u[0].lower()),
                 u[0]
-            )
-        }
-        for u in filtered_colleges
-    ]
-
-    return render_template('earlyaction.html', ea_schools=ea_schools)
-
-# Helper Function to Prepare EA Schools
-def prepare_ea_schools():
-    """
-    Helper function to prepare EA schools list of dictionaries.
-    This ensures consistency and avoids repetition.
-    """
-    chosen_ed = session.get('ed_school')
-    chosen_rea = session.get('rea_school')
-    chosen_ea = session.get('ea_schools', [])
-
-    # Exclude ED, REA, and already selected EA schools from the list
-    excluded_schools = set(filter(None, [chosen_ed, chosen_rea])) | set(chosen_ea)
-
-    # If REA is chosen, only public EA schools
-    if chosen_rea:
-        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] == "PUB" and u[3] != "N"]
-    else:
-        # Show both private (P) and public (PUB) schools not chosen yet
-        filtered_colleges = [u for u in college_list if u[0] not in excluded_schools and u[4] in ["P", "PUB"] and u[3] != "N"]
-
-    # Prepare EA schools as list of dictionaries
-    ea_schools = [
-        {
-            "name": u[0],
-            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
+            ),
+            "disabled": disabled
         }
         for u in filtered_colleges
     ]
 
     return ea_schools
 
+def get_already_applied_count():
+    """
+    Calculates the number of schools already applied to across ED, REA, and EA.
+    """
+    count = 0
+    if session.get('ed_school'):
+        count += 1
+    if session.get('rea_school'):
+        count += 1
+    count += len(session.get('ea_schools', []))
+    return count
+
+
 # Regular Decision Route
 @app.route('/advancedsim/regulardecision', methods=['GET', 'POST'])
 @login_required
 def regulardecision():
+    if 'selected_schools' not in session:
+        session['selected_schools'] = []  # Initialize if not present
+
+    already_applied = get_already_applied_count()
+    remaining_slots = MAX_COLLEGES - already_applied
+
     if request.method == 'POST':
-        rd_schools_selected = request.form.getlist('rd_schools')  # Multiple RD schools
+        rd_schools_selected = request.form.getlist('rd_schools')  # List of selected RD schools
 
-        if not rd_schools_selected:
+        # Server-side validation
+        if len(rd_schools_selected) > remaining_slots:
+            flash(f"You can only apply to {remaining_slots} more college(s). Please remove some selections or choose fewer schools.", "warning")
+            rd_schools_prepared = prepare_rd_schools(remaining_slots)
+            rd_schools_lower = [s.lower() for s in rd_schools_selected]
+            return render_template(
+                'regulardecision.html',
+                rd_schools=rd_schools_prepared,
+                rd_schools_lower=rd_schools_lower,
+                limit_reached=(remaining_slots <= 0),
+                already_selected_count=already_applied,
+                max_colleges=MAX_COLLEGES
+            )
+
+        if 'rd_choice' in request.form and request.form.get('rd_choice') == 'yes' and len(rd_schools_selected) == 0:
             flash("Please select at least one Regular Decision school.", "danger")
-            return render_template('regulardecision.html', rd_schools=prepare_rd_schools())
+            rd_schools_prepared = prepare_rd_schools(remaining_slots)
+            rd_schools_lower = []
+            return render_template(
+                'regulardecision.html',
+                rd_schools=rd_schools_prepared,
+                rd_schools_lower=rd_schools_lower,
+                limit_reached=(remaining_slots <= 0),
+                already_selected_count=already_applied,
+                max_colleges=MAX_COLLEGES
+            )
 
-        # Prevent duplicates
+        # Add RD schools to 'selected_schools' and to session['rd_schools']
         for school in rd_schools_selected:
             add_school(school)
 
         session['rd_schools'] = rd_schools_selected
-        session.modified = True  # Mark session as modified
+        session.modified = True
 
         flash("Regular Decision schools selected successfully!", "success")
         return redirect(url_for('summary'))
@@ -1368,58 +1483,56 @@ def regulardecision():
                 remove_school(school)
             session['rd_schools'] = []
             flash("Regular Decision schools have been cleared as you navigated back.", "info")
-            return redirect(url_for('regulardecision'))  # Redirect to Early Action
+            return redirect(url_for('earlyaction'))  # Adjust as per your flow
 
-    # GET request logic
-    chosen_all = session.get('selected_schools', [])
+    # GET request handling
 
-    # RD shows all not chosen yet in ED/REA/EA/RD and u[3] != "N"
-    rd_schools = [u for u in college_list if u[0] not in chosen_all]
+    # already_applied and remaining_slots are already computed above
 
-    # Prepare RD schools as list of dictionaries with 'name' and 'display_name'
-    rd_schools_prepared = [
-        {
-            "name": u[0],
-            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
-        }
-        for u in rd_schools
-    ]
+    # Prepare RD schools list based on remaining_slots
+    rd_schools_prepared = prepare_rd_schools(remaining_slots)
+    rd_schools_lower = [s.lower() for s in session.get('rd_schools', [])]
 
-    # Debugging: Print available RD schools
-    print("Selected Schools:", session.get('selected_schools', []))
-    print("RD Schools Available:", rd_schools_prepared)
+    # Determine if the user has reached the maximum limit
+    limit_reached = remaining_slots <= 0
 
-    return render_template('regulardecision.html', rd_schools=rd_schools_prepared)
-
-# Helper Function to Prepare RD Schools
-def prepare_rd_schools():
+    return render_template(
+        'regulardecision.html',
+        rd_schools=rd_schools_prepared,
+        rd_schools_lower=rd_schools_lower,
+        limit_reached=limit_reached,
+        already_selected_count=already_applied,
+        max_colleges=MAX_COLLEGES
+    )
+    
+def prepare_rd_schools(remaining_slots):
     """
-    Helper function to prepare RD schools list of dictionaries.
-    This ensures consistency and avoids repetition.
+    Prepares the list of Regular Decision schools with their disabled status based on remaining_slots.
     """
-    chosen_all = session.get('selected_schools', [])
-
-    # RD shows all not chosen yet in ED/REA/EA/RD and u[3] != "N"
-    rd_schools = [u for u in college_list if u[0] not in chosen_all]
-
-    # Prepare RD schools as list of dictionaries
-    rd_schools_prepared = [
-        {
-            "name": u[0],
-            "display_name": next((uni["display_name"] for uni in university_list if uni["name"] == u[0]), u[0])
-        }
-        for u in rd_schools
+    rd_schools_available = [
+        u for u in college_list 
+        if u[0].lower() not in [school.lower() for school in session.get('selected_schools', [])]
     ]
+    rd_schools_prepared = []
 
-    # Debugging: Print prepared RD schools
-    print("Preparing RD Schools:")
-    print(rd_schools_prepared)
+    for college in rd_schools_available:
+        short_name = college[0]
+        display_name = next(
+            (uni["display_name"] for uni in university_list if uni["name"].lower() == short_name.lower()),
+            short_name
+        )
+        # Disable if no remaining slots
+        disabled = remaining_slots <= 0
+        rd_schools_prepared.append({
+            "name": short_name,
+            "display_name": display_name,
+            "disabled": disabled
+        })
 
     return rd_schools_prepared
 
 def generate_unique_id(short_name, app_type):
     return f"{short_name.lower()}_{app_type.lower()}"
-
 
 @app.route('/advancedsim/summary')
 @login_required
@@ -2511,6 +2624,7 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 
     print(f"Scheduled new RD record for {college_short_name.upper()} with code 'D/R' and date {rd_release_date}")
 
+# The `results` Route
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
@@ -2553,16 +2667,19 @@ def results():
 
             # Determine release date based on application type
             if app_type in ["ED", "REA"]:
-                rdate = c_entry[2] if (len(c_entry) > 2 and c_entry[2] != "N") else "2099-01-01"
+                # Assuming column 5 is the ED/REA release date
+                rdate = c_entry[5] if (len(c_entry) > 5 and c_entry[5] != "N") else "2099-01-01"
             elif app_type == "EA":
-                rdate = c_entry[3] if (len(c_entry) > 3 and c_entry[3] != "N") else "2099-01-01"
+                # Assuming column 6 is the EA release date
+                rdate = c_entry[6] if (len(c_entry) > 6 and c_entry[6] != "N") else "2099-01-01"
             else:  # RD
-                rdate = c_entry[4] if (len(c_entry) > 4 and c_entry[4] != "N") else "2099-01-01"
+                # Assuming column 7 is the RD release date
+                rdate = c_entry[7] if (len(c_entry) > 7 and c_entry[7] != "N") else "2099-01-01"
 
             unique_id = generate_unique_id(short_name, app_type)
 
             new_queue.append({
-                "short_name": short_name,
+                "short_name": short_name.lower(),
                 "unique_id": unique_id,
                 "display_name": next((u["display_name"] for u in university_list if u["name"].lower() == short_name.lower()), short_name.capitalize()),
                 "app_type": app_type,
@@ -2602,6 +2719,18 @@ def results():
             print("DEBUG: Invalid date format encountered during re-sorting.")
             pass
 
+    locked_until_opened = session.get('locked_until_opened', {})
+    valid_locked_until_opened = {}
+
+    for rd_uid, early_uid in locked_until_opened.items():
+        if any(dd['unique_id'] == early_uid for dd in decisions_queue_sorted):
+            valid_locked_until_opened[rd_uid] = early_uid
+        else:
+            logger.debug(f"Removing invalid lock: '{rd_uid}' locked behind non-existent '{early_uid}'")
+
+    # Update the session with the cleaned mapping
+    session['locked_until_opened'] = valid_locked_until_opened
+
     # 2) Helper function to check if a decision is locked behind another
     def is_locked(uid):
         locking_uid = locked_until_opened.get(uid)
@@ -2614,29 +2743,46 @@ def results():
         # If it's not in opened_colleges, then we're locked
         return locking_uid not in opened_colleges
 
-    # 3) Identify which decisions are "visible" (their release_date <= current_sim_date)
-    visible_ids = []
+    # 3) Identify which decisions are "visible"
+    #    All decisions are visible in the sidebar regardless of release_date, except:
+    #    - RD-deferral decisions are only visible if their corresponding deferral has been read
+    visible_decisions = []
     for decision in decisions_queue_sorted:
         uid = decision['unique_id']
-        if uid in opened_colleges:
-            continue  # skip, already opened
-        if is_locked(uid):
-            continue  # skip, locked
-        try:
-            rd = datetime.strptime(decision['release_date'], '%Y-%m-%d')
-        except ValueError:
-            rd = datetime(2099, 1, 1)
-        # If the release_date is <= sim_dt => it's "visible" to the user
-        if rd <= sim_dt:
-            visible_ids.append(uid)
+        app_type = decision['app_type']
+        decision_code = final_results.get(uid, {}).get('decision_code', 'R')
+        
+        # Determine if this is a post-deferral RD decision
+        is_rd_deferral = False
+        if app_type == "RD" and decision_code.startswith("D/"):
+            is_rd_deferral = True
 
-    # 4) Make all visible_ids available for clicking, no need to find the earliest_date
-    available_decisions = visible_ids.copy()
+        if is_rd_deferral:
+            if not is_locked(uid):
+                # RD-deferral is unlocked; include in visible_decisions
+                visible_decisions.append(decision)
+            else:
+                # RD-deferral is locked; do not include
+                pass
+        else:
+            # Non-RD-deferral decisions are always visible
+            visible_decisions.append(decision)
+
+    # 4) Make all visible_ids available for clicking
+    # For the fading effect, we need to pass 'is_available' flag to each decision
+    # Thus, we prepare a new list with 'is_available' flag
+    enriched_decisions_queue = []
+    for decision in visible_decisions:
+        release_date = datetime.strptime(decision['release_date'], '%Y-%m-%d')
+        is_available = release_date <= sim_dt
+        decision_copy = decision.copy()
+        decision_copy['is_available'] = is_available
+        enriched_decisions_queue.append(decision_copy)
 
     # 5) Build a list of opened decisions for display in the main content
     opened_decisions_list = []
     for uid in opened_colleges:
-        dq_item = next((x for x in decisions_queue_sorted if x['unique_id'] == uid), None)
+        dq_item = next((x for x in enriched_decisions_queue if x['unique_id'] == uid), None)
         if not dq_item:
             continue
 
@@ -2652,6 +2798,8 @@ def results():
         # Map decision codes -> (display_decision, badge_class)
         decision_mapping = {
             "ED":   ("ED Acceptance", "ed-acceptance"),
+            "EA":   ("EA Acceptance", "ea-acceptance"),
+            "REA":  ("REA Acceptance", "rea-acceptance"),
             "A":    ("Acceptance",    "acceptance"),
             "R":    ("Rejection",     "rejection"),
             "W":    ("Waitlisted",    "waitlist"),
@@ -2678,27 +2826,27 @@ def results():
             "release_date": formatted_dt
         })
 
-    # 6) Schedule RD decisions for deferred apps
+    # Schedule RD decisions for deferred apps
     for c in applied_colleges:
         short_name = c['short_name']
         app_type = c['app_type'].upper()
         early_uid = generate_unique_id(short_name, app_type)
 
-        # If ED/EA/REA decision_code is in one of these, we create an RD entry
+        # Check if the decision_code indicates a deferral
         if final_results.get(early_uid, {}).get('decision_code') in ['D','D/A','D/W','D/R']:
             rd_uid = generate_unique_id(short_name, 'RD')
-            # Check if RD already scheduled
+            # Check if RD is already scheduled
             rd_scheduled = (
                 rd_uid in final_results or
                 any(dd['unique_id'] == rd_uid for dd in decisions_queue_sorted)
             )
             if not rd_scheduled:
-                # Find that college in your data
+                # Find the college in your data
                 sim_c = next((xx for xx in college_list if xx[0].lower() == short_name.lower()), None)
                 if sim_c:
-                    # Suppose RD release date is sim_c[4]
-                    if len(sim_c) > 4 and sim_c[4] != "N":
-                        rd_release_date = sim_c[4]
+                    # Suppose RD release date is sim_c[7]
+                    if len(sim_c) > 7 and sim_c[7] != "N":
+                        rd_release_date = sim_c[7]
                     else:
                         rd_release_date = "2099-01-01"
 
@@ -2723,15 +2871,18 @@ def results():
                     }
                     decisions_queue_sorted.append(new_rd_entry)
                     final_results[rd_uid] = {
-                        'decision_code': 'PENDING',
+                        'decision_code': 'D/R',  # Example code; adjust as needed
                         'app_type': 'RD',
                         'release_date': rd_release_date
                     }
-                    # Lock the RD behind the early app
-                    session.setdefault('locked_until_opened', {})
-                    session['locked_until_opened'][rd_uid] = early_uid
 
-                    print(f"DEBUG: Scheduled RD decision '{rd_uid}' behind early '{early_uid}'")
+                    # Lock the RD behind the early app only if early_uid exists in decisions_queue_sorted
+                    if any(dd['unique_id'] == early_uid for dd in decisions_queue_sorted):
+                        session.setdefault('locked_until_opened', {})
+                        session['locked_until_opened'][rd_uid] = early_uid
+                        logger.debug(f"Scheduled RD decision '{rd_uid}' behind early '{early_uid}'")
+                    else:
+                        logger.debug(f"Not locking RD decision '{rd_uid}' as early decision '{early_uid}' does not exist.")
 
     # 7) Update session with new queue / results if modified
     session['decisions_queue_sorted'] = decisions_queue_sorted
@@ -2741,34 +2892,44 @@ def results():
     return render_template(
         'results.html',
         name=name,
-        decisions_queue=decisions_queue_sorted,
+        decisions_queue=enriched_decisions_queue,  # Pass enriched_decisions_queue with 'is_available'
         opened_decisions=opened_decisions_list,
-        available_decisions=available_decisions,   # All visible IDs
-        current_sim_date=sim_dt.strftime("%B %d, %Y"),
+        current_sim_date=sim_dt.strftime("%Y-%m-%d"),  # Pass as 'YYYY-MM-DD' for comparison
         simulation_started=session['simulation_started'],
         simulation_paused=session['simulation_paused'],
     )
 
+# Route to Advance Simulation
 @app.route('/advancedsim/results/advance', methods=['POST'])
 @login_required
 def advance_simulation():
     from datetime import datetime, timedelta
 
+    logger.debug("Starting advance_simulation route.")
+
     # Ensure simulation has started
     if 'simulation_started' not in session:
         session['simulation_started'] = False
+        logger.debug("Simulation was not started. Initializing simulation_started to False.")
     if not session['simulation_started']:
         session['simulation_started'] = True
+        logger.debug("Starting simulation. Set simulation_started to True.")
 
     current_date_str = session.get('current_sim_date', '2024-11-01')
     try:
         current_date = datetime.strptime(current_date_str, "%Y-%m-%d")
+        logger.debug(f"Current simulation date: {current_date.strftime('%Y-%m-%d')}")
     except ValueError:
         current_date = datetime(2024, 11, 1)
+        logger.warning(f"Invalid current_sim_date format: {current_date_str}. Resetting to 2024-11-01.")
 
     decisions_queue_sorted = session.get('decisions_queue_sorted', [])
     opened_colleges = session.get('opened_colleges', [])
     locked_until_opened = session.get('locked_until_opened', {})
+
+    logger.debug(f"Number of decisions in queue: {len(decisions_queue_sorted)}")
+    logger.debug(f"Opened colleges: {opened_colleges}")
+    logger.debug(f"Locked until opened mapping: {locked_until_opened}")
 
     # Identify all future release dates among un-opened, unlocked colleges
     future_dates = []
@@ -2776,23 +2937,31 @@ def advance_simulation():
         uid = d['unique_id']
         # Skip if already opened
         if uid in opened_colleges:
+            logger.debug(f"Decision {uid} already opened. Skipping.")
             continue
         # Skip if locked
         if locked_until_opened.get(uid) and locked_until_opened[uid] not in opened_colleges:
+            logger.debug(f"Decision {uid} is locked behind {locked_until_opened[uid]}. Skipping.")
             continue
         # Parse the release date
         try:
             rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
+            logger.debug(f"Decision {uid} has release date: {rd.strftime('%Y-%m-%d')}")
         except ValueError:
             rd = datetime(2099, 1, 1)
+            logger.warning(f"Invalid release_date for decision {uid}: {d['release_date']}. Setting to 2099-01-01.")
         # Consider only dates after the current date
         if rd > current_date:
             future_dates.append(rd)
+            logger.debug(f"Decision {uid} is scheduled for future release on {rd.strftime('%Y-%m-%d')}.")
+
+    logger.debug(f"Future release dates identified: {[d.strftime('%Y-%m-%d') for d in future_dates]}")
 
     # If no future release dates, simulation is done
     if not future_dates:
         session['current_sim_date'] = current_date.strftime("%Y-%m-%d")
         session.modified = True
+        logger.info("No more future release dates. Simulation is complete.")
         return jsonify({
             "status": "done",
             "message": "No more decisions left to release.",
@@ -2804,31 +2973,39 @@ def advance_simulation():
 
     # Determine the nearest future release date
     next_release_date = min(future_dates)
+    logger.debug(f"Next release date identified: {next_release_date.strftime('%Y-%m-%d')}")
 
     # Advance the date by one day
     new_date = current_date + timedelta(days=1)
+    logger.debug(f"Proposed new simulation date: {new_date.strftime('%Y-%m-%d')}")
 
     # If the new date surpasses or meets the next release date, clamp it
     reached_release = False
     if new_date >= next_release_date:
         new_date = next_release_date
         reached_release = True
+        logger.debug(f"Reached the next release date: {new_date.strftime('%Y-%m-%d')}")
+    else:
+        logger.debug("Did not reach the next release date yet.")
 
     # Update the session with the new date
     session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
     session.modified = True
+    logger.debug(f"Updated current_sim_date to: {session['current_sim_date']}")
 
     # Format the new date for display
-    formatted_date = new_date.strftime("%B %d, %Y")
+    formatted_date = new_date.strftime('%B %d, %Y')
 
     # Determine if a release date was reached
     is_release_date = False
     if reached_release:
         is_release_date = True
+        logger.debug("A release date was reached during this advancement.")
 
     # Decide if the simulation should keep advancing
     keep_going = not reached_release
     session['simulation_paused'] = not keep_going
+    logger.debug(f"Simulation paused: {not keep_going}")
 
     return jsonify({
         "status": "ok",
@@ -3163,24 +3340,23 @@ def adv_waitlist(college):
         college=college
     )
 
-@app.route('/advancedsim/results/mark_as_read', methods=["POST"])
+@app.route('/advancedsim/mark_as_read', methods=['POST'])
 @login_required
 def mark_as_read():
-    """
-    Marks a decision as opened by adding its unique_id to the 'opened_colleges' list in the session.
-    Expects a JSON payload with the 'uid' key.
-    """
     data = request.get_json()
-    uid = data.get('uid')
+    uid = data.get('uid', '').lower()
+
     if not uid:
-        return {'status': 'fail', 'message': 'No unique_id provided'}, 400
-    if 'opened_colleges' not in session:
-        session['opened_colleges'] = []
-    if uid not in session['opened_colleges']:
-        session['opened_colleges'].append(uid)
-        print(f"Added opened college: {uid}")
-    session.modified = True
-    return {'status': 'success'}
+        return jsonify({"status": "error", "message": "No UID provided."}), 400
+
+    # Add to opened_colleges
+    opened_colleges = session.get('opened_colleges', [])
+    if uid not in opened_colleges:
+        opened_colleges.append(uid)
+        session['opened_colleges'] = opened_colleges
+        session.modified = True
+
+    return jsonify({"status": "success", "message": "Decision marked as read."}), 200
 
 @app.route('/quicksim/<college>/login_files/<path:filename>')
 def login_files_static(college, filename):
