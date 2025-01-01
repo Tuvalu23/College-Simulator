@@ -410,6 +410,7 @@
                 <h3>Personal Information</h3>
                 <ul>
                     <li><strong>Name:</strong> {{ user_profile["Name"] }}</li>
+                    <li><strong>Home State:</strong> {{ state_full }}</li>
 
                     {% if user_profile["Gender"] == 1 %}
                         {% set gender = "Male" %}

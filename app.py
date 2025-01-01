@@ -545,8 +545,8 @@ college_list = [
     ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-04-01"],
     ["illini", "0.24", "N", "1.2", "PUB", "N", "2025-1-31", "2025-2-28"],
     ["unc", "0.24", "N", "1.3", "PUB", "N", "2025-1-26", "2025-3-06"],
-    ["bing", "0.65", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
-    ["buffalo", "0.87", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
+    ["bing", "0.55", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
+    ["buffalo", "0.75", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
 
 college_list_lower = [c[0].lower() for c in college_list]
@@ -845,6 +845,60 @@ def rejection(college):
 # advanced sm stuff
 submissions = []
 
+# Define US_STATES as shown earlier
+US_STATES = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PA": "Pennsylvania",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming"
+}
+
 # Advanced Simulation Route
 @app.route("/advancedsim", methods=["GET", "POST"])
 @login_required
@@ -853,6 +907,7 @@ def advancedsim():
     if request.method == "POST":
         # Extract form data
         name = request.form.get("name", "").strip()
+        state = request.form.get("state", "").strip()
         gpa = request.form.get("gpa", "").strip()
         test_option = request.form.get("test_option", "")
         sat_score = request.form.get("sat_score", "").strip()
@@ -1043,6 +1098,7 @@ def advancedsim():
         # Add demographic score and category to submission_data
         submission_data = {
     "name": name,
+    "state": state, 
     "gpa": gpa_val,
     "test_option": test_option,
     "sat_score": sat_val if test_option == 'sat' else None,
@@ -1543,6 +1599,7 @@ def summary():
     user_data = session.get('advancedsim_data', {})
     user_profile = {
         "Name": user_data.get("name", "N/A"),
+        "State": user_data.get("state", "N/A"),
         "GPA": user_data.get("gpa", "N/A"),
         "Test Option": user_data.get("test_option", "N/A").upper(),
         "SAT Score": user_data.get("sat_score", "N/A") if user_data.get("test_option") == 'sat' else "N/A",
@@ -1562,6 +1619,9 @@ def summary():
         "Extra Class": user_data.get("extra_class", "na"),
         "Weighted GPA": user_data.get("wgpa", "N/A")
     }
+    
+    state_abbr = user_data.get("state", "N/A")
+    state_full = US_STATES.get(state_abbr, "N/A") if state_abbr != "N/A" else "N/A"
 
     # Gather the applied colleges
     applied_colleges = []
@@ -1696,7 +1756,7 @@ def summary():
         'summary.html',
         user_profile=user_profile,
         applied_colleges=applied_colleges,
-        decisions_queue=decisions_queue_sorted
+        decisions_queue=decisions_queue_sorted, state_full=state_full
     )
 
 # helper functions for chancing
@@ -1730,7 +1790,7 @@ def getType(chance):
     if chance > 80:
         return "Safety", "safety"
     elif chance > 65:
-        return "Highly Likely", "highly-likely"
+        return "Likely", "likely"
     elif chance > 45:
         return "Target", "target"
     elif chance > 30:
@@ -1768,7 +1828,7 @@ def classify(student_num):
     else:
         return 10
     
-def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurriculars, ap_courses, essayStrength, gpa, interviewStrength, app_type):
+def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurriculars, ap_courses, essayStrength, gpa, interviewStrength, app_type, state):
     baseChance = float(collegeList[i][1]) * 100  # Acceptance rate as percentage (0-100)
     interviewScore = interviewStrength
 
@@ -2130,6 +2190,26 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             chances /= random.uniform(1.2, 2.4)
         if gpa > 96.5:
             chances *= random.uniform(1.2, 2.4)
+            
+    # home state stuff
+    if collegeList[i][0] == "cornell" and state == "NY":
+        chances *= random.uniform(1.0, 1.2)  # Cornell prefers NY applicants slightly
+    elif collegeList[i][0] == "uva" and state == "VA":
+        chances *= random.uniform(1.4, 1.8)  # UVA strongly prefers VA residents
+    elif collegeList[i][0] == "gtech" and state == "GA":
+        chances *= random.uniform(1.4, 1.8)  # Georgia Tech heavily favors GA residents
+    elif collegeList[i][0] == "berkeley" and state == "CA":
+        chances *= random.uniform(1.2, 1.6)  # UC Berkeley strongly prefers CA residents
+    elif collegeList[i][0] == "umich" and state == "MI":
+        chances *= random.uniform(1.3, 1.5)  # University of Michigan gives preference to MI residents
+    elif collegeList[i][0] == "illini" and state == "IL":
+        chances *= random.uniform(1.2, 1.4)  # University of Illinois prefers IL residents
+    elif collegeList[i][0] == "unc" and state == "NC":
+        chances *= random.uniform(1.3, 1.6)  # UNC Chapel Hill heavily favors NC residents
+    elif collegeList[i][0] == "bing" and state == "NY":
+        chances *= random.uniform(1.3, 1.5)  # Binghamton strongly prefers NY residents
+    elif collegeList[i][0] == "buffalo" and state == "NY":
+        chances *= random.uniform(1.4, 1.6)  # University at Buffalo strongly favors NY residents  
 
     chances += random.uniform(-2, 2)  # Simulating chances -= Math.random()*4 -1
 
@@ -2335,6 +2415,7 @@ def chances():
                 ap_courses = user_data.get('ap_courses', 0)
                 essayStrength = user_data.get('essays', 0)
                 gpa = user_data.get('gpa', 0.0)
+                state = user_data.get('state', 'NY').upper()
 
                 # Recompute chances_val_rd using 'app_type'='RD' and reused interview_strength
                 chances_val_rd = chanceCollege(
@@ -2349,7 +2430,8 @@ def chances():
                     essayStrength=int(essayStrength),
                     gpa=float(gpa),
                     interviewStrength=interview_strength,  # Reuse the initial interview strength
-                    app_type="RD"
+                    app_type="RD",
+                    state=state
                 )
 
                 # Call admissionsDecision with is_deferred=True to get D/A, D/W, or D/R
@@ -2388,6 +2470,7 @@ def chances():
     ap_courses = user_data.get('ap_courses', 0)
     essayStrength = user_data.get('essays', 0)
     gpa = user_data.get('gpa', 0.0)
+    state = user_data.get('state', 'NY').upper()
 
     # Build interview_chances
     interview_chances = {}
@@ -2419,7 +2502,8 @@ def chances():
             essayStrength=int(essayStrength),
             gpa=float(gpa),
             interviewStrength=interview_score,
-            app_type=app_type
+            app_type=app_type,
+            state=state
         )
 
         # Determine interview score category
