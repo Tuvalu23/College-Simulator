@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block background %}
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/error-image.jpg') }}');"></div>
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center min-h-screen text-center fade-in">
+    <h1 class="text-6xl font-bold text-yellow-600 animate-subtle-bounce">500</h1>
+    <p class="mt-4 text-2xl text-gray-700">Sorry! Something went wrong on our end.</p>
+    <a href="{{ url_for('dashboard') }}" class="mt-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition transform hover:scale-105 hover:from-pink-500 hover:to-yellow-500">
+        Return Home
+    </a>
+</div>
+{% endblock %}

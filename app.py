@@ -3501,5 +3501,15 @@ def advancedsim_rejection_files_static(college, filename):
 def advancedsim_deferred_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', 'adv', college, 'deferred_files'), filename)
 
+# Error Handler for 404 Not Found
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', title='Page Not Found'), 404
+
+# Error Handler for 500 Internal Server Error
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html', title='Server Error'), 500
+
 if __name__ == "__main__":
     app.run(debug=True)
