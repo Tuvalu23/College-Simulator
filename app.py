@@ -3246,6 +3246,19 @@ def adv_ustatus(college):
         decision_code=decision_code,
         unique_id=unique_id,  # Ensure unique_id is passed to the template
     )
+    
+@app.context_processor
+def inject_formatted_date():
+    def format_date(date_str):
+        try:
+            # Parse the original date string
+            parsed_date = datetime.strptime(date_str, '%B %d, %Y')
+            # Format to desired output: mm/dd/yy
+            return parsed_date.strftime('%m/%d/%y')
+        except ValueError:
+            # If parsing fails, return the original string
+            return date_str
+    return dict(format_date=format_date)
 
 @app.route("/advancedsim/<college>/acceptance")
 @login_required
