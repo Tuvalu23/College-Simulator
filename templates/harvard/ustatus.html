@@ -222,7 +222,7 @@
                         
                         </div>
                       </div>
-                      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+                      <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&display=swap" rel="stylesheet">
                       <div class="status-tabs js-tab-group">
                         <div id="js-status-bar--filler" style="height: 0px;"></div>
                         <div class="status-tabs__bar" id="js-status-tabs-bar">
@@ -513,15 +513,25 @@ Menu-->
                                             <div>
                                               <h3>Status Update</h3>
                                               <p style"font-family: 'Montserrat', Arial, sans-serif; margin-bottom: -20px; ">
-                                                <span style="font-family: 'Montserrat', Arial, sans-serif;">An update to your application was last posted on {{ date }}.</span></p>
-                                              <p>
-
-
-                                                <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display: inline; margin-top: -20px; margin-left: 8px;">
-                                                  <button type="submit" style="margin-top: -20px; font-weight: bold; outline-style: none; background: none; border: none; color:rgb(72, 130, 181); cursor: pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
-                                                      View Update >>
-                                                  </button>
-                                              </form>
+                                                <span style="font-family: 'Spectral', Arial, sans-serif;">An update to your application was last posted on {{ date }}.</span></p>
+                                                <p style="margin-top: -5px;"> <!-- Adjust margin-top to fine-tune spacing -->
+                                                  <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="display: inline;">
+                                                      <button type="submit" 
+                                                              style="background-color:rgb(158, 200, 227); 
+                                                                     font-weight: bold; 
+                                                                     outline: none; 
+                                                                     background: none; 
+                                                                     border: none; 
+                                                                     color: rgb(72, 130, 181); 
+                                                                     cursor: pointer; 
+                                                                     font-size: 1.5rem; 
+                                                                     margin-left: 8px;" 
+                                                              onmouseover="this.style.textDecoration='underline'" 
+                                                              onmouseout="this.style.textDecoration='none'">
+                                                              
+                                                          View Update >>
+                                                      </button>
+                                                  </form>
                                               </p>
                                             </div>
                                           </div>

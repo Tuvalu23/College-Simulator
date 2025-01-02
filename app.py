@@ -223,7 +223,7 @@ university_list = [
     "description": "The University of Illinois Urbana-Champaign is a premier public research institution known for its pioneering work in engineering, computer science, and business. Located in the heart of Illinois, it offers a vibrant campus and college experience.",
     "badges": [
         {"label": "Public", "color": "Public"},
-        {"label": "Research", "color": "Research"},
+        {"label": "Big Ten", "color": "Big Ten"},
         {"label": "Engineering", "color": "Engineering"},
         {"label": "Innovation", "color": "Innovation"},
         {"label": "Global", "color": "Global"},
@@ -282,10 +282,10 @@ university_list = [
         "badges": [
             {"label": "T-10", "color": "T-10"},
             {"label": "Private", "color": "Private"},
+            {"label": "Big Ten", "color": "Big Ten"},
             {"label": "Suburban", "color": "Suburban"},
             {"label": "Research", "color": "Research"},
             {"label": "Performing Arts", "color": "Performing Arts"},
-            {"label": "Innovation", "color": "Innovation"},
             {"label": "Media", "color": "Media"}
         ]
     },
@@ -335,6 +335,21 @@ university_list = [
             {"label": "Leadership", "color": "Leadership"}
         ]
     },
+    {
+    "name": "purdue",
+    "display_name": "Purdue University",
+    "logo": "static/logos/purdue-logo.png",
+    "description": "Purdue University, located in West Lafayette, IN, is a top public research institution known for its strong engineering, agriculture, and technology programs. It offers a vibrant campus community and a commitment to academic excellence and innovation.",
+    "badges": [
+        {"label": "Public", "color": "Public"},
+        {"label": "Big Ten", "color": "Big Ten"},
+        {"label": "Engineering", "color": "Engineering"},
+        {"label": "Agriculture", "color": "Agriculture"},
+        {"label": "Technology", "color": "Technology"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Value", "color": "Value"}
+    ]
+},
     {
         "name": "rice",
         "display_name": "Rice University",
@@ -417,10 +432,11 @@ university_list = [
         "badges": [
             {"label": "T-20", "color": "T-20"},
             {"label": "Public", "color": "Public"},
+            {"label": "Big Ten", "color": "Big Ten"},
             {"label": "Suburban", "color": "Suburban"},
             {"label": "Research", "color": "Research"},
             {"label": "Athletics", "color": "Athletics"},
-            {"label": "STEM", "color": "STEM"},
+            {"label": "Business", "color": "Business"},
             {"label": "Diverse", "color": "Diverse"}
         ]
     },
@@ -461,6 +477,7 @@ university_list = [
         "badges": [
             {"label": "T-30", "color": "T-30"},
             {"label": "Private", "color": "Private"},
+            {"label": "Big Ten", "color": "Big Ten"},
             {"label": "Urban", "color": "Urban"},
             {"label": "Liberal Arts", "color": "Liberal Arts"},
             {"label": "Film", "color": "Film"},
@@ -517,34 +534,35 @@ college_list = [
     ["columbia", "0.02", "1.9", "N", "P", "2024-12-18", "N", "2025-03-28"],
     ["stanford", "0.03", "N", "1.3", "REA", "2024-12-13", "N", "2025-03-29"],
     ["upenn", "0.03", "2", "N", "P", "2024-12-18", "N", "2025-03-28"],
-    ["caltech", "0.03", "N", "1.1", "REA", "2024-12-12", "N", "2025-03-25"],
-    ["jhu", "0.05", "1.7", "N", "P", "2024-12-13", "N", "2025-03-21"],
+    ["caltech", "0.03", "N", "1.1", "REA", "2024-12-12", "N", "2025-03-09"],
+    ["jhu", "0.05", "1.7", "N", "P", "2024-12-13", "N", "2025-03-20"],
     ["dartmouth", "0.05", "2.3", "N", "P", "2024-12-13", "N", "2025-03-28"],
     ["princeton", "0.06", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
     ["mit", "0.06", "N", "1.2", "P", "N", "2024-12-17", "2025-03-14"],
     ["yale", "0.07", "N", "1.3", "REA", "2024-12-17", "N", "2025-03-28"],
     ["harvard", "0.07", "N", "1.3", "REA", "2024-12-12", "N", "2025-03-28"],
     ["brown", "0.07", "2.0", "N", "P", "2024-12-13", "N", "2025-03-28"],
-    ["notredame", "0.08", "N", "1.2", "REA", "2024-12-17", "N", "2025-3-15"],
+    ["notredame", "0.08", "N", "1.2", "REA", "2024-12-17", "N", "2025-03-15"],
     ["uchicago", "0.09", "2.5", "1.1", "P", "2024-12-20", "2024-12-20", "2025-03-25"],
-    ["northwestern", "0.09", "2.2", "N", "P", "2024-12-17", "N", "2025-03-24"],
+    ["northwestern", "0.09", "2.2", "N", "P", "2024-12-17", "N", "2025-03-27"],
     ["duke", "0.09", "2.0", "N", "P", "2024-12-16", "N", "2025-03-28"],
     ["cmu", "0.10", "1.2", "N", "P", "2024-12-13", "N", "2025-03-21"],
     ["rice", "0.12", "2", "N", "P", "2024-12-14", "N", "2025-03-21"],
-    ["washu", "0.12", "1.6", "N", "P", "2024-12-12", "N", "2025-3-13"],
-    ["tufts", "0.14", "2.0", "N", "P", "2024-12-13", "N", "2025-3-22"],
-    ["northeastern", "0.15", "2.7", "1.3", "P", "2024-12-11", "2025-1-31", "2025-3-17"],
+    ["washu", "0.12", "1.6", "N", "P", "2024-12-12", "N", "2025-03-13"],
+    ["tufts", "0.14", "2.0", "N", "P", "2024-12-13", "N", "2025-03-22"],
+    ["northeastern", "0.15", "2.7", "1.3", "P", "2024-12-11", "2025-01-31", "2025-03-17"],
     ["cornell", "0.15", "2.2", "N", "P", "2024-12-12", "N", "2025-03-28"],
-    ["uva", "0.15", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-3-21"],
-    ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-1-27", "2025-03-22"],
+    ["uva", "0.15", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-03-21"],
+    ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-01-27", "2025-03-22"],
     ["berkeley", "0.15", "N", "N", "PUB", "N", "N", "2025-03-27"],
-    ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-26"],
-    ["usc", "0.17", "N", "1.3", "P", "N", "2025-1-17", "2025-03-16"],
-    ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-1-27", "2025-03-10"],
-    ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-04-01"],
-    ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-04-01"],
-    ["illini", "0.24", "N", "1.2", "PUB", "N", "2025-1-31", "2025-2-28"],
-    ["unc", "0.24", "N", "1.3", "PUB", "N", "2025-1-26", "2025-3-06"],
+    ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-27"],
+    ["usc", "0.17", "N", "1.3", "P", "N", "2025-01-17", "2025-03-16"],
+    ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-01-27", "2025-03-10"],
+    ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-03-28"],
+    ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-03-27"],
+    ["illini", "0.24", "N", "1.2", "PUB", "N", "2025-01-31", "2025-02-28"],
+    ["unc", "0.24", "N", "1.3", "PUB", "N", "2025-01-26", "2025-03-06"],
+    ["purdue", "0.55", "N", "1.3", "PUB", "N", "2025-1-15", "2025-03-04"],
     ["bing", "0.55", "N", "1.3", "PUB", "N", "2024-11-20", "2025-02-15"],
     ["buffalo", "0.75", "N", "1.2", "PUB", "N", "2024-11-15", "2025-02-10"]
 ]
@@ -2209,7 +2227,9 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
     elif collegeList[i][0] == "bing" and state == "NY":
         chances *= random.uniform(1.3, 1.5)  # Binghamton strongly prefers NY residents
     elif collegeList[i][0] == "buffalo" and state == "NY":
-        chances *= random.uniform(1.4, 1.6)  # University at Buffalo strongly favors NY residents  
+        chances *= random.uniform(1.4, 1.6)  # University at Buffalo strongly favors NY residents
+    elif collegeList[i][0] == "purdue" and state == "IN":
+        chances *= random.uniform(1.3, 1.6)  # purdue indiana 
 
     chances += random.uniform(-2, 2)  # Simulating chances -= Math.random()*4 -1
 
@@ -2530,14 +2550,11 @@ def chances():
 
 # admissionsDecision Function
 def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sorted, is_deferred=False):
-    """
-    Determine the admission decision for a given college index in college_list,
-    based on 'chances' (0-100), the 'appType' (ED, EA, REA, or RD), and whether
-    it's the final (deferred) round or not.
-    """
     session.setdefault('final_results', {})
     
     yourFate = min(random.random() * 100, random.random() * 100) + random.random() * 30
+    if yourFate >= 100:
+        yourFate = 100
     collegeName = college_list[idx][0].lower()
 
     print(f"Admissions Decision for {collegeName}:")
@@ -2550,7 +2567,7 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
         release_date_str = college_list[idx][6] if len(college_list[idx]) > 6 else "2099-01-01"
     else:  # RD
         release_date_str = college_list[idx][7] if len(college_list[idx]) > 7 else "2099-01-01"
-
+    
     # Now decide
     if appType == "ED":
         if yourFate < chances:
@@ -2561,7 +2578,21 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
             decision = "R"
 
     elif appType == "REA":
-        if yourFate < chances:
+        if collegeName == "harvard" or collegeName == "georgetown":
+            if yourFate < chances:
+                decision = "A"
+            elif yourFate < chances + 40 + random.random() * 40:
+                decision = "D"
+            else:
+                decision = "R"
+        elif collegeName == "yale":
+            if yourFate < chances:
+                decision = "A"
+            elif yourFate < chances + random.random() * 25:
+                decision = "D"
+            else:
+                decision = "R"
+        elif yourFate < chances:
             decision = "A"
         elif yourFate < chances + random.random() * 40:
             decision = "D"
@@ -2569,7 +2600,14 @@ def admissionsDecision(chances, appType, idx, college_list, decisions_queue_sort
             decision = "R"
 
     elif appType == "EA":
-        if yourFate < chances:
+        if collegeName == "mit" or collegeName == "uchicago":
+            if yourFate < chances:
+                decision = "A"
+            elif yourFate < chances + 50 + random.random() * 50:
+                decision = "D"
+            else:
+                decision = "R"
+        elif yourFate < chances:
             decision = "A"
         elif yourFate < chances + random.random() * 45:
             decision = "D"
