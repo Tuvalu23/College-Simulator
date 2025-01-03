@@ -411,6 +411,7 @@
                 <ul>
                     <li><strong>Name:</strong> {{ user_profile["Name"] }}</li>
                     <li><strong>Home State:</strong> {{ state_full }}</li>
+                    <li><strong>Legacy Status:</strong> {{ r_legacy }}</li>
 
                     {% if user_profile["Gender"] == 1 %}
                         {% set gender = "Male" %}

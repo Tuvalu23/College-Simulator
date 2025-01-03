@@ -401,6 +401,49 @@
                 <div id="state-message" class="validation-message">Please select your state</div>
                 <div id="state-valid" class="valid-check">Looks good ✅</div>
                 <div id="state-invalid" class="invalid-check">Invalid state ❌</div>
+
+                <label for="legacy">Legacy Status</label>
+<select name="legacy" id="legacy" required>
+    <option value="">-- Select Your College --</option>
+    <option value="none">None</option>
+    <option value="columbia">Columbia</option>
+    <option value="stanford">Stanford</option>
+    <option value="upenn">University of Pennsylvania</option>
+    <option value="caltech">Caltech</option>
+    <option value="jhu">Johns Hopkins University</option>
+    <option value="dartmouth">Dartmouth</option>
+    <option value="princeton">Princeton</option>
+    <option value="mit">MIT</option>
+    <option value="yale">Yale</option>
+    <option value="harvard">Harvard</option>
+    <option value="brown">Brown</option>
+    <option value="notredame">Notre Dame</option>
+    <option value="uchicago">University of Chicago</option>
+    <option value="northwestern">Northwestern</option>
+    <option value="duke">Duke</option>
+    <option value="cmu">Carnegie Mellon University</option>
+    <option value="rice">Rice</option>
+    <option value="washu">Washington University in St. Louis</option>
+    <option value="tufts">Tufts</option>
+    <option value="northeastern">Northeastern</option>
+    <option value="cornell">Cornell</option>
+    <option value="uva">University of Virginia</option>
+    <option value="gtech">Georgia Tech</option>
+    <option value="berkeley">UC Berkeley</option>
+    <option value="emory">Emory</option>
+    <option value="usc">USC</option>
+    <option value="umich">University of Michigan</option>
+    <option value="nyu">NYU</option>
+    <option value="georgetown">Georgetown</option>
+    <option value="illini">University of Illinois</option>
+    <option value="unc">UNC</option>
+    <option value="purdue">Purdue</option>
+    <option value="bing">Binghamton University</option>
+    <option value="buffalo">University at Buffalo</option>
+</select>
+<div id="legacy-message" class="validation-message">Please select your legacy status</div>
+<div id="legacy-valid" class="valid-check">Looks good ✅</div>
+<div id="legacy-invalid" class="invalid-check">Invalid selection ❌</div>
             </section>
     
             <div class="section-divider"></div>
@@ -518,6 +561,11 @@
         const nameValid = document.getElementById('name-valid');
         const nameInvalid = document.getElementById('name-invalid');
 
+        const legacySelect = document.getElementById('legacy');
+        const legacyMessage = document.getElementById('legacy-message');
+        const legacyValid = document.getElementById('legacy-valid');
+        const legacyInvalid = document.getElementById('legacy-invalid');
+
         const stateSelect = document.getElementById('state');
         const stateMessage = document.getElementById('state-message');
         const stateValid = document.getElementById('state-valid');
@@ -564,6 +612,7 @@
         }
 
         nameInput.addEventListener('input', () => {validateName(); checkAllValid();});
+        legacySelect.addEventListener('change', () => {validateLegacy(); checkAllValid();});
         stateSelect.addEventListener('change', () => {validateState(); checkAllValid();});
         gpaInput.addEventListener('input', () => {validateGPA(); checkAllValid();});
         satInput.addEventListener('input', () => {validateSAT(); checkAllValid();});
@@ -590,6 +639,15 @@
                 showValid(stateValid, stateInvalid, stateMessage);
             } else {
                 showInvalid(stateValid, stateInvalid, stateMessage);
+            }
+        }
+
+        function validateLegacy() {
+            const val = legacySelect.value;
+            if (val) {
+                showValid(legacyValid, legacyInvalid, legacyMessage);
+            } else {
+                showInvalid(legacyValid, legacyInvalid, legacyMessage);
             }
         }
 
@@ -663,6 +721,8 @@
             if (nameInvalid.style.display === 'block') return false;
             // Check state
             if (stateInvalid.style.display === 'block') return false;
+            // Check GPA
+            if (legacyInvalid.style.display === 'block') return false;
             // Check GPA
             if (gpaInvalid.style.display === 'block') return false;
             // Check test scores based on option

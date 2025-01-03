@@ -926,6 +926,7 @@ def advancedsim():
         # Extract form data
         name = request.form.get("name", "").strip()
         state = request.form.get("state", "").strip()
+        legacy = request.form.get("legacy", "").strip() 
         gpa = request.form.get("gpa", "").strip()
         test_option = request.form.get("test_option", "")
         sat_score = request.form.get("sat_score", "").strip()
@@ -1117,6 +1118,7 @@ def advancedsim():
         submission_data = {
     "name": name,
     "state": state, 
+    "legacy": legacy,
     "gpa": gpa_val,
     "test_option": test_option,
     "sat_score": sat_val if test_option == 'sat' else None,
@@ -1618,6 +1620,7 @@ def summary():
     user_profile = {
         "Name": user_data.get("name", "N/A"),
         "State": user_data.get("state", "N/A"),
+        "Legacy": user_data.get("legacy", "None"),
         "GPA": user_data.get("gpa", "N/A"),
         "Test Option": user_data.get("test_option", "N/A").upper(),
         "SAT Score": user_data.get("sat_score", "N/A") if user_data.get("test_option") == 'sat' else "N/A",
@@ -1640,6 +1643,14 @@ def summary():
     
     state_abbr = user_data.get("state", "N/A")
     state_full = US_STATES.get(state_abbr, "N/A") if state_abbr != "N/A" else "N/A"
+    
+    legacy_name = user_data.get("legacy", "none")
+    
+    r_legacy = next(
+    (uni['display_name'] for uni in university_list if uni['name'] == legacy_name),
+    "None"  # Default value if no match is found
+)
+
 
     # Gather the applied colleges
     applied_colleges = []
@@ -1774,7 +1785,8 @@ def summary():
         'summary.html',
         user_profile=user_profile,
         applied_colleges=applied_colleges,
-        decisions_queue=decisions_queue_sorted, state_full=state_full
+        decisions_queue=decisions_queue_sorted, state_full=state_full,
+        r_legacy=r_legacy
     )
 
 # helper functions for chancing
@@ -1846,7 +1858,7 @@ def classify(student_num):
     else:
         return 10
     
-def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurriculars, ap_courses, essayStrength, gpa, interviewStrength, app_type, state):
+def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurriculars, ap_courses, essayStrength, gpa, interviewStrength, app_type, state, legacy):
     baseChance = float(collegeList[i][1]) * 100  # Acceptance rate as percentage (0-100)
     interviewScore = interviewStrength
 
@@ -2230,6 +2242,9 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         chances *= random.uniform(1.4, 1.6)  # University at Buffalo strongly favors NY residents
     elif collegeList[i][0] == "purdue" and state == "IN":
         chances *= random.uniform(1.3, 1.6)  # purdue indiana 
+        
+    if legacy == collegeList[i][0]:
+        chances *= random.uniform(1.0, 1.5)
 
     chances += random.uniform(-2, 2)  # Simulating chances -= Math.random()*4 -1
 
@@ -2440,6 +2455,7 @@ def chances():
                 essayStrength = user_data.get('essays', 0)
                 gpa = user_data.get('gpa', 0.0)
                 state = user_data.get('state', 'NY').upper()
+                legacy = user_data.get('legacy', 'None')
 
                 # Recompute chances_val_rd using 'app_type'='RD' and reused interview_strength
                 chances_val_rd = chanceCollege(
@@ -2455,7 +2471,8 @@ def chances():
                     gpa=float(gpa),
                     interviewStrength=interview_strength,  # Reuse the initial interview strength
                     app_type="RD",
-                    state=state
+                    state=state,
+                    legacy=legacy
                 )
 
                 # Call admissionsDecision with is_deferred=True to get D/A, D/W, or D/R
@@ -2495,6 +2512,7 @@ def chances():
     essayStrength = user_data.get('essays', 0)
     gpa = user_data.get('gpa', 0.0)
     state = user_data.get('state', 'NY').upper()
+    legacy = user_data.get('legacy', 'None')
 
     # Build interview_chances
     interview_chances = {}
@@ -2527,7 +2545,8 @@ def chances():
             gpa=float(gpa),
             interviewStrength=interview_score,
             app_type=app_type,
-            state=state
+            state=state,
+            legacy=legacy
         )
 
         # Determine interview score category
