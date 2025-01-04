@@ -168,51 +168,6 @@
   .badge.rd    { background-color: #28a745; }
   .badge.wl    { background-color: #6f42c1; } /* Purple-ish */
 
-  /* Flashy background for a waitlist acceptance item in the sidebar */
-  .college-link.waitlist-update {
-    background: linear-gradient(45deg, #d79be5, #e58ed9);
-    animation: blinkWaitlist 2s infinite;
-  }
-  @keyframes blinkWaitlist {
-    0%, 100% { box-shadow: 0 0 10px rgba(215,155,229,0.5); }
-    50%      { box-shadow: 0 0 20px rgba(229,142,217,0.8); }
-  }
-
-  /* The hidden expanded text for waitlist acceptance */
-  .waitlist-info {
-    display: none; 
-    background-color: #fff;
-    margin-top: -10px; 
-    padding: 10px 15px; 
-    border-radius: 8px; 
-    border: 1px solid #ddd;
-    transition: height 0.3s ease, opacity 0.3s ease;
-  }
-  .waitlist-info p {
-    margin-bottom: 10px;
-  }
-  .waitlist-fade-out {
-    opacity: 0.3; 
-  }
-
-  /* "Mark as Read" button styling */
-  .mark-read-btn {
-    background: linear-gradient(45deg, #00c853, #b2ff59);
-    border: none;
-    border-radius: 15px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #333;
-    transition: transform 0.3s, box-shadow 0.3s;
-    outline: none;
-  }
-  .mark-read-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(50,205,50,0.4);
-  }
-
   /* MAIN content styles */
   .main-content {
     display: flex; 
@@ -488,46 +443,18 @@
         {% set app_type_lower = decision.app_type|lower %}
 
         <li id="li-{{ uid }}">
-          {% if is_opened %}
-            <!-- Already opened => Show nothing or minimal gap -->
-            <div style="margin-top:-40px;"></div>
-          {% else %}
+          {% if not is_opened %}
             {% if is_available %}
-              {% if decision.app_type == "WL" %}
-                <!-- WAITLIST ACCEPTANCE ITEM (W/A or D/W/A) -->
-                <div id="wl-link-{{ uid }}" 
-                     class="college-link waitlist-update available"
-                     onclick="toggleWaitlistInfo('{{ uid }}')">
-                  <span>
-                    {{ decision.display_name }} 
-                    <span class="release-date">({{ decision.release_date }})</span>
-                  </span>
-                  <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
-                </div>
-                <div id="wl-info-{{ uid }}" class="waitlist-info" style="margin-top: 10px; border: 1px solid #D3D3D3;">
-                  <p>
-                    Dear {{ name }},<br><br>
-                    We are pleased to inform you that you have been <strong>accepted off the waitlist</strong> at 
-                    <strong>{{ decision.uni_name }}</strong>. Thank you for your patience and continued interest!
-                    <br><br>
-                    Sincerely,<br>
-                    {{ decision.uni_name }} Admissions Committee
-                    <br>
-                  </p>
-                  <button class="mark-read-btn" onclick="markWLAsRead('{{ uid }}', event)">Mark as Read</button>
-                </div>
-              {% else %}
-                <!-- Normal ED/EA/REA/RD item => open in new tab -->
-                <a href="#"
-                   class="college-link available"
-                   onclick="handleClick('{{ uid }}','{{ decision.short_name }}'); return false;">
-                  <span>
-                    {{ decision.display_name }} Status Update
-                    <span class="release-date">({{ decision.release_date }})</span>
-                  </span>
-                  <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
-                </a>
-              {% endif %}
+              <!-- No special if-block for WL. All statuses are treated the same. -->
+              <a href="#"
+                 class="college-link available"
+                 onclick="handleClick('{{ uid }}','{{ decision.short_name }}'); return false;">
+                <span>
+                  {{ decision.display_name }} Status Update
+                  <span class="release-date">({{ decision.release_date }})</span>
+                </span>
+                <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
+              </a>
             {% else %}
               <!-- Not yet available => disabled link -->
               <a href="#" class="college-link disabled">
@@ -555,11 +482,7 @@
             <h3>{{ dec.display_name }}</h3>
             <p>
               <strong>Decision:</strong>
-              {% if dec.app_type == "WL" %}
-                <span class="badge waitlist-acceptance">Waitlist Accepted</span>
-            {% else %}
-            <span class="badge {{ dec.badge_class }}">{{ dec.decision }}</span>
-            {% endif %}
+              <span class="badge {{ dec.badge_class }}">{{ dec.decision }}</span>
             </p>
             <p class="release-date">
               <strong>Release Date:</strong> {{ dec.release_date }}
@@ -601,53 +524,6 @@ function handleClick(uniqueId, shortName) {
   .then(data => {
       if (data.status === "success") {
           location.reload();
-      } else {
-          alert("Failed to mark decision as read: " + data.message);
-      }
-  })
-  .catch(err => {
-      console.error(err);
-      alert("An error occurred while marking the decision as read.");
-  });
-}
-
-/**
- * Toggles the hidden text for a waitlist acceptance item.
- */
-function toggleWaitlistInfo(uid) {
-  const infoDiv = document.getElementById("wl-info-" + uid);
-  if (!infoDiv) return;
-
-  if (infoDiv.style.display === "none" || infoDiv.style.display === "") {
-    infoDiv.style.display = "block";
-  } else {
-    infoDiv.style.display = "none";
-  }
-}
-
-/**
- * Marks a waitlist acceptance as read, then fades it out and removes it from the DOM.
- */
-function markWLAsRead(uid, event) {
-  event.stopPropagation(); // Prevent toggling
-  const liItem = document.getElementById("li-" + uid);
-  if (!liItem) return;
-
-  liItem.classList.add("waitlist-fade-out");
-
-  // Mark as read in the backend
-  fetch("{{ url_for('mark_as_read') }}", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ "uid": uid })
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data.status === "success") {
-          setTimeout(() => {
-              liItem.style.display = "none";
-              location.reload();
-          }, 600);
       } else {
           alert("Failed to mark decision as read: " + data.message);
       }

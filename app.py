@@ -2909,13 +2909,12 @@ def results():
         code = final_results.get(uid, {}).get('decision_code', 'R')
         app_type = decision['app_type']
 
-        # If Waitlist acceptance -> only visible after release date
-        is_waitlist_acceptance = (app_type == "WL" and code.endswith("/A"))
-        if is_waitlist_acceptance:
+         # Handle all waitlist decisions
+        if app_type == "WL":
             dt_release = datetime.strptime(decision['release_date'], '%Y-%m-%d')
             if sim_dt >= dt_release:
                 visible_decisions.append(decision)
-            continue
+            continue  # Skip to next decision
 
         # If RD deferral, check lock
         is_rd_deferral = (app_type == "RD" and code.startswith("D/"))
@@ -3141,10 +3140,16 @@ def find_final_unique_id(college: str) -> str:
     return matching_uids[0]
 
 def schedule_waitlist_resolution(college_short_name, decision_code, final_results, decisions_queue_sorted, university_list):
-    if decision_code not in ["W", "D/W"]:
-        return  # Not a waitlist decision
+    """
+    Creates a new WL unique_id (waitlist final decision) that will appear in the portal
+    at a random date between April 5, 2025 and June 20, 2025, just like any ED/EA/RD release.
+    """
+    import random
+    from datetime import datetime, timedelta
 
-    # 20% chance of acceptance
+    # This code block assigns a final outcome:
+    #   - If currently "W" => 20% chance acceptance => "W/A" or "W/R"
+    #   - If currently "D/W" => 20% chance acceptance => "D/W/A" or "D/W/R"
     if random.random() < 0.2:
         final_outcome = f"{decision_code}/A"  # e.g., W/A or D/W/A
     else:
@@ -3152,63 +3157,63 @@ def schedule_waitlist_resolution(college_short_name, decision_code, final_result
 
     # Assign a random date between Apr 5 and June 20, 2025
     start_date = datetime(2025, 4, 5)
-    end_date = datetime(2025, 6, 20)
-    delta = end_date - start_date
+    end_date   = datetime(2025, 6, 20)
+    delta      = end_date - start_date
     random_days = random.randint(0, delta.days)
     resolution_date = start_date + timedelta(days=random_days)
     release_date_str = resolution_date.strftime("%Y-%m-%d")
 
-    # Generate a unique ID for the waitlist resolution
+    # Generate a unique ID for this waitlist final outcome. 
+    # E.g. "brown_wl_1234"
     wl_unique_id = f"{college_short_name.lower()}_wl_{random.randint(1000,9999)}"
 
-    # Store the outcome in final_results
+    # Store that outcome in final_results so we know the code (W/A, W/R, D/W/A, D/W/R)
     final_results[wl_unique_id] = {
-        'decision_code': final_outcome,   # e.g., 'W/A' or 'D/W/A'
-        'app_type': 'WL',                # Distinguish it as a waitlist resolution
+        'decision_code': final_outcome,  # e.g. 'W/A' or 'W/R'
+        'app_type': 'WL',               # Distinguish as waitlist resolution
         'release_date': release_date_str
     }
 
-    # **Only** add to `decisions_queue_sorted` if it’s an acceptance
-    if final_outcome.endswith("/A"):
-        # Retrieve display name and logo from university_list
-        uni_info = next(
-            (u for u in university_list if u["name"].lower() == college_short_name.lower()),
-            None
-        )
-        if uni_info:
-            disp_name = f"Waitlist Update: {uni_info['display_name']}"
-            uni_name = uni_info['display_name']  # New variable
-            logo_url = uni_info.get("logo", "static/logos/default-logo.jpg")
-        else:
-            disp_name = f"Waitlist Update: {college_short_name.capitalize()}"
-            uni_name = college_short_name.capitalize()  # New variable
-            logo_url = "static/logos/default-logo.jpg"
-            
-        uni_name = uni_info['display_name']
+    # **Add** an item in `decisions_queue_sorted` for *any* final outcome, 
+    # not just acceptance:
+    uni_info = next(
+        (u for u in university_list if u["name"].lower() == college_short_name.lower()),
+        None
+    )
+    if uni_info:
+        disp_name = f"{uni_info['display_name']} Waitlist Update"
+        uni_name  = uni_info['display_name']
+        logo_url  = uni_info.get("logo", "static/logos/default-logo.jpg")
+    else:
+        disp_name = f"{college_short_name.capitalize()} Waitlist Update"
+        uni_name  = college_short_name.capitalize()
+        logo_url  = "static/logos/default-logo.jpg"
 
-        wl_item = {
-            "short_name": college_short_name.lower(),
-            "unique_id": wl_unique_id,
-            "display_name": disp_name,
-            "uni_name": uni_name,  # Add this line
-            "app_type": "WL",
-            "release_date": release_date_str,
-            "formatted_release_date": format_date(release_date_str),
-            "logo_url": logo_url
-        }
+    wl_item = {
+        "short_name": college_short_name.lower(),
+        "unique_id": wl_unique_id,
+        "display_name": disp_name,
+        "uni_name": uni_name,
+        "app_type": "WL",
+        "release_date": release_date_str,
+        "formatted_release_date": format_date(release_date_str),
+        "logo_url": logo_url,
+        # Optionally, you can store is_available = False here, 
+        # but the logic in your route sets that at runtime anyway.
+    }
+    decisions_queue_sorted.append(wl_item)
 
-        decisions_queue_sorted.append(wl_item)
-
-        # Sort the queue by release_date
+    # Sort the queue
+    try:
         decisions_queue_sorted.sort(key=lambda x: datetime.strptime(x['release_date'], '%Y-%m-%d'))
+    except ValueError:
+        pass
 
-    # Update session variables
-    session['final_results'] = final_results
-    session['decisions_queue_sorted'] = decisions_queue_sorted
+    session['final_results']            = final_results
+    session['decisions_queue_sorted']   = decisions_queue_sorted
     session.modified = True
 
     print(f"[Waitlist] Scheduled waitlist resolution for {college_short_name.upper()} on {release_date_str} => {final_outcome}")
-
 
 def format_date(date_str):
     try:
@@ -3320,6 +3325,10 @@ def adv_ustatus(college):
             return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
         elif decision_code in ["D/W", "W"]:
             return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
+        elif decision_code in ["D/W/A", "W/A"]:
+            return redirect(url_for("adv_wacceptance", college=college, unique_id=unique_id))
+        elif decision_code in ["D/W/R", "W/R"]:
+            return redirect(url_for("adv_wrejection", college=college, unique_id=unique_id))
         else:
             return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
 
@@ -3528,6 +3537,74 @@ def adv_waitlist(college):
         date=formatted_date,
         college=college
     )
+    
+@app.route("/advancedsim/<college>/wacceptance")
+@login_required
+def adv_wacceptance(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for waitlist acceptance.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("Waitlist acceptance record not found.", "danger")
+        return redirect(url_for('results'))
+
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    # Log or track user action
+    user_id = session.get('user_id')
+    if user_id:
+        User.log_simulation(user_id, college, 'waitlist-accepted')
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/wacceptance.html",
+        name=name,
+        date=formatted_date,
+        college=college
+    )
+
+@app.route("/advancedsim/<college>/wrejection")
+@login_required
+def adv_wrejection(college):
+    unique_id = request.args.get('unique_id')
+    if not unique_id:
+        flash("No unique_id provided for waitlist rejection.", "danger")
+        return redirect(url_for('results'))
+
+    final_results = session.get('final_results', {})
+    info = final_results.get(unique_id)
+    if not info:
+        flash("Waitlist rejection record not found.", "danger")
+        return redirect(url_for('results'))
+
+    release_date_str = info.get('release_date', 'Unknown Date')
+    try:
+        dt = datetime.strptime(release_date_str, '%Y-%m-%d')
+        formatted_date = dt.strftime('%B %d, %Y')
+    except ValueError:
+        formatted_date = "Unknown Date"
+
+    user_id = session.get('user_id')
+    if user_id:
+        User.log_simulation(user_id, college, 'waitlist-rejected')
+
+    name = session.get("advancedsim_data", {}).get("name", "User")
+    return render_template(
+        f"adv/{college}/wrejection.html",
+        name=name,
+        date=formatted_date,
+        college=college
+    )
+
 
 @app.route('/advancedsim/mark_as_read', methods=['POST'])
 @login_required
@@ -3558,10 +3635,6 @@ def ustatus_files_static(college, filename):
 @app.route('/quicksim/<college>/acceptance_files/<path:filename>')
 def acceptance_files_static(college, filename):
     return send_from_directory(os.path.join(app.root_path, 'templates', college, 'acceptance_files'), filename)
-
-@app.route('/quicksim/<college>/deferred_files/<path:filename>')
-def deferred_files_static(college, filename):
-    return send_from_directory(os.path.join(app.root_path, 'templates', college, 'deferred_files'), filename)
 
 @app.route('/quicksim/<college>/rejection_files/<path:filename>')
 def rejection_files_static(college, filename):

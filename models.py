@@ -22,7 +22,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             university_name TEXT NOT NULL,
-            result TEXT NOT NULL CHECK(result IN ('acceptance', 'rejection', 'deferred', 'waitlist', 'edacceptance')),
+            result TEXT NOT NULL CHECK(result IN ('acceptance', 'rejection', 'deferred', 'waitlist', 'edacceptance', 'wacceptance', 'wrejection')),
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
