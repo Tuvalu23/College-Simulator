@@ -52,29 +52,29 @@ A Flask-based web application that simulates the admissions process for multiple
 - [ ] Brown
 - [ ] UPenn
 - [X] Johns Hopkins
-- [ ] Georgia Tech
+- [X] Georgia Tech
 - [X] Dartmouth
 - [X] Northwestern
 - [ ] Duke
-- [ ] NYU
-- [ ] USC
+- [X] NYU
+- [X] USC
 - [X] Berkeley
 - [ ] Caltech
 - [ ] CMU
 - [ ] UMich
-- [ ] Bing
+- [X] Bing
 - [ ] Rice
-- [ ] Buffalo
-- [ ] Emory
+- [X] Buffalo
+- [X] Emory
 - [ ] Georgetown
-- [ ] UVA
-- [ ] Tufts
-- [ ] Northeastern
+- [X] UVA
+- [X] Tufts
+- [X] Northeastern
 - [ ] Illinois
 - [ ] UNC
-- [ ] Wash U
+- [X] Wash U
 - [ ] Notre Dame
-- [ ] Purdue
+- [X] Purdue
 
 ## TO GET ADVANCED RIBBONS
 Add this above style:

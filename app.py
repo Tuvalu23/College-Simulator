@@ -714,8 +714,8 @@ def statistics():
         uni_simulations = [sim for sim in simulations if sim['university_name'] == uni_name]
         total = len(uni_simulations)
         acceptances = len([sim for sim in uni_simulations if sim['result'] == 'acceptance']) \
-                      + len([sim for sim in uni_simulations if sim['result'] == 'edacceptance'])
-        rejections = len([sim for sim in uni_simulations if sim['result'] == 'rejection'])
+                      + len([sim for sim in uni_simulations if sim['result'] == 'edacceptance']) + len([sim for sim in uni_simulations if sim['result'] == 'wacceptance'])
+        rejections = len([sim for sim in uni_simulations if sim['result'] == 'rejection']) + len([sim for sim in uni_simulations if sim['result'] == 'wrejection'])
         waitlists = len([sim for sim in uni_simulations if sim['result'] == 'waitlist'])
         deferrals = len([sim for sim in uni_simulations if sim['result'] == 'deferred'])
 
@@ -3298,6 +3298,10 @@ def adv_login(college):
                 return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
             elif decision_code in ["D/W", "W"]:
                 return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
+            elif decision_code in ["D/W/A", "W/A"]:
+                return redirect(url_for("adv_wacceptance", college=college, unique_id=unique_id))
+            elif decision_code in ["D/W/R", "W/R"]:
+                return redirect(url_for("adv_wrejection", college=college, unique_id=unique_id))
             else:
                 return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
         

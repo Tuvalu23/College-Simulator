@@ -461,7 +461,7 @@
   
   /* Waitlist Acceptance in main content */
    .badge.waitlist-acceptance {
-    background-color: rgb(11, 37, 167); 
+    background-color: rgb(46, 75, 217); 
     color: #fff; 
     border-radius: 12px;
     font-weight: 600; 
@@ -471,7 +471,7 @@
   }
 
   .badge.waitlist-rejection {
-    background-color:rgb(160, 29, 17); 
+    background-color:rgb(220, 75, 62); 
     color: #fff; 
     border-radius: 12px; 
     font-weight: 600; 
@@ -607,6 +607,8 @@
         {% endif %}
       {% endif %}
 
+      <div style="margin-top: -30px;">
+      </div>
       {% for decision in decisions_queue %}
         {% set uid = decision.unique_id %}
         {% set is_available = decision.is_available %}

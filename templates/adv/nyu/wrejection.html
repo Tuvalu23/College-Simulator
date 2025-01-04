@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New York University</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  body {
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    background-color: #f9f9f9;
+  }
+  .header {
+    background-color: #4a0579;
+    height: 100px;
+  }
+  .letter-container {
+    max-width: 700px;
+    background: white;
+    margin: 20px 0 0 60px; 
+    padding: 50px;
+    box-sizing: border-box;
+  }
+  .letter-header {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  .letter-date {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: inline-block;
+  }
+  .pdf-link {
+    color: #4B2E83;
+    font-size: 16px;
+    float: right;
+    text-decoration: none;
+  }
+  .letter-body {
+    font-size: 16px;
+    text-align: left;
+  }
+  .letter-body p {
+    margin-bottom: 1.2em;
+  }
+  .signature {
+    margin-top: 10px;
+    text-align: left;
+  }
+  .signature img {
+    height: 80px;
+    vertical-align: middle;
+  }
+  .footer-links {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 16px;
+  }
+  .footer-links a {
+    color: #4B2E83; 
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  .footer {
+    background-color: #4a0579;
+    height: 100px;
+    width: 100%;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="header"></div>
+
+<div class="letter-container">
+  <div>
+    <span class="letter-date">{{ date }}</span>
+    <a href="javascript:void(0);" class="pdf-link">Download PDF</a>
+  </div>
+  <div class="letter-body">
+    <p>Dear {{ name }},</p>
+    <p> After careful review of your application and your position on the waitlist, the NYU admissions committee regrets to inform you that we are unable to offer you admission to New York University this year. This decision reflects the extraordinary strength of the applicants on our waitlist and the limited number of spaces available in our incoming class. </p> <p> This year, NYU received a record number of applications and waitlist confirmations, making the process especially competitive. The caliber of students on our waitlist has been exceptional, and while we wish we could offer a place to every deserving candidate, the constraints of our enrollment capacity required us to make difficult decisions. </p> <p> We deeply appreciate your interest in NYU and the effort you invested in your application and waitlist response. While this news may be disappointing, we are confident that you will excel wherever your educational journey takes you. We hope you will keep NYU in mind for future opportunities, such as transfer admission or graduate studies. </p> <p> On behalf of the entire NYU admissions team, thank you for considering New York University. We wish you continued success in your academic and personal endeavors. </p><p>Sincerely,</p>
+    <div class="signature">
+      <img src="./rejection_files/sig.png" alt="Signature">
+      <p>Jonathan B. Williams<br>
+      Associate Vice President for Undergraduate Admissions and Pre-College Access and Pathways</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer-links">
+  <a href="{{ url_for('adv_ustatus', college=college) }}">Return to Application Status</a>
+</div>
+
+<div class="footer"></div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Northeastern University</title>
+  
+  <!-- Import Montserrat and Nunito fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Nunito:wght@400&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0; padding:0; width:100%; height:100%; overflow:hidden; font-family: 'Montserrat', sans-serif;">
+
+  <!-- Page Container -->
+  <div id="container" style="position:absolute; width:100%; height:100%; overflow:hidden;">
+    
+    <!-- PAGE 1 -->
+    <div id="page1" 
+         style="position:absolute; width:100%; height:100%; top:0; left:0; 
+                background:url('./acceptance_files/bg.jpg') no-repeat center center / cover; 
+                transition:transform 0.5s ease-in-out;">
+
+      <!-- Stronger Red Overlay -->
+      <div style="position:absolute; top:0; left:0; width:100%; height:100%; 
+                  background-color:rgba(205, 22, 22, 0.85); z-index:2;"></div>
+
+      <!-- Content -->
+      <div style="position:relative; z-index:2; width:100%; height:100%; 
+                  display:flex; flex-direction:column; align-items:center; justify-content:center;">
+
+        <!-- Text with Arrow -->
+        <h1 style="font-size:6rem; color:#fff; font-weight:400; margin:0; text-align:center; display:flex; align-items:center; gap:20px;">
+          The Wait is Over 
+          <span style="font-size:6rem; font-weight:100; cursor:pointer; margin-left: -10px;" 
+                onclick="goToPage2()">
+                ❭
+          </span>
+        </h1>
+
+      </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div id="page2" 
+         style="position:absolute; width:100%; height:100%; top:0; left:100%; 
+                background:url('./acceptance_files/bg.jpg') no-repeat center center / cover; 
+                display:flex; flex-direction:column; align-items:center; justify-content:flex-start; 
+                overflow-y:auto; transition:transform 0.5s ease-in-out; padding-top:50px; padding-bottom:100px;"> <!-- Added padding-bottom -->
+      
+      <!-- "You're In!" -->
+      <h1 id="youreIn" 
+          style="font-size:9rem; color:#fff; font-weight:400; margin:0; text-align:center; 
+                 transition:all 1.5s ease;">
+        You're In!
+      </h1>
+
+      <!-- Letter -->
+      <div id="letter" 
+           style="position:absolute; top:100%; left:50%; transform:translateX(-50%); 
+                  width:60%; max-width:800px; background-color:#fff; 
+                  box-shadow:0px 4px 10px rgba(0, 0, 0, 0.3); transition:top 1.5s ease;
+                  padding:50px; font-family: 'Nunito', sans-serif; color:#000; margin-top:50px;">
+
+        <!-- Northeastern logo -->
+        <div style="display:flex; align-items:flex-start; justify-content:flex-start; margin-bottom:25px;">
+          <img src="acceptance_files/neu.png" alt="Northeastern Logo" style="width:300px;">
+        </div>
+
+        <!-- Letter text -->
+        <div style="margin-bottom:20px;">
+          <h2 style="margin-top:15px; font-weight:400; font-size:1.5rem; margin-bottom: 40px; font-family: 'Arial', sans-serif;">
+            <strong>Dear {{ name }}!</strong>
+          </h2>
+
+          <p style="margin:20px 0; line-height:2;"> Congratulations! I am pleased to offer you admission to Northeastern University’s Boston campus and the Class of 2029 from our waitlist, with a major in Business Administration: Undeclared. </p> <p style="margin:20px 0; line-height:2;"> At Northeastern, you will join a vibrant and supportive community that empowers you to explore your passions while earning your undergraduate degree. Through our renowned experiential learning programs, including co-op opportunities, research, and global experiences, you will have access to a world-class education designed to prepare you for success. </p> <p style="margin:20px 0; line-height:2;"> To secure your place in the incoming class, please confirm your enrollment by submitting your deposit within five days from today. Instructions on how to submit your deposit and review next steps can be found on your <a href="#" style="color:#990000; text-decoration:none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Applicant Status Page</a>. </p> <p style="margin:20px 0; line-height:2;"> My team and I look forward to engaging with you in the coming weeks as you prepare to join the Northeastern community. Once again, congratulations on your admission. I look forward to welcoming you to campus this fall. </p>
+
+          <div style="margin-top:20px; text-align: left;">
+            <p>Sincerely,</p>
+            <img src="acceptance_files/sig.png" alt="Signature" style="width:250px;">
+            <p>Northeastern Admissions</p>
+          </div>
+
+          <div style="height:120px;"></div>
+        </div>
+
+    </div>
+
+    <!-- Spacer to allow scrolling below the letter -->
+    <div style="height:100px;"></div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function goToPage2() {
+      // Slide page1 out to the left
+      document.getElementById('page1').style.transform = 'translateX(-100%)';
+
+      // Slide page2 into view
+      document.getElementById('page2').style.transform = 'translateX(-100%)';
+
+      // After 2 seconds, trigger the animations for "You're In!" and the letter
+      setTimeout(() => {
+        // Shrink and move "You're In!" to the top
+        const youreIn = document.getElementById('youreIn');
+        youreIn.style.fontSize = '7rem';
+        youreIn.style.marginTop = '0%';
+
+        // Slide the letter into position below "You're In!"
+        const letter = document.getElementById('letter');
+        letter.style.top = '22%';
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>
