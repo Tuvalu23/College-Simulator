@@ -2948,9 +2948,9 @@ def results():
 
         # Map codes to user-friendly text
         decision_mapping = {
-            "ED":   ("ED Acceptance", "ed-acceptance"),
-            "EA":   ("EA Acceptance", "ea-acceptance"),
-            "REA":  ("REA Acceptance", "rea-acceptance"),
+            "ED":   ("ED Acceptance", "accepted"),
+            "EA":   ("EA Acceptance", "accepted"),
+            "REA":  ("REA Acceptance", "accepted"),
             "A":    ("Acceptance",    "acceptance"),
             "R":    ("Rejection",     "rejection"),
             "W":    ("Waitlisted",    "waitlist"),
@@ -2958,10 +2958,10 @@ def results():
             "D/R":  ("Deferred Rejection",  "deferred-rejection"),
             "D/A":  ("Deferred Acceptance", "deferred-acceptance"),
             "D/W":  ("Deferred Waitlist",   "deferred-waitlist"),
-            "W/A":  ("Waitlist Accepted",   "waitlist-accepted"),
-            "W/R":  ("Waitlist Rejected",   "waitlist-rejected"),
-            "D/W/A": ("Deferred Waitlist Accepted", "deferred-waitlist-accepted"),
-            "D/W/R": ("Deferred Waitlist Rejected", "deferred-waitlist-rejected"),
+            "W/A":  ("Waitlist Accepted",   "waitlist-acceptance"),
+            "W/R":  ("Waitlist Rejected",   "waitlist-rejection"),
+            "D/W/A": ("Deferred Waitlist Accepted", "deferred-waitlist-acceptance"),
+            "D/W/R": ("Deferred Waitlist Rejected", "deferred-waitlist-rejection"),
         }
         display_decision, badge_class = decision_mapping.get(code, ("Unknown", "unknown"))
 
@@ -2987,8 +2987,12 @@ def results():
             "release_date": formatted_dt
         })
 
-    # 6) (Optional) Schedule RD decisions for deferrals, etc.
-    # ... existing code ...
+    # 6) Determine if the simulation is done
+    total_processed_decisions = len(opened_decisions_list)
+    total_decisions = len(decisions_queue_sorted)
+
+    # Simulation is done if all decisions are opened
+    simulation_done = total_processed_decisions >= total_decisions
 
     # 7) Final updates
     session['decisions_queue_sorted'] = decisions_queue_sorted
@@ -3003,6 +3007,7 @@ def results():
         current_sim_date=sim_dt.strftime("%Y-%m-%d"),
         simulation_started=session['simulation_started'],
         simulation_paused=session['simulation_paused'],
+        simulation_done=simulation_done  # Pass the simulation_done flag
     )
 
 # Route to Advance Simulation
@@ -3043,22 +3048,31 @@ def advance_simulation():
             rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
         except ValueError:
             rd = datetime(2099, 1, 1)
-        # Consider only dates after the current date
+        # Only consider future release dates
         if rd > current_date:
             future_dates.append(rd)
-    
+
     # Define the last waitlist date
     last_waitlist_date = datetime(2025, 6, 20)
-    
-    # Check if any waitlist resolutions are pending beyond last_waitlist_date
+
+    # Check if any waitlist resolutions remain that have a release_date on or before last_waitlist_date
     final_results = session.get('final_results', {})
-    has_pending_wl = any(
-        rec['app_type'] == 'WL' and datetime.strptime(rec['release_date'], '%Y-%m-%d') <= last_waitlist_date
-        for rec in final_results.values()
-    )
-    
-    # If no future dates and no pending waitlist, simulation is done
-    if not future_dates and not has_pending_wl:
+    # This finds all WL decisions that haven't been "opened" (read) yet
+    # and have a release_date <= 2025-06-20
+    not_opened_waitlists = []
+    for uid, info in final_results.items():
+        if info.get('app_type') == 'WL':
+            # Check if user has opened it
+            if uid not in opened_colleges:
+                try:
+                    rd = datetime.strptime(info.get('release_date', '2099-01-01'), '%Y-%m-%d')
+                except ValueError:
+                    rd = datetime(2099, 1, 1)
+                if rd <= last_waitlist_date:
+                    not_opened_waitlists.append(uid)
+
+    # If no future dates remain AND no unopened WL decisions remain, the simulation is done
+    if not future_dates and not not_opened_waitlists:
         session['current_sim_date'] = current_date.strftime("%Y-%m-%d")
         session.modified = True
         return jsonify({
@@ -3069,17 +3083,17 @@ def advance_simulation():
             "keep_going": False,
             "is_release_date": False
         })
-    
-    # Determine the nearest future release date
+
+    # Determine the nearest future release date or fallback to the last waitlist date
     if future_dates:
         next_release_date = min(future_dates)
     else:
-        # If no immediate future dates but have pending waitlists, set to last_waitlist_date
+        # If no immediate future dates but have unopened waitlists, set to last_waitlist_date
         next_release_date = last_waitlist_date
-    
+
     # Advance the date by one day
     new_date = current_date + timedelta(days=1)
-    
+
     # If the new date surpasses or meets the next release date, clamp it
     reached_release = False
     if new_date >= next_release_date:
@@ -3087,38 +3101,61 @@ def advance_simulation():
         reached_release = True
     else:
         logger.debug("Did not reach the next release date yet.")
-    
+
     # Ensure the simulation does not go beyond the last waitlist date
     if new_date > last_waitlist_date:
         new_date = last_waitlist_date
         reached_release = True
-    
+
     # Update the session with the new date
     session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
     session.modified = True
-    
+
     # Format the new date for display
     formatted_date = new_date.strftime('%B %d, %Y')
-    
-    # Determine if a release date was reached
-    is_release_date = False
-    if reached_release:
-        is_release_date = True
-    
-    # Decide if the simulation should keep advancing
-    keep_going = not reached_release
-    # Only pause if there are still dates to process
-    if reached_release:
-        session['simulation_paused'] = True
-    else:
-        session['simulation_paused'] = False
-    
+
+    # --- New Step: Re-check if we've reached or passed the final date (6/20) 
+    # and if there are no more un-opened WL decisions.
+    # If so, we can finalize the simulation right away.
+    if new_date >= last_waitlist_date:
+        # Recompute unopened waitlists (or future dates) if needed
+        future_dates_after_clamp = []
+        not_opened_waitlists_after_clamp = []
+        for d in decisions_queue_sorted:
+            uid = d['unique_id']
+            if uid not in opened_colleges:
+                # parse date
+                try:
+                    rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
+                except ValueError:
+                    rd = datetime(2099, 1, 1)
+
+                # If it's still in the future
+                if rd > new_date:
+                    future_dates_after_clamp.append(rd)
+
+                # Check if waitlist and unopened
+                if d['app_type'] == 'WL' and rd <= last_waitlist_date:
+                    not_opened_waitlists_after_clamp.append(uid)
+
+        if not future_dates_after_clamp and not not_opened_waitlists_after_clamp:
+            # We are done
+            return jsonify({
+                "status": "done",
+                "message": "No more decisions left to release.",
+                "current_sim_date": session['current_sim_date'],
+                "current_sim_date_formatted": format_date(session['current_sim_date']),
+                "keep_going": False,
+                "is_release_date": False
+            })
+
+    # If we haven't concluded, respond with a normal 'ok'
     return jsonify({
         "status": "ok",
         "current_sim_date": session['current_sim_date'],
         "current_sim_date_formatted": formatted_date,
-        "keep_going": keep_going,
-        "is_release_date": is_release_date,
+        "keep_going": not reached_release,  # if we haven't reached next release, we keep going
+        "is_release_date": reached_release,
         "message": f"Advanced to {session['current_sim_date']}."
     })
     
@@ -3562,7 +3599,7 @@ def adv_wacceptance(college):
     # Log or track user action
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'waitlist-accepted')
+        User.log_simulation(user_id, college, 'wacceptance')
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -3595,7 +3632,7 @@ def adv_wrejection(college):
 
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'waitlist-rejected')
+        User.log_simulation(user_id, college, 'wrejection')
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(

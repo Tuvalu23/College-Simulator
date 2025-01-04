@@ -40,6 +40,42 @@ A Flask-based web application that simulates the admissions process for multiple
 - [ ] UT Austin
 - [ ] UCLA
 
+## Waitlist Stuff
+- [ ] UChicago
+- [ ] Harvard
+- [X] MIT
+- [X] Stanford
+- [X] Yale
+- [X] Princeton
+- [X] Cornell
+- [X] Columbia 
+- [ ] Brown
+- [ ] UPenn
+- [X] Johns Hopkins
+- [ ] Georgia Tech
+- [X] Dartmouth
+- [X] Northwestern
+- [ ] Duke
+- [ ] NYU
+- [ ] USC
+- [X] Berkeley
+- [ ] Caltech
+- [ ] CMU
+- [ ] UMich
+- [ ] Bing
+- [ ] Rice
+- [ ] Buffalo
+- [ ] Emory
+- [ ] Georgetown
+- [ ] UVA
+- [ ] Tufts
+- [ ] Northeastern
+- [ ] Illinois
+- [ ] UNC
+- [ ] Wash U
+- [ ] Notre Dame
+- [ ] Purdue
+
 ## TO GET ADVANCED RIBBONS
 Add this above style:
 ```
