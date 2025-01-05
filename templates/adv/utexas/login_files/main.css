@@ -1,0 +1,124 @@
+html {
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  color: #333333;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  line-height: 1.42857143;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+body:not(.ie9) label.sr-only.separator {
+  height: 0;
+  position: fixed;
+  width: auto;
+  visibility: hidden;
+}
+
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.page-header {
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+}
+
+.page-header h1 {
+  margin: 0;
+  word-wrap: break-word;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+#questions {
+  clear: both;
+  padding-top: 1em;
+  text-align: center;
+}
+
+#questions a {
+  display: block;
+  font-weight: bold;
+  font-size: small;
+}
+
+#license_info {
+  font-weight: normal;
+  font-size: small;
+  margin: 0 auto;
+  margin-bottom: 70px;
+  width: 90%;
+  margin-top: 1em;
+  padding: 2em;
+  text-align: left;
+}
+
+.footerWrap {
+  word-wrap: break-word;
+  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  border-top: 1px solid rgba(0,0,0,.1);
+  padding: 10px;
+}
+
+.footer {
+  width: 95%;
+  margin: auto;
+  text-align: center;
+  float: left;
+}
+
+a {
+  color: #bf5700;
+  text-decoration: none;
+}
+
+a img {
+  border: 0;
+}
+a:visited, a:active, a:hover, a:focus {
+  color: #bf5700;
+  text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: inherit;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 990px) {
+  .container {
+    width: 970px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+    margin: 0 auto;
+  }
+}

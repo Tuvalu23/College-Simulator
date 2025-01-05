@@ -3295,6 +3295,22 @@ def adv_login(college):
     name = user_data.get("name", "User")
 
     if request.method == "POST":
+        if college.lower() == "utexas":
+            decision_code = decision_info.get("decision_code", "R")
+            if decision_code in ["A", "ED", "D/A"]:
+                return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
+            elif decision_code in ["D", "D/R"]:
+                return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+            elif decision_code in ["D/W", "W"]:
+                return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
+            elif decision_code in ["D/W/A", "W/A"]:
+                return redirect(url_for("adv_wacceptance", college=college, unique_id=unique_id))
+            elif decision_code in ["D/W/R", "W/R"]:
+                return redirect(url_for("adv_wrejection", college=college, unique_id=unique_id))
+            else:
+                return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+            
+            
         email = request.form.get("email")
         password = request.form.get("password")
 

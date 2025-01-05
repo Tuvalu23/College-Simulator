@@ -194,78 +194,7 @@ ul.stats li, .general ul.stats li {
   background: #ffd600;
   color: black;
 }
-    /*]]>*/</style> <script>
-        const peaceImages = [
-            './ustatus_files/longhorn.png' // Replace with the correct path to your GIF
-        ];
-    
-        let peaceInterval; // Interval to generate peace signs
-        let activePeaceSigns = []; // List of active peace elements
-    
-        // Generate a random size for peace signs
-        function randomSize() {
-            const sizes = [50, 70, 90]; // Sizes in pixels
-            return sizes[Math.floor(Math.random() * sizes.length)];
-        }
-    
-        // Create a falling peace sign
-        function createPeace() {
-            // Create the outer container (oscillates)
-            const container = document.createElement('div');
-            container.classList.add('oscillating-container');
-            container.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
-            container.style.top = '-100px'; // Start above the screen
-    
-            // Create the peace sign image (falls)
-            const peace = document.createElement('img');
-            peace.src = peaceImages[0]; // Use your GIF path
-            const size = randomSize();
-            peace.style.width = size + 'px';
-            peace.style.height = size * 0.6 + 'px';
-            peace.classList.add('falling-peace');
-            peace.style.animation = `fall ${2 + Math.random() * 2}s linear`;
-    
-            // Add peace sign image to the container
-            container.appendChild(peace);
-            document.body.appendChild(container);
-    
-            // Add the container to the active peace signs list
-            activePeaceSigns.push(container);
-    
-            // Remove peace sign after the fall animation ends
-            peace.addEventListener('animationend', () => {
-                container.remove();
-                activePeaceSigns = activePeaceSigns.filter((p) => p !== container); // Clean up list
-            });
-        }
-    
-        // Start generating falling peace signs
-        function startPeaceSigns() {
-            let timeElapsed = 0; // Track elapsed time
-    
-            peaceInterval = setInterval(() => {
-                if (timeElapsed >= 15) {
-                    clearInterval(peaceInterval); // Stop after 10 seconds
-                    clearAllPeaceSigns(); // Remove all peace signs
-                } else {
-                    // Generate 1-2 peace signs per interval
-                    for (let i = 0; i < 1 + Math.floor(Math.random() * 10); i++) {
-                        createPeace();
-                    }
-                    timeElapsed += 0.5; // Increment time by 0.5 seconds
-                }
-            }, 500); // Create peace signs every 500ms
-        }
-    
-        // Clear all peace signs from the screen
-        function clearAllPeaceSigns() {
-            activePeaceSigns.forEach((container) => container.remove());
-            activePeaceSigns = []; // Clear the list
-        }
-    
-        // Automatically start the animation
-        startPeaceSigns();
-    </script>
+    /*]]>*/</style> 
     <section class="orangeBlock twocol bg2 spacerMob-none spacer-none">
       <div class="wrap general widthLthin">
         <div class="full">
@@ -294,26 +223,27 @@ ul.stats li, .general ul.stats li {
                             
                             <div style="width:100%; font-family:'Inter Tight', sans-serif; font-size:14px; line-height:1.6; background-color:#f9f9f9; padding:20px;">
 
-                                <!-- Header Section -->
-    <div style="display:flex; flex-direction:column; align-items:left; text-align:left; margin-bottom:20px;">
-        <!-- Text Section -->
-        <div style="margin-bottom:10px; margin-left: 150px; margin-top: -20px;">
-            <h1 style="font-size:20px; color:#333; margin:0; margin-bottom: 12px;">
-                <strong>Congratulations, {{ name }}!</strong> <span style="font-weight: normal;">You are admitted to The University of Texas at Austin.
-                </span>
-                </h1>
-            
-            <p style="font-size:14px; margin:5px 0;">
-                Welcome to the <strong>Class of 2029</strong>, and to the <strong>Computer Science</strong> major 
-                in the <strong>College of Natural Sciences</strong>, where you may begin your studies effective <strong>Fall 2025</strong>. 
-                If you applied to an honors program, check the Honors tab for more information. 
-                <a href="#" style="color:#0056b3; text-decoration:none;">Find out more about your admission.</a>
-            </p>
-        </div>
+                                <!-- Deferred Message -->
+    <ul style="margin-left:20px; margin-bottom:15px; font-size:24px; margin-top:0;">
+        <li>
+            <span style="font-size:13px; margin-right:10px; position:relative; top:-4px;">▶</span>
+            Your application decision has been deferred.
+        </li>
+    </ul>
 
-        <!-- Image Section -->
-        <img src="./login_files/gone.png" alt="Gone to Texas!" style="width:120px; height:auto; margin-top:-65px;">
-    </div>
+    <!-- Message Body -->
+    <p style="margin-top:10px; margin-bottom:15px; line-height:1.8; color:black;">
+        Thank you for your interest in The University of Texas at Austin. After careful review of your application, we have decided to defer your decision to a later date.
+    </p>
+
+    <p style="margin-bottom:15px;">
+        We value the time and effort you put into your application and will review your materials again in the coming months. Please ensure all requested updates or materials are submitted promptly.
+    </p>
+
+    <p style="margin-bottom:10px; color:black;">
+        We appreciate your patience and interest in UT Austin and will notify you as soon as a final decision has been made.
+    </p>
+
                             
                                 <!-- What's Next Section -->
                                 <div style="width:99%; background-color:#fcf7cf; padding:10px; margin: 0 auto; margin-bottom:8px; border-radius: 5px;">
@@ -332,7 +262,7 @@ ul.stats li, .general ul.stats li {
 
                                         <!-- Orange "5 Things" -->
                                         <span style="color:white; font-size:18px; font-weight:bold; padding:3px 3px; border-radius:3px; background-color: #de7615">
-                                            5 Things
+                                            3 Things
                                         </span>
                                     </div>
                             
@@ -343,32 +273,22 @@ ul.stats li, .general ul.stats li {
                                     <ul style="list-style:none; padding:0; margin:0;">
                                         <!-- Item 1 -->
                                         <li style="margin-bottom:10px;">
-                                            <span style="color:gray; font-size:10px;">By 05/01/2025</span>
-                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Accept or Decline Admission</p>
+                                            <span style="color:gray; font-size:10px;">By 02/15/2025, submit your</span>
+                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Midyear Report</p>
                                         </li>
                                         <!-- Item 2 -->
                                         <li style="margin-bottom:10px;">
-                                            <span style="color:gray; font-size:10px;">By 05/01/2025, satisfy your</span>
-                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Enrollment Deposit</p>
+                                            <span style="color:gray; font-size:10px;">By 02/15/2025, provide</span>
+                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Updated Test Scores (if applicable)</p>
                                         </li>
                                         
                                         <!-- Item 3 -->
                                         <li style="margin-bottom:10px;">
-                                            <span style="color:gray; font-size:10px;">Change/Upgrade your</span>
-                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">UT EID Password</p>
+                                            <span style="color:gray; font-size:10px;">By 02/15/2025, submit any</span>
+                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Significant Updates (e.g., awards, achievements)</p>
                                         </li>
                                         
-                                        <!-- Item 4 -->
-                                        <li style="margin-bottom:10px;">
-                                            <span style="color:gray; font-size:10px;">Submit your</span>
-                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Emergency Contact Information</p>
-                                        </li>
                                         
-                                        <!-- Item 5 -->
-                                        <li style="margin-bottom:10px;">
-                                            <span style="color:gray; font-size:10px;">Submit your</span>
-                                            <p style="font-size:16px; font-weight:bold; margin:-5px 0;">Final High School Transcript</p>
-                                        </li>
                                     </ul>
 
                                     <!-- Thin Gray Line -->
@@ -378,7 +298,7 @@ ul.stats li, .general ul.stats li {
                                     <div style="display:flex; align-items:center; margin-bottom:7px; background-color:rgba(232, 239, 233, 0); border-radius: 7px; padding: 7px;">
                                         <!-- Unchecked checkbox -->
                                         
-                                        <span style="font-size: 16px; margin-right: 10px;">Complete this by 5/01/25:</span>
+                                        <span style="font-size: 16px; margin-right: 10px;">Complete this by 2/15/25:</span>
 
                                     
                                     <span style="color:white; font-size:18px; font-weight:bold; padding:3px 3px; border-radius:3px; background-color: #2a95bd">
@@ -429,7 +349,7 @@ ul.stats li, .general ul.stats li {
 
 
    </div></div></div></div></div></div></div><div class="part_rows_container col-2" data-col="2"><div class="part body_sidebar" id="part_808258a8-1d8f-4022-969c-a61135e439be">
-    <h3 style="font-family:'Inter Tight', serif; margin-top: -420px;">
+    <h3 style="font-family:'Inter Tight', serif; margin-top: -300px;">
       Application Information
     </h3><hr><p style="font-family:'Inter Tight', serif;">
       Semester: <strong>Fall 2025</strong><br><br>
