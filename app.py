@@ -470,6 +470,22 @@ university_list = [
         ]
     },
     {
+    "name": "utexas",
+    "display_name": "University of Texas at Austin",
+    "logo": "static/logos/utexas-logo.png",
+    "description": "The University of Texas at Austin, located in Austin, TX, is a renowned public research university known for its spirited campus culture, top-tier academic programs, and dynamic connection to the vibrant city of Austin.",
+    "badges": [
+        {"label": "Public", "color": "Public"},
+        {"label": "Urban", "color": "Urban"},
+        {"label": "STEM", "color": "STEM"},
+        {"label": "Business", "color": "Business"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Arts", "color": "Arts"},
+        {"label": "Athletics", "color": "Athletics"},
+        {"label": "Hook 'Em", "color": "Hook 'Em"}
+    ]
+},
+    {
         "name": "usc",
         "display_name": "University of Southern California",
         "logo": "static/logos/usc-logo.png",
@@ -558,6 +574,7 @@ college_list = [
     ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-27"],
     ["usc", "0.17", "N", "1.3", "P", "N", "2025-01-17", "2025-03-16"],
     ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-01-27", "2025-03-10"],
+    ["utexas", "0.2", "N", "1.2", "PUB", "N", "2025-01-15", "2025-02-15"],
     ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-03-28"],
     ["georgetown", "0.23", "N", "1.3", "REA", "2024-12-13", "N", "2025-03-27"],
     ["illini", "0.24", "N", "1.2", "PUB", "N", "2025-01-31", "2025-02-28"],
@@ -833,7 +850,7 @@ def ustatus(college):
         else:
             return redirect(url_for("rejection", college=college))
     
-    if college.lower() == "northeastern":
+    if college.lower() == "northeastern" or college.lower() == "utexas":
         # Simulate decision directly
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
@@ -2234,6 +2251,8 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         chances *= random.uniform(1.3, 1.5)  # University of Michigan gives preference to MI residents
     elif collegeList[i][0] == "illini" and state == "IL":
         chances *= random.uniform(1.2, 1.4)  # University of Illinois prefers IL residents
+    elif collegeList[i][0] == "utexas" and state == "TX":
+        chances *= random.uniform(1.3, 1.7)  # UT prefers texas residents
     elif collegeList[i][0] == "unc" and state == "NC":
         chances *= random.uniform(1.3, 1.6)  # UNC Chapel Hill heavily favors NC residents
     elif collegeList[i][0] == "bing" and state == "NY":
@@ -3290,7 +3309,7 @@ def adv_login(college):
             )
 
         # Redirect based on the decision code for Northeastern
-        if college.lower() == "northeastern":
+        if college.lower() == "northeastern" or college.lower() == "utexas":
             decision_code = decision_info.get("decision_code", "R")
             if decision_code in ["A", "ED", "D/A"]:
                 return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
