@@ -607,7 +607,7 @@
         {% endif %}
       {% endif %}
 
-      <div style="margin-top: -30px;">
+      <div style="margin-top: -25px;">
       </div>
       {% for decision in decisions_queue %}
         {% set uid = decision.unique_id %}
@@ -661,13 +661,13 @@
                 "deferred-waitlist-acceptance", "deferred-waitlist-rejection", etc.
               #}
               {% if dec.badge_class == "waitlist-acceptance" %}
-                <span class="badge waitlist-acceptance">Waitlist Accepted</span>
+                <span class="badge waitlist-acceptance">Waitlist Acceptance</span>
               {% elif dec.badge_class == "waitlist-rejection" %}
-                <span class="badge waitlist-rejection">Waitlist Rejected</span>
+                <span class="badge waitlist-rejection">Waitlist Rejection</span>
               {% elif dec.badge_class == "deferred-waitlist-acceptance" %}
-                <span class="badge deferred-waitlist-acceptance">Deferred Waitlist Accepted</span>
+                <span class="badge deferred-waitlist-acceptance">Deferred Waitlist Acceptance</span>
               {% elif dec.badge_class == "deferred-waitlist-rejection" %}
-                <span class="badge deferred-waitlist-rejection">Deferred Waitlist Rejected</span>
+                <span class="badge deferred-waitlist-rejection">Deferred Waitlist Rejection</span>
               {% else %}
                 <span class="badge {{ dec.badge_class }}">{{ dec.decision }}</span>
               {% endif %}

@@ -94,7 +94,7 @@
               <section id="c_main-content" class="cr">
                 <div id="global">
                   <ul>
-                    <li>{{ name }}<a style="font-size: 10px; margin-left: 5px; text-decoration: none;" href="{{ url_for('login', college=college)}}">Logout</a></li>
+                    <li>{{ name }}<a style="font-size: 10px; margin-left: 5px; text-decoration: none;" href="{{ url_for('adv_login', college=college)}}">Logout</a></li>
                   </ul>
                 </div>
                 <div id="content">
@@ -114,15 +114,18 @@
                   <title></title>
                   <div style="text-align: center;"><img alt="" src="./acceptance_files/welcome.jpg" style="height: 175px; width: 325px;"></div><span style="font-size:14px;"><span style="font-family:Lucida Sans Unicode,Lucida Grande,sans-serif;"><span style="color:#000000;">{{ date }}<br><br>
                         
-                        Dear {{ name }},</span><br><br><span style="color:#000000;">Congratulations! I am delighted to inform you that the Board of Admission has voted to admit you to Brown University’s Class of 2029. After carefully reviewing over 44,000 applicants, we have selected individuals who, as members of the Class of 2029, will bring an extraordinary range of talents, perspectives, and passions to our community.<br><br>
-                          You and your 1,665 classmates will join a vibrant and inclusive academic environment defined by a centuries-old tradition of excellence and intellectual curiosity. At Brown, you will have the opportunity to explore your interests, challenge yourself, and make meaningful connections with faculty, peers, and the broader world.<br><br>
-                          You were chosen not only for what we believe you will contribute to our community, but also for what you will gain from the unparalleled opportunities available here. Brown’s unique Open Curriculum, collaborative atmosphere, and commitment to innovation will help you craft a deeply personalized educational experience.<br><br>
-                          To celebrate your admission, the Office of College Admission and Brown undergraduates have planned an event for you and your future classmates. Details about this exciting program, [ADOCH (A Day on College Hill)], can be found at [brown.edu/ADOCH]. We hope you will be able to join us in experiencing life at Brown firsthand.<br><br>
-                          Please let us know your decision by May 1, 2025, by replying online through your applicant portal. If you are a candidate for financial aid, information about your award is also available in your portal. Should you have any questions, please contact the Office of Financial Aid at (401) 863-2721.<br><br>
-                          On behalf of the entire Brown community, please accept my heartfelt congratulations. We are thrilled to welcome you to Brown and look forward to seeing all that you will accomplish as a member of the Class of 2029.<br><br>
-                        </span><span style="color:#000000;">Yours sincerely,</span><br><img alt="" src="./acceptance_files/Logan Powell_blue.jpg" style="width: 125px; height: 103px;"><br><span style="color:#000000;">Logan Powell<br>
+                        Dear {{ name }},</span><br><br><span style="color:#000000;">Congratulations! I am delighted to inform you that the Board of Admission has admitted you to Brown University’s Class of 2029 from our waitlist. After a highly selective process involving over 44,000 applicants, we are thrilled to offer you a place in our community.<br><br>
+
+                            You will join 1,665 extraordinary classmates in a vibrant and inclusive academic environment defined by a commitment to intellectual curiosity, collaboration, and innovation. At Brown, you will have the opportunity to explore your interests, challenge yourself, and forge meaningful connections with peers, faculty, and the broader world.<br><br>
+                            
+                            To confirm your place in the Class of 2029, please reply online through your applicant portal within seven days. If you are a candidate for financial aid, information about your award is also available in your portal. Should you have any questions, feel free to contact the Office of Financial Aid at (401) 863-2721.<br><br>
+                            
+                            We also invite you to celebrate your admission and connect with future classmates by joining our admitted students’ event, [ADOCH (A Day on College Hill)]. Details about this exciting program can be found at [brown.edu/ADOCH].<br><br>
+                            
+                            On behalf of the entire Brown community, I extend my heartfelt congratulations. We look forward to welcoming you to Brown and to seeing all that you will contribute as a member of the Class of 2029.
+                        </span><br><br><span style="color:#000000;">Yours sincerely,</span><br><img alt="" src="./acceptance_files/Logan Powell_blue.jpg" style="width: 125px; height: 103px;"><br><span style="color:#000000;">Logan Powell<br>
                         Dean of Admission</span></span></span>
-                  <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('ustatus', college=college)}}">Return to Application Status</a></p>
+                  <p style="margin-top: 50px; text-align: center;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('adv_ustatus', college=college)}}">Return to Application Status</a></p>
                   <div style="clear: both;"></div>
                 </div>
               </section>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 2; background-color: #f9f9f9; color: #333; margin: 0; padding: 0;">
+
+    <!-- Wrapper for consistent width -->
+    <div style="max-width: 70%; margin: 0 auto; padding: 20px;">
+        <div style="margin-bottom: 40px;"></div>
+        <!-- Top section -->
+        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 40px; margin-top: 40px;">
+            <span style="font-size: 1.11rem; font-weight: 400; color: #444; margin-right: 8px;">{{ name }}</span>
+            <a href="{{ url_for('adv_login', college=college) }}" style="font-size: 0.7rem; color: #0056b3; text-decoration: none; cursor: pointer;">Logout</a>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <span style="font-weight: bold;">{{ date }}</span>
+            <span style="color: #0056b3;">Download PDF</span>
+        </div>
+
+        <!-- Letter content -->
+        <div style="background-color: #fff; padding: 0px; border-radius: 5px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <p>Dear {{ name }},</p>
+            <p> Thank you for applying to the University of Michigan's College of Literature, Science, and the Arts for Fall 2025. We appreciate the effort and care you put into your application and your continued interest in joining the Michigan community. </p> <p> After further consideration of candidates on our waitlist, we regret to inform you that we are unable to offer you admission to the Class of 2029. This year’s admissions process has been extraordinarily competitive, with an overwhelming number of talented students vying for limited spaces in our incoming class. </p> <p> We recognize the disappointment this decision may bring and want you to know that our decision reflects the challenging nature of our admissions process rather than your individual abilities or potential. </p> <p> On behalf of the admissions committee, we wish you every success as you continue to pursue your academic and personal goals. Thank you again for your interest in the University of Michigan. </p>
+            <p>Sincerely,</p>
+            <p style="margin-top: 0px;">
+                <img src="./acceptance_files/sig.png" alt="Signature" style="height: 60px;">
+                <br>
+                <span style="font-weight: bold;">Erica L. Sanders</span><br>
+                Director
+            </p>
+        </div>
+
+        <!-- Call-to-action -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="color: #0056b3; font-weight: bold; text-decoration: none;">Return to Application Status</a>
+        </div>
+    </div>
+
+</body>
+</html>
