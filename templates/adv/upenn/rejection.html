@@ -135,7 +135,7 @@
 		<div class="wrapper">
 			<div id="global">
 				<ul>
-					<li>{{ name }}<a href="{{ url_for('adv_login', college=college)}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
+					<li>{{ name }}<a href="{{ url_for('login', college=college)}}" style="font-size: 10px; margin-left: 5px; text-decoration: none;">Logout</a>
 
 					</li>
 				</ul>
@@ -143,9 +143,7 @@
 
 				<img src="./rejection_files/Pennlogo_2020update_216x71.png" width="216" height="71" alt="Penn Logo" style="padding-top:17.5px;"></a>
 
-			<ul class="nav-new">
-				<li><a href="http://www.admissions.upenn.edu/">Back to Penn Admissions</a></li>
-			</ul>
+
 		</div>
 	</div>
 
@@ -156,10 +154,6 @@
 		<p class="update_released" style="font-weight: bold;" xmlns:slate="http://technolutions.com/slate">{{ date }}</p>
 		<title></title>
 
-		<div id="left-sidebar" style="margin: 0px 0.35em; width: 10em; float: left; min-height: 90em;">
-			<h5><span style="color: rgb(192, 57, 43);"><span style="font-size: 15px;"><strong><a href="{{ url_for('adv_ustatus', college=college)}}">FAQ</a>&nbsp;&gt;</strong></span></span></h5>
-			<br><br><br>&nbsp;
-		</div>
 
 
 
@@ -168,7 +162,7 @@
 
 
 
-		<div id="column1" style="max-width: 640px;"><br><br>Dear {{ name }},<br><br>
+		<div id="column1" style="max-width: 900px; margin-top: -50px;"><br><br>Dear {{ name }},<br><br>
 
 			The selection committee has completed its deliberations, and it is with genuine regret that I inform you that we are unable to offer you admission to the University of Pennsylvania.<br><br>
 
@@ -179,7 +173,7 @@
 			<div align="left">Sincerely,<br><br><img style="border-width: 0px; border-style: solid; width: 125px; height: 43px;" alt="Eric J. Furda signature" src="./rejection_files/sign.png"><br>
 				Eric J. Furda C'87<br>Dean of Admissions<br><a name="CDD_LETTER" id="CDD_LETTER"></a></div>
 		</div>
-		<p style="text-align: center; margin-top: 50px;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('adv_ustatus', college=college)}}">Return to Application
+		<p style="text-align: center; margin-top: 50px;" xmlns:slate="http://technolutions.com/slate"><a href="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}">Return to Application
 				Status</a></p>
 
 
