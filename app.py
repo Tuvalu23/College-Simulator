@@ -2252,7 +2252,10 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
     elif collegeList[i][0] == "illini" and state == "IL":
         chances *= random.uniform(1.2, 1.4)  # University of Illinois prefers IL residents
     elif collegeList[i][0] == "utexas" and state == "TX":
-        chances *= random.uniform(1.3, 1.7)  # UT prefers texas residents
+        if (gpa > 97.6):
+            return 100 #ut auto top 6% of texas get in
+        else:
+            chances *= random.uniform(1.4, 1.9)  # UT prefers texas residents
     elif collegeList[i][0] == "unc" and state == "NC":
         chances *= random.uniform(1.3, 1.6)  # UNC Chapel Hill heavily favors NC residents
     elif collegeList[i][0] == "bing" and state == "NY":
