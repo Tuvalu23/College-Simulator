@@ -1087,7 +1087,7 @@ def advancedsim():
             elif race == 7:  # Middle Eastern or North African
                 score += 2
             elif race == 8:  # Prefer not to say
-                score -= 1
+                score -= 3
             elif race == 9:  # Other
                 score += 1.5
             # No adjustment for undefined races
@@ -1918,7 +1918,7 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
             student_num += 2
         student_num += extracurriculars * 2
         student_num += ap_courses * 0.9
-        student_num += interviewScore * 1.6
+        student_num += interviewScore * 1.8
         student_num += essayStrength * 1.5
     else:
         # GPA = 35 pts, EC = 15 pts, Essay = 15 pts, AP = 10 pts, Interview = 10 pts, SAT/ACT = 15 pts
@@ -2972,9 +2972,7 @@ def results():
 
         # Map codes to user-friendly text
         decision_mapping = {
-            "ED":   ("ED Acceptance", "accepted"),
-            "EA":   ("EA Acceptance", "accepted"),
-            "REA":  ("REA Acceptance", "accepted"),
+            "ED":   ("ED Acceptance", "ed-acceptance"),
             "A":    ("Acceptance",    "acceptance"),
             "R":    ("Rejection",     "rejection"),
             "W":    ("Waitlisted",    "waitlist"),
@@ -3012,11 +3010,16 @@ def results():
         })
 
     # 6) Determine if the simulation is done
-    total_processed_decisions = len(opened_decisions_list)
-    total_decisions = len(decisions_queue_sorted)
+    simulation_done = False  # Initialize the flag
 
-    # Simulation is done if all decisions are opened
-    simulation_done = total_processed_decisions >= total_decisions
+    for dec in opened_decisions_list:
+        print(dec['decision'].lower())
+        if dec['app_type'] == 'ED' and dec['decision'].lower() in ["ed acceptance"]:
+            simulation_done = True
+            break
+
+    if not simulation_done and len(opened_decisions_list) >= len(decisions_queue_sorted):
+        simulation_done = True
 
     # 7) Final updates
     session['decisions_queue_sorted'] = decisions_queue_sorted
@@ -3056,46 +3059,61 @@ def advance_simulation():
     decisions_queue_sorted = session.get('decisions_queue_sorted', [])
     opened_colleges = session.get('opened_colleges', [])
     locked_until_opened = session.get('locked_until_opened', {})
+    final_results = session.get('final_results', {})
 
-    # Identify all future release dates among un-opened, unlocked colleges
+    # 1) Check if user already has an ED acceptance => end the simulation
+    #    (We look for code "ED" or app_type == 'ED' with decision_code that indicates acceptance.)
+    ed_done = False
+    for uid in opened_colleges:
+        dec_info = final_results.get(uid, {})
+        if dec_info.get('app_type') == 'ED':
+            code = dec_info.get('decision_code', '')
+            # If code == "ED" or is some acceptance form, we consider that ED acceptance
+            # (some folks store "ED" as the decision_code, or "A" with app_type=ED, etc.)
+            if code in ["ED", "A", "D/A", "W/A", "D/W/A"]:
+                ed_done = True
+                break
+
+    if ed_done:
+        return jsonify({
+            "status": "done",
+            "message": "Simulation ended due to Early Decision acceptance.",
+            "current_sim_date": session.get('current_sim_date', '2024-11-01'),
+            "current_sim_date_formatted": format_date(session.get('current_sim_date', '2024-11-01')),
+            "keep_going": False,
+            "is_release_date": False
+        })
+
+    # 2) Identify future release dates for un-opened, unlocked colleges
+    #    (the rest of this logic is the same as your original code)
+    last_waitlist_date = datetime(2025, 6, 20)
     future_dates = []
     for d in decisions_queue_sorted:
         uid = d['unique_id']
-        # Skip if already opened
         if uid in opened_colleges:
             continue
-        # Skip if locked
-        if locked_until_opened.get(uid) and locked_until_opened[uid] not in opened_colleges:
+        # If locked behind ED/EA deferral logic:
+        if uid in locked_until_opened and locked_until_opened[uid] not in opened_colleges:
             continue
-        # Parse the release date
         try:
             rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
         except ValueError:
             rd = datetime(2099, 1, 1)
-        # Only consider future release dates
         if rd > current_date:
             future_dates.append(rd)
 
-    # Define the last waitlist date
-    last_waitlist_date = datetime(2025, 6, 20)
-
-    # Check if any waitlist resolutions remain that have a release_date on or before last_waitlist_date
-    final_results = session.get('final_results', {})
-    # This finds all WL decisions that haven't been "opened" (read) yet
-    # and have a release_date <= 2025-06-20
+    # Check unopened waitlists
     not_opened_waitlists = []
     for uid, info in final_results.items():
-        if info.get('app_type') == 'WL':
-            # Check if user has opened it
-            if uid not in opened_colleges:
-                try:
-                    rd = datetime.strptime(info.get('release_date', '2099-01-01'), '%Y-%m-%d')
-                except ValueError:
-                    rd = datetime(2099, 1, 1)
-                if rd <= last_waitlist_date:
-                    not_opened_waitlists.append(uid)
+        if info.get('app_type') == 'WL' and uid not in opened_colleges:
+            try:
+                wldate = datetime.strptime(info.get('release_date', '2099-01-01'), '%Y-%m-%d')
+            except ValueError:
+                wldate = datetime(2099, 1, 1)
+            if wldate <= last_waitlist_date:
+                not_opened_waitlists.append(uid)
 
-    # If no future dates remain AND no unopened WL decisions remain, the simulation is done
+    # If no more future release dates and no unopened WL => done
     if not future_dates and not not_opened_waitlists:
         session['current_sim_date'] = current_date.strftime("%Y-%m-%d")
         session.modified = True
@@ -3108,62 +3126,40 @@ def advance_simulation():
             "is_release_date": False
         })
 
-    # Determine the nearest future release date or fallback to the last waitlist date
-    if future_dates:
-        next_release_date = min(future_dates)
-    else:
-        # If no immediate future dates but have unopened waitlists, set to last_waitlist_date
-        next_release_date = last_waitlist_date
-
-    # Advance the date by one day
+    # 3) Advance date by one day or clamp to next release date
+    next_release_date = min(future_dates) if future_dates else last_waitlist_date
     new_date = current_date + timedelta(days=1)
-
-    # If the new date surpasses or meets the next release date, clamp it
     reached_release = False
     if new_date >= next_release_date:
         new_date = next_release_date
         reached_release = True
-    else:
-        logger.debug("Did not reach the next release date yet.")
 
-    # Ensure the simulation does not go beyond the last waitlist date
     if new_date > last_waitlist_date:
         new_date = last_waitlist_date
         reached_release = True
 
-    # Update the session with the new date
     session['current_sim_date'] = new_date.strftime("%Y-%m-%d")
     session.modified = True
-
-    # Format the new date for display
     formatted_date = new_date.strftime('%B %d, %Y')
 
-    # --- New Step: Re-check if we've reached or passed the final date (6/20) 
-    # and if there are no more un-opened WL decisions.
-    # If so, we can finalize the simulation right away.
+    # Final check if we just clamped to last_waitlist_date
     if new_date >= last_waitlist_date:
-        # Recompute unopened waitlists (or future dates) if needed
         future_dates_after_clamp = []
         not_opened_waitlists_after_clamp = []
         for d in decisions_queue_sorted:
             uid = d['unique_id']
-            if uid not in opened_colleges:
-                # parse date
-                try:
-                    rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
-                except ValueError:
-                    rd = datetime(2099, 1, 1)
-
-                # If it's still in the future
-                if rd > new_date:
-                    future_dates_after_clamp.append(rd)
-
-                # Check if waitlist and unopened
-                if d['app_type'] == 'WL' and rd <= last_waitlist_date:
-                    not_opened_waitlists_after_clamp.append(uid)
+            if uid in opened_colleges:
+                continue
+            try:
+                rd = datetime.strptime(d['release_date'], '%Y-%m-%d')
+            except ValueError:
+                rd = datetime(2099, 1, 1)
+            if rd > new_date:
+                future_dates_after_clamp.append(rd)
+            if d['app_type'] == 'WL' and rd <= last_waitlist_date:
+                not_opened_waitlists_after_clamp.append(uid)
 
         if not future_dates_after_clamp and not not_opened_waitlists_after_clamp:
-            # We are done
             return jsonify({
                 "status": "done",
                 "message": "No more decisions left to release.",
@@ -3173,12 +3169,12 @@ def advance_simulation():
                 "is_release_date": False
             })
 
-    # If we haven't concluded, respond with a normal 'ok'
+    # Otherwise, normal "ok" response
     return jsonify({
         "status": "ok",
         "current_sim_date": session['current_sim_date'],
         "current_sim_date_formatted": formatted_date,
-        "keep_going": not reached_release,  # if we haven't reached next release, we keep going
+        "keep_going": (not reached_release),
         "is_release_date": reached_release,
         "message": f"Advanced to {session['current_sim_date']}."
     })

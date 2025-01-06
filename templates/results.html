@@ -559,230 +559,238 @@
   }
 
 </style>
-
 <div class="simulation-header">
   <h1>College Admission Simulation</h1>
   <div class="date-display">Current Date: <strong id="sim-date">{{ current_sim_date }}</strong></div>
 
   {% if not simulation_started %}
-    <button id="simulation-btn" class="simulation-button" onclick="startSimulation()">
-      Start Simulation
-    </button>
-  {% else %}
-    {% if simulation_paused %}
+      <button id="simulation-btn" class="simulation-button" onclick="startSimulation()">
+          Start Simulation
+      </button>
+  {% elif simulation_done %}
+      <button id="simulation-btn" class="simulation-button completed" disabled>
+          Simulation Completed
+      </button>
+  {% elif simulation_paused %}
       <button id="simulation-btn" class="simulation-button" onclick="continueSimulation()">
-        Continue Simulation
+          Continue Simulation
       </button>
-    {% else %}
+  {% else %}
       <button id="simulation-btn" class="simulation-button running" disabled>
-        Simulation Running...
+          Simulation Running...
       </button>
-    {% endif %}
   {% endif %}
 
+  {% if simulation_done %}
+      <div class="simulation-completed-message">
+          
+      </div>
+  {% endif %}
 </div>
 
 <div class="results-container">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>Status Updates</h2>
-    <ul>
-      {% set opened_uids = opened_decisions | map(attribute='unique_id') | list %}
-      {% set total_decisions = decisions_queue | length %}
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Status Updates</h2>
+  <ul>
+    {% set opened_uids = opened_decisions | map(attribute='unique_id') | list %}
+    {% set total_decisions = decisions_queue | length %}
 
-      {# If all decisions are opened => "All admissions decisions and waitlist outcomes are revealed." #}
-      {% if total_decisions == opened_uids|length %}
+    {# If all decisions are opened => "All admissions decisions and waitlist outcomes are revealed." #}
+    {% if total_decisions == opened_uids|length %}
+      <p class="placeholder-message">
+        All admissions decisions and waitlist outcomes are revealed. 
+        Good luck with your final choice!
+      </p>
+    {% else %}
+      {# If no decisions or no currently available items #}
+      {% if decisions_queue.length == 0 %}
         <p class="placeholder-message">
-          All admissions decisions and waitlist outcomes are revealed. 
-          Good luck with your final choice!
+          There are no new status updates right now.
+          <br/>
+          Please continue the simulation or check back soon to see if more results come in.
         </p>
-      {% else %}
-        {# If no decisions or no currently available items #}
-        {% if decisions_queue.length == 0 %}
-          <p class="placeholder-message">
-            There are no new status updates right now.
-            <br/>
-            Please continue the simulation or check back soon to see if more results come in.
-          </p>
-        {% endif %}
       {% endif %}
+    {% endif %}
 
-      <div style="margin-top: -25px;">
-      </div>
-      {% for decision in decisions_queue %}
-        {% set uid = decision.unique_id %}
-        {% set is_available = decision.is_available %}
-        {% set is_opened = uid in opened_uids %}
-        {% set app_type_lower = decision.app_type|lower %}
-        {# NOTE: If you only want to highlight by decision code (like accepted/rejected), you can store that in decision[] #}
+    <div style="margin-top: -25px;">
+    </div>
+    {% for decision in decisions_queue %}
+      {% set uid = decision.unique_id %}
+      {% set is_available = decision.is_available %}
+      {% set is_opened = uid in opened_uids %}
+      {% set app_type_lower = decision.app_type|lower %}
+      {# NOTE: If you only want to highlight by decision code (like accepted/rejected), you can store that in decision[] #}
 
-        <li id="li-{{ uid }}">
-          {# If user hasn't "opened" it yet #}
-          {% if not is_opened %}
-            {% if is_available %}
-              <a href="#"
-                 class="college-link available {{ app_type_lower }}"
-                 onclick="handleClick('{{ uid }}','{{ decision.short_name }}'); return false;">
-                <span>
-                  {{ decision.display_name }} Status Update
-                  <span class="release-date">({{ decision.release_date }})</span>
-                </span>
-                <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
-              </a>
-            {% else %}
-              <a href="#" class="college-link disabled">
-                <span>
-                  {{ decision.display_name }} Status Update
-                  <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
-                </span>
-                <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
-              </a>
-            {% endif %}
+      <li id="li-{{ uid }}">
+        {# If user hasn't "opened" it yet #}
+        {% if not is_opened %}
+          {% if is_available %}
+            <a href="#"
+               class="college-link available {{ app_type_lower }}"
+               onclick="handleClick('{{ uid }}','{{ decision.short_name }}'); return false;">
+              <span>
+                {{ decision.display_name }} Status Update
+                <span class="release-date">({{ decision.release_date }})</span>
+              </span>
+              <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
+            </a>
+          {% else %}
+            <a href="#" class="college-link disabled">
+              <span>
+                {{ decision.display_name }} Status Update
+                <p class="release-date"><strong>Release Date:</strong> {{ decision.release_date }}</p>
+              </span>
+              <span class="badge {{ app_type_lower }}">{{ decision.app_type }}</span>
+            </a>
           {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <h1>Admission Decisions</h1>
-    <div class="decisions">
-      {% if opened_decisions %}
-        {% for dec in opened_decisions %}
-          <div class="decision-box {{ dec.decision|lower|replace(' ', '-') }}">
-            <div class="app-type-badge {{ dec.badge_class|lower }}">{{ dec.app_type }}</div>
-            <h3>{{ dec.display_name }}</h3>
-            <p>
-              <strong>Decision:</strong>
-              {# 
-                Show different badges for W/A, W/R, D/W/A, D/W/R, etc.
-                The final route's logic sets 'badge_class' to e.g. "waitlist-acceptance", "waitlist-rejection", 
-                "deferred-waitlist-acceptance", "deferred-waitlist-rejection", etc.
-              #}
-              {% if dec.badge_class == "waitlist-acceptance" %}
-                <span class="badge waitlist-acceptance">Waitlist Acceptance</span>
-              {% elif dec.badge_class == "waitlist-rejection" %}
-                <span class="badge waitlist-rejection">Waitlist Rejection</span>
-              {% elif dec.badge_class == "deferred-waitlist-acceptance" %}
-                <span class="badge deferred-waitlist-acceptance">Deferred Waitlist Acceptance</span>
-              {% elif dec.badge_class == "deferred-waitlist-rejection" %}
-                <span class="badge deferred-waitlist-rejection">Deferred Waitlist Rejection</span>
-              {% else %}
-                <span class="badge {{ dec.badge_class }}">{{ dec.decision }}</span>
-              {% endif %}
-            </p>
-            <p class="release-date">
-              <strong>Release Date:</strong> {{ dec.release_date }}
-            </p>
-          </div>
-        {% endfor %}
-      {% else %}
-        <div class="placeholder-message">
-          <p>Please start the simulation or wait until your first release date arrives.</p>
+<!-- Main Content -->
+<div class="main-content">
+  <h1>Admission Decisions</h1>
+  <div class="decisions">
+    {% if opened_decisions %}
+      {% for dec in opened_decisions %}
+        <div class="decision-box {{ dec.decision|lower|replace(' ', '-') }}">
+          <div class="app-type-badge {{ dec.badge_class|lower }}">{{ dec.app_type }}</div>
+          <h3>{{ dec.display_name }}</h3>
+          <p>
+            <strong>Decision:</strong>
+            {# 
+              Show different badges for W/A, W/R, D/W/A, D/W/R, etc.
+              The final route's logic sets 'badge_class' to e.g. "waitlist-acceptance", "waitlist-rejection", 
+              "deferred-waitlist-acceptance", "deferred-waitlist-rejection", etc.
+            #}
+            {% if dec.badge_class == "waitlist-acceptance" %}
+              <span class="badge waitlist-acceptance">Waitlist Acceptance</span>
+            {% elif dec.badge_class == "waitlist-rejection" %}
+              <span class="badge waitlist-rejection">Waitlist Rejection</span>
+            {% elif dec.badge_class == "deferred-waitlist-acceptance" %}
+              <span class="badge deferred-waitlist-acceptance">Deferred Waitlist Acceptance</span>
+            {% elif dec.badge_class == "deferred-waitlist-rejection" %}
+              <span class="badge deferred-waitlist-rejection">Deferred Waitlist Rejection</span>
+            {% else %}
+              <span class="badge {{ dec.badge_class }}">{{ dec.decision }}</span>
+            {% endif %}
+          </p>
+          <p class="release-date">
+            <strong>Release Date:</strong> {{ dec.release_date }}
+          </p>
         </div>
-      {% endif %}
-    </div>
-
-    <div class="buttons">
-      <a href="{{ url_for('chances') }}" class="back-button">Back to Chances</a>
-      {% if simulation_done %}
-        <a href="{{ url_for('decision') }}" class="continue-button">Make Decision</a>
-      {% else %}
-        <a href="#" class="continue-button" style="opacity:0.4; cursor:not-allowed;" 
-           title="You cannot make a decision until all results are in.">
-          Make Decision
-        </a>
-      {% endif %}
-      <a href="{{ url_for('dashboard') }}" class="continue-button home-button">Home</a>
-    </div>
+      {% endfor %}
+    {% else %}
+      <div class="placeholder-message">
+        <p>Please start the simulation or wait until your first release date arrives.</p>
+      </div>
+    {% endif %}
   </div>
+
+  <div class="buttons">
+    <a href="{{ url_for('chances') }}" class="back-button">Back to Chances</a>
+    {% if simulation_done %}
+      <a href="{{ url_for('decision') }}" class="continue-button">Make Decision</a>
+    {% else %}
+      <a href="#" class="continue-button" style="opacity:0.4; cursor:not-allowed;" 
+         title="You cannot make a decision until all results are in.">
+          Make Decision
+      </a>
+    {% endif %}
+    <a href="{{ url_for('dashboard') }}" class="continue-button home-button">Home</a>
+  </div>
+</div>
 </div>
 
 <script>
 /**
- * Opens the decision login page in a new tab and marks the decision as read.
- * For ED/EA/REA/RD and WL.
- */
+* Opens the decision login page in a new tab and marks the decision as read.
+* For ED/EA/REA/RD and WL.
+*/
 function handleClick(uniqueId, shortName) {
-  // Open the login page in a new tab
-  const loginUrl = `/advancedsim/${shortName}/login?unique_id=${uniqueId}`;
-  window.open(loginUrl, '_blank');
+// Open the login page in a new tab
+const loginUrl = `/advancedsim/${shortName}/login?unique_id=${uniqueId}`;
+window.open(loginUrl, '_blank');
 
-  // Mark as read via AJAX
-  fetch("{{ url_for('mark_as_read') }}", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ "uid": uniqueId })
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data.status === "success") {
-          location.reload();
-      } else {
-          alert("Failed to mark decision as read: " + data.message);
-      }
-  })
-  .catch(err => {
-      console.error(err);
-      alert("An error occurred while marking the decision as read.");
-  });
+// Mark as read via AJAX
+fetch("{{ url_for('mark_as_read') }}", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ "uid": uniqueId })
+})
+.then(response => response.json())
+.then(data => {
+    if (data.status === "success") {
+        location.reload();
+    } else {
+        alert("Failed to mark decision as read: " + data.message);
+    }
+})
+.catch(err => {
+    console.error(err);
+    alert("An error occurred while marking the decision as read.");
+});
 }
 
 /**
- * Single function that does the day-by-day simulation loop.
- * It keeps calling /advancedsim/results/advance until the next release date is reached or the simulation is done.
- */
+* Single function that does the day-by-day simulation loop.
+* It keeps calling /advancedsim/results/advance until the next release date is reached or the simulation is done.
+*/
 function doDayByDayLoop() {
-  const simBtn = document.getElementById("simulation-btn");
-  simBtn.disabled = true;
-  simBtn.classList.add("running");
-  simBtn.innerText = "Simulation Running...";
+const simBtn = document.getElementById("simulation-btn");
+simBtn.disabled = true;
+simBtn.classList.add("running");
+simBtn.innerText = "Simulation Running...";
 
-  async function advanceLoop() {
-    try {
-      const resp = await fetch("{{ url_for('advance_simulation') }}", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
-      });
-      const data = await resp.json();
+async function advanceLoop() {
+  try {
+    const resp = await fetch("{{ url_for('advance_simulation') }}", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await resp.json();
 
-      // Update date display
-      document.getElementById("sim-date").innerText = data.current_sim_date;
+    // Update date display
+    document.getElementById("sim-date").innerText = data.current_sim_date;
 
-      if (data.status === "done") {
-        // The server says we are done
-        simBtn.innerText = "Simulation Completed";
-        simBtn.classList.remove("running");
-        simBtn.classList.add("completed");
-      } else if (data.keep_going) {
-        setTimeout(advanceLoop, 100);
-      } else {
-        // Reached next release date
-        simBtn.disabled = false;
-        simBtn.classList.remove("running");
-        simBtn.innerText = "Continue Simulation";
-        location.reload();
-      }
-    } catch (err) {
-      console.error(err);
-      simBtn.innerText = "Error in Simulation";
-      alert("An error occurred during the simulation.");
+    if (data.status === "done") {
+      // The server says we are done
+      simBtn.innerText = "Simulation Completed";
+      simBtn.classList.remove("running");
+      simBtn.classList.add("completed");
+      // Optionally, display a notification to the user
+      alert(data.message);  // "Simulation ended due to Early Decision acceptance."
+    } else if (data.keep_going) {
+      setTimeout(advanceLoop, 100);
+    } else {
+      // Reached next release date
+      simBtn.disabled = false;
+      simBtn.classList.remove("running");
+      simBtn.innerText = "Continue Simulation";
+      location.reload();
     }
+  } catch (err) {
+    console.error(err);
+    simBtn.innerText = "Error in Simulation";
+    alert("An error occurred during the simulation.");
   }
+}
 
-  // Kick off
-  advanceLoop();
+// Kick off
+advanceLoop();
 }
 
 /** Called when user clicks "Start Simulation". */
 function startSimulation() {
-  doDayByDayLoop();
+doDayByDayLoop();
 }
 
 /** Called on subsequent “Continue Simulation” clicks. */
 function continueSimulation() {
-  doDayByDayLoop();
+doDayByDayLoop();
 }
 </script>
 

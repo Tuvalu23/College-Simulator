@@ -185,10 +185,6 @@
     position: absolute;
     animation: fall linear infinite;
     z-index: 1001; /* Higher than other elements */
-    /* Removed width, height, max-width to allow JS to set them */
-    /* width: auto; */
-    /* height: 40px; */
-    /* max-width: 40px; */
   }
   @keyframes fall {
     0% { transform: translateY(-50px); }
@@ -212,20 +208,52 @@
 <div class="decision-container">
   <h1 class="decision-title">Finalize Your Choice</h1>
 
+  {# ------------------------------------------------------------ #}
+  {# 1) Check if user is already enrolled                          #}
+  {# ------------------------------------------------------------ #}
   {% if enrolled_college %}
     <div style="text-align:center; margin-bottom:50px; margin-top: -15px; font-size: 18px;">
       <h2>You have enrolled at <strong>{{ enrolled_college.display_name }}</strong>!</h2>
-      <p>Feel free to celebrate again or check out the other pages!</p>
+      <p>Feel free to celebrate or check out the other pages!</p>
     </div>
   {% else %}
-    <p style="text-align:center; font-size: 1.5rem;">
-      You have the following acceptance offers. Choose one to officially enroll!
-    </p>
+    {# ------------------------------------------------------------ #}
+    {# 2) Check if there's an Early Decision acceptance offer       #}
+    {# ------------------------------------------------------------ #}
+    {% set has_ed_offer = false %}
+    {% if accepted_offers %}
+      {% for off in accepted_offers %}
+        {% if off.app_type == "ED" %}
+          {% set has_ed_offer = true %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if has_ed_offer %}
+      <div style="text-align:center; color:red; font-weight:600; font-size:1.1rem; margin: -10px 0 30px;">
+        Because you have an Early Decision acceptance, you are contractually expected to commit.
+      </div>
+    {% endif %}
+
+    {# ------------------------------------------------------------ #}
+    {# 3) If zero acceptances => fallback paragraph                 #}
+    {# ------------------------------------------------------------ #}
+    {% if not accepted_offers or accepted_offers|length == 0 %}
+      <p style="text-align:center; font-size: 1.5rem;">
+        Unfortunately, you do not have any acceptance offers at this time.
+        It’s perfectly fine to attend a community college or explore other pathways.
+        You still have a bright future ahead!
+      </p>
+    {% else %}
+      <p style="text-align:center; font-size: 1.5rem;">
+        You have the following acceptance offers. Choose one to officially enroll!
+      </p>
+    {% endif %}
   {% endif %}
 
   <form method="POST" onsubmit="return handleFinalizeChoice(event)">
     <div class="offers-list">
-      {% if accepted_offers %}
+      {% if accepted_offers and accepted_offers|length > 0 %}
         {% for offer in accepted_offers %}
           {% set is_chosen = (enrolled_college and enrolled_college.unique_id == offer.unique_id) %}
 
@@ -324,8 +352,9 @@
           </div>
         {% endfor %}
       {% else %}
-        <p style="text-align:center; width:100%;">
-          No acceptance offers yet.
+        <p style="text-align:center; font-size: 1.5rem;">
+          It looks like you have no acceptance offers at this time. It's okay to attend a community college 
+          or explore other future pathways. You’ve got this!
         </p>
       {% endif %}
     </div>
@@ -334,7 +363,7 @@
     <input type="hidden" name="chosen_uid" id="chosen_uid" value="{{ enrolled_college.unique_id if enrolled_college else '' }}">
 
     <div class="buttons">
-      {% if not enrolled_college and accepted_offers %}
+      {% if not enrolled_college and accepted_offers and accepted_offers|length > 0 %}
         <button type="submit" class="btn btn-submit" id="finalize-btn" disabled>
           Finalize Choice
         </button>
@@ -342,7 +371,7 @@
 
       {% if enrolled_college %}
         <button type="button" class="btn btn-celebrate" onclick="startPeaceSigns(this)" id="celebrate-btn">
-          Celebrate Again
+          Celebrate
         </button>
       {% else %}
         <button type="button" class="btn btn-celebrate" onclick="startPeaceSigns(this)" disabled 
@@ -353,6 +382,7 @@
 
       <a href="{{ url_for('results') }}" class="btn btn-back">Back to Results</a>
       <a href="{{ url_for('dashboard') }}" class="btn btn-dashboard">Back to Dashboard</a>
+      <a href="{{ url_for('advancedsim') }}" class="btn btn-submit">New Simulation</a>
     </div>
   </form>
 </div>
@@ -498,7 +528,7 @@ function startPeaceSigns(button) {
         button.disabled = false;
         button.style.opacity = '1';
         button.style.cursor = 'pointer';
-        button.innerText = 'Celebrate Again';
+        button.innerText = 'Celebrate';
       }
     } else {
       // spawn 1-2 pieces each time
