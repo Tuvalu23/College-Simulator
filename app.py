@@ -2805,6 +2805,8 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
+    session.pop('college_enrolled', None)
+    
     # Retrieve user data from session
     user_data = session.get('advancedsim_data', {"name": "User"})
     name = user_data.get("name", "User")
@@ -3273,6 +3275,71 @@ def schedule_waitlist_resolution(college_short_name, decision_code, final_result
     session.modified = True
 
     print(f"[Waitlist] Scheduled waitlist resolution for {college_short_name.upper()} on {release_date_str} => {final_outcome}")
+
+# Example snippet from app.py
+# app.py or your main Flask application file
+
+@app.route('/advancedsim/decision', methods=['GET', 'POST'])
+@login_required
+def decision():
+    # 1) Grab what we need from session
+    final_results = session.get('final_results', {})
+    opened_colleges = session.get('opened_colleges', [])
+    decisions_queue = session.get('decisions_queue_sorted', [])
+    college_enrolled = session.get('college_enrolled', None)  # user’s final choice, if any
+
+    # 2) Filter out which colleges are "accepted"
+    accepted_offers = []
+    for uid in opened_colleges:
+        decision_info = final_results.get(uid)
+        if not decision_info:
+            continue
+        decision_code = decision_info.get('decision_code', 'R')
+
+        # Check if it's an acceptance scenario
+        if decision_code in ["ED", "EA", "REA", "A", "D/A", "W/A", "D/W/A"]:
+            # Look up the matching item in decisions_queue for display_name, short_name, etc.
+            dq_item = next((d for d in decisions_queue if d['unique_id'] == uid), None)
+            if dq_item:
+                short_name = dq_item['short_name'].lower()
+                # Find the matching university entry
+                uni_info = next((u for u in university_list if u['name'].lower() == short_name), None)
+
+                # Build your accepted_offers object
+                accepted_offers.append({
+                    "unique_id": uid,
+                    "short_name": short_name,
+                    "display_name": dq_item.get("display_name", short_name.capitalize()),
+                    "university_name": dq_item.get("university_name", short_name.capitalize()),
+                    "decision_code": decision_code,
+                    "logo_url": uni_info['logo'] if uni_info else "logos/default-logo.jpg",
+                    "app_type": dq_item['app_type']
+                })
+
+    # 3) Handle POST => user picks which college they want to attend
+    if request.method == 'POST':
+        chosen_uid = request.form.get('chosen_uid', None)
+        if chosen_uid:
+            valid_uids = [o["unique_id"] for o in accepted_offers]
+            if chosen_uid in valid_uids:
+                session['college_enrolled'] = chosen_uid
+                session.modified = True
+                flash("Congratulations! You have enrolled!", "success")
+            else:
+                flash("Invalid selection.", "error")
+        return redirect(url_for('decision'))
+
+    # 4) If user already enrolled, find that entry
+    enrolled_college = None
+    if college_enrolled:
+        enrolled_college = next((o for o in accepted_offers if o["unique_id"] == college_enrolled), None)
+
+    # 5) Render
+    return render_template(
+        'decision.html',
+        accepted_offers=accepted_offers,
+        enrolled_college=enrolled_college
+    )
 
 def format_date(date_str):
     try:

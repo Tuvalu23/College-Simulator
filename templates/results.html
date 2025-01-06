@@ -686,7 +686,14 @@
 
     <div class="buttons">
       <a href="{{ url_for('chances') }}" class="back-button">Back to Chances</a>
-      <a href="{{ url_for('advancedsim') }}" class="continue-button">New Simulation</a>
+      {% if simulation_done %}
+        <a href="{{ url_for('decision') }}" class="continue-button">Make Decision</a>
+      {% else %}
+        <a href="#" class="continue-button" style="opacity:0.4; cursor:not-allowed;" 
+           title="You cannot make a decision until all results are in.">
+          Make Decision
+        </a>
+      {% endif %}
       <a href="{{ url_for('dashboard') }}" class="continue-button home-button">Home</a>
     </div>
   </div>

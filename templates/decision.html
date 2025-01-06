@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+  }
+
+  /* Same background as results */
+  body::before {
+    content: "";
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    background: url('{{ url_for("static", filename="images/advancedsim_image.jpg") }}') no-repeat center center fixed;
+    background-size: cover; 
+    filter: blur(4px); 
+    z-index: -2;
+  }
+
+  .decision-container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 40px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    /* Remove box-shadow */
+    /* box-shadow: 0 4px 30px rgba(0,0,0,0.1); */
+    position: relative;
+    margin-top: 60px; /* Some top spacing */
+    min-height: 70vh;
+  }
+
+  h1.decision-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #333;
+    animation: bounce 2s infinite;
+  }
+
+  /* Bouncing animation for “Finalize Your Choice” text */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+  }
+
+  .offers-list {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+  
+  /* Each .offer-card will get a gradient via inline style. */
+  .offer-card {
+    width: 300px;
+    min-height: 350px;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+    position: relative;
+    color: #fff; /* We'll assume text is white for contrast on gradients */
+    /* Removed box-shadow */
+  }
+  .offer-card:hover {
+    transform: translateY(-5px);
+    /* Removed box-shadow */
+  }
+
+  /* Enhanced Glowy effect for the selected college */
+  .offer-card.selected {
+    border: 2px solid #1E90FF; /* DodgerBlue */
+    box-shadow: 0 0 60px rgba(30, 144, 255, 0.9), 0 0 80px rgba(30, 144, 255, 0.7); /* More pronounced blue glow */
+    animation: glowBlue 2s infinite alternate; /* Enhanced Animation Duration */
+  }
+
+  @keyframes glowBlue {
+    0% {
+      box-shadow: 0 0 40px rgba(30, 144, 255, 0.6), 0 0 60px rgba(30, 144, 255, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 60px rgba(30, 144, 255, 0.8), 0 0 80px rgba(30, 144, 255, 0.6);
+    }
+    100% {
+      box-shadow: 0 0 80px rgba(30, 144, 255, 1), 0 0 100px rgba(30, 144, 255, 0.8);
+    }
+  }
+
+  /* Adjusted Fade-out for non-selected schools after finalize */
+  .offer-card.faded {
+    opacity: 0.5; /* Increased opacity from 0.5 to 0.8 */
+    pointer-events: none;
+  }
+
+  .offer-card img {
+    max-width: 180px;
+    margin: 20px auto;
+    display: block;
+  }
+  .offer-card h4 {
+    margin-top: 15px;
+    font-size: 1.6rem;
+    color: #fff;
+  }
+  .offer-card p {
+    margin: 10px 0;
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  /* App Type Badge in top-right corner */
+  .app-type-badge {
+    position: absolute; 
+    top: 15px; 
+    right: 15px;
+    padding: 5px 10px; 
+    border-radius: 12px; 
+    color: #fff;
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase;
+  }
+  .badge.ed    { background-color: #dc3545; }
+  .badge.ea    { background-color: #007bff; }
+  .badge.rea   { background-color: #ffc107; color: #000; }
+  .badge.rd    { background-color: #28a745; }
+  .badge.wl    { background-color: #6f42c1; }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 50px;
+  }
+  .btn {
+    padding: 15px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.3s, opacity 0.3s;
+    text-decoration: none;
+    color: #fff;
+  }
+  .btn:hover {
+    transform: scale(1.05);
+  }
+  .btn-submit {
+    background: linear-gradient(45deg, #ff7f50, #ff6f91);
+  }
+  .btn-celebrate {
+    background: linear-gradient(45deg, #007bff, #28a745);
+  }
+  .btn-back {
+    background: #6c757d;
+  }
+  .btn-dashboard {
+    background: linear-gradient(45deg, #ff0084, #9b00ff);
+  }
+
+  /* Peace sign confetti (optional) */
+  .oscillating-container {
+    position: absolute;
+    animation: oscillate 3s ease-in-out infinite;
+    top: -100px;
+    left: 0; /* Ensure within viewport */
+    width: 100%; /* Full width for random placement */
+    pointer-events: none; /* Allow clicks through */
+    box-sizing: border-box; /* Prevent padding/margin from affecting width */
+  }
+  @keyframes oscillate {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(20px); } /* Reduced from 40px to 20px */
+  }
+  .falling-peace {
+    position: absolute;
+    animation: fall linear infinite;
+    z-index: 1001; /* Higher than other elements */
+    /* Removed width, height, max-width to allow JS to set them */
+    /* width: auto; */
+    /* height: 40px; */
+    /* max-width: 40px; */
+  }
+  @keyframes fall {
+    0% { transform: translateY(-50px); }
+    100% { transform: translateY(150vh); }
+  }
+
+  /* Emoji explosion animations */
+  .emoji-burst {
+    position: absolute; 
+    font-size: 2rem;
+    animation: floatUp 1.8s ease forwards;
+    pointer-events: none;
+    z-index: 1002; /* Ensure above confetti */
+  }
+  @keyframes floatUp {
+    0%   { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(0, -120px) scale(1.2); opacity: 0; }
+  }
+</style>
+
+<div class="decision-container">
+  <h1 class="decision-title">Finalize Your Choice</h1>
+
+  {% if enrolled_college %}
+    <div style="text-align:center; margin-bottom:50px; margin-top: -15px; font-size: 18px;">
+      <h2>You have enrolled at <strong>{{ enrolled_college.display_name }}</strong>!</h2>
+      <p>Feel free to celebrate again or check out the other pages!</p>
+    </div>
+  {% else %}
+    <p style="text-align:center; font-size: 1.5rem;">
+      You have the following acceptance offers. Choose one to officially enroll!
+    </p>
+  {% endif %}
+
+  <form method="POST" onsubmit="return handleFinalizeChoice(event)">
+    <div class="offers-list">
+      {% if accepted_offers %}
+        {% for offer in accepted_offers %}
+          {% set is_chosen = (enrolled_college and enrolled_college.unique_id == offer.unique_id) %}
+
+          {# Define a unique gradient per short_name #}
+          {% set gradient = "linear-gradient(45deg, #555555, #444444, #333333, #222222)" %}
+          {% if offer.short_name == "columbia" %}
+            {% set gradient = "linear-gradient(45deg, #9BDDFF, #0066CC, #003366, #001F4D)" %}
+          {% elif offer.short_name == "stanford" %}
+            {% set gradient = "linear-gradient(45deg, #8C1515, #B22222, #D7263D, #FF4040)" %}
+          {% elif offer.short_name == "upenn" %}
+            {% set gradient = "linear-gradient(45deg, #990000, #6B0103, #011F5B, #005BB5)" %}
+          {% elif offer.short_name == "caltech" %}
+            {% set gradient = "linear-gradient(45deg, #F7923A, #E85D04, #FF6C0C, #FF4E00)" %}
+          {% elif offer.short_name == "jhu" %}
+            {% set gradient = "linear-gradient(45deg, #002D72, #003B8E, #00509D, #73B0E4)" %}
+          {% elif offer.short_name == "dartmouth" %}
+            {% set gradient = "linear-gradient(45deg, #00693E, #004F2F, #37BD6D, #4EFFA2)" %}
+          {% elif offer.short_name == "princeton" %}
+            {% set gradient = "linear-gradient(45deg, #F58025, #E85D04, #FF9B35, #FFB347)" %}
+          {% elif offer.short_name == "mit" %}
+            {% set gradient = "linear-gradient(45deg, #A31F34, #B13244, #D95040, #FF686B)" %}
+          {% elif offer.short_name == "yale" %}
+            {% set gradient = "linear-gradient(45deg, #00356B, #002855, #235FA4, #4B8ECD)" %}
+          {% elif offer.short_name == "harvard" %}
+            {% set gradient = "linear-gradient(45deg, #A51C30, #911A2D, #C7364C, #E8495F)" %}
+          {% elif offer.short_name == "brown" %}
+            {% set gradient = "linear-gradient(45deg, #4E3629, #694C3A, #8A614A, #A87B5C)" %}
+          {% elif offer.short_name == "notredame" %}
+            {% set gradient = "linear-gradient(45deg, #0C2340, #1D3557, #384989, #5B6FA9)" %}
+          {% elif offer.short_name == "uchicago" %}
+            {% set gradient = "linear-gradient(45deg, #800000, #A60000, #B30000, #FF4040)" %}
+          {% elif offer.short_name == "northwestern" %}
+            {% set gradient = "linear-gradient(45deg, #4E2A84, #6B3EA4, #7C4EA2, #A473D9)" %}
+          {% elif offer.short_name == "duke" %}
+            {% set gradient = "linear-gradient(45deg, #012169, #0A3DAA, #244BCE, #4B88E4)" %}
+          {% elif offer.short_name == "cmu" %}
+            {% set gradient = "linear-gradient(45deg, #B1063A, #CC194A, #ED2B44, #FF4059)" %}
+          {% elif offer.short_name == "rice" %}
+            {% set gradient = "linear-gradient(45deg, #00205B, #00357E, #003B8E, #608ED1)" %}
+          {% elif offer.short_name == "washu" %}
+            {% set gradient = "linear-gradient(45deg, #5F1728, #803046, #8B3B52, #C57391)" %}
+          {% elif offer.short_name == "tufts" %}
+            {% set gradient = "linear-gradient(45deg, #417DC1, #336CA6, #629AD9, #89B3F2)" %}
+          {% elif offer.short_name == "northeastern" %}
+            {% set gradient = "linear-gradient(45deg, #D41A33, #B0172A, #F13F53, #FF6C81)" %}
+          {% elif offer.short_name == "cornell" %}
+            {% set gradient = "linear-gradient(45deg, #B31B1B, #B82F2F, #FF4040, #FF7B7B)" %}
+          {% elif offer.short_name == "uva" %}
+            {% set gradient = "linear-gradient(45deg, #232D4B, #1C2542, #405887, #6A86BE)" %}
+          {% elif offer.short_name == "gtech" %}
+            {% set gradient = "linear-gradient(45deg, #B3A369, #C7B586, #D9CF9A, #F3EAD1)" %}
+          {% elif offer.short_name == "berkeley" %}
+            {% set gradient = "linear-gradient(45deg, #003262, #0A4DA2, #185DA8, #63A4D8)" %}
+          {% elif offer.short_name == "emory" %}
+            {% set gradient = "linear-gradient(45deg, #13294B, #1C3B6D, #295194, #4F7AC0)" %}
+          {% elif offer.short_name == "usc" %}
+            {% set gradient = "linear-gradient(45deg, #990000, #CC3300, #FF5722, #FF8A65)" %}
+          {% elif offer.short_name == "umich" %}
+            {% set gradient = "linear-gradient(45deg, #00274C, #164A93, #3D7AD6, #6BA4FF)" %}
+          {% elif offer.short_name == "utexas" %}
+            {% set gradient = "linear-gradient(45deg, #BF5700, #E26A00, #DC7000, #FF9500)" %}
+          {% elif offer.short_name == "nyu" %}
+            {% set gradient = "linear-gradient(45deg, #57068C, #7A3DAC, #9A4CCC, #BA7DE6)" %}
+          {% elif offer.short_name == "georgetown" %}
+            {% set gradient = "linear-gradient(45deg, #002147, #153A69, #2D4F88, #6082C4)" %}
+          {% elif offer.short_name == "illini" %}
+            {% set gradient = "linear-gradient(45deg, #E84A27, #F56A48, #F77B58, #FF9B7B)" %}
+          {% elif offer.short_name == "unc" %}
+            {% set gradient = "linear-gradient(45deg, #7BAFD4, #92BFE2, #A8CCE9, #C5E2FF)" %}
+          {% elif offer.short_name == "purdue" %}
+            {% set gradient = "linear-gradient(45deg, #CEB888, #D9C6A5, #E7D9C5, #FFF6E5)" %}
+          {% elif offer.short_name == "bing" %}
+            {% set gradient = "linear-gradient(45deg, #005F43, #087850, #208F65, #56C096)" %}
+          {% elif offer.short_name == "buffalo" %}
+            {% set gradient = "linear-gradient(45deg, #005BBB, #244F9E, #243F6E, #5A8FCC)" %}
+          {% endif %}
+        
+          <div 
+            class="offer-card 
+              {% if is_chosen %}selected{% elif enrolled_college %}faded{% endif %}"
+            onclick="selectOffer('{{ offer.unique_id }}')"
+            style="background: {{ gradient }};"
+            id="offer-{{ offer.unique_id }}"
+          >
+            <!-- App Type Badge in top-right corner -->
+            <span class="app-type-badge badge {{ offer.app_type|lower }}">
+              {{ offer.app_type }}
+            </span>
+
+            <!-- Show the college logo -->
+            <img src="{{ url_for('static', filename=offer.logo_url.split('static/')[1]) }}"
+                 onerror="this.onerror=null; this.src='{{ url_for('static', filename='logos/default-logo.jpg') }}';"
+                 alt="School Logo" />
+
+            <h4>{{ offer.display_name }}</h4>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p style="text-align:center; width:100%;">
+          No acceptance offers yet.
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- Hidden input for chosen_uid -->
+    <input type="hidden" name="chosen_uid" id="chosen_uid" value="{{ enrolled_college.unique_id if enrolled_college else '' }}">
+
+    <div class="buttons">
+      {% if not enrolled_college and accepted_offers %}
+        <button type="submit" class="btn btn-submit" id="finalize-btn" disabled>
+          Finalize Choice
+        </button>
+      {% endif %}
+
+      {% if enrolled_college %}
+        <button type="button" class="btn btn-celebrate" onclick="startPeaceSigns(this)" id="celebrate-btn">
+          Celebrate Again
+        </button>
+      {% else %}
+        <button type="button" class="btn btn-celebrate" onclick="startPeaceSigns(this)" disabled 
+                style="opacity:0.4; cursor:not-allowed;" title="Finalize your choice to celebrate!" id="celebrate-btn">
+          Celebrate
+        </button>
+      {% endif %}
+
+      <a href="{{ url_for('results') }}" class="btn btn-back">Back to Results</a>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-dashboard">Back to Dashboard</a>
+    </div>
+  </form>
+</div>
+
+<script>
+/** 
+ * If user not enrolled yet, the finalize button is disabled until a college is selected.
+ * We'll track the selectedUid in JS to handle UI state. 
+ */
+let selectedUid = "{{ enrolled_college.unique_id if enrolled_college else '' }}";
+let isConfettiRunning = false; // Flag to prevent multiple confetti runs
+
+function selectOffer(uid) {
+  // If already enrolled => do nothing
+  {% if enrolled_college %}
+    return;
+  {% endif %}
+
+  if (selectedUid === uid) return; // no change
+
+  // Remove .selected from all
+  document.querySelectorAll('.offer-card').forEach(card => {
+    card.classList.remove('selected');
+  });
+
+  // Mark this one as selected
+  const selectedCard = document.getElementById('offer-' + uid);
+  if (selectedCard) {
+    selectedCard.classList.add('selected');
+  }
+
+  // Update hidden input
+  document.getElementById('chosen_uid').value = uid;
+
+  // Enable finalize button
+  const finalizeBtn = document.getElementById('finalize-btn');
+  if (finalizeBtn) {
+    finalizeBtn.disabled = false;
+    finalizeBtn.style.opacity = '1';
+    finalizeBtn.style.cursor = 'pointer';
+    finalizeBtn.innerText = 'Finalize Choice'; // Reset button text if changed
+  }
+
+  selectedUid = uid;
+}
+
+/** 
+ * Handle form submission to trigger confetti before submitting.
+ */
+function handleFinalizeChoice(event) {
+  // Prevent immediate form submission
+  event.preventDefault();
+
+  // Optional: Provide immediate feedback (e.g., disable button)
+  const finalizeBtn = document.getElementById('finalize-btn');
+  if (finalizeBtn) {
+    finalizeBtn.disabled = true;
+    finalizeBtn.style.opacity = '0.5';
+    finalizeBtn.style.cursor = 'not-allowed';
+    finalizeBtn.innerText = 'Finalizing...';
+  }
+
+  // Wait for a short duration to simulate processing (optional)
+  setTimeout(() => {
+    event.target.submit();
+  }, 200); // Short delay before submitting
+}
+
+// Peace sign confetti
+let peaceInterval;
+let activePeaceSigns = [];
+
+function createPeace() {
+  console.log("Creating peace sign confetti...");
+
+  const container = document.createElement('div');
+  container.classList.add('oscillating-container');
+  container.style.left = (Math.random() * 90) + 'vw'; // Position within 0-90vw to avoid edge
+
+  const peace = document.createElement('img');
+  // Instead of a static array, we pick from the ENROLLED short_name
+  const enrolledShortName = "{{ enrolled_college.short_name if enrolled_college else '' }}".toLowerCase();
+  let peacePath = "{{ url_for('static', filename='confetti/default-celebrate.png') }}";
+  if (enrolledShortName) {
+    peacePath = "{{ url_for('static', filename='confetti/') }}" + enrolledShortName + ".png";
+  }
+  peace.src = peacePath;
+  
+  // random size
+  const sizes = [40, 70, 100];
+  const chosenSize = sizes[Math.floor(Math.random() * sizes.length)];
+  peace.style.width = chosenSize + 'px';
+  peace.style.height = chosenSize + 'px'; // Ensure height equals width
+  peace.style.zIndex = '1001'; // Ensure it's above other elements
+  peace.classList.add('falling-peace');
+
+  // random fall duration
+  const fallTime = 3.5 + Math.random() * 2;
+  peace.style.animation = `fall ${fallTime}s linear`;
+
+  container.appendChild(peace);
+  document.body.appendChild(container);
+  activePeaceSigns.push(container);
+
+  peace.addEventListener('animationend', () => {
+    container.remove();
+    activePeaceSigns = activePeaceSigns.filter(p => p !== container);
+  });
+}
+
+/** Start generating falling peace signs if user is enrolled. */
+function startPeaceSigns(button) {
+  console.log("Starting peace signs...");
+
+  // Prevent multiple confetti runs
+  if (isConfettiRunning) return;
+  isConfettiRunning = true;
+
+  // If not enrolled => do nothing
+  {% if not enrolled_college %}
+    alert("Please finalize your choice before celebrating!");
+    isConfettiRunning = false;
+    return;
+  {% endif %}
+
+  // Disable the Celebrate button, change text to "Celebrating!", and fade it
+  if (button) {
+    button.disabled = true;
+    button.style.opacity = '0.5';
+    button.style.cursor = 'not-allowed';
+    button.innerText = 'Celebrating!';
+  }
+
+  let count = 0;
+  peaceInterval = setInterval(() => {
+    if (count >= 15) {
+      clearInterval(peaceInterval);
+      clearAllPeaceSigns();
+      isConfettiRunning = false;
+
+      // Re-enable the Celebrate button, reset text and opacity
+      if (button) {
+        button.disabled = false;
+        button.style.opacity = '1';
+        button.style.cursor = 'pointer';
+        button.innerText = 'Celebrate Again';
+      }
+    } else {
+      // spawn 1-2 pieces each time
+      createPeace();
+      if (Math.random() > 0.5) createPeace();
+      count++;
+    }
+  }, 600);
+}
+
+function clearAllPeaceSigns() {
+  activePeaceSigns.forEach(container => container.remove());
+  activePeaceSigns = [];
+}
+
+/** Emoji Explosion Logic
+ * Once the user has enrolled, we spawn:
+ * - Happy emojis from the enrolled card
+ * - Crying emojis from the other (faded) cards
+ * We'll do this automatically on page load if there's an enrolled_college.
+ */
+function spawnEmojisAroundCard(card, emojis=[]) {
+  // Find card bounding box
+  const rect = card.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  // We'll spawn ~8 emojis
+  for (let i = 0; i < 8; i++) {
+    const emojiEl = document.createElement('div');
+    emojiEl.classList.add('emoji-burst');
+    const chosenEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    emojiEl.innerText = chosenEmoji;
+
+    // Position near the center of the card with random offset
+    const offsetX = (Math.random() - 0.5) * rect.width * 0.5;
+    const offsetY = (Math.random() - 0.5) * rect.height * 0.5;
+
+    emojiEl.style.left = (centerX + offsetX) + 'px';
+    emojiEl.style.top = (centerY + offsetY) + 'px';
+
+    document.body.appendChild(emojiEl);
+
+    // Remove after animation
+    emojiEl.addEventListener('animationend', () => {
+      emojiEl.remove();
+    });
+  }
+}
+
+/** 
+ * Additional Function to Spawn Emojis After Finalizing Choice
+ */
+function spawnEmojisAfterFinalize() {
+  console.log("Spawning emojis after finalizing choice...");
+
+  // We'll spawn "happy" emojis on the chosen card, "crying" on others
+  const happyEmojis = ["\uD83D\uDE0A","\uD83E\uDD73","\uD83D\uDE04","\uD83C\uDF89"];  // 😊, 🥳, 😄, 🎉
+  const sadEmojis   = ["\uD83D\uDE22","\uD83D\uDE2D","\uD83D\uDE1E","\uD83D\uDE29"]; // 😢, 😭, 😞, 😩
+
+  const enrolledUid = "{{ enrolled_college.unique_id }}";
+  const allCards = document.querySelectorAll('.offer-card');
+  allCards.forEach(card => {
+    // if it's the chosen one => happy
+    if (card.id === "offer-" + enrolledUid) {
+      spawnEmojisAroundCard(card, happyEmojis);
+    } else {
+      spawnEmojisAroundCard(card, sadEmojis);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // If no selection, finalize button is disabled
+  if (!selectedUid) {
+    const finalizeBtn = document.getElementById('finalize-btn');
+    if (finalizeBtn) {
+      finalizeBtn.disabled = true;
+      finalizeBtn.style.opacity = '0.5';
+      finalizeBtn.style.cursor = 'not-allowed';
+    }
+  }
+
+  // If user is enrolled, let's do the soft explosion of emojis
+  {% if enrolled_college %}
+    // We'll spawn "happy" emojis on the chosen card, "crying" on others
+    spawnEmojisAfterFinalize();
+  {% endif %}
+});
+</script>
+{% endblock %}
