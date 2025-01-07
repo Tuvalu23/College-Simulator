@@ -260,7 +260,7 @@
           {# Define a unique gradient per short_name #}
           {% set gradient = "linear-gradient(45deg, #555555, #444444, #333333, #222222)" %}
           {% if offer.short_name == "columbia" %}
-            {% set gradient = "linear-gradient(45deg, #9BDDFF, #0066CC, #003366, #001F4D)" %}
+            {% set gradient = "linear-gradient(45deg, #9BDDFF,rgb(115, 167, 219),rgb(86, 138, 189),rgb(71, 120, 194))" %}
           {% elif offer.short_name == "stanford" %}
             {% set gradient = "linear-gradient(45deg, #8C1515, #B22222, #D7263D, #FF4040)" %}
           {% elif offer.short_name == "upenn" %}
@@ -294,7 +294,7 @@
           {% elif offer.short_name == "rice" %}
             {% set gradient = "linear-gradient(45deg, #00205B, #00357E, #003B8E, #608ED1)" %}
           {% elif offer.short_name == "washu" %}
-            {% set gradient = "linear-gradient(45deg, #5F1728, #803046, #8B3B52, #C57391)" %}
+            {% set gradient = "linear-gradient(45deg, #5F1728,rgb(186, 42, 81),rgb(52, 106, 61),rgb(13, 100, 73))" %}
           {% elif offer.short_name == "tufts" %}
             {% set gradient = "linear-gradient(45deg, #417DC1, #336CA6, #629AD9, #89B3F2)" %}
           {% elif offer.short_name == "northeastern" %}
@@ -302,17 +302,19 @@
           {% elif offer.short_name == "cornell" %}
             {% set gradient = "linear-gradient(45deg, #B31B1B, #B82F2F, #FF4040, #FF7B7B)" %}
           {% elif offer.short_name == "uva" %}
-            {% set gradient = "linear-gradient(45deg, #232D4B, #1C2542, #405887, #6A86BE)" %}
+            {% set gradient = "linear-gradient(45deg, #232D4B, #1C2542,rgb(214, 148, 68), #E57200)" %}
           {% elif offer.short_name == "gtech" %}
-            {% set gradient = "linear-gradient(45deg, #B3A369, #C7B586, #D9CF9A, #F3EAD1)" %}
+            {% set gradient = "linear-gradient(45deg, #B3A369, #C7B586,rgb(11, 68, 114), #003057)" %}
           {% elif offer.short_name == "berkeley" %}
-            {% set gradient = "linear-gradient(45deg, #003262, #0A4DA2, #185DA8, #63A4D8)" %}
+            {% set gradient = "linear-gradient(45deg, #003262, #0A4DA2,rgb(211, 170, 81), #FDB515)" %}
+          {% elif offer.short_name == "ucla" %}
+            {% set gradient = "linear-gradient(45deg, #2D68C4,rgb(94, 132, 193),rgb(232, 197, 116), #F2A900)" %}
           {% elif offer.short_name == "emory" %}
             {% set gradient = "linear-gradient(45deg, #13294B, #1C3B6D, #295194, #4F7AC0)" %}
           {% elif offer.short_name == "usc" %}
-            {% set gradient = "linear-gradient(45deg, #990000, #CC3300, #FF5722, #FF8A65)" %}
+            {% set gradient = "linear-gradient(45deg, #990000, #CC3300,rgb(201, 173, 61), #FFCC00)" %}
           {% elif offer.short_name == "umich" %}
-            {% set gradient = "linear-gradient(45deg, #00274C, #164A93, #3D7AD6, #6BA4FF)" %}
+            {% set gradient = "linear-gradient(45deg, #00274C, #164A93,rgb(230, 205, 107), #FFCB05)" %}
           {% elif offer.short_name == "utexas" %}
             {% set gradient = "linear-gradient(45deg, #BF5700, #E26A00, #DC7000, #FF9500)" %}
           {% elif offer.short_name == "nyu" %}
@@ -320,11 +322,11 @@
           {% elif offer.short_name == "georgetown" %}
             {% set gradient = "linear-gradient(45deg, #002147, #153A69, #2D4F88, #6082C4)" %}
           {% elif offer.short_name == "illini" %}
-            {% set gradient = "linear-gradient(45deg, #E84A27, #F56A48, #F77B58, #FF9B7B)" %}
+            {% set gradient = "linear-gradient(45deg, #E84A27, #F56A48,rgb(80, 122, 185), #13294b)" %}
           {% elif offer.short_name == "unc" %}
             {% set gradient = "linear-gradient(45deg, #7BAFD4, #92BFE2, #A8CCE9, #C5E2FF)" %}
           {% elif offer.short_name == "purdue" %}
-            {% set gradient = "linear-gradient(45deg, #CEB888, #D9C6A5, #E7D9C5, #FFF6E5)" %}
+            {% set gradient = "linear-gradient(45deg, #C28E0E, #CEB888,  #9D968D, #000000)" %}
           {% elif offer.short_name == "bing" %}
             {% set gradient = "linear-gradient(45deg, #005F43, #087850, #208F65, #56C096)" %}
           {% elif offer.short_name == "buffalo" %}

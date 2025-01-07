@@ -410,6 +410,21 @@ university_list = [
         ]
     },
     {
+    "name": "ucla",
+    "display_name": "University of California, Los Angeles",
+    "logo": "static/logos/ucla-logo.png",
+    "description": "The University of California, Los Angeles, is a top-ranked public research university known for its excellence in academics, athletics, and innovation.",
+    "badges": [
+        {"label": "T-20", "color": "T-20"},
+        {"label": "Public", "color": "Public"},
+        {"label": "Big Ten", "color": "Big Ten"},
+        {"label": "Urban", "color": "Urban"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Diverse", "color": "Diverse"},
+        {"label": "Athletics", "color": "Athletics"}
+    ]
+},
+    {
         "name": "uchicago",
         "display_name": "University of Chicago",
         "logo": "static/logos/uchicago-logo.jpg",
@@ -571,6 +586,7 @@ college_list = [
     ["uva", "0.15", "2.3", "1.3", "PUB", "2024-12-13", "2025-2-15", "2025-03-21"],
     ["gtech", "0.15", "N", "1.4", "PUB", "N", "2025-01-27", "2025-03-22"],
     ["berkeley", "0.15", "N", "N", "PUB", "N", "N", "2025-03-27"],
+    ["ucla", "0.15", "N", "N", "P", "N", "N", "2025-03-21"],
     ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-27"],
     ["usc", "0.17", "N", "1.3", "P", "N", "2025-01-17", "2025-03-16"],
     ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-01-27", "2025-03-30"],
@@ -850,7 +866,7 @@ def ustatus(college):
         else:
             return redirect(url_for("rejection", college=college))
     
-    if college.lower() == "northeastern" or college.lower() == "utexas":
+    if college.lower() == "northeastern" or college.lower() == "utexas" or college.lower() == "ucla":
         # Simulate decision directly
         decision = random.choice(["acceptance", "rejection"])
         if decision == "acceptance":
@@ -1009,7 +1025,7 @@ def advancedsim():
                 error_messages.append("ACT score must be an integer between 1 and 36.")
 
         try:
-            extracurriculars_val = int(extracurriculars)
+            extracurriculars_val = float(extracurriculars)
             if not (0 <= extracurriculars_val <= 10):
                 raise ValueError
         except ValueError:
@@ -1017,7 +1033,7 @@ def advancedsim():
             error_messages.append("Extracurricular activities rating must be an integer between 0 and 10.")
 
         try:
-            essays_val = int(essays)
+            essays_val = float(essays)
             if not (0 <= essays_val <= 10):
                 raise ValueError
         except ValueError:
@@ -2245,8 +2261,8 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         chances *= random.uniform(1.4, 1.8)  # UVA strongly prefers VA residents
     elif collegeList[i][0] == "gtech" and state == "GA":
         chances *= random.uniform(1.4, 1.8)  # Georgia Tech heavily favors GA residents
-    elif collegeList[i][0] == "berkeley" and state == "CA":
-        chances *= random.uniform(1.2, 1.6)  # UC Berkeley strongly prefers CA residents
+    elif collegeList[i][0] == "berkeley" and state == "CA" or collegeList[i][0] == "ucla" and state == "CA":
+        chances *= random.uniform(1.3, 1.7)  # UC Berkeley strongly prefers CA residents
     elif collegeList[i][0] == "umich" and state == "MI":
         chances *= random.uniform(1.3, 1.5)  # University of Michigan gives preference to MI residents
     elif collegeList[i][0] == "illini" and state == "IL":
@@ -2487,9 +2503,9 @@ def chances():
                     testOptional=testOptional,
                     sat=int(sat),
                     act=int(act),
-                    extracurriculars=int(extracurriculars),
+                    extracurriculars=float(extracurriculars),
                     ap_courses=int(ap_courses),
-                    essayStrength=int(essayStrength),
+                    essayStrength=float(essayStrength),
                     gpa=float(gpa),
                     interviewStrength=interview_strength,  # Reuse the initial interview strength
                     app_type="RD",
@@ -2561,9 +2577,9 @@ def chances():
             testOptional=testOptional,
             sat=int(sat),
             act=int(act),
-            extracurriculars=int(extracurriculars),
+            extracurriculars=float(extracurriculars),
             ap_courses=int(ap_courses),
-            essayStrength=int(essayStrength),
+            essayStrength=float(essayStrength),
             gpa=float(gpa),
             interviewStrength=interview_score,
             app_type=app_type,
@@ -3361,12 +3377,14 @@ def adv_login(college):
     name = user_data.get("name", "User")
 
     if request.method == "POST":
-        if college.lower() == "utexas":
+        if college.lower() == "utexas" or college.lower() == "ucla":
             decision_code = decision_info.get("decision_code", "R")
             if decision_code in ["A", "ED", "D/A"]:
                 return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
-            elif decision_code in ["D", "D/R"]:
+            elif decision_code in ["D/R"]:
                 return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+            elif decision_code in ["D"]:
+                return redirect(url_for("adv_deferred", college=college, unique_id=unique_id))
             elif decision_code in ["D/W", "W"]:
                 return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
             elif decision_code in ["D/W/A", "W/A"]:
@@ -3391,12 +3409,14 @@ def adv_login(college):
             )
 
         # Redirect based on the decision code for Northeastern
-        if college.lower() == "northeastern" or college.lower() == "utexas":
+        if college.lower() == "northeastern" or college.lower() == "utexas" or college.lower() == "ucla":
             decision_code = decision_info.get("decision_code", "R")
             if decision_code in ["A", "ED", "D/A"]:
                 return redirect(url_for("adv_acceptance", college=college, unique_id=unique_id))
-            elif decision_code in ["D", "D/R"]:
+            elif decision_code in ["R", "D/R"]:
                 return redirect(url_for("adv_rejection", college=college, unique_id=unique_id))
+            elif decision_code in ["D"]:
+                return redirect(url_for("adv_deferred", college=college, unique_id=unique_id))
             elif decision_code in ["D/W", "W"]:
                 return redirect(url_for("adv_waitlist", college=college, unique_id=unique_id))
             elif decision_code in ["D/W/A", "W/A"]:

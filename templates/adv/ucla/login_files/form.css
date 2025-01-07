@@ -1,0 +1,111 @@
+ element {
+            width: 300px;
+        }
+
+        .fieldset {
+            border: 1px solid #808080;
+            padding: 32px;
+        }
+
+        .text__input {
+            box-sizing: border-box;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #EBEBEB;
+            background-size: auto;
+            background-size: 24px;
+            font-size: 16px;
+            line-height: 24px;
+            padding: 8px 24px 8px 16px;
+            border: 1px solid #808080;
+            border-radius: 2px;
+            color: #666;
+        }
+
+        .text__label, .text__input, .text__help, .text__error {
+            display: block;
+        }
+
+        button, input {
+            overflow: visible;
+        }
+
+        .text__label {
+            display: block;
+            font-size: 16px;
+            line-height: 24px;
+            color: #333;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        button, input, optgroup, select, textarea {
+            font-family: inherit;
+            font-size: 100%;
+            line-height: 1.15;
+            margin: 0;
+        }
+
+        .btn--lightbg {
+            background: #00598C;
+            color: #fff;
+        }
+
+        .btn {
+            padding: 12px 16px 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 2px;
+            border: 2px solid transparent;
+            line-height: 1.25;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        button, [type="button"], [type="reset"], [type="submit"] {
+            -webkit-appearance: button;
+        }
+
+        [type="checkbox"], [type="radio"] {
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .select__label {
+            display: block;
+            font-size: 16px;
+            line-height: 24px;
+            color: #333;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .select__menu {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #EBEBEB url("https://admission.ucla.edu/img/icons/arrow-down-defaultblue.svg") no-repeat 98.5% 50%;
+            background-size: auto;
+            background-size: 24px;
+            font-size: 16px;
+            line-height: 24px;
+            padding: 8px 24px 8px 16px;
+            border: 1px solid #808080;
+            border-radius: 2px;
+            color: #666;
+        }
+
+        button, select {
+            text-transform: none;
+        }
+
+        legend {
+            box-sizing: border-box;
+            color: inherit;
+            display: table;
+            max-width: 100%;
+            padding: 0;
+            white-space: normal;
+        }

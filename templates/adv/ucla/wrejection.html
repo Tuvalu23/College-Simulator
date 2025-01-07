@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)file:///C:/Users/wadbu/Downloads/ucla.html -->
+<html class="no-js" lang="en"><head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	UCLA myApplication Status
+</title><meta http-equiv="imagetoolbar" content="no"><link rel="icon" type="image/x-icon" href="https://bruins.admission.ucla.edu/favicon.ico"><meta name="Description" content="UCLA (University of California, Los Angeles) is the largest UC campus in terms of enrollment, and one of the few public research universities located in a major city."><meta name="Keywords" content="UCLA, University of California Los Angeles, UCLA Bruins">
+    <!-- javascript -->
+    <link href="./ustatus_files/myApplication.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    button, input, optgroup, select, textarea {
+        font-family: inherit;
+        font-size: 100%;
+        line-height: 1.15;
+        margin: 0
+    }
+
+    button, input {
+        overflow: visible
+    }
+
+    button, select {
+        text-transform: none
+    }
+
+    button, [type="button"], [type="reset"], [type="submit"] {
+        -webkit-appearance: button
+    }
+
+    button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+        border-style: none;
+        padding: 0
+    }
+
+    button:-moz-focusring, [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring {
+        outline: 1px dotted ButtonText
+    }
+
+
+
+        .btn {
+            padding: 12px 16px 8px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 2px;
+            border: 2px solid transparent;
+            line-height: 1.25;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none
+        }
+
+            .btn:focus {
+                outline: none
+            }
+
+            .btn:disabled {
+                cursor: not-allowed
+            }
+
+            .btn.play::before {
+                display: inline-block;
+                content: '';
+                width: 15px;
+                height: 15px;
+                background: url("/img/icons/play-white.svg");
+                background-size: contain;
+                background-position: 0 -1px;
+                vertical-align: middle
+            }
+
+        .btn--lightbg {
+            background: #00598C;
+            color: #fff
+        }
+
+            .btn--lightbg:visited {
+                background: #00598C;
+                color: #fff
+            }
+
+            .btn--lightbg:hover {
+                background: #0079BF
+            }
+
+            .btn--lightbg:focus {
+                background: #0079BF;
+                outline: 1px dotted #0079BF;
+                outline-offset: 2px
+            }
+
+            .btn--lightbg:active {
+                background: #003B5C;
+                outline: none
+            }
+
+            .btn--lightbg:disabled {
+                background: #757575;
+                color: #fff
+            }
+
+        .btn--darkbg {
+            color: black;
+            background: #FFD100
+        }
+
+            .btn--darkbg:visited {
+                color: black;
+                background: #FFD100
+            }
+
+            .btn--darkbg:hover {
+                background: #FFE500;
+                color: black
+            }
+
+            .btn--darkbg:focus {
+                background: #FFE500;
+                outline: 1px dotted #fff;
+                outline-offset: 2px
+            }
+
+            .btn--darkbg:active {
+                background: #FFBF0F;
+                outline: none
+            }
+
+            .btn--darkbg:disabled {
+                background: #E5E5E5
+            }
+
+            .btn--darkbg.play::before {
+                background: url("/img/icons/play-black.svg");
+                background-size: contain
+            }
+
+        .btn--secondary {
+            background: #fff;
+            color: #00598C;
+            border: 2px solid #00598C
+        }
+
+            .btn--secondary:visited {
+                background: #fff;
+                color: #00598C;
+                border: 2px solid #00598C
+            }
+
+            .btn--secondary:hover {
+                background: #0079BF;
+                border-color: #0079BF;
+                color: #fff
+            }
+
+            .btn--secondary:focus {
+                background: #0079BF;
+                border-color: #0079BF;
+                outline: 1px dotted #0079BF;
+                outline-offset: 2px;
+                color: #fff
+            }
+
+            .btn--secondary:active {
+                background: #003B5C;
+                color: #fff;
+                outline: none
+            }
+
+            .btn--secondary:disabled {
+                border-color: #757575;
+                color: #757575;
+                background: #fff
+            }
+
+            .btn--secondary.play:hover::before, .btn--secondary.play:focus::before {
+                background: url("/img/icons/play-white.svg");
+                background-size: contain
+            }
+
+            .btn--secondary.play::before {
+                background: url("/img/icons/play-defaultblue.svg");
+                background-size: contain
+            }
+
+        .btn--tertiary {
+            background: transparent;
+            color: #00598C
+        }
+
+            .btn--tertiary:visited {
+                background: transparent;
+                color: #00598C
+            }
+
+            .btn--tertiary:hover {
+                background: #0079BF;
+                color: #fff
+            }
+
+            .btn--tertiary:focus {
+                background: #0079BF;
+                outline: 1px dotted #0079BF;
+                outline-offset: 2px;
+                color: #fff
+            }
+
+            .btn--tertiary:active {
+                background: #003B5C;
+                color: #fff;
+                outline: none
+            }
+
+            .btn--tertiary:disabled {
+                color: #757575;
+                background: transparent
+            }
+
+            .btn--tertiary.play:hover::before, .btn--tertiary.play:focus::before {
+                background: url("/img/icons/play-white.svg");
+                background-size: contain
+            }
+
+            .btn--tertiary.play::before {
+                background: url("/img/icons/play-defaultblue.svg");
+                background-size: contain
+            }
+
+        .btn--group {
+            background: transparent
+        }
+
+        .btn--group-left, .btn--group-center, .btn--group-right {
+            background: #fff;
+            color: #00598C;
+            border: 2px solid #00598C
+        }
+
+            .btn--group-left:visited, .btn--group-center:visited, .btn--group-right:visited {
+                background: #fff;
+                color: #00598C;
+                border: 2px solid #00598C
+            }
+
+            .btn--group-left:hover, .btn--group-center:hover, .btn--group-right:hover {
+                color: #fff;
+                border-color: #0079BF;
+                background: #0079BF
+            }
+
+            .btn--group-left:focus, .btn--group-center:focus, .btn--group-right:focus {
+                color: #fff;
+                background: #0079BF;
+                outline: 1px dotted #0079BF;
+                outline-offset: 2px
+            }
+
+            .btn--group-left:active, .btn--group-center:active, .btn--group-right:active {
+                color: #fff;
+                background: #003B5C;
+                border-color: #003B5C;
+                outline: none
+            }
+
+            .btn--group-left:disabled, .btn--group-center:disabled, .btn--group-right:disabled {
+                background: #757575;
+                border-color: #757575;
+                color: #fff
+            }
+    </style>
+    </head>
+<body>
+    <form method="post" action="https://bruins.admission.ucla.edu/myApplication/Status.aspx" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMxNjc3NTM3NQ9kFgJmD2QWAgIDD2QWBgIBD2QWAgIBDw8WAh4EVGV4dAUTQmVuamFtaW4gTSBSdWRpbnNraWRkAgMPZBYEAgEPFgQeBWNsYXNzBQZhY3RpdmUeCWlubmVyaHRtbAUhPGEgaHJlZj0iamF2YXNjcmlwdDo7Ij5TdGF0dXM8L2E+ZAIDDxYCHgdWaXNpYmxlaGQCBw9kFgICAQ9kFgJmD2QWAmYPZBYCZg9kFgJmD2QWBgIBDxYCHwAFFEFwcGxpY2F0aW9uIFJlY2VpdmVkZAIDDxYCHwIFiAFCZW5qYW1pbiBNIFJ1ZGluc2tpPGJyIC8+ODAgRWFzdCBFbmQgQXZlbnVlPGJyIC8+QXB0LiA3azxiciAvPk5ldyBZb3JrLCBOWSAxMDAyODxiciAvPmJlbnJ1ZGluc2tpMUBnbWFpbC5jb208YnIgLz5NYWpvcjogUHJlIERhdGEgVGhlb3J5ZAIFDxYCHwIFE0RlYXImbmJzcDtCZW5qYW1pbjpkZEgpl35lVY6fHfI1bihNNG7s6qboyRyDnnVRQsvdlTQl">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CE7C4F76">
+</div>
+        <div id="wrapper">
+            <div id="top">
+                &nbsp;
+            </div>
+            <div id="visual-wrapper">
+                <div id="ucla-logo">
+                    <img src="./ustatus_files/banner.png" style="width: 50%; height: auto; margin-bottom: -35px;">
+                    <a href="http://www.ucla.edu/" target="_blank" class="ucla-link"><span>UCLA&nbsp;</span></a><a href="http://www.admission.ucla.edu/" target="_blank" class="dept-link"><span>UCLA Office of Undergraduate Admission</span></a>
+                </div>
+                <div class="visualClear">
+                </div>
+                <div id="content" class="">
+                    <div id="header">
+                        <a id="skip-nav" href="https://bruins.admission.ucla.edu/myApplication/Status.aspx#block-admissions2020-main-menu" class="visually-hidden focusable">
+                            Skip to navigation
+                        </a></div>
+                    <div id="app-header">
+                        <div id="app-title">
+                            <p>
+                                &nbsp;
+                            </p>
+                        </div>
+                        <div id="_LoginStatus">
+                            <div id="app-logout">
+                                <p>
+                                    Logged in as: <strong>
+                                        <span id="_lblApplicant">{{ name }}</span></strong> | <a href="https://bruins.admission.ucla.edu/myApplication/Logoff.aspx" class="ucla campus">Log off</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="visualClear">
+                    </div>
+                        <div class="wide-margin" style="margin-left: 10px; width: 97%; margin: 0 auto;">
+                            <div id="body-content" style="margin-top: 10px; margin-bottom: 30px; line-height: 1.8;">
+                            
+                                
+   
+                <tr>
+                    <td colspan="2" style="text-align: right;"><span style="text-align: right; margin-left: 810px;">{{ date }}</td><br><br>
+                        <br><br><br>
+                </tr>
+
+                <tr>
+                    <td id="ContentPlaceHolder1_ctl00_tdSalutation" colspan="2">Dear&nbsp;{{ name }}:</td><br><br>
+		
+                </tr>
+                <tr> 
+                    <td colspan="2">
+                        After careful review of your application for admission and your position on the waitlist, we regret to inform you that we are unable to offer you admission for Fall 2025. UCLA continues to receive far more applications for admission than we can accommodate in our freshman class. For Fall 2025, we received over 146,000 freshman applications and were able to admit fewer than one in ten. This year, we were only able to extend admission to a limited number of students from the waitlist.
+                        <br>
+                        <br>
+                        Each application is unique, and each student presents wonderful attributes and potential. Our work is challenging, but our commitment to being thorough in our review process is sincere. Every application is read at least twice, with consideration given to accomplishments both in and outside of the classroom, and we are mindful of the opportunities and challenges students face while achieving so much in their schools and communities. Ultimately, no single attribute or achievement guarantees admission—there are simply too many well-qualified, accomplished, and capable applicants for the number of spaces available at UCLA.
+                        <br>
+                        <br>
+                        If attending UCLA remains your ambition, you should know that there is another opportunity for admission later in your academic career: applying as a junior-level transfer student. You can learn more about the transfer option at <a href="https://admission.ucla.edu/transfer" target="_blank">www.admission.ucla.edu/transfer</a>.
+                        <br>
+                        <br>
+                        While no language in a decision letter can lessen the disappointment you may feel, please know that we understand the emotional investment you have made in this process and take this responsibility very seriously. We wish you all the best in your collegiate experience.
+                        <br>
+                        <br>
+                        Sincerely,
+                        <br>
+                        <br>
+                        Effron Boes<br>
+                        UCLA Undergraduate Admission
+                        <br>
+                    </td>
+                    
+                    
+                </tr>
+            </tbody></table>
+        </td>
+	</tr>
+</tbody></table>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="footer">
+                        <ul>
+                            <li>&nbsp;</li>
+                        </ul>
+                    </div>
+                    <div id="colophon">
+                        <ul>
+                            <li id="copyright"><a href="http://www.universityofcalifornia.edu/" target="_blank">University
+                            of California</a> © 2024 UC Regents</li>
+                            <li><a href="http://www.ucla.edu/terms.html" target="_blank">Terms of Use / Privacy
+                            Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+        </div>
+    </form>
+
+
+</body></html>

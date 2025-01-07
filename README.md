@@ -38,7 +38,7 @@ A Flask-based web application that simulates the admissions process for multiple
 - [X] Notre Dame
 - [X] Purdue
 - [X] UT Austin
-- [ ] UCLA
+- [X] UCLA
 - [ ] Tulane
 
 ## TO GET ADVANCED RIBBONS
