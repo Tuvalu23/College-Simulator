@@ -1,63 +1,154 @@
 <!DOCTYPE html>
-<!-- saved from url=(0077)file:///C:/Users/wadbu/Downloads/College-Simulator/templates/gtech/login.html -->
-<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml" class="no-touch"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="shortcut icon" href="https://application-gatech-edu.cdn.technolutions.net/favicon.ico"><link href="./ustatus_files/base.css" rel="stylesheet"><link href="./ustatus_files/base(1).css" rel="stylesheet"><link href="./ustatus_files/build-fonts.css" rel="stylesheet"><link href="./ustatus_files/build-mobile-global.css" rel="stylesheet"><link href="./ustatus_files/build.css" rel="stylesheet"><link href="./ustatus_files/css" rel="stylesheet" class="cr"><link href="./ustatus_files/css(1)" rel="stylesheet" class="cr"><link type="text/css" rel="stylesheet" href="./ustatus_files/css(2)" media="all" class="cr"><script src="./ustatus_files/base.js.download"></script><script>/*<![CDATA[*/FW.Config['firstDay'] = 0; FW.Config['Citizenship.Default.Country'] = 'US'; FW.Config['Citizenship.PR'] = 'Permanent Resident'; FW.Config['CDN'] = '//slate-technolutions-net.cdn.technolutions.net'; /*]]>*/</script><script src="./ustatus_files/build-mobile-global.js.download"></script><script src="./ustatus_files/password.js.download"></script><script async="async" src="./ustatus_files/ping"></script><script async="async" id="session_expires" src="./ustatus_files/session.js.download" data-now="1733110676" data-realm="" data-service-extend="/account/login?cmd=session_extend" data-service-login="/account/login?cmd=session_login" data-service-check="/account/login?cmd=session_check&amp;noauth=1" data-expires="0"></script><style>/*<![CDATA[*/html > body { line-height: normal; } ul.cr, li.cr { margin: 0; padding: 0; } #content { clear: both; padding: 15px; } #global { float: right; } #global ul, #global li { list-style: none; margin: 0; padding: 0; }/*]]>*/</style><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" class="cr"><title>Application Status</title><script async="" src="./ustatus_files/ping(1)"></script><script async="" src="./ustatus_files/ping(2)"></script></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Status</title>
+  
+  <!-- Import Montserrat and Nunito fonts with lighter weights -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;350;400&family=Nunito:wght@400&display=swap" rel="stylesheet">
 
+  <style>
+    /* Keyframes for Arrow Animation */
+    @keyframes arrowMove {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
 
-<body><noscript><div style="background: #ffffcc; border-bottom: 2px solid #cccc99; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses scripting to enhance your browsing experience. <a href="https://support.google.com/answer/23852">Enable JavaScript</a> in your browser and then reload this website.</div>
-</noscript><div id="netblock" style="background: #ffffcc; border-bottom: 2px solid #cccc99; display: none; padding: 5px 10px; margin-bottom: 0; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">This website uses resources that are being blocked by your network. Contact your network administrator for more information.</div><script>/*<![CDATA[*/if (window['FW'] == null) document.getElementById('netblock').style['display'] = 'block';/*]]>*/</script>
+    /* Keyframes for Slide-Up Animation */
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
 
-<div id="page"><div class="c_container-fluid c_bg-gold-grad c_py-4 cr"><div class="c_row cr"><div class="c_col cr"><div class="c_container cr"><div class="c_row cr"><div class="c_col-lg-3 c_col cr"><a href="https://admission.gatech.edu/" class="cr"><img class="c_img-fluid cr" src="./ustatus_files/gt-logo-oneline-white.svg" alt="GA Tech Logo"></a></div>
+    /* Arrow Animation Class */
+    .animated-arrow {
+      animation: arrowMove 1s ease-in-out infinite;
+    }
 
-<div class="c_col-lg-9 c_col c_text-right cr"><button class="c_navbar-toggler c_d-lg-none c_text-center cr" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation"><span class="c_navbar-toggler-icon cr"><i class="c_fas c_fa-bars cr" style="color:#fff; font-size: 2.0rem;"></i></span><br class="cr"><span style="font-weight: 600; font-size: 1.0rem;" class="cr">Menu</span></button></div></div></div></div></div></div><div class="c_container c_pt-2 c_page-title cr"><div class="c_row cr">
-	<div class="c_col cr"><h2 class="cr">Undergraduate Admission</h2></div></div></div>
-	
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    /* Hover Effect for Header */
+    .hover-grow:hover {
+      transform: scale(1.05);
+    }
 
-	<main role="main" class="cr">
-		<div class="c_container cr">
-			<!-- Gold Banner with Decision Release Notice -->
-			 <strong>
-			<div style="background-color: #b2a368; color: white; font-family: 'Montserrat', sans-serif; padding: 15px; text-align: center; margin-bottom: 20px;">
-				<h2>Decision Release Notice</h2>
-			</div>
-		</strong>
-	
-			<!-- Main Content -->
-			<div class="c_row cr">
-				<div class="c_col cr">
-					<div style="background-color: #f9f9e8; border: 1px solid #d1b77a; padding: 20px; margin: 20px 0;">
-						<p><strong>Admission decisions will be available:</strong></p>
-						<p>{{ date }} at 12:00 PM EST</p>
-						<p>
-							Once your decision is available, select
-							<strong>"Click to View Decision Letter"</strong> below:
-						</p>
-						<p style="font-style: italic;">
-							(This option will not be available until {{ date }} at 12:00 PM EST)
-						</p>
-					</div>
-	
-					<!-- Link to View Decision Letter -->
-					<div style="background-color: #ffffcc; border: 1px solid #cccc99; padding: 15px; margin: 20px 0;">
-						<p>The updates to your application were posted {{ date }}.</p>
-						<strong>
-						<form action="{{ url_for('ustatus', college=college) }}" method="post" style="display: inline;">
-							<button type="submit" style="background: none; color: #0056b3; border: none; padding: 0; font: inherit; text-decoration: underline; cursor: pointer;">
-								Click to View Decision Letter
-							</button>
-						</form>
-					</strong>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
-	
-	
-	
-	
-	
-	
-	<footer class="c_container-fluid cr"><div class="c_row cr"><div class="c_container cr"><div class="c_row cr"><div class="c_col c_text-right c_social cr"><a href="https://www.facebook.com/GTadmission" target="_blank" class="cr"><i class="c_fab c_fa-facebook-f cr"></i></a><a href="https://twitter.com/gtadmission" target="_blank" class="cr"><i class="c_fab c_fa-twitter cr"></i></a><a href="https://www.instagram.com/gtadmission/" target="_blank" class="cr"><i class="c_fab c_fa-instagram cr"></i></a><a href="https://admission.gatech.edu/podcast" target="_blank" class="cr"><i class="c_fas c_fa-podcast cr"></i></a><a href="https://www.youtube.com/user/GTAdmission" target="_blank" class="cr"><i class="c_fab c_fa-youtube cr"></i></a><a href="https://www.reddit.com/user/GTAdmission/" target="_blank" class="cr"><i class="c_fab c_fa-reddit cr"></i></a><a href="https://sites.gatech.edu/admission-blog/" target="_blank" class="cr"><i class="c_fas c_fa-blog cr"></i></a></div></div></div></div><div class="c_row c_footer-gold cr" id="c_gold-footer"><div class="c_container cr"><div class="c_row cr"><div class="c_col-md-3 cr"><p class="c_solid-white-border cr"><span class="c_font-weight-bold cr">Georgia Institute of Technology</span><br class="cr">
-											North Avenue, Atlanta, GA 30332<br class="cr"><i class="fas fa-phone"></i>
-404.894.2000<br class="cr"><a href="http://map.gatech.edu/" class="cr"><i class="fas fa-map-marker-alt"></i>Campus Map</a><br class="cr"><a href="https://admission.gatech.edu/#" class="cr"><i class="fas fa-wheelchair"></i>Enable Accessibility</a></p></div><div class="c_col-md-3 cr"><ul class="c_solid-white-border cr"><li class="cr"><span style="padding-left:10px;"><strong>General</strong></span></li><li class="cr"><a href="https://directory.gatech.edu/" class="cr">Directory</a></li><li class="cr"><a href="https://careers.gatech.edu/" class="cr">Employment</a></li><li class="cr"><a href="https://www.gatech.edu/emergency" class="cr">Emergency Information</a></li><li class="cr"><a href="https://get.adobe.com/reader/" class="cr">Download Adobe Acrobat Reader</a></li></ul></div><div class="c_col-md-3 cr"><ul class="c_solid-white-border cr"><li class="cr"><span style="padding-left:10px;"><strong>Legal</strong></span></li><li class="cr"><a href="https://www.policylibrary.gatech.edu/employment/equal-opportunity-nondiscrimination-and-anti-harassment-policy" class="cr">Equal Opportunity Nondiscrimination, and Anti-Harassment Policy</a></li><li class="cr"><a href="https://www.gatech.edu/privacy" class="cr">Legal &amp; Privacy Information</a></li><li class="cr"><a href="https://gbi.georgia.gov/human-trafficking-notice" class="cr">Human Trafficking Notice</a></li><li class="cr"><a href="https://diversity.gatech.edu/equity-compliance/our-office" class="cr">Title IX/Sexual Misconduct</a></li><li class="cr"><a href="https://osi.gatech.edu/hazing-conduct-history" class="cr">Hazing Public Disclosures</a></li><li class="cr"><a href="https://www.gatech.edu/accessibility/" class="cr">Accessibility</a></li><li class="cr"><a href="https://www.gatech.edu/accountability/" class="cr">Accountability</a></li><li class="cr"><a href="https://www.gatech.edu/accreditation/" class="cr">Accreditation</a></li><li class="cr"><a href="https://secure.ethicspoint.com/domain/media/en/gui/76612/index.html" class="cr">Report Free Speech and Censorship Concerns</a></li></ul></div><div class="c_col-md-3 c_text-right cr"><a href="https://admission.gatech.edu/" class="cr"><img src="./ustatus_files/gt-logo-fullname-wht.svg" width="200px" class="c_d-inline-block c_align-top cr" alt="GA Tech Logo"></a><br class="cr"><p class="c_copyright cr">©2023 Georgia Institute of Technology</p></div></div></div></div></footer></div><div class="progress_box" style="visibility: hidden;"></div><div class="progress_box" style="visibility: hidden;"></div></body></html>
+    /* Slide-Up Animation Class */
+    .slide-up {
+      animation: slideUp 1s forwards;
+    }
+
+    /* Button Styles */
+    .view-button {
+      padding: 17px 91px;
+      background-color: #112f53; /* GTech dark blue */
+      color: #fff;
+      border: none;
+	  border-radius: 3px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bold;
+      text-decoration: underline;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .view-button:hover {
+      background-color: #afa46e; /* GTech gold */
+      color: #112f53; /* GTech dark blue */
+      text-decoration: none;
+    }
+
+    /* Ensure the white box centers correctly */
+    #page2-content {
+      position: absolute;
+      width: 47%;
+      max-width: 700px;
+      background-color: #fff;
+      padding: 50px;
+      font-family: 'Montserrat', sans-serif;
+      color: #000;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(100px);
+    }
+
+  </style>
+
+</head>
+<body style="margin:0; padding:0; width:100%; height:100%; overflow:hidden; font-family: 'Montserrat', sans-serif;">
+
+  <!-- Page Container -->
+  <div id="container" style="position:absolute; width:100%; height:100%; overflow:hidden;">
+    
+    <!-- PAGE 1 -->
+    <div id="page1" 
+         style="position:absolute; width:100%; height:100%; top:0; left:0; 
+                background-color: #112f53; /* Solid dark blue background */ 
+                transition: transform 0.5s ease-in-out; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+      
+      <!-- Content -->
+      <div style="position:relative; width:100%; height:100%; 
+                  display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1;">
+        
+        <img src="./ustatus_files/gtech.png" alt="GTech Logo" style="margin: 0 auto; width: 40%;">
+        
+        <!-- Text with Arrow -->
+        <h1 style="font-size:4.7rem; color:#fff; font-weight:400; margin:20px 0; text-align:center; display:flex; align-items:center; gap:20px; cursor:pointer; transition: transform 0.3s ease;" 
+            class="hover-grow" onclick="goToPage2()">
+          DECISION AVAILABLE NOW 
+          <span style="font-size:6rem; font-weight:100; cursor:pointer;" 
+                class="animated-arrow"
+                onclick="goToPage2()">
+                ❭
+          </span>
+        </h1>
+        
+      </div>
+    </div>
+    
+    <!-- PAGE 2 -->
+    <div id="page2" 
+         style="position:absolute; width:100%; height:100%; top:0; left:100%; 
+                background-color: #afa46e; /* Solid gold background */ 
+                display:flex; align-items:center; justify-content:center; 
+                transition: transform 0.5s ease-in-out;">
+      
+      <!-- White Box Content -->
+      <div id="page2-content">
+  
+        <h2 style="font-size:1.5rem; margin-bottom:30px; font-weight: 350;">
+          Click the button below to view your decision
+        </h2>
+  
+        <form action="{{ url_for('ustatus', college=college) }}" method="POST" style="margin-top:20px; margin-bottom: 40px;">
+          <button type="submit" 
+                  class="view-button">
+            VIEW DECISION
+          </button>
+        </form>
+
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function goToPage2() {
+      // Slide page1 out to the left
+      document.getElementById('page1').style.transform = 'translateX(-100%)';
+
+      // Slide page2 into view
+      document.getElementById('page2').style.transform = 'translateX(-100%)';
+
+      // Trigger the slide-up animation for the white box after transition
+      setTimeout(() => {
+        const page2Content = document.getElementById('page2-content');
+        page2Content.classList.add('slide-up');
+        page2Content.style.opacity = '1';
+      }, 500); // Match this timeout with the transition duration of page sliding (0.5s)
+    }
+  </script>
+
+</body>
+</html>
+
