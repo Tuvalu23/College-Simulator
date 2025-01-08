@@ -499,6 +499,12 @@
                 <div id="essays-message" class="validation-message">Must be between 0 and 10</div>
                 <div id="essays-valid" class="valid-check">Looks good ✅</div>
                 <div id="essays-invalid" class="invalid-check">Invalid essays rating ❌</div>
+
+                <label for="lors">Letters of Recommendaton rating (0 to 10)</label>
+                <input type="number" name="lors" id="lors" min="0" max="10" step="0.1" required>
+                <div id="lors-message" class="validation-message">Must be between 0 and 10</div>
+                <div id="lors-valid" class="valid-check">Looks good ✅</div>
+                <div id="lors-invalid" class="invalid-check">Invalid LOR rating ❌</div>
     
                 <label for="ap_courses">AP courses taken (including senior year)</label>
                 <input type="number" name="ap_courses" id="ap_courses" min="0" step="1" required>
@@ -597,6 +603,11 @@
         const essaysValid = document.getElementById('essays-valid');
         const essaysInvalid = document.getElementById('essays-invalid');
 
+        const lorsInput = document.getElementById('lors');
+        const lorsMessage = document.getElementById('lors-message');
+        const lorsValid = document.getElementById('lors-valid');
+        const lorsInvalid = document.getElementById('lors-invalid');
+
         const apInput = document.getElementById('ap_courses');
         const apMessage = document.getElementById('ap-message');
         const apValid = document.getElementById('ap-valid');
@@ -619,6 +630,7 @@
         satInput.addEventListener('input', () => {validateSAT(); checkAllValid();});
         actInput.addEventListener('input', () => {validateACT(); checkAllValid();});
         extracurricularsInput.addEventListener('input', () => {validateExtracurriculars(); checkAllValid();});
+        lorsInput.addEventListener('input', () => {validateLORS(); checkAllValid();});
         essaysInput.addEventListener('input', () => {validateEssays(); checkAllValid();});
         apInput.addEventListener('input', () => {validateAP(); checkAllValid();});
         raceSelect.addEventListener('change', checkAllValid);
@@ -692,6 +704,15 @@
             }
         }
 
+        function validateLORS() {
+            const val = parseFloat(lorsInput.value);
+            if (!isNaN(val) && val >= 0 && val <= 10) {
+                showValid(lorsValid, lorsInvalid, lorsMessage);
+            } else {
+                showInvalid(lorsValid, lorsInvalid, lorsMessage);
+            }
+        }
+
         function validateEssays() {
             const val = parseFloat(essaysInput.value);
             if (!isNaN(val) && val >= 0 && val <= 10) {
@@ -739,6 +760,7 @@
             // Check essays
             if (essaysInvalid.style.display === 'block') return false;
             // Check AP
+            if (lorsInvalid.style.display === 'block') return false;
             if (apInvalid.style.display === 'block') return false;
             // Check race and gender
             if (!raceSelect.value) return false;

@@ -157,6 +157,7 @@
   .btn-submit {
     background: linear-gradient(45deg, #ff7f50, #ff6f91);
   }
+
   .btn-celebrate {
     background: linear-gradient(45deg, #007bff, #28a745);
   }
@@ -220,18 +221,12 @@
     {# ------------------------------------------------------------ #}
     {# 2) Check if there's an Early Decision acceptance offer       #}
     {# ------------------------------------------------------------ #}
-    {% set has_ed_offer = false %}
-    {% if accepted_offers %}
-      {% for off in accepted_offers %}
-        {% if off.app_type == "ED" %}
-          {% set has_ed_offer = true %}
-        {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% set ed_offers = accepted_offers | selectattr('app_type', 'equalto', 'ED') | list %}
+    {% set has_ed_offer = ed_offers | length > 0 %}
 
     {% if has_ed_offer %}
       <div style="text-align:center; color:red; font-weight:600; font-size:1.1rem; margin: -10px 0 30px;">
-        Because you have an Early Decision acceptance, you are contractually expected to commit.
+        Because you have an Early Decision acceptance, you are contractually expected to commit to that school.
       </div>
     {% endif %}
 
@@ -255,6 +250,8 @@
     <div class="offers-list">
       {% if accepted_offers and accepted_offers|length > 0 %}
         {% for offer in accepted_offers %}
+        {# If has_ed_offer is True, only render ED offers #}
+        {% if not has_ed_offer or offer.app_type == "ED" %}
           {% set is_chosen = (enrolled_college and enrolled_college.unique_id == offer.unique_id) %}
 
           {# Define a unique gradient per short_name #}
@@ -352,12 +349,8 @@
 
             <h4>{{ offer.display_name }}</h4>
           </div>
+          {% endif %}
         {% endfor %}
-      {% else %}
-        <p style="text-align:center; font-size: 1.5rem;">
-          It looks like you have no acceptance offers at this time. It's okay to attend a community college 
-          or explore other future pathways. You’ve got this!
-        </p>
       {% endif %}
     </div>
 
@@ -384,7 +377,6 @@
 
       <a href="{{ url_for('results') }}" class="btn btn-back">Back to Results</a>
       <a href="{{ url_for('dashboard') }}" class="btn btn-dashboard">Back to Dashboard</a>
-      <a href="{{ url_for('advancedsim') }}" class="btn btn-submit">New Simulation</a>
     </div>
   </form>
 </div>
