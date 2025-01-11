@@ -18,7 +18,7 @@ max-width: 40px; /* Prevents oversized peace signs */
             transform: translateY(0);
         }
         100% {
-            transform: translateY(100vh); /* Fall to the bottom of the screen */
+            transform: translateY(150vh); /* Fall to the bottom of the screen */
         }
     }
 
@@ -28,7 +28,7 @@ max-width: 40px; /* Prevents oversized peace signs */
             transform: translateX(0);
         }
         50% {
-            transform: translateX(40px); /* Oscillate 20px left and right */
+            transform: translateX(60px); /* Oscillate 20px left and right */
         }
     }
 
@@ -204,7 +204,7 @@ ul.stats li, .general ul.stats li {
     
         // Generate a random size for peace signs
         function randomSize() {
-            const sizes = [50, 70, 90]; // Sizes in pixels
+            const sizes = [30, 43, 56]; // Sizes in pixels
             return sizes[Math.floor(Math.random() * sizes.length)];
         }
     
@@ -249,7 +249,7 @@ ul.stats li, .general ul.stats li {
                     clearAllPeaceSigns(); // Remove all peace signs
                 } else {
                     // Generate 1-2 peace signs per interval
-                    for (let i = 0; i < 1 + Math.floor(Math.random() * 10); i++) {
+                    for (let i = 0; i < 1 + Math.floor(Math.random() * 15); i++) {
                         createPeace();
                     }
                     timeElapsed += 0.5; // Increment time by 0.5 seconds

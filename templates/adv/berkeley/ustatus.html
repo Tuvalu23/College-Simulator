@@ -408,31 +408,30 @@ and (max-device-width : 568px) {
 						color: black; 
 						font-family: 'Verdana', 'Arial', sans-serif; 
 ">
-<h4 style="color: #003366; font-weight: bold; margin-left: 30px; font-size: 0.9em; margin-bottom: 2px;">Status Update</h4>
-<p style="margin-left: 10px; font-size: 0.8em; margin-top: 0;">New updates to your application were posted {{ date }}.</p>
+<p style="margin-left: 10px; font-size: 0.95em; margin-top: 0; margin-bottom: 15px;">New updates to your application were posted {{ date }}.</p>
 
-						<form method="post" action="{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="text-align: left;">
+						<form method="post" action="
+						{{ url_for('adv_ustatus', college=college, unique_id=request.args.get('unique_id')) }}" style="text-align: left;">
 							<button type="submit" style="
-								background-color: #003366; 
+								background-color: #152544; 
 								color: white; 
 								padding: 12px 25px; 
 								border: none; 
 								border-radius: 5px; 
 								font-weight: bold; 
 								margin-left: 30px;
-								text-decoration: underline; 
+								text-decoration: none; 
 								font-size: 1em; 
 								cursor: pointer; 
-								width: 200px; 
-								margin-bottom: 10px;">
-								View Update >>
+								width: 350px; 
+								margin-bottom: 10px;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'"
+								>
+								Decisions and Important Updates >>
 							</button>
 						</form>
 					</div>
 				</div>
 			</div>
-			
-			
 			
 			
 			<div style="margin-top: 10px;"><div id="part_admissions"><h3>Application Checklist</h3><table class="nohighlight table"><colgroup><col style="width: 25px;"><col style="width: 100px;"><col><col style="width: 100px;"></colgroup><thead><tr class="column"><th colspan="2">Status</th><th>Details</th><th>Date</th></tr></thead><tbody><tr class="plain" style="vertical-align: top;"><td><img alt="" title="Status: Received" height="16" src="./ustatus_files/ok.png" width="16"></td><td>Received</td><td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Application</td><td>11/27/2024</td></tr></tbody></table></div></div></div></div><div class="part_rows_container col-2" data-col="2"><div class="part status_if1 .status_side" id="part_ad1033ac-ae98-431a-6f21-b7ef4e39fa23"><!--Helpful Links--><h2 class="side_title">Helpful Links</h2><ul><li><a href="http://admissions.berkeley.edu/" target="_blank">Admission Home Page</a></li><li><a href="http://admissions.berkeley.edu/applicationfaqs" target="_blank">Application FAQs</a></li><li><a href="https://admissions.berkeley.edu/academics/academic-support/" target="_blank">Campus Resources</a></li><li><a href="https://housing.berkeley.edu/explore-housing-options/" target="_blank">Explore Housing Options</a></li><!--<li>
