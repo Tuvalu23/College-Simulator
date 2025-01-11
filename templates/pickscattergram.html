@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Pick a Scattergram{% endblock %}
+
+{% block background %}
+<div class="background-overlay" style="background-image: url('{{ url_for('static', filename='images/scattergram-image.jpg') }}');"></div>
+{% endblock %}
+
+{% block content %}
+<div class="relative max-w-5xl mx-auto bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-lg p-8 mt-10 shadow-xl">
+    <h1 class="text-5xl font-bold text-gray-800 text-center mb-8 animate-subtle-bounce font-times">
+        Choose Your Scattergram
+    </h1>
+    <p class="text-lg text-gray-700 text-center mb-8 font-serif" style="text-align: left;">
+        Remember that most colleges consider factors that extend well beyond gpa and test scores.  These can include, but are not limited to, strength of schedule, extracurricular accomplishments, demographic factors, legacy, financial need or ability to pay, application plans, etc. 
+    </p>
+    
+    <!-- Form Bar -->
+    <div class="bg-white p-6 rounded-md shadow-md mb-8" style="margin-top: -20px;">
+        <form method="POST" class="flex flex-col md:flex-row items-center justify-center gap-4">
+
+            
+            <!-- Dropdown -->
+            <select id="college" name="college" 
+                class="w-full max-w-lg p-3 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 font-poppins">
+                {% for college in colleges %}
+                <option value="{{ college.name }}">{{ college.display_name }}</option>
+                {% endfor %}
+            </select>
+            
+            <!-- Button -->
+            <button type="submit" 
+                class="bg-gradient-to-r from-teal-400 to-blue-500 text-white py-2 px-6 rounded-full shadow-lg font-poppins text-lg transition-transform transform hover:scale-105 hover:shadow-xl">
+                View Scattergram
+            </button>
+        </form>
+    </div>
+    
+
+    <!-- Features Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <!-- Card 1 -->
+        <div class="flex flex-col items-center bg-gradient-to-r from-pink-300 via-purple-300 to-purple-400 text-white rounded-lg p-4 shadow-lg transform hover:scale-105 transition-all duration-500">
+            <h2 class="text-xl font-semibold mb-2 font-poppins">Interactive Visuals</h2>
+            <p class="text-center mb-4 font-poppins text-sm">
+                Zoom, pan, and explore scattergram data with our cutting-edge interactive tools.
+            </p>
+            <img src="{{ url_for('static', filename='icons/interactivity.png') }}" alt="Interactive Icon" class="w-12 h-12 mb-4">
+        </div>
+        <!-- Card 2 -->
+        <div class="flex flex-col items-center bg-gradient-to-r from-yellow-300 via-orange-300 to-red-400 text-white rounded-lg p-4 shadow-lg transform hover:scale-105 transition-all duration-500">
+            <h2 class="text-xl font-semibold mb-2 font-poppins">Real-Time Analytics</h2>
+            <p class="text-center mb-4 font-poppins text-sm">
+                Dive into admissions patterns with real-time data analytics tailored to your statistics.
+            </p>
+            <img src="{{ url_for('static', filename='icons/analytics.png') }}" alt="Analytics Icon" class="w-12 h-12 mb-4">
+        </div>
+        <!-- Card 3 -->
+        <div class="flex flex-col items-center bg-gradient-to-r from-green-300 via-teal-300 to-blue-400 text-white rounded-lg p-4 shadow-lg transform hover:scale-105 transition-all duration-500">
+            <h2 class="text-xl font-semibold mb-2 font-poppins">Personalized Predictions</h2>
+            <p class="text-center mb-4 font-poppins text-sm">
+                See how you rank with personalized predictions based on your unique application profile.
+            </p>
+            <img src="{{ url_for('static', filename='icons/predictions.png') }}" alt="Predictions Icon" class="w-12 h-12 mb-4">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

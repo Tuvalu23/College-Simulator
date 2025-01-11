@@ -893,6 +893,21 @@ def rejection(college):
         User.log_simulation(user_id, college, 'rejection')
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
+@app.route("/pickscattergram", methods=["GET", "POST"])
+@login_required
+def pickscattergram():
+    if request.method == "POST":
+        selected_college = request.form.get('college')
+        if selected_college:
+            # redirect here to def scattergram
+            return redirect(url_for('scattergram', college=selected_college))
+    return render_template('pickscattergram.html', colleges=university_list)
+
+@app.route("/scattergram/<college>", methods=["GET", "POST"])
+@login_required
+def scattergram(college):
+    return render_template('scattergram.html')
+    
 # advanced sm stuff
 submissions = []
 
@@ -1885,33 +1900,33 @@ def getType(chance):
 
 def classify(student_num):
     # Define classification based on student_num with 15 tiers and curved intervals
-    if student_num >= 103:
+    if student_num >= 104:
         return 1
-    elif student_num >= 96:
+    elif student_num >= 98:
         return 2
-    elif student_num >= 90:
+    elif student_num >= 92:
         return 3
-    elif student_num >= 85:
+    elif student_num >= 87:
         return 4
-    elif student_num >= 80:
+    elif student_num >= 82:
         return 5
-    elif student_num >= 75:
+    elif student_num >= 77:
         return 6
-    elif student_num >= 70:
+    elif student_num >= 72:
         return 7
-    elif student_num >= 65:
+    elif student_num >= 67:
         return 8
-    elif student_num >= 60:
+    elif student_num >= 62:
         return 9
-    elif student_num >= 52:
+    elif student_num >= 54:
         return 10
-    elif student_num >= 43:
+    elif student_num >= 45:
         return 11
-    elif student_num >= 34:
+    elif student_num >= 36:
         return 12
-    elif student_num >= 25:
+    elif student_num >= 27:
         return 13
-    elif student_num >= 15:
+    elif student_num >= 17:
         return 14
     else:
         return 15  # Anything below 15 falls into the lowest tier
@@ -1926,21 +1941,21 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         if gpa > 99:
             student_num += 40
         elif gpa > 98:
-            student_num += 39
-        elif gpa > 97:
             student_num += 38
+        elif gpa > 97:
+            student_num += 37
         elif gpa > 96:
             student_num += 36
         elif gpa > 95:
-            student_num += 34
+            student_num += 33
         elif gpa > 94:
-            student_num += 32
+            student_num += 30
         elif gpa > 93:
-            student_num += 29
+            student_num += 28
         elif gpa > 92:
-            student_num += 26.5
+            student_num += 26
         elif gpa > 91:
-            student_num += 25
+            student_num += 24
         elif gpa > 90:
             student_num += 22
         elif gpa > 88:
@@ -1971,21 +1986,21 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         elif gpa > 97:
             student_num += 33
         elif gpa > 96:
-            student_num += 32
+            student_num += 31.5
         elif gpa > 95:
             student_num += 30
         elif gpa > 94:
-            student_num += 28
+            student_num += 27
         elif gpa > 93:
-            student_num += 26
+            student_num += 25
         elif gpa > 92:
-            student_num += 24
+            student_num += 23
         elif gpa > 91:
-            student_num += 22
+            student_num += 20.5
         elif gpa > 90:
-            student_num += 20
+            student_num += 19
         elif gpa > 88:
-            student_num += 18
+            student_num += 17
         elif gpa > 85:
             student_num += 15
         elif gpa > 82.5:
@@ -2062,17 +2077,17 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     if baseChance < 5:  # <5%
         if tier == 1:
-            chances = 55 + random.uniform(-2, 2)  # 53-57%
+            chances = 50 + random.uniform(-2, 2)  # 53-57%
         elif tier == 2:
-            chances = 45 + random.uniform(-2, 2)  # 43-47%
+            chances = 41 + random.uniform(-2, 2)  # 43-47%
         elif tier == 3:
-            chances = 33 + random.uniform(-2, 2)  # 31-35%
+            chances = 30 + random.uniform(-2, 2)  # 31-35%
         elif tier == 4:
-            chances = 22 + random.uniform(-2, 2)  # 20-24%
+            chances = 19 + random.uniform(-2, 2)  # 20-24%
         elif tier == 5:
-            chances = 15 + random.uniform(-2, 2)  # 13-17%
+            chances = 13 + random.uniform(-2, 2)  # 13-17%
         elif tier == 6:
-            chances = 9 + random.uniform(-2, 2)   # 7-11%
+            chances = 7 + random.uniform(-2, 2)   # 7-11%
         elif tier == 7:
             chances = 5 + random.uniform(-2, 2)   # 3-7%
         elif tier == 8:
@@ -2096,23 +2111,23 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     elif baseChance < 10:  # <10%
         if tier == 1:
-            chances = 60 + random.uniform(-2, 2)  # 58-62%
+            chances = 56 + random.uniform(-2, 2)  # 58-62%
         elif tier == 2:
-            chances = 48 + random.uniform(-2, 2)  # 46-50%
+            chances = 44 + random.uniform(-2, 2)  # 46-50%
         elif tier == 3:
-            chances = 39 + random.uniform(-2, 2)  # 37-41%
+            chances = 35 + random.uniform(-2, 2)  # 37-41%
         elif tier == 4:
-            chances = 28 + random.uniform(-2, 2)  # 26-30%
+            chances = 24 + random.uniform(-2, 2)  # 26-30%
         elif tier == 5:
-            chances = 21 + random.uniform(-2, 2)  # 19-23%
+            chances = 17 + random.uniform(-2, 2)  # 19-23%
         elif tier == 6:
-            chances = 16 + random.uniform(-2, 2)  # 14-18%
+            chances = 13 + random.uniform(-2, 2)  # 14-18%
         elif tier == 7:
-            chances = 12 + random.uniform(-2, 2)  # 10-14%
+            chances = 10 + random.uniform(-2, 2)  # 10-14%
         elif tier == 8:
-            chances = 7 + random.uniform(-1, 1)   # 6-8%
+            chances = 5 + random.uniform(-1, 1)   # 6-8%
         elif tier == 9:
-            chances = 4 + random.uniform(-0.5, 0.5)  # 3.5-4.5%
+            chances = 3 + random.uniform(-0.5, 0.5)  # 3.5-4.5%
         elif tier == 10:
             chances = 2 + random.uniform(-0.3, 0.3)  # 1.7-2.3%
         elif tier == 11:
@@ -2130,21 +2145,21 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     elif baseChance < 15:  # <15%
         if tier == 1:
-            chances = 67 + random.uniform(-2, 2)  # 65-69%
+            chances = 63 + random.uniform(-2, 2)  # 65-69%
         elif tier == 2:
-            chances = 55 + random.uniform(-2, 2)  # 53-57%
+            chances = 51 + random.uniform(-2, 2)  # 53-57%
         elif tier == 3:
-            chances = 47 + random.uniform(-2, 2)  # 45-49%
+            chances = 43 + random.uniform(-2, 2)  # 45-49%
         elif tier == 4:
-            chances = 38 + random.uniform(-2, 2)  # 36-40%
+            chances = 35 + random.uniform(-2, 2)  # 36-40%
         elif tier == 5:
-            chances = 29 + random.uniform(-2, 2)  # 27-31%
+            chances = 25 + random.uniform(-2, 2)  # 27-31%
         elif tier == 6:
-            chances = 23 + random.uniform(-2, 2)  # 21-25%
+            chances = 19 + random.uniform(-2, 2)  # 21-25%
         elif tier == 7:
-            chances = 16 + random.uniform(-2, 2)  # 14-18%
+            chances = 14 + random.uniform(-2, 2)  # 14-18%
         elif tier == 8:
-            chances = 10 + random.uniform(-1, 1)   # 9-11%
+            chances = 8 + random.uniform(-1, 1)   # 9-11%
         elif tier == 9:
             chances = 6 + random.uniform(-0.5, 0.5)  # 5.5-6.5%
         elif tier == 10:
@@ -2164,25 +2179,25 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     elif baseChance < 20:  # <20%
         if tier == 1:
-            chances = 73 + random.uniform(-2, 2)  # 71-75%
+            chances = 69 + random.uniform(-2, 2)  # 71-75%
         elif tier == 2:
-            chances = 63 + random.uniform(-2, 2)  # 61-65%
+            chances = 59 + random.uniform(-2, 2)  # 61-65%
         elif tier == 3:
-            chances = 54 + random.uniform(-2, 2)  # 52-56%
+            chances = 50 + random.uniform(-2, 2)  # 52-56%
         elif tier == 4:
-            chances = 43 + random.uniform(-2, 2)  # 41-45%
+            chances = 39 + random.uniform(-2, 2)  # 41-45%
         elif tier == 5:
-            chances = 35 + random.uniform(-2, 2)  # 33-37%
+            chances = 31 + random.uniform(-2, 2)  # 33-37%
         elif tier == 6:
-            chances = 27 + random.uniform(-2, 2)  # 25-29%
+            chances = 23 + random.uniform(-2, 2)  # 25-29%
         elif tier == 7:
-            chances = 21 + random.uniform(-2, 2)  # 19-23%
+            chances = 17 + random.uniform(-2, 2)  # 19-23%
         elif tier == 8:
-            chances = 15 + random.uniform(-1, 1)   # 14-16%
+            chances = 11 + random.uniform(-1, 1)   # 14-16%
         elif tier == 9:
-            chances = 11 + random.uniform(-0.5, 0.5)  # 10.5-11.5%
+            chances = 7 + random.uniform(-0.5, 0.5)  # 10.5-11.5%
         elif tier == 10:
-            chances = 7 + random.uniform(-0.3, 0.3)   # 6.7-7.3%
+            chances = 6 + random.uniform(-0.3, 0.3)   # 6.7-7.3%
         elif tier == 11:
             chances = 5 + random.uniform(-0.1, 0.1)   # 4.9-5.1%
         elif tier == 12:
@@ -2198,29 +2213,29 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     elif baseChance < 25:  # <25%
         if tier == 1:
-            chances = 79 + random.uniform(-2, 2)  # 77-81%
+            chances = 75 + random.uniform(-2, 2)  # 77-81%
         elif tier == 2:
-            chances = 70 + random.uniform(-2, 2)  # 68-72%
+            chances = 66 + random.uniform(-2, 2)  # 68-72%
         elif tier == 3:
-            chances = 60 + random.uniform(-2, 2)  # 58-62%
+            chances = 56 + random.uniform(-2, 2)  # 58-62%
         elif tier == 4:
-            chances = 50 + random.uniform(-2, 2)  # 48-52%
+            chances = 46 + random.uniform(-2, 2)  # 48-52%
         elif tier == 5:
-            chances = 40 + random.uniform(-2, 2)  # 38-42%
+            chances = 36 + random.uniform(-2, 2)  # 38-42%
         elif tier == 6:
-            chances = 33 + random.uniform(-2, 2)  # 31-35%
+            chances = 29 + random.uniform(-2, 2)  # 31-35%
         elif tier == 7:
-            chances = 25 + random.uniform(-2, 2)  # 23-27%
+            chances = 20 + random.uniform(-2, 2)  # 23-27%
         elif tier == 8:
-            chances = 20 + random.uniform(-1, 1)   # 19-21%
+            chances = 15 + random.uniform(-1, 1)   # 19-21%
         elif tier == 9:
-            chances = 16 + random.uniform(-0.5, 0.5)  # 15.5-16.5%
+            chances = 12 + random.uniform(-0.5, 0.5)  # 15.5-16.5%
         elif tier == 10:
-            chances = 12 + random.uniform(-0.3, 0.3)  # 11.7-12.3%
+            chances = 9 + random.uniform(-0.3, 0.3)  # 11.7-12.3%
         elif tier == 11:
-            chances = 8 + random.uniform(-0.1, 0.1)   # 7.9-8.1%
+            chances = 7 + random.uniform(-0.1, 0.1)   # 7.9-8.1%
         elif tier == 12:
-            chances = 5 + random.uniform(-0.05, 0.05)  # 4.95-5.05%
+            chances = 4 + random.uniform(-0.05, 0.05)  # 4.95-5.05%
         elif tier == 13:
             chances = 3 + random.uniform(-0.02, 0.02)  # 2.98-3.02%
         elif tier == 14:
@@ -2232,29 +2247,29 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     elif baseChance < 30:  # <30%
         if tier == 1:
-            chances = 83 + random.uniform(-2, 2)  # 81-85%
+            chances = 79 + random.uniform(-2, 2)  # 81-85%
         elif tier == 2:
-            chances = 74 + random.uniform(-2, 2)  # 72-76%
+            chances = 69 + random.uniform(-2, 2)  # 72-76%
         elif tier == 3:
-            chances = 66 + random.uniform(-2, 2)  # 64-68%
+            chances = 62 + random.uniform(-2, 2)  # 64-68%
         elif tier == 4:
-            chances = 54 + random.uniform(-2, 2)  # 52-56%
+            chances = 50 + random.uniform(-2, 2)  # 52-56%
         elif tier == 5:
-            chances = 43 + random.uniform(-2, 2)  # 41-45%
+            chances = 39 + random.uniform(-2, 2)  # 41-45%
         elif tier == 6:
-            chances = 35 + random.uniform(-2, 2)  # 33-37%
+            chances = 31 + random.uniform(-2, 2)  # 33-37%
         elif tier == 7:
-            chances = 27 + random.uniform(-2, 2)  # 25-29%
+            chances = 23 + random.uniform(-2, 2)  # 25-29%
         elif tier == 8:
-            chances = 21 + random.uniform(-1, 1)   # 20-22%
+            chances = 19 + random.uniform(-1, 1)   # 20-22%
         elif tier == 9:
-            chances = 18 + random.uniform(-0.5, 0.5)  # 17.5-18.5%
+            chances = 16 + random.uniform(-0.5, 0.5)  # 17.5-18.5%
         elif tier == 10:
-            chances = 15 + random.uniform(-0.3, 0.3)  # 14.7-15.3%
+            chances = 14 + random.uniform(-0.3, 0.3)  # 14.7-15.3%
         elif tier == 11:
-            chances = 12 + random.uniform(-0.1, 0.1)   # 11.9-12.1%
+            chances = 11 + random.uniform(-0.1, 0.1)   # 11.9-12.1%
         elif tier == 12:
-            chances = 10 + random.uniform(-0.05, 0.05)  # 9.95-10.05%
+            chances = 9 + random.uniform(-0.05, 0.05)  # 9.95-10.05%
         elif tier == 13:
             chances = 7 + random.uniform(-0.02, 0.02)   # 6.98-7.02%
         elif tier == 14:
@@ -2266,101 +2281,101 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
 
     elif baseChance < 35:  # <35%
         if tier == 1:
-            chances = 87 + random.uniform(-2, 2)  # 85-89%
+            chances = 83 + random.uniform(-2, 2)  # 85-89%
         elif tier == 2:
-            chances = 80 + random.uniform(-2, 2)  # 78-82%
+            chances = 79 + random.uniform(-2, 2)  # 78-82%
         elif tier == 3:
-            chances = 73 + random.uniform(-2, 2)  # 71-75%
+            chances = 67 + random.uniform(-2, 2)  # 71-75%
         elif tier == 4:
-            chances = 66 + random.uniform(-2, 2)  # 64-68%
+            chances = 63 + random.uniform(-2, 2)  # 64-68%
         elif tier == 5:
-            chances = 59 + random.uniform(-2, 2)  # 57-61%
+            chances = 55 + random.uniform(-2, 2)  # 57-61%
         elif tier == 6:
-            chances = 52 + random.uniform(-2, 2)  # 50-54%
+            chances = 47 + random.uniform(-2, 2)  # 50-54%
         elif tier == 7:
-            chances = 45 + random.uniform(-2, 2)  # 43-47%
+            chances = 40 + random.uniform(-2, 2)  # 43-47%
         elif tier == 8:
-            chances = 39 + random.uniform(-1, 1)   # 38-40%
+            chances = 35 + random.uniform(-1, 1)   # 38-40%
         elif tier == 9:
-            chances = 36 + random.uniform(-0.5, 0.5)  # 35.5-36.5%
+            chances = 32 + random.uniform(-0.5, 0.5)  # 35.5-36.5%
         elif tier == 10:
-            chances = 33 + random.uniform(-0.3, 0.3)  # 32.7-33.3%
+            chances = 29 + random.uniform(-0.3, 0.3)  # 32.7-33.3%
         elif tier == 11:
-            chances = 30 + random.uniform(-0.1, 0.1)   # 29.9-30.1%
+            chances = 26 + random.uniform(-0.1, 0.1)   # 29.9-30.1%
         elif tier == 12:
-            chances = 28 + random.uniform(-0.05, 0.05)  # 27.95-28.05%
+            chances = 23 + random.uniform(-0.05, 0.05)  # 27.95-28.05%
         elif tier == 13:
-            chances = 25 + random.uniform(-0.02, 0.02)   # 24.98-25.02%
+            chances = 20 + random.uniform(-0.02, 0.02)   # 24.98-25.02%
         elif tier == 14:
-            chances = 22 + random.uniform(-0.01, 0.01)   # 21.99-22.01%
+            chances = 15 + random.uniform(-0.01, 0.01)   # 21.99-22.01%
         elif tier == 15:
-            chances = 19 + random.uniform(-0.005, 0.005)  # 18.995-19.005%
+            chances = 10 + random.uniform(-0.005, 0.005)  # 18.995-19.005%
         else:
             chances = 0.05  # Default for tiers >15
 
     elif baseChance < 45:  # <45%
         if tier == 1:
-            chances = 90 + random.uniform(-2, 2)  # 88-92%
+            chances = 86 + random.uniform(-2, 2)  # 88-92%
         elif tier == 2:
-            chances = 83 + random.uniform(-2, 2)  # 81-85%
+            chances = 79 + random.uniform(-2, 2)  # 81-85%
         elif tier == 3:
-            chances = 76 + random.uniform(-2, 2)  # 74-78%
+            chances = 72 + random.uniform(-2, 2)  # 74-78%
         elif tier == 4:
-            chances = 69 + random.uniform(-2, 2)  # 67-71%
+            chances = 65 + random.uniform(-2, 2)  # 67-71%
         elif tier == 5:
-            chances = 62 + random.uniform(-2, 2)  # 60-64%
+            chances = 58 + random.uniform(-2, 2)  # 60-64%
         elif tier == 6:
-            chances = 55 + random.uniform(-2, 2)  # 53-57%
+            chances = 51 + random.uniform(-2, 2)  # 53-57%
         elif tier == 7:
-            chances = 48 + random.uniform(-2, 2)  # 46-50%
+            chances = 44 + random.uniform(-2, 2)  # 46-50%
         elif tier == 8:
-            chances = 42 + random.uniform(-1, 1)   # 41-43%
+            chances = 38 + random.uniform(-1, 1)   # 41-43%
         elif tier == 9:
-            chances = 39 + random.uniform(-0.5, 0.5)  # 38.5-39.5%
+            chances = 35 + random.uniform(-0.5, 0.5)  # 38.5-39.5%
         elif tier == 10:
-            chances = 36 + random.uniform(-0.3, 0.3)  # 35.7-36.3%
+            chances = 32 + random.uniform(-0.3, 0.3)  # 35.7-36.3%
         elif tier == 11:
-            chances = 33 + random.uniform(-0.1, 0.1)   # 32.9-33.1%
+            chances = 29 + random.uniform(-0.1, 0.1)   # 32.9-33.1%
         elif tier == 12:
-            chances = 31 + random.uniform(-0.05, 0.05)  # 30.95-31.05%
+            chances = 27 + random.uniform(-0.05, 0.05)  # 30.95-31.05%
         elif tier == 13:
-            chances = 28 + random.uniform(-0.02, 0.02)   # 27.98-28.02%
+            chances = 24 + random.uniform(-0.02, 0.02)   # 27.98-28.02%
         elif tier == 14:
-            chances = 25 + random.uniform(-0.01, 0.01)   # 24.99-25.01%
+            chances = 20 + random.uniform(-0.01, 0.01)   # 24.99-25.01%
         elif tier == 15:
-            chances = 22 + random.uniform(-0.005, 0.005)  # 21.995-22.005%
+            chances = 14 + random.uniform(-0.005, 0.005)  # 21.995-22.005%
         else:
             chances = 0.05  # Default for tiers >15
 
     elif baseChance < 60:  # <60%
         if tier == 1:
-            chances = 93 + random.uniform(-2, 2)  # 91-95%
+            chances = 89 + random.uniform(-2, 2)  # 91-95%
         elif tier == 2:
-            chances = 86 + random.uniform(-2, 2)  # 84-88%
+            chances = 82 + random.uniform(-2, 2)  # 84-88%
         elif tier == 3:
-            chances = 79 + random.uniform(-2, 2)  # 77-81%
+            chances = 75 + random.uniform(-2, 2)  # 77-81%
         elif tier == 4:
-            chances = 72 + random.uniform(-2, 2)  # 70-74%
+            chances = 68 + random.uniform(-2, 2)  # 70-74%
         elif tier == 5:
-            chances = 62 + random.uniform(-2, 2)  # 63-67%
+            chances = 58 + random.uniform(-2, 2)  # 63-67%
         elif tier == 6:
-            chances = 53 + random.uniform(-2, 2)  # 56-60%
+            chances = 49 + random.uniform(-2, 2)  # 56-60%
         elif tier == 7:
-            chances = 39 + random.uniform(-2, 2)  # 49-53%
+            chances = 35 + random.uniform(-2, 2)  # 49-53%
         elif tier == 8:
-            chances = 33 + random.uniform(-1, 1)   # 44-46%
+            chances = 29 + random.uniform(-1, 1)   # 44-46%
         elif tier == 9:
-            chances = 26 + random.uniform(-0.5, 0.5)  # 41.5-42.5%
+            chances = 22 + random.uniform(-0.5, 0.5)  # 41.5-42.5%
         elif tier == 10:
-            chances = 22 + random.uniform(-0.3, 0.3)  # 38.7-39.3%
+            chances = 18 + random.uniform(-0.3, 0.3)  # 38.7-39.3%
         elif tier == 11:
-            chances = 19 + random.uniform(-0.1, 0.1)   # 35.9-36.1%
+            chances = 15 + random.uniform(-0.1, 0.1)   # 35.9-36.1%
         elif tier == 12:
-            chances = 15 + random.uniform(-0.05, 0.05)  # 33.95-34.05%
+            chances = 11 + random.uniform(-0.05, 0.05)  # 33.95-34.05%
         elif tier == 13:
-            chances = 12 + random.uniform(-0.02, 0.02)   # 30.98-31.02%
+            chances = 9 + random.uniform(-0.02, 0.02)   # 30.98-31.02%
         elif tier == 14:
-            chances = 9 + random.uniform(-0.01, 0.01)   # 27.99-28.01%
+            chances = 7 + random.uniform(-0.01, 0.01)   # 27.99-28.01%
         elif tier == 15:
             chances = 5 + random.uniform(-0.005, 0.005)  # 24.995-25.005%
         else:
@@ -2479,6 +2494,13 @@ def chanceCollege(collegeList, i, demScore, testOptional, sat, act, extracurricu
         
     if legacy == collegeList[i][0]:
         chances *= random.uniform(1.0, 1.5)
+        
+    if gpa < 93:
+        chances -= random.uniform(0, -10)
+    if gpa < 94:
+        chances -= random.uniform(0, -7)
+    if gpa < 95:
+        chances -= random.uniform(0, 5)
 
     chances += random.uniform(-2, 2)  # Simulating chances -= Math.random()*4 -1
 

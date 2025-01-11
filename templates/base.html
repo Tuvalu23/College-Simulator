@@ -159,6 +159,7 @@
                 <a href="{{ url_for('advancedsim') }}" class="nav-btn hover:text-gray-300"><strong>Advanced Sim</strong></a>
                 <a href="{{ url_for('statistics') }}" class="nav-btn hover:text-gray-300"><strong>Statistics</strong></a>
                 <a href="{{ url_for('profile') }}" class="nav-btn hover:text-gray-300"><strong>Profile</strong></a>
+                <a href="{{ url_for('pickscattergram') }}" class="nav-btn hover:text-gray-300"><strong>Scattergrams</strong></a>
                 {% if session.get('user_id') %}
                     <a href="{{ url_for('logout') }}" class="btn-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">Logout</a>
                 {% else %}
