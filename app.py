@@ -3518,6 +3518,7 @@ def decision():
     opened_colleges = session.get('opened_colleges', [])
     decisions_queue = session.get('decisions_queue_sorted', [])
     college_enrolled = session.get('college_enrolled', None)  # user’s final choice, if any
+    name = session.get("advancedsim_data", {}).get("name", "User")
 
     # 2) Filter out which colleges are "accepted"
     accepted_offers = []
@@ -3569,7 +3570,8 @@ def decision():
     return render_template(
         'decision.html',
         accepted_offers=accepted_offers,
-        enrolled_college=enrolled_college
+        enrolled_college=enrolled_college,
+        name=name
     )
 
 def format_date(date_str):
