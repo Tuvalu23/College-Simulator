@@ -2,10 +2,12 @@ import random
 from datetime import datetime, timedelta
 import os
 import logging
+import json 
+import sqlite3
 
 from flask import Flask, render_template, redirect, request, url_for, send_from_directory, session, flash, jsonify
 from functools import wraps
-from models import init_db, User
+from models import init_db, User, DATABASE  # <== models.py
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = 'Tuvalu23'
@@ -906,10 +908,236 @@ def pickscattergram():
 @app.route("/scattergram/<college>", methods=["GET", "POST"])
 @login_required
 def scattergram(college):
-    return render_template('scattergram.html')
+    """
+    Show the advanced scattergram page for the given college.
+    We'll fetch advanced-sim data from all users, build bar_data (recent months)
+    and scatter_data (points for each sim).
+    We differentiate accepted/denied with app_type.
+    """
+    # 0) Find the university info
+    uni_info = next((u for u in university_list if u['name'].lower() == college.lower()), None)
+    if not uni_info:
+        flash(f"No info for college '{college}'.", "warning")
+        return redirect(url_for('dashboard'))
+
+    display_name = uni_info["display_name"]
+    
+    # Build the correct logo URL
+    logo_relative = uni_info["logo"].replace("static/", "")  # => e.g. "logos/gtech-logo.jpg"
+    logo_url = url_for('static', filename=logo_relative)
+
+    # 1) Grab all advanced-sim data for this college, across all users
+    all_sims = User.get_all_advanced_sims_for_college(college_short_name=college)
+    if not all_sims:
+        # No data => no_data=True in the template
+        return render_template(
+            "scattergram.html",
+            college_display=display_name,
+            logo_url=logo_url,
+            bar_data=[],
+            scatter_data=[],
+            no_data=True
+        )
+
+    # 2) Build bar chart data (last 4 months)
+    now = datetime.now()
+    months = []
+    for i in range(4):
+        # approximate 30-day step
+        month_dt = now.replace(day=1) - timedelta(days=30*i)
+        months.append(month_dt.strftime("%Y-%m"))  # e.g. "2025-01"
+
+    bar_data = []
+    for m_str in months:
+        year_part, mon_part = m_str.split("-")
+        year_val = int(year_part)
+        month_val = int(mon_part)
+        total_apps = 0
+        total_accepts = 0
+        total_enrolled = 0
+
+        for sim in all_sims:
+            ts_str = sim.get('timestamp')
+            if not ts_str:
+                continue
+            ts_dt = None
+            for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+                try:
+                    ts_dt = datetime.strptime(ts_str, fmt)
+                    break
+                except ValueError:
+                    pass
+            if not ts_dt:
+                continue
+
+            if ts_dt.year == year_val and ts_dt.month == month_val:
+                total_apps += 1
+                decision = (sim.get('result') or '').lower()
+                if decision in ("a", "acceptance", "edacceptance", "wacceptance", "w/a", "d/a", "d/w/a"):
+                    total_accepts += 1
+
+                if sim.get('enrolled') == 1:
+                    total_enrolled += 1
+
+        label_str = datetime(year_val, month_val, 1).strftime("%B %Y")  # e.g. "January 2025"
+        bar_data.append({
+            "label": label_str,
+            "applications": total_apps,
+            "acceptances": total_accepts,
+            "enrolled": total_enrolled
+        })
+
+    # 3) Build scatterplot data
+    scatter_data = []
+    for sim in all_sims:
+        adv_data_json = sim.get('adv_data')
+        if not adv_data_json:
+            continue
+        try:
+            adv_obj = json.loads(adv_data_json)
+        except:
+            continue
+
+        # extract GPA, SAT, ACT
+        gpa = adv_obj.get('gpa')
+        sat = adv_obj.get('sat_score')
+        act = adv_obj.get('act_score')
+        if not isinstance(gpa, (int, float)):
+            continue
+
+        x_val = get_x_value(sat, act)
+        if x_val is None:
+            continue
+
+        # We'll read sim['app_type'] and sim['decision']
+        # e.g. sim['app_type'] in ["ED","EA","REA","RD"]
+        #      sim['decision'] in ["accepted","denied","waitlist","deferred"]
+        # We'll generate a color_category or shape.
+        app_type = sim.get('app_type', '').upper()  # e.g. "ED"
+        decision = (sim.get('result') or '').lower()  # e.g. "accepted"
+
+        # Combine them
+        # We'll create a (app_type, decision) => color_category
+        # Example: (ED, accepted) => 'accepted_ed'
+        #          (EA, denied)   => 'denied_ea'
+        # Adjust as you like:
+        combo = (app_type, decision)
+        if combo == ("ED","accepted"):
+            color_category = "accepted_ed"
+            desc_str = "ED Accepted"
+        elif combo == ("ED","denied"):
+            color_category = "denied_ed"
+            desc_str = "ED Denied"
+        elif combo == ("EA","accepted"):
+            color_category = "accepted_ea"
+            desc_str = "EA Accepted"
+        elif combo == ("EA","denied"):
+            color_category = "denied_ea"
+            desc_str = "EA Denied"
+        elif combo == ("RD","accepted"):
+            color_category = "accepted_rd"
+            desc_str = "RD Accepted"
+        elif combo == ("RD","denied"):
+            color_category = "denied_rd"
+            desc_str = "RD Denied"
+        elif combo == ("REA","accepted"):
+            color_category = "accepted_rea"
+            desc_str = "REA Accepted"
+        elif combo == ("REA","denied"):
+            color_category = "denied_rea"
+            desc_str = "REA Denied"
+        elif decision in ("waitlist","waccepted","wrejected"):
+            # you might refine
+            color_category = "waitlist"
+            desc_str = "Waitlisted"
+        elif decision in ("deferred","d"):
+            color_category = "deferred"
+            desc_str = "Deferred"
+        else:
+            color_category = "unknown"
+            desc_str = f"{app_type} {decision}"
+
+        # Build hover text
+        hover_text = f"{desc_str}\nGPA: {gpa}\nSAT/ACT: {x_val}"
+        legacy = adv_obj.get('legacy','No')
+        hover_text += f"\nLegacy: {legacy}"
+
+        scatter_data.append({
+            "x": x_val,
+            "y": gpa,  # we can scale the Y in the chart
+            "color_category": color_category,
+            "hover_text": hover_text
+        })
+
+    # Render the new scattergram.html
+    return render_template(
+        "scattergram.html",
+        college_display=display_name,
+        logo_url=logo_url,
+        bar_data=bar_data,
+        scatter_data=scatter_data,
+        no_data=False
+    )
     
 # advanced sm stuff
 submissions = []
+
+def get_x_value(sat_score, act_score):
+    # If we have a valid SAT, use it
+    if sat_score is not None and isinstance(sat_score, int) and sat_score >= 400:
+        return sat_score
+
+    # Else if we have an ACT
+    if act_score is not None and isinstance(act_score, int) and 1 <= act_score <= 36:
+        if act_score == 36:
+            return random.choice([1570, 1580, 1590, 1600])
+        if act_score == 35:
+            return random.choice([1530, 1540, 1550, 1560])
+        if act_score == 34:
+            return random.choice([1490, 1500, 1510, 1520])
+        if act_score == 33:
+            return random.choice([1450, 1460, 1470, 1480])
+        if act_score == 32:
+            return random.choice([1420, 1430, 1440])
+        if act_score == 31:
+            return random.choice([1390, 1400, 1410])
+        if act_score == 30:
+            return random.choice([1360, 1370, 1380])
+        if act_score == 29:
+            return random.choice([1330, 1340, 1350])
+        if act_score == 28:
+            return random.choice([1300, 1310, 1320])
+        if act_score == 27:
+            return random.choice([1260, 1270, 1280, 1290])
+        if act_score == 26:
+            return random.choice([1230, 1240, 1250])
+        if act_score == 25:
+            return random.choice([1190, 1200, 1210, 1220])
+        if act_score == 24:
+            return random.choice([1160, 1170, 1180])
+        if act_score == 23:
+            return random.choice([1120, 1130, 1140, 1150])
+        if act_score == 22:
+            return random.choice([1100, 1110])
+        if act_score == 21:
+            return random.choice([1040, 1050, 1060, 1070, 1080, 1090])
+        if act_score == 20:
+            return random.choice([1030])
+        if act_score == 19:
+            return random.choice([960, 970, 980, 990, 1000, 1010, 1020])
+        if act_score == 18:
+            return random.choice([950])
+        if act_score == 17:
+            return random.choice([880, 890, 900, 910, 920, 930, 940])
+        if act_score == 16:
+            return random.choice([870, 880, 890])
+        if act_score == 15:
+            return random.choice([780, 790])
+        # Lower than chart values default to lowest score
+        return 400
+
+    # If neither is valid
+    return None
 
 # Define US_STATES as shown earlier
 US_STATES = {
@@ -3554,9 +3782,24 @@ def decision():
         if chosen_uid:
             valid_uids = [o["unique_id"] for o in accepted_offers]
             if chosen_uid in valid_uids:
-                session['college_enrolled'] = chosen_uid
-                session.modified = True
-                flash("Congratulations! You have enrolled!", "success")
+                # Get user_id from session
+                user_id = session.get('user_id')
+                if not user_id:
+                    flash("User not logged in.", "error")
+                    return redirect(url_for('start'))
+
+                # Get the college name
+                chosen_offer = next((o for o in accepted_offers if o["unique_id"] == chosen_uid), None)
+                that_college_name = chosen_offer["university_name"] if chosen_offer else None
+
+                if that_college_name:
+                    session['college_enrolled'] = chosen_uid
+                    session.modified = True
+                    that_college_name = chosen_offer["short_name"]   # not university_name
+                    User.update_enrolled(user_id, that_college_name)
+                    flash("Congratulations! You have enrolled!", "success")
+                else:
+                    flash("Could not find the college information.", "error")
             else:
                 flash("Invalid selection.", "error")
         return redirect(url_for('decision'))
@@ -3768,7 +4011,19 @@ def adv_acceptance(college):
 
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'acceptance')
+        # Construct the adv_data dictionary
+        theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+        User.log_simulation(user_id, college, 'acceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -3802,7 +4057,18 @@ def adv_edacceptance(college):
 
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'edacceptance')
+        theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+        User.log_simulation(user_id, college, 'edacceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -3836,7 +4102,18 @@ def adv_rejection(college):
 
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'rejection')
+        theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+        User.log_simulation(user_id, college, 'rejection', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -3873,7 +4150,18 @@ def adv_deferred(college):
     if user_id:
         # Only map 'D' to 'deferred'
         if decision_code == "D":
-            User.log_simulation(user_id, college, 'deferred')
+            theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+            User.log_simulation(user_id, college, 'deferred', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
         else:
             # This route should not handle post-deferral outcomes
             User.log_simulation(user_id, college, 'deferred')  # Or handle differently
@@ -3911,7 +4199,18 @@ def adv_waitlist(college):
 
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'waitlist')
+        theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+        User.log_simulation(user_id, college, 'waitlist', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -3945,7 +4244,18 @@ def adv_wacceptance(college):
     # Log or track user action
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'wacceptance')
+        theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+        User.log_simulation(user_id, college, 'wacceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -3978,7 +4288,18 @@ def adv_wrejection(college):
 
     user_id = session.get('user_id')
     if user_id:
-        User.log_simulation(user_id, college, 'wrejection')
+        theAdvDict = {
+            "gpa": session.get("advancedsim_data", {}).get("gpa", None),
+            "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
+            "act_score": session.get("advancedsim_data", {}).get("act_score", None),
+            "extracurriculars": session.get("advancedsim_data", {}).get("extracurriculars", "Unknown"),
+            "essays": session.get("advancedsim_data", {}).get("essays", "Unknown"),
+            "lors": session.get("advancedsim_data", {}).get("lors", "Unknown"),
+            "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
+            "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
+        }
+        
+        User.log_simulation(user_id, college, 'wrejection', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(

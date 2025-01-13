@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% block title %}{{ college_display }} Scattergram{% endblock %}
+
+{% block background %}
+<div class="background-overlay"
+     style="background-image: url('{{ url_for('static', filename='images/scattergram-image.jpg') }}');
+            background-size: cover;
+            background-position: center center;">
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Include Poppins Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* Global Font */
+body, .bar-label, .text-info, .month-label {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Container for entire chart area */
+.max-w-5xl {
+  max-width: 80rem; /* Tweak as needed */
+}
+
+/* Bouncy Title Animation */
+@keyframes bounceTitle {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Bar Container */
+.bar-container {
+  width: 22%; /* ~4 bars in 90% width => ~22% each */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+  margin-bottom: 40px;
+}
+
+/* Hover Effect */
+.bar-container:hover {
+  transform: scale(1.05);
+}
+
+/* Applications Bar (outer) */
+.app-bar {
+  width: 100%;
+  background-color: #c2bfef; /* Light purple/blue base color */
+  background-image: repeating-linear-gradient(
+    45deg,
+    #8f8e8f 0,
+    #8f8e8f 2px,
+    #c2bfef 2px,
+    #c2bfef 6px
+  );
+  border: 1px solid #8f8e8f;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: height 0.3s ease;
+  z-index: 1; /* Ensure the main bar is behind sub-bars */
+}
+
+/* Acceptance Bar (narrower, on top) */
+.acceptance-bar {
+  position: relative; /* Changed from absolute to relative */
+  width: 92%; 
+  height: 98%;
+  background-color: #8b85e6;
+  transition: height 0.3s ease;
+  z-index: 2; /* Guarantee it's on top of app-bar */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Enrolled Bar (even narrower, on top) */
+.enrolled-bar {
+  position: relative; /* Changed from absolute to relative */
+  width: 82%; 
+  height: 96%;
+  background-color: #554edb;
+  transition: height 0.3s ease;
+  z-index: 3; /* Guarantee it's on top of acceptance bar */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Label for "Applied" count above bar */
+.bar-label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Labels for Accepted and Enrolled */
+.top-left-labels {
+  position: absolute;
+  left: -10%; /* Center horizontally relative to parent */
+  transform: translateX(-100%); /* Shift to the left of the bar */
+  background-color: rgba(255, 255, 255, 0.8); /* Optional: Background for readability */
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column; /* Stack labels vertically */
+  align-items: flex-end; /* Align text to the right */
+  gap: 2px; /* Space between Accepted and Enrolled labels */
+}
+
+/* Specific adjustments for Accepted Label */
+.accepted-label {
+  /* No additional styles needed; positioned by .top-left-labels */
+}
+
+/* Specific adjustments for Enrolled Label */
+.enrolled-label {
+  /* No additional styles needed; positioned below Accepted */
+}
+
+/* Month Label (below bar) */
+.month-label {
+  margin-top: 8px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Additional styling for the container of the scatter chart */
+#scatterPlotContainer {
+  width: 100%;
+  height: 600px;
+  background-color: #f8fafc;
+}
+
+.scatter-title {
+    animation: bounceTitle 2s infinite;
+    font-size: 2rem; /* can adjust size */
+    text-align: center;
+    font-weight: 700;
+    color: #333;
+}
+</style>
+
+<div class="max-w-5xl mx-auto bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-lg p-8 mt-10 shadow-xl">
+
+  <!-- Smaller Title, Centered -->
+  <div class="text-center mb-6">
+    <img src="{{ logo_url }}" alt="{{ college_display }} Logo" class="w-48 h-48 mx-auto object-contain mb-2" style="margin-top: -40px;">
+    <h1 class="scatter-title" style="margin-top: -50px; margin-bottom: 50px;">
+      {{ college_display }} Scattergram
+    </h1>
+  </div>
+
+  {% if no_data %}
+    <p class="text-center text-xl text-gray-700 mb-6">
+      No advanced simulation data available yet for {{ college_display }}.
+    </p>
+  {% else %}
+
+  <!-- 4 side-by-side bars for recent months -->
+  <div class="flex flex-row items-end justify-center space-x-4 mb-10" style="width: 90%; margin: 0 auto;">
+    {% for bar in bar_data %}
+      <!-- Single bar column -->
+      <div class="bar-container">
+
+        <!-- Applied Label Above the Bar -->
+        <div class="bar-label">
+          {% if bar.applications > 0 %}
+            {{ bar.applications }} Applied
+          {% else %}
+            0 Apps
+          {% endif %}
+        </div>
+
+        <!-- Outer Applications Bar -->
+        {% if bar.applications > 0 %}
+          <div class="app-bar" style="height: {{ 2 * (bar.applications * 10) if bar.applications < 30 else 300 }}px;">
+
+            <!-- Acceptance Bar -->
+            {% if bar.acceptances > 0 %}
+              <div class="acceptance-bar" style="height: {{ (2 * (bar.acceptances * 10) if bar.acceptances < 30 else 300) - 2 }}px;">
+
+                <!-- "# Accepted" and "# Enrolled" Labels -->
+                <div class="top-left-labels">
+                  {% if bar.acceptances > 0 %}
+                    <div class="accepted-label">
+                      {{ bar.acceptances }} Accepted
+                    </div>
+                  {% endif %}
+                  {% if bar.enrolled > 0 %}
+                    <div class="enrolled-label">
+                      {{ bar.enrolled }} Enrolled
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Enrolled Bar -->
+                {% if bar.enrolled > 0 %}
+                  <div class="enrolled-bar" style="height: {{ (2 * (bar.enrolled * 10) if bar.enrolled < 30 else 300 ) - 2 }}px;">
+                  </div>
+                {% endif %}
+
+              </div>
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+        <!-- Month Label Below the Bar -->
+        <div class="month-label">
+          {{ bar.label }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- SCATTERGRAM Title -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+    {{ college_display }} Applicant Scatter
+  </h2>
+
+  <!-- Container for the scatterplot -->
+  <div id="scatterPlotContainer">
+    <canvas id="scatterCanvas" width="800" height="600"></canvas>
+  </div>
+
+  <!-- Legend and instructions -->
+  <div class="mt-4 p-3 bg-white shadow border border-gray-300 rounded-md">
+    <h3 class="font-semibold text-lg mb-2">Legend</h3>
+    <ul class="text-sm text-gray-700 leading-tight">
+      <li><span class="font-bold">ED Accepted:</span> Green circle</li>
+      <li><span class="font-bold">ED Denied:</span> Red circle</li>
+      <li><span class="font-bold">EA Accepted:</span> Green square</li>
+      <li><span class="font-bold">EA Denied:</span> Red square</li>
+      <li><span class="font-bold">RD Accepted:</span> Green diamond</li>
+      <li><span class="font-bold">RD Denied:</span> Red diamond</li>
+      <li><span class="font-bold">REA Accepted/Denied, Waitlist, Deferred, etc.</span> (similar color logic)</li>
+    </ul>
+    <p class="text-sm text-gray-600 italic mt-2">
+      Zoom or pan if needed, and hover on a point for more details (GPA, test scores, etc.).
+    </p>
+  </div>
+
+  {% endif %}
+</div>
+
+<!-- Chart.js scatterplot script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+(function(){
+  {% if not no_data %}
+  const scatterData = {{ scatter_data|tojson }};
+
+  // Map color_category => (color, shape)
+  function styleForCategory(cat) {
+    switch(cat) {
+      case 'accepted_ed':  return { color:'green', style:'circle' };
+      case 'denied_ed':    return { color:'red',   style:'circle' };
+      case 'accepted_ea':  return { color:'green', style:'rect' };
+      case 'denied_ea':    return { color:'red',   style:'rect' };
+      case 'accepted_rd':  return { color:'green', style:'rectRot' };
+      case 'denied_rd':    return { color:'red',   style:'rectRot' };
+      case 'accepted_rea': return { color:'green', style:'triangle' };
+      case 'denied_rea':   return { color:'red',   style:'triangle' };
+      case 'waitlist':     return { color:'orange',style:'star' };
+      case 'deferred':     return { color:'purple',style:'line' };
+      default:             return { color:'gray',  style:'cross' };
+    }
+  }
+
+  const chartPoints = scatterData.map(pt => {
+    const styleObj = styleForCategory(pt.color_category);
+    return {
+      x: pt.x,
+      y: pt.y,  // If GPA is 0..4, no scaling needed
+      backgroundColor: styleObj.color,
+      pointStyle: styleObj.style,
+      hoverText: pt.hover_text,
+      radius: 6
+    };
+  });
+
+  const ctx = document.getElementById('scatterCanvas').getContext('2d');
+  const scatterChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: "{{ college_display }} Data",
+        data: chartPoints,
+        pointBackgroundColor: chartPoints.map(pt => pt.backgroundColor),
+        pointStyle: chartPoints.map(pt => pt.pointStyle),
+        pointRadius: chartPoints.map(pt => pt.radius)
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        x: {
+          min: 400,
+          max: 1600,
+          title: { display: true, text: 'SAT/ACT (converted)' }
+        },
+        y: {
+          min: 0,
+          max: 4,
+          title: { display: true, text: 'GPA (0-4 scale)' }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const raw = context.raw;
+              return raw.hoverText || '';
+            }
+          }
+        }
+      }
+    }
+  });
+  {% endif %}
+})();
+</script>
+{% endblock %}
+
