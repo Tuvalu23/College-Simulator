@@ -36,7 +36,9 @@ university_list = [
             {"label": "STEM", "color": "STEM"},
             {"label": "Affordable", "color": "Affordable"},
             {"label": "Diverse", "color": "Diverse"}
-        ]
+        ],
+        "location": "Vestal, NY",
+        "website": "https://www.binghamton.edu/"
     },
     {
         "name": "brown",
@@ -51,7 +53,9 @@ university_list = [
             {"label": "Research", "color": "Research"},
             {"label": "Innovative", "color": "Innovative"},
             {"label": "Creative", "color": "Creative"}
-        ]
+        ],
+        "location": "Providence, RI",
+        "website": "https://www.brown.edu/"
     },
     {
         "name": "buffalo",
@@ -65,7 +69,9 @@ university_list = [
             {"label": "Diverse", "color": "Diverse"},
             {"label": "Research", "color": "Research"},
             {"label": "Innovation", "color": "Innovation"}
-        ]
+        ],
+        "location": "Buffalo, NY",
+        "website": "https://www.buffalo.edu/"
     },
     {
         "name": "caltech",
@@ -80,7 +86,9 @@ university_list = [
             {"label": "Innovative", "color": "Innovative"},
             {"label": "Research", "color": "Research"},
             {"label": "Engineering", "color": "Engineering"}
-        ]
+        ],
+        "location": "Pasadena, CA",
+        "website": "https://www.caltech.edu/"
     },
     {
         "name": "cmu",
@@ -95,7 +103,9 @@ university_list = [
             {"label": "Innovative", "color": "Innovative"},
             {"label": "Computer Science", "color": "Computer Science"},
             {"label": "Arts", "color": "Arts"}
-        ]
+        ],
+        "location": "Pittsburgh, PA",
+        "website": "https://www.cmu.edu/"
     },
     {
         "name": "columbia",
@@ -110,7 +120,9 @@ university_list = [
             {"label": "Diverse", "color": "Diverse"},
             {"label": "Global", "color": "Global"},
             {"label": "Liberal Arts", "color": "Liberal Arts"}
-        ]
+        ],
+        "location": "New York, NY",
+        "website": "https://www.columbia.edu/"
     },
     {
         "name": "cornell",
@@ -125,7 +137,9 @@ university_list = [
             {"label": "Engineering", "color": "Engineering"},
             {"label": "Land-Grant", "color": "Land-Grant"},
             {"label": "Agriculture", "color": "Agriculture"}
-        ]
+        ],
+        "location": "Ithaca, NY",
+        "website": "https://www.cornell.edu/"
     },
     {
         "name": "dartmouth",
@@ -140,7 +154,9 @@ university_list = [
             {"label": "Undergraduate", "color": "Undergraduate"},
             {"label": "Research", "color": "Research"},
             {"label": "Tradition", "color": "Tradition"}
-        ]
+        ],
+        "location": "Hanover, NH",
+        "website": "https://home.dartmouth.edu/"
     },
     {
         "name": "duke",
@@ -155,7 +171,9 @@ university_list = [
             {"label": "Health Sciences", "color": "Health Sciences"},
             {"label": "Athletics", "color": "Athletics"},
             {"label": "Leadership", "color": "Leadership"}
-        ]
+        ],
+        "location": "Durham, NC",
+        "website": "https://www.duke.edu/"
     },
     {
         "name": "emory",
@@ -170,24 +188,28 @@ university_list = [
             {"label": "Health Sciences", "color": "Health Sciences"},
             {"label": "Liberal Arts", "color": "Liberal Arts"},
             {"label": "Community", "color": "Community"}
-        ]
+        ],
+        "location": "Atlanta, GA",
+        "website": "https://www.emory.edu/"
     },
     {
-    "name": "georgetown",
-    "display_name": "Georgetown University",
-    "logo": "static/logos/georgetown-logo.jpg",
-    "description": "Georgetown University, located in Washington, D.C., is a prestigious private institution renowned for its strong liberal arts and professional programs, historic campus, and commitment to fostering global leaders.",
-    "badges": [
-        {"label": "T-30", "color": "T-30"},
-        {"label": "Private", "color": "Private"},
-        {"label": "Urban", "color": "Urban"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Liberal Arts", "color": "Liberal Arts"},
-        {"label": "Faith-Based", "color": "Faith-Based"},
-        {"label": "Global", "color": "Global"},
-        {"label": "Law", "color": "Law"}
-    ]
-},
+        "name": "georgetown",
+        "display_name": "Georgetown University",
+        "logo": "static/logos/georgetown-logo.jpg",
+        "description": "Georgetown University, located in Washington, D.C., is a prestigious private institution renowned for its strong liberal arts and professional programs, historic campus, and commitment to fostering global leaders.",
+        "badges": [
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Faith-Based", "color": "Faith-Based"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Law", "color": "Law"}
+        ],
+        "location": "Washington, D.C.",
+        "website": "https://www.georgetown.edu/"
+    },
     {
         "name": "gtech",
         "display_name": "Georgia Tech",
@@ -201,7 +223,9 @@ university_list = [
             {"label": "Innovative", "color": "Innovative"},
             {"label": "Engineering", "color": "Engineering"},
             {"label": "Technology", "color": "Technology"}
-        ]
+        ],
+        "location": "Atlanta, GA",
+        "website": "https://www.gatech.edu/"
     },
     {
         "name": "harvard",
@@ -216,22 +240,26 @@ university_list = [
             {"label": "Research", "color": "Research"},
             {"label": "Global", "color": "Global"},
             {"label": "Leadership", "color": "Leadership"}
-        ]
+        ],
+        "location": "Cambridge, MA",
+        "website": "https://www.harvard.edu/"
     },
     {
-    "name": "illini",
-    "display_name": "University of Illinois Urbana-Champaign",
-    "logo": "static/logos/illini-logo.png",
-    "description": "The University of Illinois Urbana-Champaign is a premier public research institution known for its pioneering work in engineering, computer science, and business. Located in the heart of Illinois, it offers a vibrant campus and college experience.",
-    "badges": [
-        {"label": "Public", "color": "Public"},
-        {"label": "Big Ten", "color": "Big Ten"},
-        {"label": "Engineering", "color": "Engineering"},
-        {"label": "Innovation", "color": "Innovation"},
-        {"label": "Global", "color": "Global"},
-        {"label": "Inclusive", "color": "Inclusive"}
-    ]
-},
+        "name": "illini",
+        "display_name": "University of Illinois Urbana-Champaign",
+        "logo": "static/logos/illini-logo.png",
+        "description": "The University of Illinois Urbana-Champaign is a premier public research institution known for its pioneering work in engineering, computer science, and business. Located in the heart of Illinois, it offers a vibrant campus and college experience.",
+        "badges": [
+            {"label": "Public", "color": "Public"},
+            {"label": "Big Ten", "color": "Big Ten"},
+            {"label": "Engineering", "color": "Engineering"},
+            {"label": "Innovation", "color": "Innovation"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Inclusive", "color": "Inclusive"}
+        ],
+        "location": "Champaign-Urbana, IL",
+        "website": "https://illinois.edu/"
+    },
     {
         "name": "jhu",
         "display_name": "Johns Hopkins University",
@@ -245,7 +273,9 @@ university_list = [
             {"label": "Health Sciences", "color": "Health Sciences"},
             {"label": "Medicine", "color": "Medicine"},
             {"label": "Public Health", "color": "Public Health"}
-        ]
+        ],
+        "location": "Baltimore, MD",
+        "website": "https://www.jhu.edu/"
     },
     {
         "name": "mit",
@@ -260,22 +290,26 @@ university_list = [
             {"label": "Innovative", "color": "Innovative"},
             {"label": "Engineering", "color": "Engineering"},
             {"label": "Technology", "color": "Technology"}
-        ]
+        ],
+        "location": "Cambridge, MA",
+        "website": "https://www.mit.edu/"
     },
     {
-    "name": "northeastern",
-    "display_name": "Northeastern University",
-    "logo": "static/logos/northeastern-logo.jpg",
-    "description": "Northeastern University, located in Boston, MA, is renowned for its experiential learning model, including co-op programs that integrate classroom study with professional experience.",
-    "badges": [
-        {"label": "Private", "color": "Private"},
-        {"label": "Urban", "color": "Urban"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Global", "color": "Global"},
-        {"label": "Co-op", "color": "Co-op"},
-        {"label": "Innovation", "color": "Innovation"}
-    ]
-},
+        "name": "northeastern",
+        "display_name": "Northeastern University",
+        "logo": "static/logos/northeastern-logo.jpg",
+        "description": "Northeastern University, located in Boston, MA, is renowned for its experiential learning model, including co-op programs that integrate classroom study with professional experience.",
+        "badges": [
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Co-op", "color": "Co-op"},
+            {"label": "Innovation", "color": "Innovation"}
+        ],
+        "location": "Boston, MA",
+        "website": "https://www.northeastern.edu/"
+    },
     {
         "name": "northwestern",
         "display_name": "Northwestern University",
@@ -289,24 +323,28 @@ university_list = [
             {"label": "Research", "color": "Research"},
             {"label": "Performing Arts", "color": "Performing Arts"},
             {"label": "Media", "color": "Media"}
-        ]
+        ],
+        "location": "Evanston, IL",
+        "website": "https://www.northwestern.edu/"
     },
     {
-    "name": "notredame",
-    "display_name": "University of Notre Dame",
-    "logo": "static/logos/notredame-logo.png",
-    "description": "The University of Notre Dame, located in South Bend, IN, is a prestigious Catholic institution renowned for its commitment to academic excellence, community service, and faith-based education.",
-    "badges": [
-        {"label": "T-20", "color": "T-20"},
-        {"label": "Private", "color": "Private"},
-        {"label": "Suburban", "color": "Suburban"},
-        {"label": "Faith-Based", "color": "Faith-Based"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Tradition", "color": "Tradition"},
-        {"label": "Athletics", "color": "Athletics"},
-        {"label": "Community", "color": "Community"}
-    ]
-},
+        "name": "notredame",
+        "display_name": "University of Notre Dame",
+        "logo": "static/logos/notredame-logo.png",
+        "description": "The University of Notre Dame, located in South Bend, IN, is a prestigious Catholic institution renowned for its commitment to academic excellence, community service, and faith-based education.",
+        "badges": [
+            {"label": "T-20", "color": "T-20"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Faith-Based", "color": "Faith-Based"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Tradition", "color": "Tradition"},
+            {"label": "Athletics", "color": "Athletics"},
+            {"label": "Community", "color": "Community"}
+        ],
+        "location": "South Bend, IN",
+        "website": "https://www.nd.edu/"
+    },
     {
         "name": "nyu",
         "display_name": "New York University",
@@ -320,7 +358,9 @@ university_list = [
             {"label": "Global", "color": "Global"},
             {"label": "Arts", "color": "Arts"},
             {"label": "International", "color": "International"}
-        ]
+        ],
+        "location": "New York, NY",
+        "website": "https://www.nyu.edu/"
     },
     {
         "name": "princeton",
@@ -335,23 +375,27 @@ university_list = [
             {"label": "Research", "color": "Research"},
             {"label": "Undergraduate", "color": "Undergraduate"},
             {"label": "Leadership", "color": "Leadership"}
-        ]
+        ],
+        "location": "Princeton, NJ",
+        "website": "https://www.princeton.edu/"
     },
     {
-    "name": "purdue",
-    "display_name": "Purdue University",
-    "logo": "static/logos/purdue-logo.png",
-    "description": "Purdue University, located in West Lafayette, IN, is a top public research institution known for its strong engineering, agriculture, and technology programs. It offers a vibrant campus community and a commitment to academic excellence and innovation.",
-    "badges": [
-        {"label": "Public", "color": "Public"},
-        {"label": "Big Ten", "color": "Big Ten"},
-        {"label": "Engineering", "color": "Engineering"},
-        {"label": "Agriculture", "color": "Agriculture"},
-        {"label": "Technology", "color": "Technology"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Value", "color": "Value"}
-    ]
-},
+        "name": "purdue",
+        "display_name": "Purdue University",
+        "logo": "static/logos/purdue-logo.png",
+        "description": "Purdue University, located in West Lafayette, IN, is a top public research institution known for its strong engineering, agriculture, and technology programs. It offers a vibrant campus community and a commitment to academic excellence and innovation.",
+        "badges": [
+            {"label": "Public", "color": "Public"},
+            {"label": "Big Ten", "color": "Big Ten"},
+            {"label": "Engineering", "color": "Engineering"},
+            {"label": "Agriculture", "color": "Agriculture"},
+            {"label": "Technology", "color": "Technology"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Value", "color": "Value"}
+        ],
+        "location": "West Lafayette, IN",
+        "website": "https://www.purdue.edu/"
+    },
     {
         "name": "rice",
         "display_name": "Rice University",
@@ -365,7 +409,9 @@ university_list = [
             {"label": "Residential", "color": "Residential"},
             {"label": "Research", "color": "Research"},
             {"label": "Business", "color": "Business"}
-        ]
+        ],
+        "location": "Houston, TX",
+        "website": "https://www.rice.edu/"
     },
     {
         "name": "stanford",
@@ -380,22 +426,26 @@ university_list = [
             {"label": "Entrepreneurial", "color": "Entrepreneurial"},
             {"label": "Innovation", "color": "Innovation"},
             {"label": "Leadership", "color": "Leadership"}
-        ]
+        ],
+        "location": "Stanford, CA",
+        "website": "https://www.stanford.edu/"
     },
     {
-    "name": "tufts",
-    "display_name": "Tufts University",
-    "logo": "static/logos/tufts-logo.jpg",
-    "description": "Tufts University, located in Medford and Somerville, MA, is a renowned institution recognized for its commitment to global leadership and civic engagement. It offers a vibrant mix of liberal arts, sciences, and professional schools within a collaborative and inclusive community.",
-    "badges": [
-        {"label": "T-30", "color": "T-30"},
-        {"label": "Liberal Arts", "color": "Liberal Arts"},
-        {"label": "Global", "color": "Global"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Civic Engagement", "color": "Civic Engagement"},
-        {"label": "Inclusive", "color": "Inclusive"}
-    ]
-},
+        "name": "tufts",
+        "display_name": "Tufts University",
+        "logo": "static/logos/tufts-logo.jpg",
+        "description": "Tufts University, located in Medford and Somerville, MA, is a renowned institution recognized for its commitment to global leadership and civic engagement. It offers a vibrant mix of liberal arts, sciences, and professional schools within a collaborative and inclusive community.",
+        "badges": [
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Liberal Arts", "color": "Liberal Arts"},
+            {"label": "Global", "color": "Global"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Civic Engagement", "color": "Civic Engagement"},
+            {"label": "Inclusive", "color": "Inclusive"}
+        ],
+        "location": "Medford, MA",
+        "website": "https://www.tufts.edu/"
+    },
     {
         "name": "berkeley",
         "display_name": "University of California, Berkeley",
@@ -409,23 +459,27 @@ university_list = [
             {"label": "STEM", "color": "STEM"},
             {"label": "Innovation", "color": "Innovation"},
             {"label": "Diverse", "color": "Diverse"}
-        ]
+        ],
+        "location": "Berkeley, CA",
+        "website": "https://www.berkeley.edu/"
     },
     {
-    "name": "ucla",
-    "display_name": "University of California, Los Angeles",
-    "logo": "static/logos/ucla-logo.png",
-    "description": "The University of California, Los Angeles, is a top-ranked public research university known for its excellence in academics, athletics, and innovation.",
-    "badges": [
-        {"label": "T-20", "color": "T-20"},
-        {"label": "Public", "color": "Public"},
-        {"label": "Big Ten", "color": "Big Ten"},
-        {"label": "Urban", "color": "Urban"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Diverse", "color": "Diverse"},
-        {"label": "Athletics", "color": "Athletics"}
-    ]
-},
+        "name": "ucla",
+        "display_name": "University of California, Los Angeles",
+        "logo": "static/logos/ucla-logo.png",
+        "description": "The University of California, Los Angeles, is a top-ranked public research university known for its excellence in academics, athletics, and innovation.",
+        "badges": [
+            {"label": "T-20", "color": "T-20"},
+            {"label": "Public", "color": "Public"},
+            {"label": "Big Ten", "color": "Big Ten"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Diverse", "color": "Diverse"},
+            {"label": "Athletics", "color": "Athletics"}
+        ],
+        "location": "Los Angeles, CA",
+        "website": "https://www.ucla.edu/"
+    },
     {
         "name": "uchicago",
         "display_name": "University of Chicago",
@@ -439,7 +493,9 @@ university_list = [
             {"label": "Economics", "color": "Economics"},
             {"label": "Research", "color": "Research"},
             {"label": "Intellectual", "color": "Intellectual"}
-        ]
+        ],
+        "location": "Chicago, IL",
+        "website": "https://www.uchicago.edu/"
     },
     {
         "name": "umich",
@@ -455,23 +511,27 @@ university_list = [
             {"label": "Athletics", "color": "Athletics"},
             {"label": "Business", "color": "Business"},
             {"label": "Diverse", "color": "Diverse"}
-        ]
+        ],
+        "location": "Ann Arbor, MI",
+        "website": "https://umich.edu/"
     },
     {
-    "name": "unc",
-    "display_name": "University of North Carolina at Chapel Hill",
-    "logo": "static/logos/unc-logo.png",
-    "description": "The University of North Carolina at Chapel Hill, often referred to as UNC or Carolina, is renowned for its innovative research, strong public health programs, and spirited Tar Heel athletics.",
-    "badges": [
-        {"label": "T-30", "color": "T-30"},
-        {"label": "Public", "color": "Public"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Athletics", "color": "Athletics"},
-        {"label": "Health Sciences", "color": "Health Sciences"},
-        {"label": "Diverse", "color": "Diverse"}
-    ]
-},
-    {
+        "name": "unc",
+        "display_name": "University of North Carolina at Chapel Hill",
+        "logo": "static/logos/unc-logo.png",
+        "description": "The University of North Carolina at Chapel Hill, often referred to as UNC or Carolina, is renowned for its innovative research, strong public health programs, and spirited Tar Heel athletics.",
+        "badges": [
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Public", "color": "Public"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Athletics", "color": "Athletics"},
+            {"label": "Health Sciences", "color": "Health Sciences"},
+            {"label": "Diverse", "color": "Diverse"}
+        ],
+        "location": "Chapel Hill, NC",
+        "website": "https://www.unc.edu/"
+    },
+     {
         "name": "upenn",
         "display_name": "University of Pennsylvania",
         "logo": "static/logos/upenn-logo.jpg",
@@ -484,24 +544,28 @@ university_list = [
             {"label": "Business", "color": "Business"},
             {"label": "Wharton", "color": "Wharton"},
             {"label": "Leadership", "color": "Leadership"}
-        ]
+        ],
+        "location": "Philadelphia, PA",
+        "website": "https://www.upenn.edu/"
     },
     {
-    "name": "utexas",
-    "display_name": "University of Texas at Austin",
-    "logo": "static/logos/utexas-logo.png",
-    "description": "The University of Texas at Austin, located in Austin, TX, is a renowned public research university known for its spirited campus culture, top-tier academic programs, and dynamic connection to the vibrant city of Austin.",
-    "badges": [
-        {"label": "Public", "color": "Public"},
-        {"label": "Urban", "color": "Urban"},
-        {"label": "STEM", "color": "STEM"},
-        {"label": "Business", "color": "Business"},
-        {"label": "Research", "color": "Research"},
-        {"label": "Arts", "color": "Arts"},
-        {"label": "Athletics", "color": "Athletics"},
-        {"label": "Hook 'Em", "color": "Hook 'Em"}
-    ]
-},
+        "name": "utexas",
+        "display_name": "University of Texas at Austin",
+        "logo": "static/logos/utexas-logo.png",
+        "description": "The University of Texas at Austin, located in Austin, TX, is a renowned public research university known for its spirited campus culture, top-tier academic programs, and dynamic connection to the vibrant city of Austin.",
+        "badges": [
+            {"label": "Public", "color": "Public"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Business", "color": "Business"},
+            {"label": "Research", "color": "Research"},
+            {"label": "Arts", "color": "Arts"},
+            {"label": "Athletics", "color": "Athletics"},
+            {"label": "Hook 'Em", "color": "Hook 'Em"}
+        ],
+        "location": "Austin, TX",
+        "website": "https://www.utexas.edu/"
+    },
     {
         "name": "usc",
         "display_name": "University of Southern California",
@@ -516,36 +580,42 @@ university_list = [
             {"label": "Film", "color": "Film"},
             {"label": "Business", "color": "Business"},
             {"label": "Innovation", "color": "Innovation"}
-        ]
+        ],
+        "location": "Los Angeles, CA",
+        "website": "https://www.usc.edu/"
     },
     {
-    "name": "uva",
-    "display_name": "University of Virginia",
-    "logo": "static/logos/uva-logo.jpg",
-    "description": "The University of Virginia, located in Charlottesville, VA, is a prestigious public university known for its historic campus, academic excellence, and strong emphasis on student leadership and community engagement.",
-    "badges": [
-        {"label": "Public", "color": "Public"},
-        {"label": "Suburban", "color": "Suburban"},
-        {"label": "Historic", "color": "Historic"},
-        {"label": "Leadership", "color": "Leadership"},
-        {"label": "STEM", "color": "STEM"},
-        {"label": "Community", "color": "Community"}
-    ]
-},
+        "name": "uva",
+        "display_name": "University of Virginia",
+        "logo": "static/logos/uva-logo.jpg",
+        "description": "The University of Virginia, located in Charlottesville, VA, is a prestigious public university known for its historic campus, academic excellence, and strong emphasis on student leadership and community engagement.",
+        "badges": [
+            {"label": "Public", "color": "Public"},
+            {"label": "Suburban", "color": "Suburban"},
+            {"label": "Historic", "color": "Historic"},
+            {"label": "Leadership", "color": "Leadership"},
+            {"label": "STEM", "color": "STEM"},
+            {"label": "Community", "color": "Community"}
+        ],
+        "location": "Charlottesville, VA",
+        "website": "https://www.virginia.edu/"
+    },
     {
-    "name": "washu",
-    "display_name": "Washington University in St. Louis",
-    "logo": "static/logos/washu-logo.jpg",
-    "description": "Washington University in St. Louis, located in St. Louis, MO, is a prestigious private research institution renowned for its interdisciplinary academic programs, close-knit campus community, and emphasis on innovation and collaboration.",
-    "badges": [
-        {"label": "T-30", "color": "T-30"},
-        {"label": "Private", "color": "Private"},
-        {"label": "Urban", "color": "Urban"},
-        {"label": "Collaborative", "color": "Collaborative"},
-        {"label": "Health Sciences", "color": "Health Sciences"},
-        {"label": "Community", "color": "Community"}
-    ]
-},
+        "name": "washu",
+        "display_name": "Washington University in St. Louis",
+        "logo": "static/logos/washu-logo.jpg",
+        "description": "Washington University in St. Louis, located in St. Louis, MO, is a prestigious private research institution renowned for its interdisciplinary academic programs, close-knit campus community, and emphasis on innovation and collaboration.",
+        "badges": [
+            {"label": "T-30", "color": "T-30"},
+            {"label": "Private", "color": "Private"},
+            {"label": "Urban", "color": "Urban"},
+            {"label": "Collaborative", "color": "Collaborative"},
+            {"label": "Health Sciences", "color": "Health Sciences"},
+            {"label": "Community", "color": "Community"}
+        ],
+        "location": "St. Louis, MO",
+        "website": "https://wustl.edu/"
+    },
     {
         "name": "yale",
         "display_name": "Yale University",
@@ -559,7 +629,9 @@ university_list = [
             {"label": "Law", "color": "Law"},
             {"label": "Research", "color": "Research"},
             {"label": "Leadership", "color": "Leadership"}
-        ]
+        ],
+        "location": "New Haven, CT",
+        "website": "https://www.yale.edu/"
     }
 ]
 
@@ -895,6 +967,52 @@ def rejection(college):
         User.log_simulation(user_id, college, 'rejection')
     return render_template(f"{college}/rejection.html", name=user_data["name"], date=user_data["date"], college=college)
 
+def standardize_app_type(raw_app_type):
+    """
+    Convert a raw app_type string into one of ["ED", "EA", "REA", "RD"].
+    If unknown, default to "RD".
+    """
+    if not raw_app_type:
+        return "RD"
+    raw = raw_app_type.strip().lower()
+    if raw in ["ed", "early decision"]:
+        return "ED"
+    elif raw in ["ea", "early action"]:
+        return "EA"
+    elif raw in ["rea", "restrictive early action", "single choice early action"]:
+        return "REA"
+    elif raw in ["rd", "regular decision", "regular"]:
+        return "RD"
+    else:
+        return "RD"
+
+def standardize_decision(raw_result):
+    """
+    Convert a raw decision string into one of our recognized sets
+    for acceptance, waitlist, deferral, etc.
+    """
+    if not raw_result:
+        return "r"  # default to rejected if unknown
+    raw = raw_result.strip().lower()
+
+    # Mark as accepted if it matches any synonyms:
+    accepted_synonyms = ["a", "acceptance", "accepted", "admit", "adm", "admitted", "edacceptance", "wacceptance"]
+    if raw in accepted_synonyms:
+        return "a"
+
+    # Mark as waitlisted if it matches any synonyms:
+    waitlist_synonyms = ["w", "waitlist", "waitlisted", "w/a", "w/r", "wacceptance", "wrejection"]
+    if raw in waitlist_synonyms:
+        return "w"
+
+    # Mark as deferred if it matches synonyms:
+    deferred_synonyms = ["d", "deferred"]
+    if raw in deferred_synonyms:
+        return "d"
+
+    # else default to "r" for rejection
+    return "r"
+
 @app.route("/pickscattergram", methods=["GET", "POST"])
 @login_required
 def pickscattergram():
@@ -912,7 +1030,7 @@ def scattergram(college):
     Show the advanced scattergram page for the given college.
     We'll fetch advanced-sim data from all users, build bar_data (recent months)
     and scatter_data (points for each sim).
-    We differentiate accepted/denied with app_type.
+    We differentiate accepted/denied with app_type (ED, EA, REA, RD).
     """
     # 0) Find the university info
     uni_info = next((u for u in university_list if u['name'].lower() == college.lower()), None)
@@ -921,12 +1039,39 @@ def scattergram(college):
         return redirect(url_for('dashboard'))
 
     display_name = uni_info["display_name"]
-    
     # Build the correct logo URL
-    logo_relative = uni_info["logo"].replace("static/", "")  # => e.g. "logos/gtech-logo.jpg"
+    logo_relative = uni_info["logo"].replace("static/", "")  # e.g., "logos/columbia-logo.png"
     logo_url = url_for('static', filename=logo_relative)
 
-    # 1) Grab all advanced-sim data for this college, across all users
+    # 1) Determine if the college has ED, REA, or EA by parsing college_list
+    college_entry = next((c for c in college_list if c[0].lower() == college.lower()), None)
+    if not college_entry:
+        flash(f"College '{college}' not found in the college list.", "danger")
+        return redirect(url_for('scattergram'))
+
+    # Indices in college_list:
+    #  0: short_name
+    #  1: overall_accept_rate
+    #  2: ED indicator (not "N" => has ED)
+    #  3: EA indicator (not "N" => has EA) except if [4] == "REA"
+    #  4: REA indicator ("REA" => has REA)
+    #  5: date
+    #  6: another indicator
+    #  7: another date
+
+    has_ed = (college_entry[2] != "N")
+    has_ea = ((college_entry[3] != "N") and (college_entry[4] != "REA"))
+    has_rea = (college_entry[4] == "REA")
+
+    # 2) Initialize acceptance rates for each type
+    acceptance_rates = {
+        "ED":  None,
+        "EA":  None,
+        "REA": None,
+        "RD":  float(college_entry[1]) * 100  # overall accept rate as percentage
+    }
+
+    # 3) Fetch advanced-sim data for this college
     all_sims = User.get_all_advanced_sims_for_college(college_short_name=college)
     if not all_sims:
         # No data => no_data=True in the template
@@ -936,16 +1081,17 @@ def scattergram(college):
             logo_url=logo_url,
             bar_data=[],
             scatter_data=[],
-            no_data=True
+            no_data=True,
+            uni_info=uni_info
         )
 
-    # 2) Build bar chart data (last 4 months)
+    # 4) Build bar chart data for the last 4 months
     now = datetime.now()
     months = []
     for i in range(4):
-        # approximate 30-day step
-        month_dt = now.replace(day=1) - timedelta(days=30*i)
-        months.append(month_dt.strftime("%Y-%m"))  # e.g. "2025-01"
+        # Handle month subtraction correctly
+        month_dt = (now.replace(day=1) - timedelta(days=30*i)).replace(day=1)
+        months.append(month_dt.strftime("%Y-%m"))  # e.g., "2025-01"
 
     bar_data = []
     for m_str in months:
@@ -972,14 +1118,17 @@ def scattergram(college):
 
             if ts_dt.year == year_val and ts_dt.month == month_val:
                 total_apps += 1
-                decision = (sim.get('result') or '').lower()
-                if decision in ("a", "acceptance", "edacceptance", "wacceptance", "w/a", "d/a", "d/w/a"):
+                raw_decision = (sim.get('result') or '').lower()
+                # If raw_decision is "acceptance", "edacceptance", "w/a", etc.
+                # standardize the decision
+                standardized_decision = standardize_decision(raw_decision)
+                if standardized_decision == "a":
                     total_accepts += 1
 
                 if sim.get('enrolled') == 1:
                     total_enrolled += 1
 
-        label_str = datetime(year_val, month_val, 1).strftime("%B %Y")  # e.g. "January 2025"
+        label_str = datetime(year_val, month_val, 1).strftime("%B %Y")
         bar_data.append({
             "label": label_str,
             "applications": total_apps,
@@ -987,7 +1136,58 @@ def scattergram(college):
             "enrolled": total_enrolled
         })
 
-    # 3) Build scatterplot data
+    # 5) Calculate acceptance rates based on app_type
+    app_type_counts = {
+        "ED":  {"applications": 0, "acceptances": 0},
+        "EA":  {"applications": 0, "acceptances": 0},
+        "REA": {"applications": 0, "acceptances": 0},
+        "RD":  {"applications": 0, "acceptances": 0}
+    }
+
+    # Adding detailed debug statements
+    print(f"[DEBUG] Processing {len(all_sims)} simulations for college '{college}'.")
+
+    for idx, sim in enumerate(all_sims, start=1):
+        raw_app_type = sim.get('app_type', '')
+        app_type = standardize_app_type(raw_app_type)
+        raw_decision = sim.get('result', '')
+        decision = standardize_decision(raw_decision)
+
+        # Debug: Print each simulation's app_type and decision
+        print(f"[DEBUG] Sim {idx}: raw_app_type='{raw_app_type}', standardized_app_type='{app_type}', raw_decision='{raw_decision}', standardized_decision='{decision}'")
+
+        # Ensure app_type is one of the expected keys
+        if app_type not in app_type_counts:
+            print(f"[WARNING] Unexpected app_type '{app_type}' in simulation {idx}. Skipping.")
+            continue
+
+        # Increment counts
+        app_type_counts[app_type]["applications"] += 1
+        if decision == "a":
+            app_type_counts[app_type]["acceptances"] += 1
+
+    print(f"[DEBUG] app_type_counts for {college}: {app_type_counts}")
+
+    # Now compute acceptance rates for ED, EA, REA from the sim data
+    for t in ["ED", "EA", "REA"]:
+        if app_type_counts[t]["applications"] > 0:
+            acceptance_rates[t] = round(
+                100.0 * app_type_counts[t]["acceptances"] / app_type_counts[t]["applications"],
+                2
+            )
+        else:
+            acceptance_rates[t] = None
+
+    # Override RD acceptance rate based on simulations if available
+    if app_type_counts["RD"]["applications"] > 0:
+        acceptance_rates["RD"] = round(
+            100.0 * app_type_counts["RD"]["acceptances"] / app_type_counts["RD"]["applications"],
+            2
+        )
+    else:
+        acceptance_rates["RD"] = None  # Set to None if no RD applications
+
+    # 6) Build scatterplot data
     scatter_data = []
     for sim in all_sims:
         adv_data_json = sim.get('adv_data')
@@ -995,7 +1195,8 @@ def scattergram(college):
             continue
         try:
             adv_obj = json.loads(adv_data_json)
-        except:
+        except json.JSONDecodeError:
+            print(f"[ERROR] Invalid JSON in adv_data for simulation ID {sim['id']}. Skipping.")
             continue
 
         # extract GPA, SAT, ACT
@@ -1003,80 +1204,85 @@ def scattergram(college):
         sat = adv_obj.get('sat_score')
         act = adv_obj.get('act_score')
         if not isinstance(gpa, (int, float)):
+            print(f"[WARNING] Invalid GPA '{gpa}' in simulation ID {sim['id']}. Skipping.")
             continue
 
         x_val = get_x_value(sat, act)
         if x_val is None:
+            print(f"[WARNING] Missing SAT/ACT scores in simulation ID {sim['id']}. Skipping.")
             continue
 
-        # We'll read sim['app_type'] and sim['decision']
-        # e.g. sim['app_type'] in ["ED","EA","REA","RD"]
-        #      sim['decision'] in ["accepted","denied","waitlist","deferred"]
-        # We'll generate a color_category or shape.
-        app_type = sim.get('app_type', '').upper()  # e.g. "ED"
-        decision = (sim.get('result') or '').lower()  # e.g. "accepted"
+        # standardize app_type and decision for the color logic
+        app_type = standardize_app_type(sim.get('app_type', ''))
+        decision = standardize_decision(sim.get('result', ''))
 
-        # Combine them
-        # We'll create a (app_type, decision) => color_category
-        # Example: (ED, accepted) => 'accepted_ed'
-        #          (EA, denied)   => 'denied_ea'
-        # Adjust as you like:
-        combo = (app_type, decision)
-        if combo == ("ED","accepted"):
-            color_category = "accepted_ed"
-            desc_str = "ED Accepted"
-        elif combo == ("ED","denied"):
-            color_category = "denied_ed"
-            desc_str = "ED Denied"
-        elif combo == ("EA","accepted"):
-            color_category = "accepted_ea"
-            desc_str = "EA Accepted"
-        elif combo == ("EA","denied"):
-            color_category = "denied_ea"
-            desc_str = "EA Denied"
-        elif combo == ("RD","accepted"):
-            color_category = "accepted_rd"
-            desc_str = "RD Accepted"
-        elif combo == ("RD","denied"):
-            color_category = "denied_rd"
-            desc_str = "RD Denied"
-        elif combo == ("REA","accepted"):
-            color_category = "accepted_rea"
-            desc_str = "REA Accepted"
-        elif combo == ("REA","denied"):
-            color_category = "denied_rea"
-            desc_str = "REA Denied"
-        elif decision in ("waitlist","waccepted","wrejected"):
-            # you might refine
+        # pick a color category
+        if app_type == "ED":
+            if decision == "a":
+                color_category = "accepted_ed"
+                desc_str = "ED Accepted"
+            else:
+                color_category = "denied_ed"
+                desc_str = "ED Denied"
+        elif app_type == "EA":
+            if decision == "a":
+                color_category = "accepted_ea"
+                desc_str = "EA Accepted"
+            else:
+                color_category = "denied_ea"
+                desc_str = "EA Denied"
+        elif app_type == "REA":
+            if decision == "a":
+                color_category = "accepted_rea"
+                desc_str = "REA Accepted"
+            else:
+                color_category = "denied_rea"
+                desc_str = "REA Denied"
+        elif app_type == "RD":
+            if decision == "a":
+                color_category = "accepted_rd"
+                desc_str = "RD Accepted"
+            else:
+                color_category = "denied_rd"
+                desc_str = "RD Denied"
+        elif decision == "w":
             color_category = "waitlist"
             desc_str = "Waitlisted"
-        elif decision in ("deferred","d"):
+        elif decision == "d":
             color_category = "deferred"
             desc_str = "Deferred"
         else:
             color_category = "unknown"
             desc_str = f"{app_type} {decision}"
 
-        # Build hover text
         hover_text = f"{desc_str}\nGPA: {gpa}\nSAT/ACT: {x_val}"
-        legacy = adv_obj.get('legacy','No')
+        legacy = adv_obj.get('legacy', 'No')
         hover_text += f"\nLegacy: {legacy}"
 
         scatter_data.append({
             "x": x_val,
-            "y": gpa,  # we can scale the Y in the chart
+            "y": gpa,
             "color_category": color_category,
             "hover_text": hover_text
         })
 
-    # Render the new scattergram.html
+    # 7) Update uni_info
+    uni_info.update({
+        "has_ed": has_ed,
+        "has_ea": has_ea,
+        "has_rea": has_rea,
+        "acceptance_rates": acceptance_rates
+    })
+
+    # 8) Render scattergram
     return render_template(
         "scattergram.html",
         college_display=display_name,
         logo_url=logo_url,
         bar_data=bar_data,
         scatter_data=scatter_data,
-        no_data=False
+        no_data=False,
+        uni_info=uni_info
     )
     
 # advanced sm stuff
@@ -2780,6 +2986,7 @@ def chances():
     session.pop('deferred_decisions', None)
     session.pop('opened_colleges', None)
     session.pop('decisions_queue_sorted', None)
+    session.pop('college_enrolled', None)
 
     if request.method == 'POST':
         flash("Chances reviewed successfully!", "success")
@@ -3271,7 +3478,6 @@ def schedule_deferred_decision(college_short_name, early_app_type, college_list,
 @app.route('/advancedsim/results', methods=["GET", "POST"])
 @login_required
 def results():
-    session.pop('college_enrolled', None)
     
     # Retrieve user data from session
     user_data = session.get('advancedsim_data', {"name": "User"})
@@ -4001,6 +4207,9 @@ def adv_acceptance(college):
         flash("Acceptance record not found.", "danger")
         return redirect(url_for('results'))
 
+    # Retrieve app_type from info; default to 'RD' if not present
+    app_type = info.get('app_type', 'RD')
+
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
     try:
@@ -4023,7 +4232,16 @@ def adv_acceptance(college):
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
         
-        User.log_simulation(user_id, college, 'acceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
+        # Log the simulation with app_type
+        User.log_simulation(
+            user_id=user_id,
+            university_name=college,
+            result='acceptance',
+            sim_type="advanced",
+            adv_data=theAdvDict,
+            enrolled=0,
+            app_type=app_type  # Pass the retrieved app_type
+        )
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -4046,6 +4264,8 @@ def adv_edacceptance(college):
     if not info:
         flash("ED acceptance record not found.", "danger")
         return redirect(url_for('results'))
+    
+    app_type = info.get('app_type', 'RD')
 
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
@@ -4068,7 +4288,7 @@ def adv_edacceptance(college):
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
         
-        User.log_simulation(user_id, college, 'edacceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
+        User.log_simulation(user_id, college, 'edacceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -4092,6 +4312,8 @@ def adv_rejection(college):
         flash("Rejection record not found.", "danger")
         return redirect(url_for('results'))
 
+    app_type = info.get('app_type', 'RD')
+    
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
     try:
@@ -4113,7 +4335,7 @@ def adv_rejection(college):
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
         
-        User.log_simulation(user_id, college, 'rejection', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
+        User.log_simulation(user_id, college, 'rejection', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -4137,6 +4359,8 @@ def adv_deferred(college):
         flash("Deferred record not found.", "danger")
         return redirect(url_for('results'))
 
+    app_type = info.get('app_type', 'RD')
+    
     decision_code = info.get('decision_code', 'R')
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
@@ -4161,7 +4385,7 @@ def adv_deferred(college):
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
         
-            User.log_simulation(user_id, college, 'deferred', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
+            User.log_simulation(user_id, college, 'deferred', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
         else:
             # This route should not handle post-deferral outcomes
             User.log_simulation(user_id, college, 'deferred')  # Or handle differently
@@ -4189,6 +4413,8 @@ def adv_waitlist(college):
         flash("Waitlist record not found.", "danger")
         return redirect(url_for('results'))
 
+    app_type = 'RD'
+    
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
     try:
@@ -4210,7 +4436,7 @@ def adv_waitlist(college):
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
         
-        User.log_simulation(user_id, college, 'waitlist', sim_type="advanced", adv_data=theAdvDict, enrolled=0)
+        User.log_simulation(user_id, college, 'waitlist', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(

@@ -18,7 +18,6 @@ def init_db():
     ''')
 
     # Create simulations table
-    # ADDED: columns sim_type, adv_data, enrolled
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS simulations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,17 +31,16 @@ def init_db():
                 )
             ),
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-
             sim_type TEXT NOT NULL DEFAULT 'quick' CHECK(
                 sim_type IN ('quick','advanced')
             ),
-
             adv_data TEXT,  -- JSON storing advanced-sim details
+            app_type TEXT DEFAULT '',  -- Stores application type (optional)
             enrolled INTEGER NOT NULL DEFAULT 0,  -- 1 if user eventually enrolled
-
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
     ''')
+
     conn.commit()
     conn.close()
 
@@ -122,15 +120,9 @@ class User:
                     'enrolled': row['enrolled']
                 })
             return simulations
-
+        
     @staticmethod
-    def log_simulation(user_id, university_name, result, sim_type="quick", adv_data=None, enrolled=0):
-        """
-        Insert a new row in the simulations table.
-        :param sim_type: 'quick' or 'advanced'
-        :param adv_data: Python dict storing advanced-sim fields (GPA, SAT, etc.), we’ll JSONify it.
-        :param enrolled: 0 or 1
-        """
+    def log_simulation(user_id, university_name, result, sim_type="quick", adv_data=None, enrolled=0, app_type='RD'):
         with sqlite3.connect(DATABASE) as conn:
             cursor = conn.cursor()
             if adv_data is not None:
@@ -139,9 +131,10 @@ class User:
                 adv_json = None
 
             cursor.execute('''
-                INSERT INTO simulations (user_id, university_name, result, sim_type, adv_data, enrolled)
-                VALUES (?, ?, ?, ?, ?, ?)
-            ''', (user_id, university_name, result, sim_type, adv_json, enrolled))
+            INSERT INTO simulations 
+                (user_id, university_name, result, sim_type, adv_data, app_type, enrolled)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (user_id, university_name, result, sim_type, adv_json, app_type, enrolled))
             conn.commit()
 
     @staticmethod

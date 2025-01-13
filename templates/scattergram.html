@@ -15,13 +15,13 @@
 
 <style>
 /* Global Font */
-body, .bar-label, .text-info, .month-label {
+body, .bar-label, .text-info, .month-label, .badge, .scatter-title, .legend-title, .legend-item {
   font-family: 'Poppins', sans-serif;
 }
 
 /* Container for entire chart area */
 .max-w-5xl {
-  max-width: 80rem; /* Tweak as needed */
+  max-width: 90rem; /* Increased width for better layout */
 }
 
 /* Bouncy Title Animation */
@@ -37,6 +37,12 @@ body, .bar-label, .text-info, .month-label {
   }
 }
 
+/* Fade-in Animation for Elements */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Bar Container */
 .bar-container {
   width: 22%; /* ~4 bars in 90% width => ~22% each */
@@ -44,16 +50,17 @@ body, .bar-label, .text-info, .month-label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 40px;
+  animation: fadeIn 1s ease forwards;
 }
 
 /* Hover Effect */
 .bar-container:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Applications Bar (outer) */
 .app-bar {
   width: 100%;
   background-color: #c2bfef; /* Light purple/blue base color */
@@ -89,7 +96,7 @@ body, .bar-label, .text-info, .month-label {
 /* Enrolled Bar (even narrower, on top) */
 .enrolled-bar {
   position: relative; /* Changed from absolute to relative */
-  width: 82%; 
+  width: 84%; 
   height: 96%;
   background-color: #554edb;
   transition: height 0.3s ease;
@@ -123,58 +130,278 @@ body, .bar-label, .text-info, .month-label {
   gap: 2px; /* Space between Accepted and Enrolled labels */
 }
 
-/* Specific adjustments for Accepted Label */
-.accepted-label {
-  /* No additional styles needed; positioned by .top-left-labels */
-}
-
-/* Specific adjustments for Enrolled Label */
-.enrolled-label {
-  /* No additional styles needed; positioned below Accepted */
-}
-
 /* Month Label (below bar) */
 .month-label {
-  margin-top: 8px;
+  margin-top: 12px;
   font-weight: 600;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  animation: fadeIn 1.4s ease forwards;
+  opacity: 0;
 }
 
 /* Additional styling for the container of the scatter chart */
 #scatterPlotContainer {
   width: 100%;
   height: 600px;
-  background-color: #f8fafc;
+  background-color: #f0f4f8;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1.5s ease forwards;
+  opacity: 0;
 }
 
+/* Scattergram Title */
 .scatter-title {
-    animation: bounceTitle 2s infinite;
-    font-size: 2rem; /* can adjust size */
-    text-align: center;
-    font-weight: 700;
-    color: #333;
+  animation: bounceTitle 2s infinite;
+  font-size: 2.5rem; /* Increased size for prominence */
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-section {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.info-section:hover .badge {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Badges */
+.badge {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.badge:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Legend Enhancements */
+.legend-container {
+  animation: fadeIn 1.6s ease forwards;
+  opacity: 0;
+}
+
+.legend-title {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.legend-color-box {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bar-container {
+    width: 45%;
+    margin-bottom: 30px;
+  }
+
+  #scatterPlotContainer {
+    height: 400px;
+  }
+
+  .scatter-title {
+    font-size: 2rem;
+  }
 }
 </style>
 
-<div class="max-w-5xl mx-auto bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-lg p-8 mt-10 shadow-xl">
-
-  <!-- Smaller Title, Centered -->
-  <div class="text-center mb-6">
-    <img src="{{ logo_url }}" alt="{{ college_display }} Logo" class="w-48 h-48 mx-auto object-contain mb-2" style="margin-top: -40px;">
-    <h1 class="scatter-title" style="margin-top: -50px; margin-bottom: 50px;">
+<div class="max-w-5xl mx-auto bg-white bg-opacity-95 backdrop-filter backdrop-blur-lg rounded-lg p-10 mt-12 shadow-2xl animate__animated animate__fadeIn">
+  
+  <!-- Scattergram Title -->
+  <div class="text-center mb-8">
+    <h1 class="scatter-title">
       {{ college_display }} Scattergram
     </h1>
   </div>
 
+  <!-- Info Section -->
+  <!-- Info Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg shadow-md info-section">
+  
+  <!-- First Box: College Name, Logo, Location, Website, Additional Content -->
+  <div class="flex flex-col items-center text-center hover:scale-105 transition-transform duration-300 bg-white p-4 rounded-lg shadow-md">
+    <p class="font-bold text-xl text-indigo-700 mb-2">{{ college_display }}</p>
+    <img src="{{ logo_url }}" alt="{{ college_display }} Logo" class="w-28 h-28 mb-4 object-contain transition-transform duration-300 transform hover:scale-110">
+    <p class="text-gray-700 mt-2 text-sm">
+      {% if uni_info.location %}
+        📍 {{ uni_info.location }}
+      {% else %}
+        📍 Location Not Available
+      {% endif %}
+    </p>
+    <a href="{{ uni_info.website or '#' }}" target="_blank" class="text-blue-600 mt-2 no-underline hover:text-blue-800 transition-colors duration-300">
+      {{ uni_info.website or 'No Website Available' }}
+    </a>
+    <!-- Additional Content -->
+    <p class="text-gray-600 mt-2 text-sm">
+      Explore more about {{ college_display }} and its unique offerings.
+    </p>
+  </div>
+
+  <!-- Second Box: Description -->
+  <div class="col-span-1 md:col-span-1 hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md">
+    <p class="font-bold text-lg mb-3 text-indigo-700 text-center">Description</p>
+    <p class="text-gray-700 text-sm">
+      {{ uni_info.description or 'No description available.' }}
+    </p>
+  </div>
+
+  <!-- Third Box: Acceptance Rate with Conditional EA, REA, ED, RD Rates -->
+  <div class="col-span-1 md:col-span-1 text-center hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md">
+    <p class="font-bold text-lg mb-3 text-indigo-700">Acceptance Rate</p>
+    {% set total_apps = bar_data | map(attribute='applications') | sum %}
+    {% set total_accepts = bar_data | map(attribute='acceptances') | sum %}
+    {% if total_apps > 0 %}
+      <p class="text-4xl font-extrabold text-[#554edb] animate-pulse">
+        {{ ((total_accepts / total_apps) * 100) | round(1) }}%
+      </p>
+      
+      <!-- Conditional EA, REA, ED, RD Acceptance Rates -->
+      <ul>
+        {% if uni_info.has_ed %}
+  <li>ED: 
+    {% if uni_info.acceptance_rates['ED'] is not none %}
+      {{ uni_info.acceptance_rates['ED'] }}%
+    {% else %}
+      N/A
+    {% endif %}
+  </li>
+{% endif %}
+{% if uni_info.has_ea %}
+  <li>EA:
+    {% if uni_info.acceptance_rates['EA'] is not none %}
+      {{ uni_info.acceptance_rates['EA'] }}%
+    {% else %}
+      N/A
+    {% endif %}
+  </li>
+{% endif %}
+{% if uni_info.has_rea %}
+  <li>REA:
+    {% if uni_info.acceptance_rates['REA'] is not none %}
+      {{ uni_info.acceptance_rates['REA'] }}%
+    {% else %}
+      N/A
+    {% endif %}
+  </li>
+{% endif %}
+<li>RD:
+  {% if uni_info.acceptance_rates['RD'] is not none %}
+    {{ uni_info.acceptance_rates['RD'] }}%
+  {% else %}
+    N/A
+  {% endif %}
+</li>
+
+    </ul>
+      
+    {% else %}
+      <p class="text-center text-gray-600">No data available</p>
+    {% endif %}
+  </div>
+
+  <!-- Fourth Box: Special Features -->
+  <div class="col-span-1 md:col-span-1 hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md">
+    <p class="font-bold text-lg mb-3 text-indigo-700 text-center">Special Features</p>
+    <div class="flex flex-wrap justify-center gap-2">
+      {% set badge_color_classes = {
+        'Economics': 'bg-yellow-300',
+        'Public': 'bg-blue-500',
+        'Suburban': 'bg-green-400',
+        'Research': 'bg-teal-600',
+        'STEM': 'bg-orange-500',
+        'Affordable': 'bg-emerald-500',
+        'Diverse': 'bg-purple-500',
+        'T-10': 'bg-yellow-500',
+        'Ivy': 'bg-indigo-400',
+        'Urban': 'bg-pink-600',
+        'Liberal Arts': 'bg-violet-600',
+        'Innovative': 'bg-red-400',
+        'Creative': 'bg-orange-600',
+        'Innovation': 'bg-amber-600',
+        'Private': 'bg-cyan-600',
+        'Engineering': 'bg-red-500',
+        'Computer Science': 'bg-blue-700',
+        'Arts': 'bg-rose-600',
+        'Global': 'bg-green-600',
+        'T-5': 'bg-yellow-500',
+        'Rural': 'bg-sky-500',
+        'Land-Grant': 'bg-lime-700',
+        'Agriculture': 'bg-green-900',
+        'Undergraduate': 'bg-purple-400',
+        'Tradition': 'bg-rose-600',
+        'Health Sciences': 'bg-cyan-700',
+        'Athletics': 'bg-red-600',
+        'Leadership': 'bg-orange-700',
+        'T-30': 'bg-gray-700',
+        'Technology': 'bg-indigo-600',
+        'Performing Arts': 'bg-rose-700',
+        'Media': 'bg-purple-700',
+        'Business': 'bg-slate-700',
+        'Residential': 'bg-amber-700',
+        'Law': 'bg-blue-700',
+        'Intellectual': 'bg-slate-700',
+        'Wharton': 'bg-emerald-700',
+        'Film': 'bg-fuchsia-700',
+        'International': 'bg-red-700',
+        'Prestigious': 'bg-red-700',
+        'Historic': 'bg-amber-800',
+        'Community': 'bg-rose-400',
+        'Inclusive': 'bg-fuchsia-400',
+        'Civic Engagement': 'bg-yellow-700',
+        'Co-op': 'bg-blue-200',
+        'Collaborative': 'bg-emerald-300',
+        'Faith-Based': 'bg-purple-400',
+        'Big Ten': 'bg-green-500',
+        'Value': 'bg-rose-800',
+        'Hook \'Em': 'bg-[#BF5700]',
+        'Te\'st': 'bg-blue-100',
+        'Arts': 'bg-blue-300',
+      } %}
+      {% for badge in uni_info.badges %}
+        <span class="badge px-4 py-2 rounded-full text-white text-sm font-medium {{ badge_color_classes.get(badge.color, 'bg-gray-500') }} shadow-md hover:shadow-lg transition-shadow duration-300 animate__animated animate__fadeIn">
+          {{ badge.label }}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
   {% if no_data %}
-    <p class="text-center text-xl text-gray-700 mb-6">
+    <p class="text-center text-2xl text-gray-700 mb-6 animate__animated animate__fadeInUp">
       No advanced simulation data available yet for {{ college_display }}.
     </p>
   {% else %}
 
-  <!-- 4 side-by-side bars for recent months -->
-  <div class="flex flex-row items-end justify-center space-x-4 mb-10" style="width: 90%; margin: 0 auto;">
+  <div class="flex flex-row items-end justify-center space-x-4 mb-10 bars-wrapper" style="width: 90%; margin: 0 auto; margin-top: 40px; position: relative;">
     {% for bar in bar_data %}
       <!-- Single bar column -->
       <div class="bar-container">
@@ -222,37 +449,66 @@ body, .bar-label, .text-info, .month-label {
           </div>
         {% endif %}
 
+            <!-- Horizontal Line -->
+    <div class="w-full h-[1.5px] bg-black my-1" style="width: 106%; margin-top: 0px; margin-bottom: 0px;"></div>
+
         <!-- Month Label Below the Bar -->
         <div class="month-label">
           {{ bar.label }}
         </div>
       </div>
     {% endfor %}
-  </div>
+</div>
 
   <!-- SCATTERGRAM Title -->
-  <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+  <h2 class="text-3xl font-bold text-indigo-800 mb-6 text-center animate__animated animate__fadeInUp">
     {{ college_display }} Applicant Scatter
   </h2>
 
   <!-- Container for the scatterplot -->
-  <div id="scatterPlotContainer">
+  <div id="scatterPlotContainer" class="animate__animated animate__zoomIn">
     <canvas id="scatterCanvas" width="800" height="600"></canvas>
   </div>
 
-  <!-- Legend and instructions -->
-  <div class="mt-4 p-3 bg-white shadow border border-gray-300 rounded-md">
-    <h3 class="font-semibold text-lg mb-2">Legend</h3>
+  <!-- Legend and Instructions -->
+  <div class="mt-6 p-5 bg-gradient-to-r from-white to-gray-100 shadow-lg border border-gray-200 rounded-md legend-container">
+    <h3 class="legend-title font-semibold text-xl mb-3 text-indigo-700">Legend</h3>
     <ul class="text-sm text-gray-700 leading-tight">
-      <li><span class="font-bold">ED Accepted:</span> Green circle</li>
-      <li><span class="font-bold">ED Denied:</span> Red circle</li>
-      <li><span class="font-bold">EA Accepted:</span> Green square</li>
-      <li><span class="font-bold">EA Denied:</span> Red square</li>
-      <li><span class="font-bold">RD Accepted:</span> Green diamond</li>
-      <li><span class="font-bold">RD Denied:</span> Red diamond</li>
-      <li><span class="font-bold">REA Accepted/Denied, Waitlist, Deferred, etc.</span> (similar color logic)</li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-green-500"></span>
+        <span>ED Accepted: Green circle</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-red-500"></span>
+        <span>ED Denied: Red circle</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-green-500"></span>
+        <span>EA Accepted: Green square</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-red-500"></span>
+        <span>EA Denied: Red square</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-green-700"></span>
+        <span>RD Accepted: Green diamond</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-red-700"></span>
+        <span>RD Denied: Red diamond</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-orange-500"></span>
+        <span>Waitlisted: Orange star</span>
+      </li>
+      <li class="legend-item">
+        <span class="legend-color-box bg-purple-500"></span>
+        <span>Deferred: Purple line</span>
+      </li>
+      <!-- Add more legend items as needed -->
     </ul>
-    <p class="text-sm text-gray-600 italic mt-2">
+    <p class="text-sm text-gray-600 italic mt-3">
       Zoom or pan if needed, and hover on a point for more details (GPA, test scores, etc.).
     </p>
   </div>
@@ -260,8 +516,10 @@ body, .bar-label, .text-info, .month-label {
   {% endif %}
 </div>
 
-<!-- Chart.js scatterplot script -->
+<!-- Chart.js and Animate.css -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 <script>
 (function(){
   {% if not no_data %}
@@ -270,17 +528,17 @@ body, .bar-label, .text-info, .month-label {
   // Map color_category => (color, shape)
   function styleForCategory(cat) {
     switch(cat) {
-      case 'accepted_ed':  return { color:'green', style:'circle' };
-      case 'denied_ed':    return { color:'red',   style:'circle' };
-      case 'accepted_ea':  return { color:'green', style:'rect' };
-      case 'denied_ea':    return { color:'red',   style:'rect' };
-      case 'accepted_rd':  return { color:'green', style:'rectRot' };
-      case 'denied_rd':    return { color:'red',   style:'rectRot' };
-      case 'accepted_rea': return { color:'green', style:'triangle' };
-      case 'denied_rea':   return { color:'red',   style:'triangle' };
-      case 'waitlist':     return { color:'orange',style:'star' };
-      case 'deferred':     return { color:'purple',style:'line' };
-      default:             return { color:'gray',  style:'cross' };
+      case 'accepted_ed':  return { color:'#28a745', style:'circle' };
+      case 'denied_ed':    return { color:'#dc3545', style:'circle' };
+      case 'accepted_ea':  return { color:'#28a745', style:'rect' };
+      case 'denied_ea':    return { color:'#dc3545', style:'rect' };
+      case 'accepted_rd':  return { color:'#28a745', style:'diamond' };
+      case 'denied_rd':    return { color:'#dc3545', style:'diamond' };
+      case 'accepted_rea': return { color:'#28a745', style:'triangle' };
+      case 'denied_rea':   return { color:'#dc3545', style:'triangle' };
+      case 'waitlist':     return { color:'#fd7e14', style:'star' };
+      case 'deferred':     return { color:'#6f42c1', style:'line' };
+      default:             return { color:'#6c757d', style:'cross' };
     }
   }
 
@@ -288,7 +546,7 @@ body, .bar-label, .text-info, .month-label {
     const styleObj = styleForCategory(pt.color_category);
     return {
       x: pt.x,
-      y: pt.y,  // If GPA is 0..4, no scaling needed
+      y: pt.y,  // GPA on Y-axis
       backgroundColor: styleObj.color,
       pointStyle: styleObj.style,
       hoverText: pt.hover_text,
@@ -305,32 +563,67 @@ body, .bar-label, .text-info, .month-label {
         data: chartPoints,
         pointBackgroundColor: chartPoints.map(pt => pt.backgroundColor),
         pointStyle: chartPoints.map(pt => pt.pointStyle),
-        pointRadius: chartPoints.map(pt => pt.radius)
+        pointRadius: chartPoints.map(pt => pt.radius),
+        showLine: false,
+        hoverRadius: 10,
+        hitRadius: 15,
+        // Add animations for the scatter points
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart'
+        }
       }]
     },
     options: {
-      responsive: false,
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           min: 400,
           max: 1600,
-          title: { display: true, text: 'SAT/ACT (converted)' }
+          title: { 
+            display: true, 
+            text: 'SAT/ACT (converted)',
+            font: { size: 16, weight: 'bold' },
+            color: '#333'
+          },
+          grid: {
+            color: '#e0e0e0'
+          }
         },
         y: {
           min: 0,
           max: 4,
-          title: { display: true, text: 'GPA (0-4 scale)' }
+          title: { 
+            display: true, 
+            text: 'GPA (0-4 scale)',
+            font: { size: 16, weight: 'bold' },
+            color: '#333'
+          },
+          grid: {
+            color: '#e0e0e0'
+          }
         }
       },
       plugins: {
         tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          titleFont: { size: 14, weight: 'bold' },
+          bodyFont: { size: 12 },
           callbacks: {
             label: function(context) {
               const raw = context.raw;
               return raw.hoverText || '';
             }
           }
+        },
+        legend: {
+          display: false
         }
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
       }
     }
   });
@@ -338,4 +631,5 @@ body, .bar-label, .text-info, .month-label {
 })();
 </script>
 {% endblock %}
+
 
