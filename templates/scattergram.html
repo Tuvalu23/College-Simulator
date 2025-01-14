@@ -231,6 +231,25 @@ body, .bar-label, .text-info, .month-label, .badge, .scatter-title, .legend-titl
     font-size: 2rem;
   }
 }
+
+/* App Type Badge in top-right corner */
+  .app-type-badge {
+    position: absolute; 
+    top: 10px; 
+    right: 10px;
+    padding: 5px 10px; 
+    border-radius: 12px; 
+    color: #fff;
+    font-weight: 600; 
+    font-size: 0.8rem; 
+    text-transform: uppercase;
+    z-index: 100;
+  }
+  .badge.ed    { background-color: #dc3545; }
+  .badge.ea    { background-color: #007bff; }
+  .badge.rea   { background-color: #ffc107; color: #000; }
+  .badge.rd    { background-color: #28a745; }
+  .badge.wl    { background-color: #6f42c1; }
 </style>
 
 <div class="max-w-5xl mx-auto bg-white bg-opacity-95 backdrop-filter backdrop-blur-lg rounded-lg p-10 mt-12 shadow-2xl animate__animated animate__fadeIn">
@@ -243,31 +262,33 @@ body, .bar-label, .text-info, .month-label, .badge, .scatter-title, .legend-titl
   </div>
 
   <!-- Info Section -->
-  <!-- Info Section -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg shadow-md info-section">
   
   <!-- First Box: College Name, Logo, Location, Website, Additional Content -->
-  <div class="flex flex-col items-center text-center hover:scale-105 transition-transform duration-300 bg-white p-4 rounded-lg shadow-md">
-    <p class="font-bold text-xl text-indigo-700 mb-2">{{ college_display }}</p>
-    <img src="{{ logo_url }}" alt="{{ college_display }} Logo" class="w-28 h-28 mb-4 object-contain transition-transform duration-300 transform hover:scale-110">
-    <p class="text-gray-700 mt-2 text-sm">
-      {% if uni_info.location %}
-        📍 {{ uni_info.location }}
-      {% else %}
-        📍 Location Not Available
-      {% endif %}
-    </p>
-    <a href="{{ uni_info.website or '#' }}" target="_blank" class="text-blue-600 mt-2 no-underline hover:text-blue-800 transition-colors duration-300">
+  <div class="flex flex-col items-center text-center hover:scale-105 transition-transform duration-300 bg-white p-4 rounded-lg shadow-md hover:bg-blue-100 hover:scale-105">
+    <p class="font-bold text-lg text-indigo-700 mb-2" style="margin-bottom: -15px;">{{ college_display }}</p>
+    <img src="{{ logo_url }}" alt="{{ college_display }} Logo" class="w-28 h-28 mb-4 object-contain transition-transform duration-300 transform hover:scale-110" style="margin-bottom: -15px;">
+    <div class="relative group p-2 rounded-lg transition-transform duration-300 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 hover:from-indigo-500 hover:via-purple-500 hover:to-blue-500 hover:scale-105 shadow-md">
+      <p class="text-white text-center font-semibold text-sm">
+        {% if uni_info.location %}
+          📍 {{ uni_info.location }}
+        {% else %}
+          📍 Location Not Available
+        {% endif %}
+      </p>
+    </div>
+    
+    <a href="{{ uni_info.website or '#' }}" target="_blank" class="text-blue-600 mt-2 no-underline hover:text-blue-800 transition-colors duration-300 text-sm">
       {{ uni_info.website or 'No Website Available' }}
     </a>
     <!-- Additional Content -->
-    <p class="text-gray-600 mt-2 text-sm">
+    <p class="text-gray-600 mt-2 text-xs">
       Explore more about {{ college_display }} and its unique offerings.
     </p>
   </div>
 
   <!-- Second Box: Description -->
-  <div class="col-span-1 md:col-span-1 hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md">
+  <div class="flex flex-col transition-transform hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md hover:bg-blue-100 hover:scale-105">
     <p class="font-bold text-lg mb-3 text-indigo-700 text-center">Description</p>
     <p class="text-gray-700 text-sm">
       {{ uni_info.description or 'No description available.' }}
@@ -275,61 +296,93 @@ body, .bar-label, .text-info, .month-label, .badge, .scatter-title, .legend-titl
   </div>
 
   <!-- Third Box: Acceptance Rate with Conditional EA, REA, ED, RD Rates -->
-  <div class="col-span-1 md:col-span-1 text-center hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md">
+  <div class="col-span-1 md:col-span-1 transition-transform text-center hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md hover:bg-blue-100 hover:scale-105">
     <p class="font-bold text-lg mb-3 text-indigo-700">Acceptance Rate</p>
     {% set total_apps = bar_data | map(attribute='applications') | sum %}
     {% set total_accepts = bar_data | map(attribute='acceptances') | sum %}
     {% if total_apps > 0 %}
-      <p class="text-4xl font-extrabold text-[#554edb] animate-pulse">
-        {{ ((total_accepts / total_apps) * 100) | round(1) }}%
-      </p>
+    <!-- Overall Acceptance Rate -->
+    <p class="text-4xl font-extrabold text-[#554edb] animate-pulse" style="margin-bottom: 15px;">
+      {{ ((total_accepts / total_apps) * 100) | round(1) }}%
+    </p>
+   
+    <!-- Application Types Acceptance Rates -->
+<div class="flex flex-wrap gap-6 justify-center">
+  
+  {% if uni_info.has_ed %}
+    <div class="relative bg-white border-2 border-red-500 rounded-lg shadow-md p-4 w-44 h-13 transition-transform hover:bg-red-200 hover:scale-105">
+      <!-- App Type Badge -->
+      <span class="app-type-badge badge ed" style="top: 17px; right: 115px; position: absolute;">ED</span>
       
-      <!-- Conditional EA, REA, ED, RD Acceptance Rates -->
-      <ul>
-        {% if uni_info.has_ed %}
-  <li>ED: 
-    {% if uni_info.acceptance_rates['ED'] is not none %}
-      {{ uni_info.acceptance_rates['ED'] }}%
-    {% else %}
-      N/A
-    {% endif %}
-  </li>
-{% endif %}
-{% if uni_info.has_ea %}
-  <li>EA:
-    {% if uni_info.acceptance_rates['EA'] is not none %}
-      {{ uni_info.acceptance_rates['EA'] }}%
-    {% else %}
-      N/A
-    {% endif %}
-  </li>
-{% endif %}
-{% if uni_info.has_rea %}
-  <li>REA:
-    {% if uni_info.acceptance_rates['REA'] is not none %}
-      {{ uni_info.acceptance_rates['REA'] }}%
-    {% else %}
-      N/A
-    {% endif %}
-  </li>
-{% endif %}
-<li>RD:
-  {% if uni_info.acceptance_rates['RD'] is not none %}
-    {{ uni_info.acceptance_rates['RD'] }}%
-  {% else %}
-    N/A
+      <!-- Acceptance Rate -->
+      <div class="flex items-center justify-center h-full" style="margin-left: 30px;">
+        {% if uni_info.acceptance_rates['ED'] is not none %}
+          <p class="text-2xl font-extrabold text-red-500 animate-pulse">{{ uni_info.acceptance_rates['ED'] }}%</p>
+        {% else %}
+          <p class="text-lg font-semibold text-gray-400">N/A</p>
+        {% endif %}
+      </div>
+    </div>
   {% endif %}
-</li>
+  
+  {% if uni_info.has_ea %}
+    <div class="relative bg-white border-2 border-blue-500 rounded-lg shadow-md p-4 w-44 h-13 transition-transform hover:bg-blue-200 hover:scale-105">
+      <!-- App Type Badge -->
+      <span class="app-type-badge badge ea" style="top: 17px; right: 115px; position: absolute;">EA</span>
 
-    </ul>
       
+      <!-- Acceptance Rate -->
+      <div class="flex items-center justify-center h-full" style="margin-left: 30px;">
+        {% if uni_info.acceptance_rates['EA'] is not none %}
+          <p class="text-2xl font-extrabold text-blue-500 animate-pulse">{{ uni_info.acceptance_rates['EA'] }}%</p>
+        {% else %}
+          <p class="text-lg font-semibold text-gray-400">N/A</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+  
+  {% if uni_info.has_rea %}
+    <div class="relative bg-white border-2 border-yellow-500 rounded-lg shadow-md p-4 w-484 h-13 transition-transform hover:bg-yellow-200 hover:scale-105">
+      <!-- App Type Badge -->
+      <span class="app-type-badge badge rea" style="top: 17px; right: 115px; position: absolute;">REA</span>
+      
+      <!-- Acceptance Rate -->
+      <div class="flex items-center justify-center h-full" style="margin-left: 30px;">
+        {% if uni_info.acceptance_rates['REA'] is not none %}
+          <p class="text-2xl font-extrabold text-yellow-500 animate-pulse">{{ uni_info.acceptance_rates['REA'] }}%</p>
+        {% else %}
+          <p class="text-lg font-semibold text-gray-400">N/A</p>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+  
+  <!-- RD is always displayed -->
+  <div class="relative bg-white border-2 border-green-500 rounded-lg shadow-md p-4 w-44 h-13 transition-transform hover:bg-green-200 hover:scale-105">
+    <span class="app-type-badge badge rd" style="top: 17px; right: 115px; position: absolute;">RD</span>
+      
+    
+    <!-- Acceptance Rate -->
+    <div class="flex items-center justify-center h-full" style="margin-left: 30px;">
+      {% if uni_info.acceptance_rates['RD'] is not none %}
+        <p class="text-2xl font-extrabold text-green-500 animate-pulse">{{ uni_info.acceptance_rates['RD'] }}%</p>
+      {% else %}
+        <p class="text-lg font-semibold text-gray-400">N/A</p>
+      {% endif %}
+    </div>
+  </div>
+  
+</div>
+
+
     {% else %}
       <p class="text-center text-gray-600">No data available</p>
     {% endif %}
   </div>
 
   <!-- Fourth Box: Special Features -->
-  <div class="col-span-1 md:col-span-1 hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md">
+  <div class="transition-transform col-span-1 md:col-span-1 hover:shadow-lg transition-shadow duration-300 bg-white p-4 rounded-lg shadow-md hover:bg-blue-100 hover:scale-105">
     <p class="font-bold text-lg mb-3 text-indigo-700 text-center">Special Features</p>
     <div class="flex flex-wrap justify-center gap-2">
       {% set badge_color_classes = {
@@ -387,7 +440,7 @@ body, .bar-label, .text-info, .month-label, .badge, .scatter-title, .legend-titl
         'Arts': 'bg-blue-300',
       } %}
       {% for badge in uni_info.badges %}
-        <span class="badge px-4 py-2 rounded-full text-white text-sm font-medium {{ badge_color_classes.get(badge.color, 'bg-gray-500') }} shadow-md hover:shadow-lg transition-shadow duration-300 animate__animated animate__fadeIn">
+        <span class="badge px-4 py-2 rounded-full text-white text-sm font-semibold {{ badge_color_classes.get(badge.color, 'bg-gray-500') }} shadow-md hover:shadow-lg transition-shadow hover:scale-125 transition-transform duration-300">
           {{ badge.label }}
         </span>
       {% endfor %}

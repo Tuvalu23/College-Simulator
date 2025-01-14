@@ -121,20 +121,45 @@ class User:
                 })
             return simulations
         
-    @staticmethod
     def log_simulation(user_id, university_name, result, sim_type="quick", adv_data=None, enrolled=0, app_type='RD'):
         with sqlite3.connect(DATABASE) as conn:
             cursor = conn.cursor()
+
+            # JSON-encode adv_data (if any)
             if adv_data is not None:
                 adv_json = json.dumps(adv_data)
             else:
                 adv_json = None
 
-            cursor.execute('''
-            INSERT INTO simulations 
-                (user_id, university_name, result, sim_type, adv_data, app_type, enrolled)
+            # 1) Check if an identical simulation was already logged
+            #    Adjust the WHERE clause to be as strict or loose as you want.
+            #    This example checks if the user has already logged the EXACT same
+            #    sim_type, result, and app_type *on the same day*.
+            #    If you want an even stricter check, remove the date filters. 
+            cursor.execute("""
+            SELECT id
+            FROM simulations
+            WHERE user_id = ?
+              AND university_name = ?
+              AND result = ?
+              AND sim_type = ?
+              AND app_type = ?
+              AND DATE(timestamp) = DATE('now')
+            """, (user_id, university_name, result, sim_type, app_type))
+
+            existing = cursor.fetchone()
+            if existing:
+                print("[DEBUG] log_simulation: Duplicate found, skipping insert.")
+                return  # Skip insertion, so we don't add a new row.
+
+            # 2) If we pass the above check, we insert
+            print("[DEBUG] log_simulation: Creating new simulation record.")
+            cursor.execute("""
+            INSERT INTO simulations
+                (user_id, university_name, result, sim_type, adv_data, enrolled, app_type)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (user_id, university_name, result, sim_type, adv_json, app_type, enrolled))
+            """, (user_id, university_name, result, sim_type, adv_json, enrolled, app_type))
+
             conn.commit()
 
     @staticmethod
@@ -184,6 +209,7 @@ class User:
                     'timestamp': row['timestamp'],
                     'sim_type': row['sim_type'],
                     'adv_data': row['adv_data'],
-                    'enrolled': row['enrolled']
+                    'enrolled': row['enrolled'],
+                    'app_type': row['app_type']
                 })
             return results

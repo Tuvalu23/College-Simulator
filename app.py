@@ -1026,12 +1026,6 @@ def pickscattergram():
 @app.route("/scattergram/<college>", methods=["GET", "POST"])
 @login_required
 def scattergram(college):
-    """
-    Show the advanced scattergram page for the given college.
-    We'll fetch advanced-sim data from all users, build bar_data (recent months)
-    and scatter_data (points for each sim).
-    We differentiate accepted/denied with app_type (ED, EA, REA, RD).
-    """
     # 0) Find the university info
     uni_info = next((u for u in university_list if u['name'].lower() == college.lower()), None)
     if not uni_info:
@@ -1048,16 +1042,6 @@ def scattergram(college):
     if not college_entry:
         flash(f"College '{college}' not found in the college list.", "danger")
         return redirect(url_for('scattergram'))
-
-    # Indices in college_list:
-    #  0: short_name
-    #  1: overall_accept_rate
-    #  2: ED indicator (not "N" => has ED)
-    #  3: EA indicator (not "N" => has EA) except if [4] == "REA"
-    #  4: REA indicator ("REA" => has REA)
-    #  5: date
-    #  6: another indicator
-    #  7: another date
 
     has_ed = (college_entry[2] != "N")
     has_ea = ((college_entry[3] != "N") and (college_entry[4] != "REA"))
@@ -4207,8 +4191,10 @@ def adv_acceptance(college):
         flash("Acceptance record not found.", "danger")
         return redirect(url_for('results'))
 
-    # Retrieve app_type from info; default to 'RD' if not present
-    app_type = info.get('app_type', 'RD')
+    print(info)
+    # Grab stored app_type from final_results so we know if it’s ED/EA/REA/RD
+    app_type = info.get('app_type')
+    print(app_type)
 
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
@@ -4220,7 +4206,6 @@ def adv_acceptance(college):
 
     user_id = session.get('user_id')
     if user_id:
-        # Construct the adv_data dictionary
         theAdvDict = {
             "gpa": session.get("advancedsim_data", {}).get("gpa", None),
             "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
@@ -4231,8 +4216,7 @@ def adv_acceptance(college):
             "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
-        
-        # Log the simulation with app_type
+        # Pass the correct app_type
         User.log_simulation(
             user_id=user_id,
             university_name=college,
@@ -4240,8 +4224,9 @@ def adv_acceptance(college):
             sim_type="advanced",
             adv_data=theAdvDict,
             enrolled=0,
-            app_type=app_type  # Pass the retrieved app_type
+            app_type=app_type  # <--- Key fix
         )
+        print(app_type)
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -4265,7 +4250,7 @@ def adv_edacceptance(college):
         flash("ED acceptance record not found.", "danger")
         return redirect(url_for('results'))
     
-    app_type = info.get('app_type', 'RD')
+    app_type = 'ED'
 
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
@@ -4288,7 +4273,7 @@ def adv_edacceptance(college):
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
         
-        User.log_simulation(user_id, college, 'edacceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
+        User.log_simulation(user_id, college, 'edacceptance', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type='ED')
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -4312,8 +4297,9 @@ def adv_rejection(college):
         flash("Rejection record not found.", "danger")
         return redirect(url_for('results'))
 
+    # Grab stored app_type so we know ED/EA/REA/RD
     app_type = info.get('app_type', 'RD')
-    
+
     from datetime import datetime
     release_date_str = info.get('release_date', 'Unknown Date')
     try:
@@ -4334,8 +4320,16 @@ def adv_rejection(college):
             "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
-        
-        User.log_simulation(user_id, college, 'rejection', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
+        # Pass the correct app_type
+        User.log_simulation(
+            user_id,
+            college,
+            'rejection',
+            sim_type="advanced",
+            adv_data=theAdvDict,
+            enrolled=0,
+            app_type=app_type  # <--- Key fix
+        )
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
@@ -4359,7 +4353,10 @@ def adv_deferred(college):
         flash("Deferred record not found.", "danger")
         return redirect(url_for('results'))
 
+    # Grab stored app_type so we know ED/EA/REA/RD
     app_type = info.get('app_type', 'RD')
+    print(info)
+    print(app_type)
     
     decision_code = info.get('decision_code', 'R')
     from datetime import datetime
@@ -4372,9 +4369,7 @@ def adv_deferred(college):
 
     user_id = session.get('user_id')
     if user_id:
-        # Only map 'D' to 'deferred'
-        if decision_code == "D":
-            theAdvDict = {
+        theAdvDict = {
             "gpa": session.get("advancedsim_data", {}).get("gpa", None),
             "sat_score": session.get("advancedsim_data", {}).get("sat_score", None),
             "act_score": session.get("advancedsim_data", {}).get("act_score", None),
@@ -4384,11 +4379,29 @@ def adv_deferred(college):
             "legacy": session.get("advancedsim_data", {}).get("legacy", "No"),
             "test_option": session.get("advancedsim_data", {}).get("test_option", "Standardized Tests"),
         }
-        
-            User.log_simulation(user_id, college, 'deferred', sim_type="advanced", adv_data=theAdvDict, enrolled=0, app_type=app_type)
+
+        # We only call result='deferred' if decision_code == "D"
+        if decision_code == "D":
+            User.log_simulation(
+                user_id,
+                college,
+                'deferred',
+                sim_type="advanced",
+                adv_data=theAdvDict,
+                enrolled=0,
+                app_type=app_type  # <--- Key fix
+            )
         else:
-            # This route should not handle post-deferral outcomes
-            User.log_simulation(user_id, college, 'deferred')  # Or handle differently
+            # For post-deferral outcomes like "D/W", "D/A", etc., you can choose how to log them
+            User.log_simulation(
+                user_id,
+                college,
+                'deferred',  # or 'deferral-other' if you want to track differently
+                sim_type="advanced",
+                adv_data=theAdvDict,
+                enrolled=0,
+                app_type=app_type  # <--- Key fix
+            )
 
     name = session.get("advancedsim_data", {}).get("name", "User")
     return render_template(
