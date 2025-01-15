@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <path id="linkedin" class="cls-1" d="M13.6,13.6h-2.4v-3.7c0-.9,0-2-1.2-2s-1.4,1-1.4,2v3.8h-2.4v-7.6h2.3v1h0c.3-.6,1.1-1.2,2.2-1.2,2.4,0,2.8,1.6,2.8,3.6,0,0,0,4.2,0,4.2ZM3.6,5c-.8,0-1.4-.6-1.4-1.4s.6-1.4,1.4-1.4h0c.8,0,1.4.6,1.4,1.4,0,.8-.6,1.4-1.4,1.4ZM2.4,13.6h2.4v-7.6h-2.4v7.6h0ZM14.8,0H1.2C.5,0,0,.5,0,1.2v13.7c0,.6.5,1.2,1.2,1.2h13.6c.7,0,1.2-.5,1.2-1.2V1.2c0-.6-.5-1.2-1.2-1.2h0Z"/>
+</svg>

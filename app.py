@@ -250,6 +250,7 @@ university_list = [
         "logo": "static/logos/illini-logo.png",
         "description": "The University of Illinois Urbana-Champaign is a premier public research institution known for its pioneering work in engineering, computer science, and business. Located in the heart of Illinois, it offers a vibrant campus and college experience.",
         "badges": [
+            {"label": "T-50", "color": "T-50"},
             {"label": "Public", "color": "Public"},
             {"label": "Big Ten", "color": "Big Ten"},
             {"label": "Engineering", "color": "Engineering"},
@@ -300,6 +301,7 @@ university_list = [
         "logo": "static/logos/northeastern-logo.jpg",
         "description": "Northeastern University, located in Boston, MA, is renowned for its experiential learning model, including co-op programs that integrate classroom study with professional experience.",
         "badges": [
+            {"label": "T-50", "color": "T-50"},
             {"label": "Private", "color": "Private"},
             {"label": "Urban", "color": "Urban"},
             {"label": "Research", "color": "Research"},
@@ -447,6 +449,23 @@ university_list = [
         "website": "https://www.tufts.edu/"
     },
     {
+    "name": "tulane",
+    "display_name": "Tulane University",
+    "logo": "static/logos/tulane-logo.jpg",
+    "description": "Tulane University in New Orleans, LA, is a distinguished private research institution known for its strong focus on interdisciplinary learning, public service, and vibrant campus life. Its location in the heart of New Orleans offers students a unique cultural and educational experience.",
+    "badges": [
+        {"label": "T-50", "color": "T-50"},
+        {"label": "Private", "color": "Private"},
+        {"label": "Urban", "color": "Urban"},
+        {"label": "Research", "color": "Research"},
+        {"label": "Community", "color": "Community"},
+        {"label": "Public Service", "color": "Public Service"},
+        {"label": "Party", "color": "Party"}
+    ],
+    "location": "New Orleans, LA",
+    "website": "https://www.tulane.edu/"
+},
+    {
         "name": "berkeley",
         "display_name": "University of California, Berkeley",
         "logo": "static/logos/berkeley-logo.png",
@@ -554,6 +573,7 @@ university_list = [
         "logo": "static/logos/utexas-logo.png",
         "description": "The University of Texas at Austin, located in Austin, TX, is a renowned public research university known for its spirited campus culture, top-tier academic programs, and dynamic connection to the vibrant city of Austin.",
         "badges": [
+            {"label": "T-50", "color": "T-50"},
             {"label": "Public", "color": "Public"},
             {"label": "Urban", "color": "Urban"},
             {"label": "STEM", "color": "STEM"},
@@ -590,6 +610,7 @@ university_list = [
         "logo": "static/logos/uva-logo.jpg",
         "description": "The University of Virginia, located in Charlottesville, VA, is a prestigious public university known for its historic campus, academic excellence, and strong emphasis on student leadership and community engagement.",
         "badges": [
+            {"label": "T-30", "color": "T-30"},
             {"label": "Public", "color": "Public"},
             {"label": "Suburban", "color": "Suburban"},
             {"label": "Historic", "color": "Historic"},
@@ -663,6 +684,7 @@ college_list = [
     ["ucla", "0.15", "N", "N", "P", "N", "N", "2025-03-21"],
     ["emory", "0.16", "1.7", "N", "P", "2024-12-11", "N", "2025-03-27"],
     ["usc", "0.17", "N", "1.3", "P", "N", "2025-01-17", "2025-03-16"],
+    ["tulane", "0.17", "2.0", "1.2", "PUB", "2024-12-03", "2024-12-23", "2025-03-11"],
     ["umich", "0.2", "N", "1.3", "PUB", "N", "2025-01-27", "2025-03-30"],
     ["utexas", "0.2", "N", "1.2", "PUB", "N", "2025-01-15", "2025-02-15"],
     ["nyu", "0.22", "1.5", "N", "P", "2024-12-12", "N", "2025-03-28"],

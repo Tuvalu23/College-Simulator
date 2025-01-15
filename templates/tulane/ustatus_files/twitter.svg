@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+        stroke-width: 0px;
+      }
+    </style>
+  </defs>
+  <path id="twitter-3" class="cls-1" d="M18.2,2.2h3.3l-7.2,8.3,8.5,11.2h-6.7l-5.2-6.8-6,6.8H1.7l7.7-8.8L1.3,2.2h6.8l4.7,6.2,5.5-6.2ZM17.1,19.8h1.8L7.1,4.1h-2l12,15.6Z"/>
+</svg>
